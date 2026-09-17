@@ -60,6 +60,11 @@ arquivo é livre; o JSON diz qual arquivo é qual ação.
 
 ### O prompt da referência
 
+Este é o molde curto. O prompt longo que o João usa de fato, com o bloco
+**REGRAS DO PROJETO** (direção, sem escudo, um personagem só, fundo verde),
+está em `docs/prompt-referencia.md`. Anexar a imagem de partida e colar
+inteiro.
+
 Trocar só o que está entre colchetes. Uma imagem, sem variações, e gerar de
 novo até a silhueta convencer a 20 metros.
 
