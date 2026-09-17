@@ -1,0 +1,43 @@
+# Lições
+
+O destilado do `diario-de-bordo.md`: o que funciona com o João e o que não
+funciona, neste projeto. Este arquivo **é editável**, ao contrário do diário.
+
+Toda linha cita a data da entrada do diário que a originou, entre parênteses.
+Sem a citação, a afirmação não pode ser conferida depois e vira folclore.
+
+Quando uma lição se mostrar errada, **corrija a linha**, não acrescente outra
+embaixo contradizendo.
+
+## Preferências confirmadas
+
+Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
+
+- Português do Brasil, sem travessão como pausa explicativa. (regra global
+  dele, anterior a este projeto)
+- Bullet vence parágrafo. Uma recomendação vence um catálogo de opções.
+  (regra global dele)
+- Documento de contrato antes de código. (regra global dele)
+- Projeto que nasce de uma sessão da Alure ganha `CLAUDE.md` com identidade
+  própria e o trabalho de verdade roda em sessão limpa, aberta na pasta do
+  projeto. (regra dele de 01/09/2026, no projeto Designer de Restaurantes)
+- O projeto documenta o próprio processo enquanto acontece: diário bruto e
+  lições destiladas. (pedido dele em 15/09/2026, no Icons4U; herdado aqui
+  porque numa matéria de Comunicação o processo é parte da entrega)
+
+## O que não fazer
+
+- Chamar Codex de gerador de gráficos. Ele imaginava "Codex pros gráficos";
+  Codex é agente de código. Imagem é modelo de imagem. (2026-09-17)
+
+## Sobre a arte
+
+- O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
+  Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
+  própria skill)
+
+## Sobre o método
+
+- Motor antes da arte, com retângulos. Arte é estocástica e custa crédito; o
+  jogo precisa existir antes dela. (2026-09-17, decisão de montagem, ainda
+  não testada em sessão de trabalho)
