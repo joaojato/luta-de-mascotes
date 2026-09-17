@@ -32,6 +32,15 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 
 ## Sobre a arte
 
+- **Regra de remoção enterrada num prompt longo de fidelidade não funciona.**
+  O prompt de 200 linhas com "preserve roupa e acessórios" e a imagem
+  anexada venceram o bloco "REGRAS DO PROJETO": o Almirante voltou com
+  corvo, Cruz de Malta no chapéu e ainda ganhou um pendente com a cruz. O
+  Urubu perdeu escudo e monograma, mas os dois vieram olhando para a
+  direita mesmo com a regra de direção em três lugares. Remoção e espelho
+  são edição curta, com só a instrução de mudança, sobre a imagem já
+  gerada; direção se resolve por script (`ImageOps.mirror`), não por
+  prompt. (2026-09-17)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)
