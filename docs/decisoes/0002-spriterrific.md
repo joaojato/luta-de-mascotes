@@ -1,7 +1,13 @@
 # ADR 0002: Spriterrific como gerador de sprite
 
 **Data:** 2026-09-17
-**Status:** aceito, com reavaliação marcada para o fim do Marco 2
+**Status:** em reavaliação desde 17/09/2026 (noite). O João questionou a
+premissa: jogo de luta é key pose (SF2 tem 3 a 5 quadros por golpe), não
+fluidez de vídeo. Teste em andamento: sheet inteira gerada numa imagem só
+(ChatGPT ou Nano Banana), com a referência do mascote mais uma fileira do
+Ryu como pose de referência, recortada e alinhada por script para a grade
+256×256. Se convencer na Academia, esse vira o fluxo da v1 e o Spriterrific
+fica como reserva para andar e pulo. Decisão final no fim do Marco 2.
 
 ## Contexto
 

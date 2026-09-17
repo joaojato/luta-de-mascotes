@@ -32,6 +32,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 
 ## Sobre a arte
 
+- **O João não quer fluidez de vídeo, quer key pose de SF2.** Ele mostrou a
+  sheet do Ryu (3 a 5 quadros por golpe) e perguntou por que não gerar a
+  sheet no modelo de imagem. A ADR 0002 tinha descartado isso como "plano
+  C, sai pior" pensando em quadro avulso; sheet inteira numa imagem só, com
+  pose de referência, é outra coisa. Reavaliar premissa de custo antes de
+  defender ferramenta paga. (2026-09-17)
 - **Regra de remoção enterrada num prompt longo de fidelidade não funciona.**
   O prompt de 200 linhas com "preserve roupa e acessórios" e a imagem
   anexada venceram o bloco "REGRAS DO PROJETO": o Almirante voltou com
