@@ -40,10 +40,11 @@ Arquitetura real (herdada do Vibe Fighter, nomes em inglês ficam):
 
 ```
 src/scenes/           Boot, Splash, MainMenu, ModeSelect, LevelSelect,
-                      CharacterSelect, Match, Settings
+                      CharacterSelect, Match, Academia, Settings
 src/game/fighter.ts   motor: estados, hit/hurt/guard box, hitstun, rounds
-src/game/redBrawler.ts, greenBoxer.ts, jiujitsuFighter.ts
-                      lutadores de amostra, hoje em TS (vira JSON no Marco 1)
+src/game/lutadores/<slug>.json   um JSON por lutador: ações, boxes, stats
+src/game/lutadores/index.ts      registro; ordem = ordem na seleção
+src/game/lutadores/lutadores.test.ts   cobra a Regra do JSON por máquina
 src/game/fighterCharacter.ts   monta um lutador a partir da lista de ações
 src/shell/            shell HTML de debug (só em dev, localhost)
 public/assets/lutadores/_amostra-<nome>/   sprites de amostra do Chong-U
@@ -52,7 +53,7 @@ public/assets/backgrounds/, stages/, ui/   cenário e HUD de amostra
 ```
 
 Mapa de nomes: `Match` é a Luta, `CharacterSelect` é a Seleção. A `Academia`
-(gym de hitbox) **não veio** no pacote público e é construída por nós.
+(`src/scenes/AcademiaScene.ts`) é nossa: o gym do Chong-U não veio no pacote.
 
 ## Regras nomeadas
 

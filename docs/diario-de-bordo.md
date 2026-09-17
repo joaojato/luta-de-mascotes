@@ -148,3 +148,48 @@ em vários lugares antes de notar que era 17/09; corrigido.
 RPG). Ler o `phaser-gamedev` do oakwoods e decidir se copia. Campos do
 briefing (entrega, prazo, rubrica, dois mascotes da v1). Conta do
 Spriterrific.
+
+## 2026-09-17: Marco 1 fechado, lutador em JSON e Academia
+
+**Marco:** Marco 1, fechado. Poda do starter de RPG pendente.
+**Pedido:** "Comece a fazer o jogo. Me diga quando e aonde eu coloco as
+imagens, como configuro, como gero as imagens? Várias imagens de cada frame
+de um soco, ou apenas uma? Faça um prompt para a geração dessas imagens."
+**Feito:**
+- Regra do JSON: `src/game/lutadores/{red-brawler,green-boxer,jiujitsu-fighter}.json`
+  extraídos por script dos TS, com `stats` e `combat` que estavam em
+  `fighterConfig.ts`. `lutadores/index.ts` registra e monta via
+  `buildFighterCharacter`. Teste temporário de ida e volta provou definição
+  idêntica campo a campo (só o texto do `anchorUsage` do jiu-jitsu divergiu,
+  corrigido); depois apagado junto com os três TS. `hero.ts`,
+  `fighterConfig.ts` e `debug.ts` religados no registro.
+- `lutadores.test.ts` permanente (17 testes): ações que o motor exige pelo
+  nome, quadros de ataque dentro do alcance, golpe com hitbox, bloqueio com
+  guard box, e cada sheet, âncora e retrato existindo em `public/`.
+- `AcademiaScene`: sprite em 2x, moldura do 256x256, boxes nas cores do motor
+  (`FIGHTER_BOUNDS_FIELDS`), lista de ações, contador de quadro, legenda por
+  cor. Teclas: A/D lutador, W/S ação, Espaço toca/pausa, `,` `.` quadro, R
+  quadro 1, 1 a 5 boxes, Esc menu. Entrou no menu principal.
+- Descoberta que muda a arte: o motor espelha com `flipX` quem olha para a
+  direita, então os sprites nativos olham para a **esquerda** (`w`, padrão do
+  Spriterrific, e o `anchor-w.png` do Chong-U veio dele). Pipeline e skill
+  `lutador-novo` diziam `e`; corrigidos.
+- `docs/pipeline-arte.md` ganhou "O que o João faz, o que o agente faz":
+  tabela de passos e pastas, prompt da referência (com exemplo do
+  Almirante), prompt do retrato, e o que os 500 créditos grátis compram
+  (idle + 3 ações, resto por placeholder no JSON).
+**Verificado:** `npm run check` verde (typecheck, 25 testes, build). Prints
+via Playwright: Academia com quadro 3/6 do soco fraco e attack box ativa,
+especial do boxeador com hit múltiplo, luta rodando com os lutadores em JSON
+e barras de especial enchendo. Zero erro de console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada com todas as letras. "Comece a fazer" foi
+o sinal para o Marco 1.
+**Atrito:** a outra sessão não mexeu no repo desta vez. Meu teste do registro
+nasceu mais rígido que o motor (exigia `block-low` e `heavy-*`); alinhado
+com `resolveActionKeys`.
+**Em aberto:** os dois mascotes da v1 (ainda sem escolha; a Alure sugeriu
+Urubu × Cartola, o João deu ideia de ultimate pro Almirante). Conta do
+Spriterrific. Poda do starter. Marco 2 espera a referência do primeiro
+mascote, que é do João.

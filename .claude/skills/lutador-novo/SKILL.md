@@ -24,7 +24,7 @@ Slug: minúsculo, sem acento, com hífen (`urubu`, `cartola`, `vozao`).
 ## Etapa 2: referência
 
 1. Montar o prompt da referência a partir da ficha, com o molde de
-   `docs/pipeline-arte.md` (corpo inteiro, perfil, virado para a direita,
+   `docs/pipeline-arte.md` (corpo inteiro, perfil, virado para a esquerda,
    guarda de luta, fundo verde chapado, sem texto, sem escudo).
 2. Entregar o prompt ao João para ele gerar no Nano Banana Pro ou GPT Image.
    O agente não gera essa imagem.
@@ -55,8 +55,8 @@ gasto no diário ao final.
 Seguir a skill `spriterrific-api`. Regras deste projeto por cima dela:
 
 - Preset `high-fidelity-v1`, `pixelSnap` desligado (decisão da ADR 0002).
-- `direction: "e"` no job de personagem. Todo mundo vira para a direita; o
-  P2 é espelhado no Phaser.
+- `direction: "w"` no job de personagem (padrão do Spriterrific). Todo mundo
+  vira para a esquerda; o motor espelha com `flipX` quem olha para a direita.
 - **`idle` sozinho** no job de personagem, com a receita de congelamento da
   skill. Cada ação de movimento em job separado, com `actionContext` curto
   (até 130 caracteres) e específico do golpe.

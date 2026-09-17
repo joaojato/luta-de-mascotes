@@ -19,7 +19,12 @@ ele é quebrado em dois, não esticado.
 - [x] Marco 0 (17/09/2026): Vibe Fighter do Chong-U rodando no nosso repo com
   título próprio, sprites de amostra em `_amostra-*`, `npm run check` verde
   (typecheck + 8 testes + build), fluxo inteiro verificado com prints.
-- [ ] Marco 1
+- [x] Marco 1 (17/09/2026): os três lutadores de amostra vêm de
+  `src/game/lutadores/*.json` (teste de ida e volta provou definição
+  idêntica à do TS, depois apagado junto com o TS); cena `Academia` no menu
+  com scrub de quadro e boxes; 17 testes cobram a Regra do JSON. Poda do
+  starter de RPG **não feita** (custa mais que uma noite pelo tamanho do
+  shell de debug); fica para quando atrapalhar.
 - [ ] Marco 2
 - [ ] Marco 3 = v1
 - [ ] Marco 4 (se sobrar tempo)
@@ -40,9 +45,13 @@ especial com barra de meter. Dois jogadores no mesmo teclado (P1 WASD + F/G/V
 - `package.json` próprio, `npm run check` = typecheck + vitest + build.
 - `vitest` ignora `referencia/` e `spriterrific-runs/`.
 
-## Marco 1: fazer o motor ser nosso (um fim de semana)
+## Marco 1: fazer o motor ser nosso (fechado em 17/09/2026)
 
-**Roda no fim:** o mesmo jogo, mas um lutador de amostra vem de
+**Rodou:** o mesmo jogo, com os três lutadores de amostra vindo de JSON e a
+Academia no menu (A/D lutador, W/S ação, Espaço toca/pausa, `,` `.` quadro,
+R volta ao quadro 1, 1 a 5 ligam as boxes). Poda ficou pendente.
+
+**Roda no fim (critério original):** o mesmo jogo, mas um lutador de amostra vem de
 `src/game/lutadores/<slug>.json` em vez de TS, e a cena `Academia` toca as
 ações dele quadro a quadro com hit/hurt/guard box desenhadas.
 

@@ -1,0 +1,287 @@
+{
+  "id": "jiujitsu-fighter",
+  "label": "Jiu-Jitsu Fighter",
+  "assetRoot": "/assets/lutadores/_amostra-jiujitsu-fighter",
+  "anchorUsage": "capoeira jiu-jitsu fighter west-facing high-fidelity anchor",
+  "stats": {
+    "walkSpeed": 240,
+    "airDrift": 210,
+    "jump": 1040
+  },
+  "combat": {
+    "maxHealth": 110,
+    "highDamage": 6,
+    "lowDamage": 14,
+    "lowKnockback": 380,
+    "lowHitstun": 480,
+    "specialDamage": 5,
+    "specialHitstun": 220
+  },
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Idle",
+      "file": "idle.png",
+      "frames": 12,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 76,
+        "y": 28,
+        "width": 104,
+        "height": 204
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Walk Forward",
+      "file": "walk-forward.png",
+      "frames": 8,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 72,
+        "y": 28,
+        "width": 112,
+        "height": 204
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Walk Backward",
+      "file": "walk-backward.png",
+      "frames": 8,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 72,
+        "y": 28,
+        "width": 112,
+        "height": 204
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Crouch",
+      "file": "crouch.png",
+      "frames": 5,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 72,
+        "y": 104,
+        "width": 112,
+        "height": 126
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Jump",
+      "file": "jump.png",
+      "frames": 8,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 70,
+        "y": 16,
+        "width": 116,
+        "height": 206
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Block High",
+      "file": "block-high.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 76,
+        "y": 28,
+        "width": 104,
+        "height": 204
+      },
+      "guard": {
+        "x": 60,
+        "y": 44,
+        "width": 136,
+        "height": 116
+      }
+    },
+    {
+      "action": "block-low",
+      "label": "Block Low",
+      "file": "block-low.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 72,
+        "y": 104,
+        "width": 112,
+        "height": 126
+      },
+      "guard": {
+        "x": 60,
+        "y": 110,
+        "width": 136,
+        "height": 120
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Hit High",
+      "file": "hit-high.png",
+      "frames": 6,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 72,
+        "y": 28,
+        "width": 112,
+        "height": 204
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Light Punch",
+      "file": "light-punch.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 60,
+        "y": 28,
+        "width": 128,
+        "height": 204
+      },
+      "attack": {
+        "frames": [
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 18,
+          "y": 84,
+          "width": 84,
+          "height": 46
+        }
+      }
+    },
+    {
+      "action": "heavy-kick",
+      "label": "Heavy Kick",
+      "file": "heavy-kick.png",
+      "frames": 10,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 48,
+        "y": 28,
+        "width": 152,
+        "height": 204
+      },
+      "attack": {
+        "frames": [
+          4,
+          5,
+          6
+        ],
+        "bounds": {
+          "x": 10,
+          "y": 96,
+          "width": 100,
+          "height": 58
+        }
+      }
+    },
+    {
+      "action": "special-charge",
+      "label": "Special Charge",
+      "file": "special-charge.png",
+      "frames": 5,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 56,
+        "y": 96,
+        "width": 144,
+        "height": 134
+      }
+    },
+    {
+      "action": "special",
+      "label": "Spinarooni",
+      "file": "special.png",
+      "frames": 12,
+      "frameRate": 16,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 28,
+        "y": 70,
+        "width": 200,
+        "height": 162
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            2
+          ],
+          "bounds": {
+            "x": 0,
+            "y": 128,
+            "width": 150,
+            "height": 92
+          }
+        },
+        {
+          "frames": [
+            4
+          ],
+          "bounds": {
+            "x": 0,
+            "y": 128,
+            "width": 150,
+            "height": 92
+          }
+        },
+        {
+          "frames": [
+            6
+          ],
+          "bounds": {
+            "x": 0,
+            "y": 128,
+            "width": 150,
+            "height": 92
+          }
+        },
+        {
+          "frames": [
+            8
+          ],
+          "bounds": {
+            "x": 0,
+            "y": 128,
+            "width": 150,
+            "height": 92
+          }
+        }
+      ]
+    },
+    {
+      "action": "knockdown",
+      "label": "Knockdown",
+      "file": "knockdown.png",
+      "frames": 10,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 40,
+        "y": 150,
+        "width": 176,
+        "height": 80
+      }
+    }
+  ]
+}

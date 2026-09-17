@@ -37,6 +37,75 @@ pixel art indie, não Capcom 1991. Aceitar isso cedo evita frustração no Marco
 | Trilha | Suno | Hino de torcida em chiptune. Fora da v1. |
 | Vozes ("Round 1", grito de golpe) | ElevenLabs | Fora da v1. |
 
+## O que o João faz, o que o agente faz (guia curto)
+
+Você gera **uma imagem por mascote**, não quadros. Quem gera os quadros do
+soco, do pulo e do resto é o Spriterrific, a partir dessa imagem única. Gerar
+quadro a quadro num modelo de imagem é o plano C, e sai pior.
+
+| Passo | Quem | Onde fica |
+|---|---|---|
+| 1. Ficha do mascote no GDD | João (com o agente) | `docs/gdd.md` |
+| 2. Referência: 1 imagem, corpo inteiro, virado pra **esquerda** | João, no Nano Banana Pro ou GPT Image, com o prompt abaixo | `referencia/<slug>/referencia.png` (fora do git) |
+| 3. Retrato: 1 imagem, busto, mesmo prompt de identidade | João, mesmo modelo | `referencia/<slug>/retrato.png` |
+| 4. Sprite sheets de cada ação | Agente, via API do Spriterrific (`SPRITERRIFIC_API_KEY` no `.env`) | rodada bruta em `spriterrific-runs/`, sheet final em `public/assets/lutadores/<slug>/<acao>.png` |
+| 5. JSON do mascote | Agente | `src/game/lutadores/<slug>.json` |
+| 6. Conferir na Academia | João e agente | menu do jogo, opção Academia |
+
+O que o motor precisa por mascote, dentro de `public/assets/lutadores/<slug>/`:
+`anchor-w.png` (a referência que o Spriterrific devolve, 1024×1024),
+`portrait.png` (retrato), e uma sheet por ação, células de **256×256** em
+grade de 5 colunas, exatamente o que o Spriterrific exporta. O nome do
+arquivo é livre; o JSON diz qual arquivo é qual ação.
+
+### O prompt da referência
+
+Trocar só o que está entre colchetes. Uma imagem, sem variações, e gerar de
+novo até a silhueta convencer a 20 metros.
+
+> Full body 2D fighting game character, side view **facing left**, fighting
+> stance with guard up, feet apart, weight on the back foot. The character is
+> [descrição do mascote em uma frase: bicho ou figura, corpo, roupa, o que ele
+> segura]. Exaggerated proportions like a Street Fighter Alpha fighter: big
+> hands, strong silhouette, expressive face with attitude. Bold flat colors
+> [as 3 cores da paleta], high fidelity pixel art with clean outlines. Whole
+> body visible, centered, generous padding, flat solid green background
+> (#00FF00). No text, no logo, no crest, no badge, no sponsor, no shadow on
+> the ground.
+
+Exemplo preenchido, Almirante (Vasco reinterpretado):
+
+> Full body 2D fighting game character, side view facing left, fighting
+> stance with guard up, feet apart, weight on the back foot. The character is
+> a burly old sea admiral with a thick white beard, a long black naval coat
+> with red trim over a white and black striped shirt, a captain's cap, heavy
+> boots, one fist wrapped in anchor chain. Exaggerated proportions like a
+> Street Fighter Alpha fighter: big hands, strong silhouette, expressive
+> face with attitude. Bold flat colors black, white and deep red, high
+> fidelity pixel art with clean outlines. Whole body visible, centered,
+> generous padding, flat solid green background (#00FF00). No text, no
+> logo, no crest, no badge, no sponsor, no shadow on the ground.
+
+Retrato: mesma descrição do personagem, trocando o começo por "Stylized
+bust portrait of [...], looking slightly past the camera with a taunting
+grin, three-quarter view, dark simple background" e tirando a parte de pose
+e fundo verde. Salvar quadrado (1254×1254 é o que o motor usa, mas qualquer
+quadrado serve).
+
+### O que os 500 créditos grátis compram
+
+Um mascote **lutando** já com o cadastro grátis. O JSON pode apontar várias
+ações para a mesma sheet enquanto ela não existe.
+
+- Job de personagem com `idle` (60 + 100) e mais 3 ações: `walk_forward`,
+  `light_attack`, `hurt`. Total **460 créditos**.
+- No JSON: `walk-backward` usa a sheet de `walk-forward` (o motor sabe tocar
+  ao contrário), `crouch`, `jump`, `block-high` e `knockdown` usam `idle.png`
+  até existirem. Feio, mas roda, e valida o estilo antes de comprar.
+- Comprando crédito, completar: `jump`, `crouch`, `block` (custom),
+  `heavy_attack`, `knockdown`, `special` (custom). Mais 600 créditos. Total
+  por mascote completo: **cerca de 1.060**.
+
 ## Pipeline de um mascote, passo a passo
 
 A skill `lutador-novo` executa isto. Aqui está o porquê de cada passo.
@@ -44,22 +113,23 @@ A skill `lutador-novo` executa isto. Aqui está o porquê de cada passo.
 1. **Ficha no GDD primeiro.** Nome, silhueta, arquétipo, especial, paleta.
    Sem ficha, o prompt sai genérico e o sprite sai genérico.
 2. **Referência.** Uma imagem, corpo inteiro, de perfil, virado para a
-   **direita** (`e` no Spriterrific), pose de guarda de luta, fundo verde
-   chapado, sem texto, sem escudo. Salvar em `referencia/<slug>/` (fora do git).
-   Prompt base:
-   > full body 2D fighting game character, side view facing right, fighting
-   > stance, [descrição do mascote], bold colors [paleta], flat green
-   > background, no text, no logo, no crest, high fidelity pixel art
+   **esquerda** (`w` no Spriterrific, que é o padrão dele e o que o motor
+   herdado espera: o `anchor-w.png` dos lutadores de amostra veio daí), pose
+   de guarda de luta, fundo verde chapado, sem texto, sem escudo. Salvar em
+   `referencia/<slug>/` (fora do git). Prompt completo na seção acima.
 3. **Job de personagem** no Spriterrific com `sourceImageUrl` (a referência),
-   `direction: "e"`, preset `high-fidelity-v1`, e **só** a ação `idle`.
+   `direction: "w"`, preset `high-fidelity-v1`, e **só** a ação `idle`.
    Idle vai sozinho no job porque o contexto de movimento contamina o parado
    (a skill explica: o boneco "anda no lugar").
 4. **Jobs de ação**, um por animação, referenciando o job de personagem:
    `walk_forward`, `jump`, `crouch`, `light_attack`, `heavy_attack`, custom
-   `chute` (baseline `attack`), custom `especial-<slug>` (baseline `attack`
-   ou `jump`), `hurt`, `knockdown`. Andar para trás é o `walk_forward`
-   tocado de trás pra frente, como o SF2 fazia. Levantar (`get_up`) e
-   bloqueio ficam pra v1.1.
+   `bloqueio` (baseline `idle`, guarda alta), custom `especial-<slug>`
+   (baseline `attack` ou `jump`), `hurt`, `knockdown`. Andar para trás é o
+   `walk_forward` tocado de trás pra frente (`reverseWalk` no motor). No
+   JSON, os nomes de ação são os do motor: `idle`, `walk-forward`,
+   `walk-backward`, `crouch`, `jump`, `block-high`, `block-low`, `hit-high`,
+   `light-punch`, `heavy-kick` ou `heavy-punch`, `special-charge`,
+   `special`, `knockdown`.
 5. **Curadoria.** Ver cada GIF ampliado, pés e tronco. Se um quadro saiu
    errado, usar o frame picker (custa 0 crédito) antes de gerar de novo.
 6. **Asset final** em `public/assets/lutadores/<slug>/<acao>.png`, com o
@@ -75,8 +145,9 @@ A skill `lutador-novo` executa isto. Aqui está o porquê de cada passo.
 - Job de personagem a partir de imagem: 60 + 100 por ação.
 - Job de ação avulso: 100.
 - Mascote da v1 com `idle` + 9 ações: **cerca de 1.060 créditos.**
-- Os 500 grátis do cadastro dão `idle` + 4 ações de um mascote: o suficiente
-  para validar o estilo antes de comprar crédito. Fazer isso primeiro.
+- Os 500 grátis do cadastro dão `idle` + 3 ações de um mascote (460), e o
+  JSON cobre o resto com placeholder: o suficiente para ver o mascote
+  lutando e validar o estilo antes de comprar crédito. Fazer isso primeiro.
 
 ### Armadilhas conhecidas
 
@@ -86,9 +157,9 @@ A skill `lutador-novo` executa isto. Aqui está o porquê de cada passo.
   limite do modelo de vídeo e o job falha (é reembolsado, mas perde tempo).
 - **Idle que anda**: dar a lista completa de congelamento ("pés colados, sem
   passo, sem balanço de braço, só respiração"). Está na skill.
-- **Direção**: gerar todo mundo virado para a direita. O P2 é o mesmo sprite
-  espelhado pelo Phaser (`flipX`). Assimetria (bengala na mão direita vira
-  esquerda) é aceitável, SF2 fazia igual.
+- **Direção**: gerar todo mundo virado para a **esquerda** (`w`). O motor
+  espelha com `flipX` quando o lutador olha para a direita. Assimetria
+  (bengala na mão direita vira esquerda) é aceitável, SF2 fazia igual.
 
 ## Prompts que funcionaram pro Chong-U (de `prompts.pdf`, 17/09/2026)
 

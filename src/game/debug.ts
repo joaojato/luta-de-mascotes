@@ -1,7 +1,8 @@
 import { createStore, type Store } from './store';
 import { DEFAULT_BACKGROUND_GYM_STATE } from './backgroundConfig';
 import { createDefaultFighterPlaygroundState } from './fighterConfig';
-import { RED_BRAWLER_ANIMATION_KEYS, RED_BRAWLER_CHARACTER_ID } from './redBrawler';
+import { animationKey } from './fighterCharacter';
+import { LUTADORES } from './lutadores';
 import { createDefaultLevelEditorDebugState } from './levelEditor';
 import { DEFAULT_STAGE_PREVIEW_STATE } from './stageConfig';
 import { DEFAULT_TILE_GYM_STATE } from './tileConfig';
@@ -21,8 +22,8 @@ export const DEFAULT_DEBUG_STATE: DebugState = {
   activeLevelId: 'level-1',
   configSaveStatus: 'Not saved this session',
   characterGym: {
-    characterId: RED_BRAWLER_CHARACTER_ID,
-    animationKey: RED_BRAWLER_ANIMATION_KEYS.idle,
+    characterId: LUTADORES[0].id,
+    animationKey: animationKey(LUTADORES[0].id, 'idle'),
     paused: false,
     playbackSpeed: 1,
     frame: 0,

@@ -1,7 +1,5 @@
 import { FIGHTER_CHARACTER_DEFINITIONS, getCharacterDefinition } from './hero';
-import { RED_BRAWLER_CHARACTER_ID } from './redBrawler';
-import { GREEN_BOXER_CHARACTER_ID } from './greenBoxer';
-import { JIUJITSU_FIGHTER_CHARACTER_ID } from './jiujitsuFighter';
+import { LUTADORES, LUTADOR_COMBAT_OVERRIDES, LUTADOR_STAT_OVERRIDES } from './lutadores';
 import type {
   AttackKind,
   AttackProfile,
@@ -27,14 +25,11 @@ export const DEFAULT_FIGHTER_STATS: FighterStats = {
 };
 
 /**
- * Per-character starting balance. Tunable in the playground debug panel and
- * persisted to `public/configs/fighter-playground.json`.
+ * Per-character starting balance, read from each fighter's JSON (`stats`).
+ * Tunable in the playground debug panel and persisted to
+ * `public/configs/fighter-playground.json`.
  */
-const FIGHTER_STAT_OVERRIDES: Record<string, Partial<FighterStats>> = {
-  [RED_BRAWLER_CHARACTER_ID]: {},
-  [GREEN_BOXER_CHARACTER_ID]: { walkSpeed: 250, jump: 1000 },
-  [JIUJITSU_FIGHTER_CHARACTER_ID]: { walkSpeed: 240, airDrift: 210, jump: 1040 }
-};
+const FIGHTER_STAT_OVERRIDES: Record<string, Partial<FighterStats>> = LUTADOR_STAT_OVERRIDES;
 
 /**
  * Editable stat field metadata used to render the debug panel inputs and to
@@ -75,22 +70,10 @@ export const DEFAULT_FIGHTER_COMBAT: FighterCombat = {
 };
 
 /**
- * Per-character combat balance. Tunable in the playground debug panel and
- * persisted alongside the movement stats.
+ * Per-character combat balance, read from each fighter's JSON (`combat`).
+ * Tunable in the playground debug panel and persisted alongside the stats.
  */
-const FIGHTER_COMBAT_OVERRIDES: Record<string, Partial<FighterCombat>> = {
-  [RED_BRAWLER_CHARACTER_ID]: { specialDamage: 7, specialKnockback: 170 },
-  [GREEN_BOXER_CHARACTER_ID]: { highDamage: 9, highKnockback: 220, lowDamage: 10, lowKnockback: 300 },
-  [JIUJITSU_FIGHTER_CHARACTER_ID]: {
-    maxHealth: 110,
-    highDamage: 6,
-    lowDamage: 14,
-    lowKnockback: 380,
-    lowHitstun: 480,
-    specialDamage: 5,
-    specialHitstun: 220
-  }
-};
+const FIGHTER_COMBAT_OVERRIDES: Record<string, Partial<FighterCombat>> = LUTADOR_COMBAT_OVERRIDES;
 
 /**
  * Editable combat field metadata used to render the debug panel inputs and to
@@ -370,11 +353,9 @@ export function clampFighterCombat(value: Partial<FighterCombat>): FighterCombat
  * Default selectable fighter (first fighter in the roster, preferring the red brawler).
  */
 export function defaultFighterCharacterId(): string {
-  const preferred = FIGHTER_CHARACTER_DEFINITIONS.find(
-    (character) => character.id === RED_BRAWLER_CHARACTER_ID
-  );
+  const preferred = FIGHTER_CHARACTER_DEFINITIONS.find((character) => character.id === LUTADORES[0].id);
 
-  return preferred?.id ?? FIGHTER_CHARACTER_DEFINITIONS[0]?.id ?? RED_BRAWLER_CHARACTER_ID;
+  return preferred?.id ?? FIGHTER_CHARACTER_DEFINITIONS[0]?.id ?? LUTADORES[0].id;
 }
 
 function normalizeFighterCharacterId(value: unknown): string {

@@ -75,8 +75,9 @@ export class MainMenuScene extends BaseScene {
     this.clearButtons();
 
     const playOption: MenuOption = { label: 'Play', action: () => this.scene.start(SCENE_KEYS.ModeSelect) };
+    const academiaOption: MenuOption = { label: 'Academia', action: () => this.scene.start(SCENE_KEYS.Academia) };
     const settingsOption: MenuOption = { label: 'Settings', action: () => this.scene.start(SCENE_KEYS.Settings) };
-    this.options = [playOption, settingsOption];
+    this.options = [playOption, academiaOption, settingsOption];
 
     const startY = 164;
     const spacing = 55;
@@ -98,7 +99,8 @@ export class MainMenuScene extends BaseScene {
     };
 
     layoutButton(playOption, 0);
-    layoutButton(settingsOption, 1);
+    layoutButton(academiaOption, 1);
+    layoutButton(settingsOption, 2);
 
     this.setSelection(0);
   }

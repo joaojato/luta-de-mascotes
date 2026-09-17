@@ -1,8 +1,6 @@
 import type { CharacterBoundsKind, CharacterGymBoundsOverrides, Rect } from './types';
 import type { ImageAsset, SpritesheetAsset } from './assets';
-import { RED_BRAWLER_CHARACTER } from './redBrawler';
-import { GREEN_BOXER_CHARACTER } from './greenBoxer';
-import { JIUJITSU_FIGHTER_CHARACTER } from './jiujitsuFighter';
+import { LUTADOR_CHARACTERS } from './lutadores';
 
 export interface HeroBoundsFrame {
   frame: number;
@@ -43,11 +41,8 @@ export interface CharacterDefinition {
   assets: Array<ImageAsset | SpritesheetAsset>;
 }
 
-export const CHARACTER_DEFINITIONS: CharacterDefinition[] = [
-  RED_BRAWLER_CHARACTER,
-  GREEN_BOXER_CHARACTER,
-  JIUJITSU_FIGHTER_CHARACTER
-];
+// Regra do JSON: o elenco inteiro vem de src/game/lutadores/*.json.
+export const CHARACTER_DEFINITIONS: CharacterDefinition[] = LUTADOR_CHARACTERS;
 
 /**
  * Characters authored with the full fighter action set (they include a
