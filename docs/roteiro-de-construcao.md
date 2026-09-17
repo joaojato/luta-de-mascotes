@@ -80,11 +80,13 @@ barras estilizadas, falas de entrada e vitória, link publicado.
 
 Em ordem de valor para a matéria, não de dificuldade:
 
-1. Torcida reagindo (som de vaia e grito conforme quem está ganhando). Barato
-   e é a camada de Comunicação mais visível.
-2. Modo história curto: três lutas com uma fala entre elas.
-3. CPU simples (anda em direção, ataca quando perto, bloqueia às vezes).
-4. Terceiro mascote, só por JSON + sprites, para provar a Regra do JSON.
+1. **Ultimates** com medidor de torcida, um por mascote, como efeito em camada
+   sobre o cenário (ver GDD). É a ideia que o João mais quer e a que mais
+   comunica; barata porque não passa pelo Spriterrific.
+2. Torcida reagindo (som de vaia e grito conforme quem está ganhando).
+3. Modo história curto: três lutas com uma fala entre elas.
+4. CPU simples (anda em direção, ataca quando perto, bloqueia às vezes).
+5. Terceiro mascote, só por JSON + sprites, para provar a Regra do JSON.
 
 ## Calendário sugerido (ajustar quando o prazo entrar no briefing)
 

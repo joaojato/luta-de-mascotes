@@ -59,3 +59,29 @@ que confirmou a escolha do Phaser.
 ordem de construção e não o código.
 **Em aberto:** campos do briefing (entrega, prazo, solo ou grupo). Conta do
 Spriterrific. Escolha dos dois mascotes da v1. Marco 0.
+
+## 2026-09-17: ultimates entram no GDD, vindos do doc do Drive
+
+**Marco:** anterior ao Marco 0.
+**Pedido:** "Tem um docs no meu drive de nome Projeto street fighter futebol.
+Estamos colocando nossas ideias lá. Coloque algumas das minhas aqui também.
+Pretendo colocar ataques especiais (ultimates) com algo relacionado ao
+mascote/time. Exemplo: Vasco da Gama tem o especial de uma caravana junto de
+uma onda atropelar o personagem rival."
+**Feito:**
+- `docs/gdd.md`: seção "Ultimates" com a regra (ultimate vem do símbolo do
+  clube), o exemplo do Vasco, medidor de torcida, ficha de ultimate, e a
+  decisão técnica de construir como efeito em camada, fora do Spriterrific.
+  Coluna da tabela de candidatos renomeada para "semente de ultimate".
+- `docs/roteiro-de-construcao.md`: ultimate abre o Marco 4.
+- `docs/briefing.md`: o doc do Drive registrado como fonte de ideias; pista
+  de que o trabalho é em grupo.
+**Verificado:** só documentação, `npm run check` não se aplica.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** a sessão da Alure não tem conector do Drive, então o doc não foi
+lido. "Caravana" foi registrado como "caravela" (símbolo do Vasco), a
+confirmar com ele.
+**Em aberto:** colar o resto do doc do Drive; confirmar caravela; confirmar
+se é grupo e quem faz o quê.

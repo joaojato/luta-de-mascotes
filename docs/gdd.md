@@ -36,11 +36,11 @@ os dois rendem golpe especial óbvio. Decisão é do João.
 
 ### Candidatos (reinterpretados, ver Regra do Escudo)
 
-| Mascote | Clube de origem | Arquétipo de luta | Semente de especial |
+| Mascote | Clube de origem | Arquétipo de luta | Semente de ultimate |
 |---|---|---|---|
 | Urubu | Flamengo | aéreo, pressão | mergulho do alto, rasante |
 | Cartola | Fluminense | contra-golpe elegante | bengala como alcance, cartola que vira projétil |
-| Almirante | Vasco | agarrão pesado | âncora, onda |
+| Almirante | Vasco | agarrão pesado | **caravela vindo junto de uma onda atropela o rival** (ideia do João, 17/09) |
 | Manequinho | Botafogo | pequeno e irritante, trapaceiro | esguicho (manter cômico, não vulgar) |
 | Galo | Atlético-MG | agressivo, curta distância | bicada em sequência, canto que atordoa |
 | Saci | Internacional | teleporte, trapaça | redemoinho, some e aparece atrás |
@@ -50,7 +50,7 @@ os dois rendem golpe especial óbvio. Decisão é do João.
 | Vozão | Ceará | velho mestre, contra-golpe | bengalada, "no meu tempo" |
 
 Se o João quiser outro clube na v1, entra aqui primeiro, com arquétipo e
-semente de especial, antes de qualquer sprite.
+semente de ultimate, antes de qualquer sprite.
 
 ### Ficha de mascote (uma por mascote, preencher ao criar)
 
@@ -83,6 +83,46 @@ parado, sem animação própria, para economizar crédito.
 Números exatos (dano, frames de startup, active, recovery) ficam no JSON do
 mascote, não aqui. Aqui é a intenção.
 
+## Ultimates (ideia do João, 17/09/2026)
+
+Cada mascote tem **um ataque especial grande, o ultimate, que vem de algo do
+mascote ou do clube**: símbolo do escudo, mito da torcida, apelido, hábito. É
+a regra de design mais importante do jogo, porque é onde a camada de
+Comunicação vira mecânica: o clube não aparece no escudo, aparece no golpe.
+
+Exemplo canônico, dele: **Vasco. Uma caravela vem junto de uma onda e
+atropela o personagem rival.**
+
+O que isso implica:
+
+- Ultimate é diferente do "especial" da tabela de golpes da v1. O especial é o
+  quarto golpe comum, curto, sem cena. O ultimate é grande, dura uns 3
+  segundos, para a luta e tem cena.
+- **Medidor**: uma barra de torcida embaixo da vida, que enche com golpe dado
+  e golpe tomado. Cheia, libera o ultimate (comando: baixo, frente + K, ou
+  uma tecla dedicada; decidir na Academia). Um ultimate por round, no máximo.
+- **Como se constrói, e por que é barato**: o ultimate é um **efeito em camada
+  sobre o cenário**, não uma animação nova do mascote. A caravela e a onda
+  são sprites próprios que atravessam a tela; o rival toca o `knockdown` que
+  já existe; o mascote fica num quadro de "invocação" (pode ser o primeiro
+  quadro do `heavy_attack` congelado, com brilho). Tremor de tela, flash e
+  som de torcida fecham a cena. Nada disso passa pelo Spriterrific: a
+  caravela e a onda saem de um modelo de imagem único, em duas ou três poses.
+- Cada ultimate ganha uma ficha curta aqui antes de existir:
+
+```
+Mascote:
+Nome do ultimate (como a torcida chamaria):
+O que aparece na tela, em uma frase:
+De onde vem (símbolo, mito, apelido):
+Dano (fração da vida): 
+Assets novos (sprites de efeito, sons):
+```
+
+Sementes já na tabela de candidatos. Fica na v1? Ver roteiro: abre o Marco 4,
+logo depois de a v1 rodar de ponta a ponta. Se o João quiser antecipar, é
+mais barato que um mascote novo.
+
 ## Cenário da v1
 
 Um estádio do Rio genérico, hora do jogo à noite, três camadas: céu com
@@ -99,6 +139,7 @@ luta acontece. Sem placa de patrocínio legível.
 
 ## Fora da v1 (parqueado, não descartado)
 
+- Ultimates com medidor (ver seção acima). Primeiro item do Marco 4.
 - CPU adversária.
 - Modo história curto (três lutas com falas entre elas).
 - Mais mascotes: entram só por JSON + sprites, ver Regra do JSON.

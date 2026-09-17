@@ -27,6 +27,13 @@ motor.
 - Plataforma: navegador, link compartilhável. Roda no celular do professor.
 - v1: 2 mascotes, 1 cenário, 4 golpes cada, 2 jogadores no mesmo teclado.
 
+## Fonte de ideias fora do repositório
+
+Existe um Google Doc no Drive do João, **"Projeto street fighter futebol"**,
+onde as ideias são anotadas em grupo. Ele é a fonte; o `docs/gdd.md` é onde a
+ideia vira especificação. Quando uma ideia entrar no GDD, dizer que veio de lá
+e de quem. O agente não lê o Drive daqui: o João cola o conteúdo.
+
 ## Em aberto (preencher antes do Marco 1)
 
 Responder aqui mesmo, na frente do campo.
@@ -34,7 +41,8 @@ Responder aqui mesmo, na frente do campo.
 - **O que a matéria entrega:** protótipo jogável, GDD com protótipo, ou
   apresentação com demo?
 - **Prazo de entrega:**
-- **Solo ou grupo?** Se grupo, quem faz o quê:
+- **Solo ou grupo?** Se grupo, quem faz o quê: (pista: em 17/09 ele disse
+  "estamos colocando nossas ideias" no doc do Drive, o que sugere grupo)
 - **O que o professor avalia** (rubrica, se existir):
 - **Vai ser apresentado ao vivo?** Se sim, em que máquina (importa pro tamanho
   do build e pro teclado):
