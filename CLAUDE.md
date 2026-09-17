@@ -21,8 +21,12 @@ no espírito visual de Street Fighter. É o trabalho do João para a matéria
   `Desktop/VsCode/Pessoal/Obsidian/alure`. Ela pode ler esta pasta depois.
   Este projeto **nunca escreve dentro dela**, nem em nenhum vault do Obsidian,
   nem no FOS.
-- **Não é o clone do Chong-U.** Dele se herda a **ordem de construção** e a
-  ferramenta de sprite. O código-fonte dele é pago e não entra aqui.
+- **Não é um projeto do zero.** Desde 17/09/2026 o código **nasce do Vibe
+  Fighter do Chong-U** (`github.com/chongdashu/vibe-fighter`, público, sem
+  licença declarada). Decisão em `docs/decisoes/0003-base-chong-u.md`.
+  O que isso obriga: repositório privado; os três lutadores e o cenário dele
+  são placeholder (Regra do Placeholder) e saem antes do link público; o
+  motor é reorganizado aos poucos para as regras abaixo, não reescrito.
 - **Não é produto.** É trabalho acadêmico. Sem monetização, sem loja, sem
   conta de usuário, sem escudo oficial de clube no build público (ver Regra
   do Escudo).
@@ -32,16 +36,23 @@ no espírito visual de Street Fighter. É o trabalho do João para a matéria
 **Phaser 4 + TypeScript + Vite**, rodando no navegador. Decisão registrada em
 `docs/decisoes/0001-phaser-vite-ts.md`. Não trocar de engine no meio.
 
-Arquitetura alvo (cresce a partir do template, não nasce pronta):
+Arquitetura real (herdada do Vibe Fighter, nomes em inglês ficam):
 
 ```
-src/game/scenes/      Boot, Preloader, Menu, Selecao, Luta, Academia
-src/game/luta/        motor: máquina de estados, hitbox/hurtbox, input, rounds
-src/game/lutadores/   um JSON por mascote: frames, hitboxes, golpes, stats
-public/assets/lutadores/<slug>/   sprite sheets do mascote
-public/assets/cenarios/<slug>/    camadas do cenário
-public/assets/audio/
+src/scenes/           Boot, Splash, MainMenu, ModeSelect, LevelSelect,
+                      CharacterSelect, Match, Settings
+src/game/fighter.ts   motor: estados, hit/hurt/guard box, hitstun, rounds
+src/game/redBrawler.ts, greenBoxer.ts, jiujitsuFighter.ts
+                      lutadores de amostra, hoje em TS (vira JSON no Marco 1)
+src/game/fighterCharacter.ts   monta um lutador a partir da lista de ações
+src/shell/            shell HTML de debug (só em dev, localhost)
+public/assets/lutadores/_amostra-<nome>/   sprites de amostra do Chong-U
+public/assets/lutadores/<slug>/            sprites dos nossos mascotes
+public/assets/backgrounds/, stages/, ui/   cenário e HUD de amostra
 ```
+
+Mapa de nomes: `Match` é a Luta, `CharacterSelect` é a Seleção. A `Academia`
+(gym de hitbox) **não veio** no pacote público e é construída por nós.
 
 ## Regras nomeadas
 
@@ -55,16 +66,16 @@ Cada uma tem nome para poder ser cobrada depois.
 - **Regra do Fim de Semana.** Cada marco do roteiro roda no navegador ao final
   de uma janela de trabalho real (uma noite ou um fim de semana). Marco que
   não roda no fim da janela foi grande demais e é quebrado em dois.
-- **Regra do Retângulo.** O motor de luta nasce com retângulos coloridos e só
-  depois recebe arte. Arte é o gargalo e é estocástica; o motor não pode
-  depender dela para existir.
+- **Regra do Placeholder.** Todo asset herdado do Chong-U vive em pasta com
+  prefixo `_amostra` e é trocado pelo nosso antes de qualquer link público.
+  O motor existe sem depender da nossa arte, que é o gargalo e é estocástica.
 - **Regra do Escudo.** Mascotes são reinterpretados, não copiados. Sem escudo,
   nome oficial de clube ou patrocínio nos assets. Protege o trabalho se ele
   for publicado, e é decisão de design antes de ser jurídica: o mascote
   precisa se sustentar como personagem.
 - **Regra da v1.** A v1 é: 2 mascotes, 1 cenário, 4 golpes por mascote, 2
-  jogadores no mesmo teclado, sem CPU. Nada além disso é construído antes de
-  a v1 rodar de ponta a ponta.
+  jogadores no mesmo teclado. A CPU veio de brinde no motor herdado e pode
+  ficar. Nada além disso é construído antes de a v1 rodar de ponta a ponta.
 
 ## Anti-referência
 
@@ -168,6 +179,8 @@ Gatilhos que **obrigam** registro imediato:
 
 - Escrever dentro de um vault do Obsidian, incluindo a Alure, nem no FOS.
 - Trocar de engine, ou colocar lógica de um mascote específico no motor.
+- Publicar build ou tornar o repositório público enquanto houver asset
+  `_amostra` em uso.
 - Guardar valor de credencial em arquivo.
 - Versionar material bruto (vídeo, rodadas inteiras do Spriterrific, ZIP de
   referência). Só o asset final entra no repositório.

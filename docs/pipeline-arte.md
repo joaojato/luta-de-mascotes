@@ -90,6 +90,42 @@ A skill `lutador-novo` executa isto. Aqui está o porquê de cada passo.
   espelhado pelo Phaser (`flipX`). Assimetria (bengala na mão direita vira
   esquerda) é aceitável, SF2 fazia igual.
 
+## Prompts que funcionaram pro Chong-U (de `prompts.pdf`, 17/09/2026)
+
+Ele usou Codex com `$imagegen` (GPT Image) para tudo que é imagem única, e o
+Spriterrific para as sheets. A ordem e os prompts, traduzidos e resumidos,
+porque a ordem é o que vale:
+
+1. **Mockups de conceito.** "Crie 4 mockups de conceito para este jogo de
+   luta 2D. Foco em estilo de arte e clima, nada complexo. Devem ser
+   reconhecíveis como jogo tipo Street Fighter, mais pixel art de SNES que
+   quadrinho em alta resolução. 4 versões diferentes." Escolher um e travar
+   a direção antes de qualquer outro asset.
+2. **Camadas de parallax.** "O cenário X é o escolhido. Separe em PNGs com
+   transparência para empilhar: longe (céu), médio (prédios), principal (o
+   chão da luta) e perto (na frente dos lutadores). Gere cada um
+   individualmente." Correção que ele precisou: "a camada principal não vai
+   de ponta a ponta, vai emendar com buraco. Regenere em largura total."
+3. **Referência do personagem.** "Crie uma imagem de referência limpa, corpo
+   inteiro, de um personagem original de jogo de luta em pixel art era SNES,
+   inspirado no lutador da esquerda do mockup: [descrição física e roupa em
+   uma frase]. Isolado, de 3/4 virado de lado em pose de luta, centralizado
+   com margem generosa, sem cenário, sem HUD, sem oponente. Personagem
+   original, sem logos, sem texto."
+4. **Retratos de seleção.** "Retrato estilizado de cada personagem a partir
+   da referência. Enquadre do busto à cabeça em pose marcante. Mesmo estilo
+   SNES, só mais fidelidade por ser retrato."
+5. **Atlas de UI.** "Gere um atlas de UI: barra de vida (com área
+   transparente para o preenchimento dinâmico) e uma base de retrato onde
+   cada personagem encaixa. Use fundo chroma **magenta #ff00ff** nas áreas
+   transparentes para recortar localmente." Em paralelo, "atlas de props
+   animados do cenário: torcida, vents, luzes, vapor".
+
+O que muda pra nós: a referência é de **mascote**, não de humano; o estilo é
+mixels do Spriterrific, não SNES; e o atlas de UI segue o formato do que já
+está em `public/assets/ui/fighting/` (mesmo manifest, mesmo chroma), para o
+HUD não precisar de código novo.
+
 ## Cenário, passo a passo
 
 1. Três imagens no Nano Banana Pro ou GPT Image, mesma paleta e hora do dia:

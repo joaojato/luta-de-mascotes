@@ -84,11 +84,13 @@ quê antes de repetir com contexto ajustado.
 
 ## Etapa 7: JSON do mascote
 
-Criar `src/game/lutadores/<slug>.json` seguindo o formato do JSON de
-retângulo (`_retangulo.json`) e dos mascotes já existentes. Campos mínimos:
-nome, slug, stats, e por ação: arquivo, tamanho do quadro, quantidade de
-quadros, fps, âncora, hurtbox por quadro e, nos golpes, hitbox por quadro
-ativo, dano, startup, active, recovery.
+Criar `src/game/lutadores/<slug>.json` seguindo o formato dos lutadores de
+amostra já convertidos (Marco 1). A forma vem de `FighterActionSpec` em
+`src/game/fighterCharacter.ts`: por ação, `action`, `file`, `frames`,
+`frameRate`, `repeat`, `defaultVisual` (retângulo), e nos golpes `attack`
+(`frames` ativos e `bounds`) ou `attackSpans`; nos bloqueios, `guard`. Os
+nomes de ação são os que o motor entende (`idle`, `walk-forward`,
+`light-punch`, `heavy-kick`, `special`, `knockdown`...).
 
 Primeira passagem dos números: copiar do mascote anterior e ajustar pela
 ficha (mais pesado = mais dano, menos velocidade). Refinar na Academia.
@@ -103,7 +105,7 @@ seleção.
 ## Critério de pronto
 
 - `npm run check` passa, saída mostrada.
-- Mascote aparece na seleção e luta contra outro (mascote ou retângulo) sem
-  erro no console.
+- Mascote aparece na seleção e luta contra outro (mascote ou lutador de
+  amostra) sem erro no console.
 - Ficha do GDD completa, diário com créditos gastos e o que saiu errado.
 - Commit e push feitos (skill `fechar-sessao`).

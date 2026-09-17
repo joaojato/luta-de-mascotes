@@ -38,6 +38,17 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 
 ## Sobre o método
 
-- Motor antes da arte, com retângulos. Arte é estocástica e custa crédito; o
-  jogo precisa existir antes dela. (2026-09-17, decisão de montagem, ainda
-  não testada em sessão de trabalho)
+- O João prefere **partir de código pronto e adaptar** a construir motor do
+  zero, mesmo com trade-off de licença apresentado. Ver algo lutando na
+  primeira sessão pesa mais que pureza de arquitetura. A Regra do Retângulo
+  durou um dia e virou Regra do Placeholder. (2026-09-17)
+- Antes de dizer que uma referência é paga ou fechada, **conferir no GitHub
+  e no site**. "Clube pago" estava errado: o jogo era público, só o gym era
+  pago. Custou uma conversa de trade-off que não precisava existir. (2026-09-17)
+- **Duas sessões de agente na mesma pasta ao mesmo tempo colidem.** A sessão
+  da Alure commitou docs com `git add -A` e levou junto arquivos pela metade
+  da sessão do projeto, sob mensagem de briefing. Regra: uma sessão escreve
+  no repo por vez; a outra só lê. Se as duas precisarem escrever, a da Alure
+  passa o texto e a do projeto commita. (2026-09-17)
+- Motor antes da arte continua valendo, só que o motor agora é o herdado.
+  Arte é estocástica e custa crédito; o jogo já existe antes dela. (2026-09-17)

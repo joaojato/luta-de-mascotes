@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import type { IncomingMessage, ServerResponse } from 'node:http';
@@ -92,5 +92,9 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173
+  },
+  test: {
+    // Material bruto e referências ficam fora do git e fora da suíte.
+    exclude: ['**/node_modules/**', '**/dist/**', 'referencia/**', 'spriterrific-runs/**']
   }
 });

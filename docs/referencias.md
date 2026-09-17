@@ -3,23 +3,49 @@
 O que inspirou o projeto e o que foi herdado de cada uma. Conferido em
 17/09/2026.
 
-## Clone de Street Fighter do Chong-U (Phaser + Cursor + Codex + Opus)
+## Vibe Fighter do Chong-U (Phaser 4 + Cursor + Codex + Opus)
 
-A referência principal. Jogo de luta completo feito só com IA: dois
-personagens, golpe fraco e forte, bloqueio, barra de energia, especial por
-personagem, rounds, seleção de personagem e CPU.
+A referência principal, e desde 17/09/2026 **a base do nosso código**
+(`docs/decisoes/0003-base-chong-u.md`). Jogo de luta completo feito só com
+IA: três personagens, golpe fraco e forte, bloqueio geométrico por guard box,
+hitstun, melhor de 3 com timer, HUD por atlas, especial com medidor e cut-in,
+seleção de personagem, 1v1 no mesmo teclado e 1vCPU.
 
+- Repositório (público, **sem licença declarada**):
+  https://github.com/chongdashu/vibe-fighter
 - Artigo no site do Phaser: https://phaser.io/news/2026/06/vibe-code-a-street-fighter-clone-with-phaser-cursor-and-codex
 - Vídeo (YouTube): https://www.youtube.com/watch?v=en37mtF42eQ
-- Recursos (sprites de exemplo, atlas de UI e os prompts usados, por cadastro
-  de e-mail): https://www.vibegamedev.com/resources/vibe-fighter
+- Página do pacote (mesmo conteúdo do repo mais `prompts.pdf`, por cadastro
+  de e-mail, grátis): https://www.vibegamedev.com/resources/vibe-fighter
+- Cópia local do ZIP e do clone: `referencia/chong-u/`, fora do git.
 
-**O que herdamos:** a ordem de construção (concept, extração do personagem,
-sprites, gym de hitbox, combate, UI e especiais, CPU) e a ferramenta de sprite.
+**O que veio no pacote público:** código do jogo principal (Phaser 4.0.0,
+Vite 8, TS 6, vitest), três lutadores com sprite sheets, retratos, atlas de
+UI, dois cenários de rooftop, e `prompts.pdf` com a receita de prompts
+(transcrita em `docs/pipeline-arte.md`).
 
-**O que não herdamos:** o código. O projeto completo fica atrás do clube pago
-dele. Ferramentas dele que não usamos: Cursor (o João usa Claude Code) e Codex
-(agente de código, não gera imagem).
+**O que ficou atrás do clube pago:** Character Gym (autoria de hitbox com
+gizmo), Fighter Playground, Stage Preview e o branch `start` do tutorial. As
+chaves dessas cenas existem em `src/game/types.ts`, mas os arquivos não. A
+nossa Academia substitui o gym, na versão magra.
+
+**Sobre Cursor:** foi só o editor. Os prompts de build são texto e rodam no
+Claude Code. O repositório mais novo dele (`phaserjs-oakwoods`, MIT) já usa
+`.claude/skills/`. Codex foi usado como agente de imagem (`$imagegen`, GPT
+Image), não como gerador de código.
+
+## phaserjs-oakwoods (mesmo autor, MIT)
+
+Platformer pequeno em Phaser 3 + TS + Vite, vibe-coded. Clonado em
+`referencia/chong-u/oakwoods/` pelo que ensina de método, não pelo código:
+
+- https://github.com/chongdashu/phaserjs-oakwoods
+- Skills `phaser-gamedev` e `playwright-testing` em `.claude/skills/`, com
+  referências separadas por tema (arcade physics, spritesheets, performance,
+  redução de flake em teste de canvas). Vale copiar `phaser-gamedev` para cá
+  quando o Marco 1 pedir; decidir lendo.
+- `prompts/` com os dois prompts que geraram o projeto, e `plans/` com o
+  plano que o agente escreveu antes de codar. Mesmo método nosso.
 
 ## Spriterrific (ferramenta de sprite do mesmo autor)
 

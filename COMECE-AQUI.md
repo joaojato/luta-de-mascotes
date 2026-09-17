@@ -54,10 +54,11 @@ claude
 Primeiro prompt sugerido:
 
 > Lê o CLAUDE.md, o docs/briefing.md e o docs/roteiro-de-construcao.md. Me
-> diz em que marco estamos e começa o Marco 0.
+> diz em que marco estamos e começa o próximo.
 
-O Marco 0 é o motor de luta com retângulos. Termina numa noite e já dá pra
-jogar com dois no teclado. A arte vem depois, no Marco 2.
+O Marco 0 já fechou: o jogo do Chong-U roda aqui dentro com dois no teclado.
+O Marco 1 é fazer o motor ser nosso (lutador em JSON e a Academia). A arte
+vem depois, no Marco 2.
 
 ## 6. Ao final de cada sessão
 

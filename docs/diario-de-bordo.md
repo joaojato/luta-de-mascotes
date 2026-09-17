@@ -99,3 +99,52 @@ por frente e o repo com dono único.
 **Aprovado explicitamente:** "caravela" confirmada, o GDD já estava certo.
 **Atrito:** nada.
 **Em aberto:** quem assume cada frente; colar o doc do Drive.
+
+## 2026-09-17: Marco 0 fechado com o Vibe Fighter do Chong-U como base
+
+**Marco:** Marco 0, fechado.
+**Pedido:** "clone o projeto desse jogo em código aberto (street fighter) do
+Chong-U. Me diga quão fundamental é usar o Cursor, ou se o VS Code funciona
+no lugar dele. E como usar outras IAs para imagens, gráficos, cenários, e
+como fazer vários frames animados de uma vez mantendo qualidade."
+**Feito:**
+- Conferido que o Vibe Fighter é público (`github.com/chongdashu/vibe-fighter`,
+  sem licença) e que o gym é a parte paga. Os docs diziam "clube pago";
+  corrigido em `docs/referencias.md`.
+- Trade-off apresentado (referência de estudo, recomendado, contra base do
+  jogo). Ele escolheu **base do jogo**. Registrado em `docs/licoes.md` e na
+  ADR `docs/decisoes/0003-base-chong-u.md`.
+- ZIP dele descompactado em `referencia/chong-u/vibe-fighter/`, oakwoods
+  (MIT) clonado em `referencia/chong-u/oakwoods/`. Build e 8 testes dele
+  passaram como vieram.
+- Template Phaser apagado. `src/`, `public/`, `index.html`, `tsconfig`,
+  `vite.config.ts` e `package.json` dele copiados. Lutadores de amostra
+  movidos para `public/assets/lutadores/_amostra-*` (3 linhas de caminho no
+  código), GIFs de preview descartados. Título, tagline e chave de storage
+  próprios. `npm run check` = typecheck + vitest + build; vitest ignora
+  `referencia/`.
+- Prints via Playwright headless: splash, menu, modo, cenário, seleção,
+  Round 1, luta com HUD e timer. Zero erro de console.
+- `CLAUDE.md` reescrito: seção "não é", arquitetura real, Regra do
+  Retângulo vira Regra do Placeholder, CPU entra na v1 de brinde, proibido
+  publicar com `_amostra` em uso. Roteiro: Marco 0 fechado, Marco 1 vira
+  "fazer o motor ser nosso" (JSON + Academia + poda), Marco 4 liga os
+  ultimates ao medidor de especial que o motor já tem. Prompts do
+  `prompts.pdf` transcritos em `docs/pipeline-arte.md`. README, COMECE-AQUI e
+  skill `lutador-novo` ajustados.
+**Verificado:** `npm run check` verde (typecheck, 8 testes, build de 1,5 MB).
+Prints do fluxo inteiro, descritos ao João.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o plano original de motor com
+retângulos (Marco 0 e 1). Motivo dele: partir de código pronto.
+**Aprovado explicitamente:** "Base do jogo" e "Baixo agora e aviso", na
+pergunta de plano.
+**Atrito:** a sessão da Alure rodou em paralelo nesta pasta e commitou com
+`git add -A`, levando meus arquivos pela metade sob a mensagem "Briefing:
+grupo de cinco confirmado". Nada quebrou, mas o histórico ficou confuso.
+Lição registrada: uma sessão escreve no repo por vez. Também escrevi 18/09
+em vários lugares antes de notar que era 17/09; corrigido.
+**Em aberto:** Marco 1 (lutador em JSON, Academia magra, poda do starter de
+RPG). Ler o `phaser-gamedev` do oakwoods e decidir se copia. Campos do
+briefing (entrega, prazo, rubrica, dois mascotes da v1). Conta do
+Spriterrific.
