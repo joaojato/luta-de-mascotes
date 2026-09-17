@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "actors": {
+    "sample-actor": {
+      "visual": {
+        "x": 0,
+        "y": 0,
+        "width": 42,
+        "height": 54
+      },
+      "collision": {
+        "x": 6,
+        "y": 4,
+        "width": 30,
+        "height": 50
+      }
+    }
+  }
+}

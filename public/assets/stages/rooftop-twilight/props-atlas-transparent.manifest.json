@@ -1,0 +1,634 @@
+{
+  "name": "rooftop-twilight-props-atlas",
+  "image": "props-atlas-transparent.png",
+  "chromaSource": "rooftop-twilight-props-atlas-chroma.png",
+  "size": {
+    "width": 1254,
+    "height": 1254
+  },
+  "coordinateSystem": "top-left pixels",
+  "notes": [
+    "Generated as a technical-demo prop atlas for layered rooftop dusk scenes.",
+    "Bounds are measured from the transparent atlas alpha channel and are intentionally broad enough for quick Phaser sprite tests.",
+    "Animation arrays group adjacent generated frames for simple looping background motion."
+  ],
+  "frames": [
+    {
+      "name": "vent-box-small",
+      "kind": "prop",
+      "bounds": {
+        "x": 17,
+        "y": 43,
+        "width": 135,
+        "height": 97
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "ac-unit-long",
+      "kind": "prop",
+      "bounds": {
+        "x": 170,
+        "y": 51,
+        "width": 175,
+        "height": 89
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "ac-unit-dual-fan",
+      "kind": "prop",
+      "bounds": {
+        "x": 360,
+        "y": 46,
+        "width": 174,
+        "height": 94
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "ac-unit-round-fan",
+      "kind": "prop",
+      "bounds": {
+        "x": 544,
+        "y": 51,
+        "width": 126,
+        "height": 87
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "ac-unit-pipes",
+      "kind": "prop",
+      "bounds": {
+        "x": 687,
+        "y": 56,
+        "width": 175,
+        "height": 81
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "water-tank-main",
+      "kind": "prop",
+      "bounds": {
+        "x": 889,
+        "y": 43,
+        "width": 175,
+        "height": 216
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "water-tank-side",
+      "kind": "prop",
+      "bounds": {
+        "x": 1079,
+        "y": 43,
+        "width": 144,
+        "height": 216
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "fan-turbine-1",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 29,
+        "y": 165,
+        "width": 110,
+        "height": 103
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "fan-turbine-2",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 184,
+        "y": 167,
+        "width": 110,
+        "height": 101
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "fan-turbine-3",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 364,
+        "y": 167,
+        "width": 112,
+        "height": 101
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "fan-turbine-4",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 525,
+        "y": 167,
+        "width": 110,
+        "height": 101
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "fence-wide",
+      "kind": "depth-prop",
+      "bounds": {
+        "x": 16,
+        "y": 292,
+        "width": 227,
+        "height": 181
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "fence-narrow-1",
+      "kind": "depth-prop",
+      "bounds": {
+        "x": 261,
+        "y": 297,
+        "width": 93,
+        "height": 175
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "fence-narrow-2",
+      "kind": "depth-prop",
+      "bounds": {
+        "x": 367,
+        "y": 302,
+        "width": 93,
+        "height": 170
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "antenna-cluster",
+      "kind": "depth-prop",
+      "bounds": {
+        "x": 480,
+        "y": 309,
+        "width": 114,
+        "height": 157
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "pipe-elbow",
+      "kind": "prop",
+      "bounds": {
+        "x": 1037,
+        "y": 390,
+        "width": 56,
+        "height": 66
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "pipe-run",
+      "kind": "prop",
+      "bounds": {
+        "x": 1157,
+        "y": 391,
+        "width": 76,
+        "height": 64
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "cable-loop-1",
+      "kind": "depth-prop",
+      "bounds": {
+        "x": 830,
+        "y": 471,
+        "width": 56,
+        "height": 36
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "cable-hanging",
+      "kind": "depth-prop",
+      "bounds": {
+        "x": 957,
+        "y": 477,
+        "width": 124,
+        "height": 60
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "rooftop-door-lit",
+      "kind": "prop",
+      "bounds": {
+        "x": 22,
+        "y": 498,
+        "width": 143,
+        "height": 192
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "rooftop-door-panel",
+      "kind": "prop",
+      "bounds": {
+        "x": 193,
+        "y": 512,
+        "width": 92,
+        "height": 173
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "blank-sign-plaque",
+      "kind": "prop",
+      "bounds": {
+        "x": 313,
+        "y": 524,
+        "width": 130,
+        "height": 103
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "railing-short",
+      "kind": "foreground-prop",
+      "bounds": {
+        "x": 470,
+        "y": 528,
+        "width": 96,
+        "height": 108
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "railing-wide",
+      "kind": "foreground-prop",
+      "bounds": {
+        "x": 582,
+        "y": 528,
+        "width": 173,
+        "height": 108
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "railing-long",
+      "kind": "foreground-prop",
+      "bounds": {
+        "x": 774,
+        "y": 543,
+        "width": 229,
+        "height": 93
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "brick-ledge-long",
+      "kind": "foreground-prop",
+      "bounds": {
+        "x": 314,
+        "y": 662,
+        "width": 188,
+        "height": 48
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "skyline-chunk-left",
+      "kind": "parallax-prop",
+      "bounds": {
+        "x": 26,
+        "y": 713,
+        "width": 252,
+        "height": 129
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "skyline-chunk-center",
+      "kind": "parallax-prop",
+      "bounds": {
+        "x": 427,
+        "y": 736,
+        "width": 275,
+        "height": 110
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "skyline-chunk-right",
+      "kind": "parallax-prop",
+      "bounds": {
+        "x": 730,
+        "y": 747,
+        "width": 205,
+        "height": 99
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "crowd-railing-wide",
+      "kind": "animated-depth-prop",
+      "bounds": {
+        "x": 20,
+        "y": 876,
+        "width": 232,
+        "height": 92
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "crowd-railing-mid-1",
+      "kind": "animated-depth-prop",
+      "bounds": {
+        "x": 422,
+        "y": 889,
+        "width": 153,
+        "height": 80
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "crowd-railing-mid-2",
+      "kind": "animated-depth-prop",
+      "bounds": {
+        "x": 593,
+        "y": 886,
+        "width": 141,
+        "height": 83
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "beacon-red-1",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 492,
+        "y": 1015,
+        "width": 38,
+        "height": 46
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "beacon-red-2",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 541,
+        "y": 1015,
+        "width": 38,
+        "height": 46
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "beacon-red-3",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 594,
+        "y": 1015,
+        "width": 37,
+        "height": 46
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "lamp-warm-1",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 29,
+        "y": 1122,
+        "width": 40,
+        "height": 68
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "lamp-warm-2",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 91,
+        "y": 1122,
+        "width": 41,
+        "height": 68
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      }
+    },
+    {
+      "name": "steam-puff-1",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 515,
+        "y": 1171,
+        "width": 74,
+        "height": 46
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "steam-puff-2",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 600,
+        "y": 1173,
+        "width": 76,
+        "height": 44
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "steam-puff-3",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 691,
+        "y": 1174,
+        "width": 73,
+        "height": 43
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "steam-puff-4",
+      "kind": "animated-prop",
+      "bounds": {
+        "x": 787,
+        "y": 1179,
+        "width": 68,
+        "height": 38
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "animations": [
+    {
+      "name": "turbine-spin",
+      "frames": [
+        "fan-turbine-1",
+        "fan-turbine-2",
+        "fan-turbine-3",
+        "fan-turbine-4"
+      ],
+      "frameRate": 8,
+      "repeat": -1
+    },
+    {
+      "name": "beacon-blink",
+      "frames": [
+        "beacon-red-1",
+        "beacon-red-2",
+        "beacon-red-3"
+      ],
+      "frameRate": 4,
+      "repeat": -1
+    },
+    {
+      "name": "lamp-flicker",
+      "frames": [
+        "lamp-warm-1",
+        "lamp-warm-2"
+      ],
+      "frameRate": 3,
+      "repeat": -1
+    },
+    {
+      "name": "steam-drift",
+      "frames": [
+        "steam-puff-1",
+        "steam-puff-2",
+        "steam-puff-3",
+        "steam-puff-4"
+      ],
+      "frameRate": 6,
+      "repeat": -1
+    }
+  ]
+}

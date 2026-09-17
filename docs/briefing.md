@@ -41,8 +41,14 @@ Responder aqui mesmo, na frente do campo.
 - **O que a matéria entrega:** protótipo jogável, GDD com protótipo, ou
   apresentação com demo?
 - **Prazo de entrega:**
-- **Solo ou grupo?** Se grupo, quem faz o quê: (pista: em 17/09 ele disse
-  "estamos colocando nossas ideias" no doc do Drive, o que sugere grupo)
+- **Solo ou grupo?** **Grupo de cinco** (confirmado 17/09/2026): João, Ricardo,
+  Lucas ("Vasco"), Rodrigo ("Rod10") e Nani. Ideias no Google Doc do Drive.
+- **Quem faz o quê:** em aberto. Sugestão da Alure, por frente e não por
+  pessoa, um dono em cada: código (João, com o Claude Code, dono do repo),
+  arte (referências dos mascotes e curadoria dos sprites), narrativa e
+  falas (GDD, ultimates, falas de vitória), som e torcida, apresentação da
+  matéria. Quem não codifica contribui pelo doc do Drive e pelo GDD; o
+  repo tem um dono só, para não virar cinco estilos de commit.
 - **O que o professor avalia** (rubrica, se existir):
 - **Vai ser apresentado ao vivo?** Se sim, em que máquina (importa pro tamanho
   do build e pro teclado):

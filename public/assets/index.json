@@ -1,0 +1,767 @@
+{
+  "$schema": "https://example.local/phaser-starter-assets.schema.json",
+  "version": 3,
+  "generatedAt": "template-v3",
+  "description": "Canonical catalog for starter public assets, generated runtime textures, editable config resources, and sample levels.",
+  "publicAssets": {
+    "images": [
+      {
+        "id": "red-brawler-anchor-w",
+        "kind": "image",
+        "path": "red-brawler/anchor-w.png",
+        "url": "/assets/red-brawler/anchor-w.png",
+        "width": 1024,
+        "height": 1024,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "anchorPixels": {
+          "x": 128,
+          "y": 255
+        },
+        "usage": "Red-jacket brawler west-facing high-fidelity anchor reference",
+        "phaser": {
+          "load": "image",
+          "key": "red-brawler-anchor-w"
+        }
+      },
+      {
+        "id": "rooftop-sunset-stage",
+        "kind": "image",
+        "path": "backgrounds/rooftop-sunset-stage.png",
+        "url": "/assets/backgrounds/rooftop-sunset-stage.png",
+        "width": 2048,
+        "height": 768,
+        "usage": "Extra-wide sunset rooftop fighting stage background for horizontal scrolling",
+        "phaser": {
+          "load": "image",
+          "key": "rooftop-sunset-stage"
+        }
+      },
+      {
+        "id": "rooftop-twilight-stage",
+        "kind": "image",
+        "path": "backgrounds/rooftop-twilight-stage.png",
+        "url": "/assets/backgrounds/rooftop-twilight-stage.png",
+        "width": 1774,
+        "height": 887,
+        "usage": "Wide twilight rooftop fighting stage background variant for horizontal scrolling",
+        "phaser": {
+          "load": "image",
+          "key": "rooftop-twilight-stage"
+        }
+      },
+      {
+        "id": "mode-card-1v1",
+        "kind": "image",
+        "path": "mode-cards/mode-1v1-card.png",
+        "url": "/assets/mode-cards/mode-1v1-card.png",
+        "width": 1330,
+        "height": 1182,
+        "usage": "Mode select card art for local 1 vs 1",
+        "phaser": {
+          "load": "image",
+          "key": "mode-card-1v1"
+        }
+      },
+      {
+        "id": "mode-card-1vcpu",
+        "kind": "image",
+        "path": "mode-cards/mode-1vcpu-card.png",
+        "url": "/assets/mode-cards/mode-1vcpu-card.png",
+        "width": 1392,
+        "height": 1130,
+        "usage": "Mode select card art for player versus CPU",
+        "phaser": {
+          "load": "image",
+          "key": "mode-card-1vcpu"
+        }
+      },
+      {
+        "id": "quest-tiles-atlas",
+        "kind": "image",
+        "path": "tiles/quest/atlas-transparent.png",
+        "url": "/assets/tiles/quest/atlas-transparent.png",
+        "width": 1536,
+        "height": 1024,
+        "alpha": true,
+        "usage": "Transparent quest platformer tiles, props, hazards, collectibles, and object references",
+        "phaser": {
+          "load": "image",
+          "key": "quest-tiles-atlas"
+        }
+      },
+      {
+        "id": "quest-ui-atlas",
+        "kind": "image",
+        "path": "ui/quest/ui-atlas-transparent.png",
+        "url": "/assets/ui/quest/ui-atlas-transparent.png",
+        "width": 1536,
+        "height": 1024,
+        "alpha": true,
+        "usage": "Transparent quest HUD portraits, health bars, coin counters, and status icons",
+        "phaser": {
+          "load": "image",
+          "key": "quest-ui-atlas"
+        }
+      },
+      {
+        "id": "fighting-ui-atlas",
+        "kind": "image",
+        "path": "ui/fighting/fighting-ui-atlas-transparent.png",
+        "url": "/assets/ui/fighting/fighting-ui-atlas-transparent.png",
+        "width": 1254,
+        "height": 1254,
+        "alpha": true,
+        "usage": "Transparent fighting-game HUD health bars, portrait bases, meter pips, nameplates, and status icons",
+        "phaser": {
+          "load": "image",
+          "key": "fighting-ui-atlas"
+        }
+      },
+      {
+        "id": "rooftop-twilight-props-atlas",
+        "kind": "image",
+        "path": "stages/rooftop-twilight/props-atlas-transparent.png",
+        "url": "/assets/stages/rooftop-twilight/props-atlas-transparent.png",
+        "width": 1254,
+        "height": 1254,
+        "alpha": true,
+        "usage": "Transparent rooftop twilight props, parallax details, crowd silhouettes, and simple animated background elements",
+        "phaser": {
+          "load": "image",
+          "key": "rooftop-twilight-props-atlas"
+        }
+      }
+    ],
+    "spritesheets": [
+      {
+        "id": "red-brawler-idle",
+        "kind": "spritesheet",
+        "path": "red-brawler/idle.png",
+        "url": "/assets/red-brawler/idle.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 12,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-idle",
+          "action": "idle",
+          "engineAction": "idle",
+          "direction": "w",
+          "frameRate": 8,
+          "repeat": -1
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-idle"
+        }
+      },
+      {
+        "id": "red-brawler-walk-forward",
+        "kind": "spritesheet",
+        "path": "red-brawler/walk-forward.png",
+        "url": "/assets/red-brawler/walk-forward.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 8,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-walk-forward",
+          "action": "walk-forward",
+          "engineAction": "walk_forward",
+          "direction": "w",
+          "frameRate": 8,
+          "repeat": -1
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-walk-forward"
+        }
+      },
+      {
+        "id": "red-brawler-walk-backward",
+        "kind": "spritesheet",
+        "path": "red-brawler/walk-backward.png",
+        "url": "/assets/red-brawler/walk-backward.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 8,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-walk-backward",
+          "action": "walk-backward",
+          "engineAction": "walk_backward",
+          "direction": "w",
+          "frameRate": 8,
+          "repeat": -1
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-walk-backward"
+        }
+      },
+      {
+        "id": "red-brawler-crouch",
+        "kind": "spritesheet",
+        "path": "red-brawler/crouch.png",
+        "url": "/assets/red-brawler/crouch.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 5,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-crouch",
+          "action": "crouch",
+          "engineAction": "crouch",
+          "direction": "w",
+          "frameRate": 10,
+          "repeat": 0
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-crouch"
+        }
+      },
+      {
+        "id": "red-brawler-jump",
+        "kind": "spritesheet",
+        "path": "red-brawler/jump.png",
+        "url": "/assets/red-brawler/jump.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 8,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-jump",
+          "action": "jump",
+          "engineAction": "jump",
+          "direction": "w",
+          "frameRate": 10,
+          "repeat": 0
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-jump"
+        }
+      },
+      {
+        "id": "red-brawler-block-high",
+        "kind": "spritesheet",
+        "path": "red-brawler/block-high.png",
+        "url": "/assets/red-brawler/block-high.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 4,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-block-high",
+          "action": "block-high",
+          "engineAction": "block_high",
+          "direction": "w",
+          "frameRate": 10,
+          "repeat": 0
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-block-high"
+        }
+      },
+      {
+        "id": "red-brawler-block-low",
+        "kind": "spritesheet",
+        "path": "red-brawler/block-low.png",
+        "url": "/assets/red-brawler/block-low.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 4,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-block-low",
+          "action": "block-low",
+          "engineAction": "block_low",
+          "direction": "w",
+          "frameRate": 10,
+          "repeat": 0
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-block-low"
+        }
+      },
+      {
+        "id": "red-brawler-hit-high",
+        "kind": "spritesheet",
+        "path": "red-brawler/hit-high.png",
+        "url": "/assets/red-brawler/hit-high.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 6,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-hit-high",
+          "action": "hit-high",
+          "engineAction": "hurt",
+          "direction": "w",
+          "frameRate": 12,
+          "repeat": 0
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-hit-high"
+        }
+      },
+      {
+        "id": "red-brawler-light-punch",
+        "kind": "spritesheet",
+        "path": "red-brawler/light-punch.png",
+        "url": "/assets/red-brawler/light-punch.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 6,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-light-punch",
+          "action": "light-punch",
+          "engineAction": "light_attack",
+          "direction": "w",
+          "frameRate": 14,
+          "repeat": 0,
+          "attackActiveFrames": [
+            2,
+            3
+          ]
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-light-punch"
+        }
+      },
+      {
+        "id": "red-brawler-heavy-kick",
+        "kind": "spritesheet",
+        "path": "red-brawler/heavy-kick.png",
+        "url": "/assets/red-brawler/heavy-kick.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 10,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-heavy-kick",
+          "action": "heavy-kick",
+          "engineAction": "heavy_attack",
+          "direction": "w",
+          "frameRate": 12,
+          "repeat": 0,
+          "attackActiveFrames": [
+            4,
+            5,
+            6
+          ]
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-heavy-kick"
+        }
+      },
+      {
+        "id": "red-brawler-special-charge",
+        "kind": "spritesheet",
+        "path": "red-brawler/special-charge.png",
+        "url": "/assets/red-brawler/special-charge.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 5,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-special-charge",
+          "action": "special-charge",
+          "engineAction": "crouch",
+          "direction": "w",
+          "frameRate": 14,
+          "repeat": 0
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-special-charge"
+        }
+      },
+      {
+        "id": "red-brawler-special",
+        "kind": "spritesheet",
+        "path": "red-brawler/special.png",
+        "url": "/assets/red-brawler/special.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 12,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-special",
+          "action": "special",
+          "engineAction": "heavy_attack",
+          "direction": "w",
+          "frameRate": 16,
+          "repeat": 0
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-special"
+        }
+      },
+      {
+        "id": "red-brawler-knockdown",
+        "kind": "spritesheet",
+        "path": "red-brawler/knockdown.png",
+        "url": "/assets/red-brawler/knockdown.png",
+        "frameWidth": 256,
+        "frameHeight": 256,
+        "frames": 10,
+        "margin": 0,
+        "spacing": 0,
+        "anchor": {
+          "x": 0.5,
+          "y": 0.99609375
+        },
+        "animation": {
+          "key": "red-brawler-knockdown",
+          "action": "knockdown",
+          "engineAction": "knockdown",
+          "direction": "w",
+          "frameRate": 10,
+          "repeat": 0
+        },
+        "phaser": {
+          "load": "spritesheet",
+          "key": "red-brawler-knockdown"
+        }
+      }
+    ],
+    "audio": [
+      {
+        "id": "ui-confirm",
+        "kind": "audio",
+        "category": "sfx",
+        "path": "audio/sfx/ui-confirm.mp3",
+        "url": "/assets/audio/sfx/ui-confirm.mp3",
+        "durationSeconds": 0.5,
+        "volume": 0.38,
+        "loop": false,
+        "usage": "Fantasy menu confirmation cue",
+        "phaser": {
+          "load": "audio",
+          "key": "ui-confirm"
+        }
+      }
+    ],
+    "config": [
+      {
+        "id": "starter-game-config",
+        "kind": "json",
+        "path": "config/game-config.json",
+        "url": "/assets/config/game-config.json",
+        "usage": "Runtime tuning values edited from the debug shell"
+      },
+      {
+        "id": "starter-input-map",
+        "kind": "json",
+        "path": "config/input-map.json",
+        "url": "/assets/config/input-map.json",
+        "usage": "Action-oriented input map reference"
+      },
+      {
+        "id": "starter-actor-bounds",
+        "kind": "json",
+        "path": "config/actor-bounds.json",
+        "url": "/assets/config/actor-bounds.json",
+        "usage": "Visual and collision bounds metadata for the sample actor"
+      },
+      {
+        "id": "character-gym-config",
+        "kind": "json",
+        "path": "../configs/character-gym.json",
+        "url": "/configs/character-gym.json",
+        "usage": "Persistent editable character animation and bounds metadata exported from the Character Gym"
+      },
+      {
+        "id": "tile-atlas-manifest",
+        "kind": "json",
+        "path": "tiles/quest/atlas-transparent.manifest.json",
+        "url": "/assets/tiles/quest/atlas-transparent.manifest.json",
+        "usage": "Frame bounds manifest for the transparent quest tile atlas"
+      },
+      {
+        "id": "quest-ui-atlas-manifest",
+        "kind": "json",
+        "path": "ui/quest/ui-atlas-transparent.manifest.json",
+        "url": "/assets/ui/quest/ui-atlas-transparent.manifest.json",
+        "usage": "Frame bounds manifest for the transparent quest HUD UI atlas"
+      },
+      {
+        "id": "fighting-ui-atlas-manifest",
+        "kind": "json",
+        "path": "ui/fighting/fighting-ui-atlas-transparent.manifest.json",
+        "url": "/assets/ui/fighting/fighting-ui-atlas-transparent.manifest.json",
+        "usage": "Frame bounds manifest for the transparent fighting-game HUD UI atlas"
+      },
+      {
+        "id": "fighting-ui-manifest",
+        "kind": "json",
+        "path": "ui/fighting/manifest.json",
+        "url": "/assets/ui/fighting/manifest.json",
+        "usage": "Colocated item map for the fighting-game HUD UI atlas"
+      },
+      {
+        "id": "rooftop-twilight-props-atlas-manifest",
+        "kind": "json",
+        "path": "stages/rooftop-twilight/props-atlas-transparent.manifest.json",
+        "url": "/assets/stages/rooftop-twilight/props-atlas-transparent.manifest.json",
+        "usage": "Frame bounds and animation manifest for the transparent rooftop twilight prop atlas"
+      },
+      {
+        "id": "tile-gym-config",
+        "kind": "json",
+        "path": "../configs/tile-gym.json",
+        "url": "/configs/tile-gym.json",
+        "usage": "Persistent editable tile collision and hit bounds metadata exported from the Tile Gym"
+      },
+      {
+        "id": "starter-object-metadata",
+        "kind": "json",
+        "path": "config/object-metadata.json",
+        "url": "/assets/config/object-metadata.json",
+        "usage": "Object category and bounds metadata for starter objects"
+      }
+    ],
+    "levels": [
+      {
+        "id": "starter-level-index",
+        "kind": "json",
+        "path": "levels/index.json",
+        "url": "/assets/levels/index.json",
+        "usage": "Playable starter level catalog"
+      },
+      {
+        "id": "editor-playground",
+        "kind": "json",
+        "path": "levels/editor-playground.json",
+        "url": "/assets/levels/editor-playground.json",
+        "usage": "Editable scrolling playground level"
+      }
+    ]
+  },
+  "generatedAssets": [
+    {
+      "id": "ui-button",
+      "kind": "generated-texture",
+      "width": 320,
+      "height": 60,
+      "usage": "menu button background"
+    },
+    {
+      "id": "ui-button-active",
+      "kind": "generated-texture",
+      "width": 320,
+      "height": 60,
+      "usage": "selected menu button background"
+    },
+    {
+      "id": "ui-panel",
+      "kind": "generated-texture",
+      "width": 520,
+      "height": 420,
+      "usage": "settings panel background"
+    },
+    {
+      "id": "sample-actor",
+      "kind": "generated-texture",
+      "width": 42,
+      "height": 54,
+      "usage": "neutral starter actor"
+    },
+    {
+      "id": "sample-platform",
+      "kind": "generated-texture",
+      "width": 180,
+      "height": 38,
+      "usage": "neutral starter platform tile"
+    },
+    {
+      "id": "sample-pickup",
+      "kind": "generated-texture",
+      "width": 28,
+      "height": 28,
+      "usage": "neutral starter collectible"
+    },
+    {
+      "id": "sample-exit",
+      "kind": "generated-texture",
+      "width": 70,
+      "height": 112,
+      "usage": "neutral starter level exit"
+    },
+    {
+      "id": "sample-hazard",
+      "kind": "generated-texture",
+      "width": 56,
+      "height": 30,
+      "usage": "neutral starter hazard"
+    },
+    {
+      "id": "sample-bg-sky",
+      "kind": "generated-texture",
+      "width": 1280,
+      "height": 720,
+      "usage": "generated sky/background layer"
+    },
+    {
+      "id": "sample-bg-far",
+      "kind": "generated-texture",
+      "width": 1280,
+      "height": 720,
+      "usage": "generated far parallax layer"
+    },
+    {
+      "id": "sample-bg-mid",
+      "kind": "generated-texture",
+      "width": 1280,
+      "height": 720,
+      "usage": "generated mid parallax layer"
+    },
+    {
+      "id": "starter-jump",
+      "kind": "generated-audio",
+      "durationSeconds": 0.08,
+      "usage": "generated jump cue"
+    },
+    {
+      "id": "starter-pickup",
+      "kind": "generated-audio",
+      "durationSeconds": 0.1,
+      "usage": "generated pickup cue"
+    },
+    {
+      "id": "starter-complete",
+      "kind": "generated-audio",
+      "durationSeconds": 0.18,
+      "usage": "generated level complete cue"
+    },
+    {
+      "id": "starter-deny",
+      "kind": "generated-audio",
+      "durationSeconds": 0.12,
+      "usage": "generated blocked/deny cue"
+    }
+  ],
+  "metadataExamples": {
+    "image": {
+      "id": "example-background",
+      "kind": "image",
+      "path": "backgrounds/example-background.png",
+      "url": "/assets/backgrounds/example-background.png",
+      "width": 1280,
+      "height": 720,
+      "phaser": {
+        "load": "image",
+        "key": "example-background"
+      }
+    },
+    "spritesheet": {
+      "id": "example-character-idle",
+      "kind": "spritesheet",
+      "path": "characters/example/idle.png",
+      "url": "/assets/characters/example/idle.png",
+      "frameWidth": 64,
+      "frameHeight": 64,
+      "frames": 8,
+      "margin": 0,
+      "spacing": 0,
+      "anchor": {
+        "x": 0.5,
+        "y": 1
+      },
+      "animation": {
+        "key": "example-character-idle",
+        "frameRate": 8,
+        "repeat": -1
+      },
+      "phaser": {
+        "load": "spritesheet",
+        "key": "example-character-idle"
+      }
+    },
+    "audio": {
+      "id": "example-confirm",
+      "kind": "audio",
+      "path": "sfx/example-confirm.mp3",
+      "url": "/assets/sfx/example-confirm.mp3",
+      "durationSeconds": 0.4,
+      "volume": 0.5,
+      "loop": false,
+      "phaser": {
+        "load": "audio",
+        "key": "example-confirm"
+      }
+    }
+  }
+}

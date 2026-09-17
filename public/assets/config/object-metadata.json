@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "objects": {
+    "sample-platform": {
+      "kind": "platform",
+      "visual": {
+        "x": 0,
+        "y": 0,
+        "width": 180,
+        "height": 38
+      },
+      "collision": {
+        "x": 0,
+        "y": 0,
+        "width": 180,
+        "height": 24
+      }
+    },
+    "sample-pickup": {
+      "kind": "pickup",
+      "visual": {
+        "x": 0,
+        "y": 0,
+        "width": 28,
+        "height": 28
+      },
+      "collision": {
+        "x": 2,
+        "y": 2,
+        "width": 24,
+        "height": 24
+      }
+    },
+    "sample-exit": {
+      "kind": "exit",
+      "visual": {
+        "x": 0,
+        "y": 0,
+        "width": 70,
+        "height": 112
+      },
+      "collision": {
+        "x": 10,
+        "y": 10,
+        "width": 50,
+        "height": 96
+      }
+    }
+  }
+}

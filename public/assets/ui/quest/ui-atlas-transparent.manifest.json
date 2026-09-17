@@ -1,0 +1,323 @@
+{
+  "name": "ui-atlas",
+  "image": "ui-atlas-transparent.png",
+  "chromaSource": "ui-atlas-chroma.png",
+  "size": {
+    "width": 1536,
+    "height": 1024
+  },
+  "coordinateSystem": "top-left pixels",
+  "notes": [
+    "Bounds are measured from the transparent atlas alpha channel.",
+    "Transparent slots are intended for runtime-filled values such as health and coin count.",
+    "Portrait variants are separate frames with matching medallion style."
+  ],
+  "frames": [
+    {
+      "name": "portrait-player-healthy",
+      "kind": "portrait",
+      "state": "healthy",
+      "bounds": {
+        "x": 95,
+        "y": 49,
+        "width": 263,
+        "height": 270
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "portrait-player-hurt",
+      "kind": "portrait",
+      "state": "hurt",
+      "bounds": {
+        "x": 417,
+        "y": 49,
+        "width": 265,
+        "height": 270
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "portrait-player-worn-out",
+      "kind": "portrait",
+      "state": "low-health",
+      "bounds": {
+        "x": 738,
+        "y": 50,
+        "width": 265,
+        "height": 271
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "portrait-player-defeated",
+      "kind": "portrait",
+      "state": "defeated",
+      "bounds": {
+        "x": 1061,
+        "y": 50,
+        "width": 264,
+        "height": 270
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "hud-health-frame",
+      "kind": "hud-frame",
+      "bounds": {
+        "x": 82,
+        "y": 356,
+        "width": 816,
+        "height": 202
+      },
+      "portraitSocket": {
+        "x": 20,
+        "y": 28,
+        "width": 170,
+        "height": 156
+      },
+      "fillSlot": {
+        "x": 207,
+        "y": 70,
+        "width": 620,
+        "height": 82
+      },
+      "anchor": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "name": "health-fill-green",
+      "kind": "health-fill",
+      "state": "healthy",
+      "bounds": {
+        "x": 975,
+        "y": 376,
+        "width": 427,
+        "height": 49
+      },
+      "nineSlice": {
+        "left": 24,
+        "right": 24,
+        "top": 12,
+        "bottom": 12
+      }
+    },
+    {
+      "name": "health-fill-yellow",
+      "kind": "health-fill",
+      "state": "warning",
+      "bounds": {
+        "x": 975,
+        "y": 441,
+        "width": 426,
+        "height": 51
+      },
+      "nineSlice": {
+        "left": 24,
+        "right": 24,
+        "top": 12,
+        "bottom": 12
+      }
+    },
+    {
+      "name": "health-fill-red",
+      "kind": "health-fill",
+      "state": "danger",
+      "bounds": {
+        "x": 975,
+        "y": 507,
+        "width": 426,
+        "height": 51
+      },
+      "nineSlice": {
+        "left": 24,
+        "right": 24,
+        "top": 12,
+        "bottom": 12
+      }
+    },
+    {
+      "name": "health-fill-empty",
+      "kind": "health-fill",
+      "state": "empty",
+      "bounds": {
+        "x": 975,
+        "y": 573,
+        "width": 427,
+        "height": 50
+      },
+      "nineSlice": {
+        "left": 24,
+        "right": 24,
+        "top": 12,
+        "bottom": 12
+      }
+    },
+    {
+      "name": "hud-coin-counter-frame",
+      "kind": "hud-frame",
+      "bounds": {
+        "x": 452,
+        "y": 596,
+        "width": 434,
+        "height": 177
+      },
+      "coinSocket": {
+        "x": 24,
+        "y": 26,
+        "width": 120,
+        "height": 120
+      },
+      "numberSlot": {
+        "x": 146,
+        "y": 52,
+        "width": 238,
+        "height": 74
+      },
+      "anchor": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "name": "collectible-coin-sparkle",
+      "kind": "collectible-ui",
+      "bounds": {
+        "x": 282,
+        "y": 607,
+        "width": 118,
+        "height": 151
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "collectible-coin-large",
+      "kind": "collectible-ui",
+      "bounds": {
+        "x": 97,
+        "y": 627,
+        "width": 122,
+        "height": 124
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "collectible-coin-medallion",
+      "kind": "collectible-ui",
+      "bounds": {
+        "x": 959,
+        "y": 654,
+        "width": 122,
+        "height": 126
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-damage-flash",
+      "kind": "icon",
+      "bounds": {
+        "x": 531,
+        "y": 825,
+        "width": 147,
+        "height": 133
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-lock",
+      "kind": "icon",
+      "bounds": {
+        "x": 962,
+        "y": 827,
+        "width": 104,
+        "height": 132
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-check",
+      "kind": "icon",
+      "bounds": {
+        "x": 1148,
+        "y": 832,
+        "width": 125,
+        "height": 127
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-heal-plus",
+      "kind": "icon",
+      "bounds": {
+        "x": 757,
+        "y": 840,
+        "width": 107,
+        "height": 110
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-heart-empty",
+      "kind": "icon",
+      "bounds": {
+        "x": 334,
+        "y": 841,
+        "width": 125,
+        "height": 111
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-heart-full",
+      "kind": "icon",
+      "bounds": {
+        "x": 152,
+        "y": 842,
+        "width": 119,
+        "height": 104
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ]
+}

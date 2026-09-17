@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "levels": [
+    {
+      "id": "editor-playground",
+      "title": "Editor Playground",
+      "url": "/assets/levels/editor-playground.json"
+    }
+  ]
+}

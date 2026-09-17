@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "savedAt": "template",
+  "gameConfig": {
+    "playerSpeed": 250,
+    "jumpVelocity": 610,
+    "gravity": 1500,
+    "actorScale": 1,
+    "cameraLead": 0.34,
+    "pickupGoal": 2
+  }
+}

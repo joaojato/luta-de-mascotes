@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "actions": {
+    "moveLeft": [
+      "ArrowLeft",
+      "A"
+    ],
+    "moveRight": [
+      "ArrowRight",
+      "D"
+    ],
+    "moveUp": [
+      "ArrowUp",
+      "W"
+    ],
+    "moveDown": [
+      "ArrowDown",
+      "S"
+    ],
+    "run": [
+      "Shift"
+    ],
+    "jump": [
+      "Z",
+      "ArrowUp",
+      "Space"
+    ],
+    "attack": [
+      "X"
+    ],
+    "confirm": [
+      "Enter",
+      "Space"
+    ],
+    "cancel": [
+      "Escape",
+      "Backspace"
+    ]
+  }
+}

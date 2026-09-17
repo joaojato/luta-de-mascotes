@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "savedAt": "2026-05-28T15:50:30.644Z",
+  "tileGym": {
+    "atlas": "gameplay-atlas",
+    "selectedFrameName": "platform-medium-grass-stone",
+    "selectedBoundsKind": "collision",
+    "boundsOverrides": {
+      "platform-medium-grass-stone": {
+        "collision": {
+          "active": true,
+          "x": 0,
+          "y": 7,
+          "width": 304,
+          "height": 50
+        }
+      },
+      "platform-long-grass-stone": {
+        "collision": {
+          "active": true,
+          "x": 0,
+          "y": 8,
+          "width": 510,
+          "height": 50
+        }
+      },
+      "platform-short-grass-stone": {
+        "collision": {
+          "active": true,
+          "x": 0,
+          "y": 4,
+          "width": 165,
+          "height": 50
+        }
+      }
+    }
+  }
+}

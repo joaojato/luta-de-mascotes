@@ -1,0 +1,374 @@
+{
+  "name": "fighting-ui-atlas",
+  "image": "fighting-ui-atlas-transparent.png",
+  "chromaSource": "fighting-ui-atlas-chroma.png",
+  "size": {
+    "width": 1254,
+    "height": 1254
+  },
+  "coordinateSystem": "top-left pixels",
+  "notes": [
+    "Generated as a technical-demo HUD atlas with transparent sockets for health fill and portraits.",
+    "Bounds are measured from the transparent atlas alpha channel and should be tightened in the UI gym before production use.",
+    "Health frame fillSlot and portraitSocket values are approximate runtime placement guides."
+  ],
+  "frames": [
+    {
+      "name": "health-frame-left",
+      "kind": "health-frame",
+      "bounds": {
+        "x": 22,
+        "y": 76,
+        "width": 587,
+        "height": 110
+      },
+      "fillSlot": {
+        "x": 47,
+        "y": 23,
+        "width": 490,
+        "height": 50
+      },
+      "anchor": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "name": "health-frame-right",
+      "kind": "health-frame",
+      "bounds": {
+        "x": 645,
+        "y": 76,
+        "width": 586,
+        "height": 110
+      },
+      "fillSlot": {
+        "x": 49,
+        "y": 23,
+        "width": 490,
+        "height": 50
+      },
+      "anchor": {
+        "x": 1,
+        "y": 0
+      }
+    },
+    {
+      "name": "portrait-frame-gold-left",
+      "kind": "portrait-frame",
+      "bounds": {
+        "x": 21,
+        "y": 278,
+        "width": 223,
+        "height": 225
+      },
+      "portraitSocket": {
+        "x": 31,
+        "y": 29,
+        "width": 163,
+        "height": 166
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "portrait-frame-blue-left",
+      "kind": "portrait-frame",
+      "bounds": {
+        "x": 268,
+        "y": 278,
+        "width": 223,
+        "height": 225
+      },
+      "portraitSocket": {
+        "x": 29,
+        "y": 29,
+        "width": 166,
+        "height": 166
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "timer-frame",
+      "kind": "timer-frame",
+      "bounds": {
+        "x": 532,
+        "y": 306,
+        "width": 179,
+        "height": 176
+      },
+      "numberSlot": {
+        "x": 42,
+        "y": 40,
+        "width": 95,
+        "height": 96
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "portrait-frame-blue-right",
+      "kind": "portrait-frame",
+      "bounds": {
+        "x": 749,
+        "y": 278,
+        "width": 225,
+        "height": 225
+      },
+      "portraitSocket": {
+        "x": 30,
+        "y": 29,
+        "width": 166,
+        "height": 166
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "portrait-frame-gold-right",
+      "kind": "portrait-frame",
+      "bounds": {
+        "x": 1002,
+        "y": 278,
+        "width": 227,
+        "height": 225
+      },
+      "portraitSocket": {
+        "x": 31,
+        "y": 29,
+        "width": 166,
+        "height": 166
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "health-fill-green-left",
+      "kind": "health-fill",
+      "state": "healthy",
+      "bounds": {
+        "x": 38,
+        "y": 565,
+        "width": 331,
+        "height": 51
+      },
+      "nineSlice": {
+        "left": 28,
+        "right": 28,
+        "top": 10,
+        "bottom": 10
+      }
+    },
+    {
+      "name": "health-fill-green-right",
+      "kind": "health-fill",
+      "state": "healthy",
+      "bounds": {
+        "x": 385,
+        "y": 565,
+        "width": 321,
+        "height": 51
+      },
+      "nineSlice": {
+        "left": 28,
+        "right": 28,
+        "top": 10,
+        "bottom": 10
+      }
+    },
+    {
+      "name": "health-fill-yellow-left",
+      "kind": "health-fill",
+      "state": "warning",
+      "bounds": {
+        "x": 38,
+        "y": 641,
+        "width": 331,
+        "height": 52
+      },
+      "nineSlice": {
+        "left": 28,
+        "right": 28,
+        "top": 10,
+        "bottom": 10
+      }
+    },
+    {
+      "name": "health-fill-red-left",
+      "kind": "health-fill",
+      "state": "danger",
+      "bounds": {
+        "x": 38,
+        "y": 718,
+        "width": 331,
+        "height": 52
+      },
+      "nineSlice": {
+        "left": 28,
+        "right": 28,
+        "top": 10,
+        "bottom": 10
+      }
+    },
+    {
+      "name": "meter-pip-blue-1",
+      "kind": "meter-pip",
+      "state": "blue",
+      "bounds": {
+        "x": 752,
+        "y": 560,
+        "width": 86,
+        "height": 56
+      }
+    },
+    {
+      "name": "meter-pip-gold-1",
+      "kind": "meter-pip",
+      "state": "gold",
+      "bounds": {
+        "x": 752,
+        "y": 637,
+        "width": 86,
+        "height": 56
+      }
+    },
+    {
+      "name": "meter-pip-empty-1",
+      "kind": "meter-pip",
+      "state": "empty",
+      "bounds": {
+        "x": 752,
+        "y": 714,
+        "width": 86,
+        "height": 57
+      }
+    },
+    {
+      "name": "nameplate-gold-left",
+      "kind": "nameplate",
+      "bounds": {
+        "x": 43,
+        "y": 825,
+        "width": 560,
+        "height": 61
+      },
+      "textSlot": {
+        "x": 28,
+        "y": 12,
+        "width": 472,
+        "height": 35
+      }
+    },
+    {
+      "name": "nameplate-gold-right",
+      "kind": "nameplate",
+      "bounds": {
+        "x": 651,
+        "y": 825,
+        "width": 550,
+        "height": 61
+      },
+      "textSlot": {
+        "x": 50,
+        "y": 12,
+        "width": 472,
+        "height": 35
+      }
+    },
+    {
+      "name": "icon-hit-red",
+      "kind": "status-icon",
+      "bounds": {
+        "x": 42,
+        "y": 1091,
+        "width": 100,
+        "height": 96
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-hit-gold",
+      "kind": "status-icon",
+      "bounds": {
+        "x": 162,
+        "y": 1091,
+        "width": 104,
+        "height": 96
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-hit-blue",
+      "kind": "status-icon",
+      "bounds": {
+        "x": 285,
+        "y": 1091,
+        "width": 98,
+        "height": 96
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-heal",
+      "kind": "status-icon",
+      "bounds": {
+        "x": 402,
+        "y": 1091,
+        "width": 100,
+        "height": 96
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-shield-blue",
+      "kind": "status-icon",
+      "bounds": {
+        "x": 522,
+        "y": 1091,
+        "width": 100,
+        "height": 96
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "name": "icon-ko",
+      "kind": "status-icon",
+      "bounds": {
+        "x": 874,
+        "y": 1091,
+        "width": 99,
+        "height": 96
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ]
+}

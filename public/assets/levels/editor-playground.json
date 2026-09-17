@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "savedAt": "2026-05-31T12:32:40.114Z",
+  "level": {
+    "version": 1,
+    "id": "editor-playground",
+    "title": "Editor Playground",
+    "width": 1280,
+    "height": 720,
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 720
+    },
+    "playerStart": {
+      "x": 176,
+      "y": 400
+    },
+    "objects": [
+      {
+        "id": "ground-left",
+        "frameName": "platform-long-grass-stone",
+        "x": 208,
+        "y": 560,
+        "scale": 0.7272727272727273,
+        "depth": 10
+      },
+      {
+        "id": "ground-right",
+        "frameName": "platform-long-grass-stone",
+        "x": 1068,
+        "y": 564,
+        "scale": 0.7272727272727273,
+        "depth": 10
+      },
+      {
+        "id": "jump-step",
+        "frameName": "platform-short-grass-stone",
+        "x": 560,
+        "y": 464,
+        "scale": 0.7272727272727273,
+        "depth": 10
+      },
+      {
+        "id": "upper-ledge",
+        "frameName": "platform-medium-grass-stone",
+        "x": 815,
+        "y": 274,
+        "scale": 0.7272727272727273,
+        "depth": 10
+      },
+      {
+        "id": "right-ledge",
+        "frameName": "platform-short-grass-stone",
+        "x": 656,
+        "y": 368,
+        "scale": 0.7272727272727273,
+        "depth": 10
+      },
+      {
+        "id": "spike-strip",
+        "frameName": "hazard-spike-strip",
+        "x": 512,
+        "y": 560,
+        "scale": 0.7272727272727273,
+        "depth": 18
+      },
+      {
+        "id": "coin",
+        "frameName": "collectible-coin",
+        "x": 736,
+        "y": 448,
+        "scale": 0.7272727272727273,
+        "depth": 24
+      },
+      {
+        "id": "exit-portal",
+        "frameName": "portal-exit-complete",
+        "x": 1176,
+        "y": 504,
+        "scale": 0.7272727272727273,
+        "depth": 12
+      },
+      {
+        "id": "grass-tuft",
+        "frameName": "prop-grass-tuft",
+        "x": 348,
+        "y": 498,
+        "scale": 0.7272727272727273,
+        "depth": 16
+      },
+      {
+        "id": "flower",
+        "frameName": "prop-flower",
+        "x": 885,
+        "y": 212,
+        "scale": 0.73,
+        "depth": 16
+      },
+      {
+        "id": "platform-medium-grass-stone-mpp2j454",
+        "frameName": "platform-medium-grass-stone",
+        "x": 736,
+        "y": 560,
+        "scale": 0.7272727272727273,
+        "depth": 10
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "layers": {
+    "sample-bg-sky": 0,
+    "sample-bg-far": 30,
+    "sample-bg-mid": 80
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "savedAt": "template-v3",
+  "character": {
+    "id": "red-brawler",
+    "gym": {
+      "characterId": "red-brawler",
+      "animationKey": "red-brawler-idle",
+      "frame": 0,
+      "playbackSpeed": 1,
+      "selectedBoundsKind": "visual",
+      "boundsOverrides": {}
+    }
+  }
+}

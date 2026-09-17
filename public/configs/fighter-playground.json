@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "savedAt": "2026-06-03T02:47:18.515Z",
+  "characterId": "jiujitsu-fighter",
+  "reverseWalk": true,
+  "stats": {
+    "red-brawler": {
+      "walkSpeed": 230,
+      "airDrift": 190,
+      "jump": 980,
+      "gravity": 2300,
+      "scale": 1.4
+    },
+    "green-boxer": {
+      "walkSpeed": 250,
+      "airDrift": 190,
+      "jump": 1000,
+      "gravity": 2300,
+      "scale": 1.4
+    },
+    "jiujitsu-fighter": {
+      "walkSpeed": 240,
+      "airDrift": 210,
+      "jump": 1040,
+      "gravity": 2300,
+      "scale": 1.6
+    }
+  },
+  "combat": {
+    "red-brawler": {
+      "maxHealth": 100,
+      "highDamage": 7,
+      "highKnockback": 180,
+      "highHitstun": 280,
+      "lowDamage": 12,
+      "lowKnockback": 340,
+      "lowHitstun": 440
+    },
+    "green-boxer": {
+      "maxHealth": 100,
+      "highDamage": 9,
+      "highKnockback": 220,
+      "highHitstun": 280,
+      "lowDamage": 10,
+      "lowKnockback": 300,
+      "lowHitstun": 440
+    },
+    "jiujitsu-fighter": {
+      "maxHealth": 110,
+      "highDamage": 6,
+      "highKnockback": 180,
+      "highHitstun": 280,
+      "lowDamage": 14,
+      "lowKnockback": 380,
+      "lowHitstun": 480
+    }
+  }
+}

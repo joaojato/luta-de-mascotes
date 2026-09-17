@@ -85,3 +85,17 @@ lido. "Caravana" foi registrado como "caravela" (símbolo do Vasco), a
 confirmar com ele.
 **Em aberto:** colar o resto do doc do Drive; confirmar caravela; confirmar
 se é grupo e quem faz o quê.
+
+## 2026-09-17: grupo confirmado, caravela confirmada
+
+**Marco:** anterior ao Marco 0.
+**Pedido:** "Caravela, o trabalho é em grupo", com os nomes dos quatro amigos.
+**Feito:** `docs/briefing.md` recebeu o grupo de cinco e uma sugestão de
+divisão por frente (código, arte, narrativa, som, apresentação), com um dono
+por frente e o repo com dono único.
+**Verificado:** só documentação.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** "caravela" confirmada, o GDD já estava certo.
+**Atrito:** nada.
+**Em aberto:** quem assume cada frente; colar o doc do Drive.

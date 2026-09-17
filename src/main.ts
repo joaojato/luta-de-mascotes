@@ -1,7 +1,11 @@
-import StartGame from './game/main';
+import './styles.css';
 
-document.addEventListener('DOMContentLoaded', () => {
+import { createApp } from './shell/appShell';
 
-    StartGame('game-container');
+const root = document.querySelector<HTMLElement>('#app');
 
-});
+if (!root) {
+  throw new Error('Missing #app root');
+}
+
+createApp(root);
