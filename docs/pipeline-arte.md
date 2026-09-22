@@ -202,6 +202,16 @@ mixels do Spriterrific, não SNES; e o atlas de UI segue o formato do que já
 está em `public/assets/ui/fighting/` (mesmo manifest, mesmo chroma), para o
 HUD não precisar de código novo.
 
+## Codex fazendo sozinho (desde 22/09/2026)
+
+O Codex ganhou geração de imagem (`image_gen`, gpt-image-2), então ele roda
+o pipeline inteiro sem o João no meio: gera, alinha, registra, confere na
+Academia e commita. O prompt pronto para colar está em
+`docs/prompt-codex.md`. Serve para rodar na máquina que fica ligada.
+
+Nesse caminho o lote não é usado: uma ação por vez é mais simples e mais
+confiável para um agente, porque o custo de "ir ao chat" não existe.
+
 ## Lote: tudo que falta numa conversa só (desde 22/09/2026)
 
 O caminho normal. Uma ida ao ChatGPT resolve o mascote inteiro.

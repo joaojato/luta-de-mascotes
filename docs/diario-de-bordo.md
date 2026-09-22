@@ -693,3 +693,35 @@ plantados. Zero erro de console.
 walk-forward, walk-backward, crouch, jump, block-high, hit-high e
 knockdown, que saem em 3 mensagens do lote. Quando fechar, ela vira a base
 e a `costas` passa a ser a variante.
+
+## 2026-09-22: prompt para o Codex rodar o pipeline sozinho
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "não pode fazer um negócio que use o meu computador que está de
+servidor ligado direto? A gente baixa o repositório lá, ele faz as imagens e
+pronto. Na verdade se eu fizer com o codex será que ele já não faz
+automaticamente todos que faltam do urubu? Monte um prompt explicando o que
+eu preciso e como deve ser feito."
+**Feito:**
+- Confirmado por busca que o Codex passou a gerar imagem: skill `imagegen`
+  com `gpt-image-2` desde 21/04/2026, built-in (`image_gen`), sem exigir
+  chave de API. Isso muda o quadro: o agente faz o pipeline inteiro.
+- `docs/prompt-codex.md`: prompt pronto para colar, com o que já existe e
+  não deve ser reinventado, as sete ações que faltam, o laço por ação
+  (pedido, `view_image`, `image_gen`, salvar, entrega), lista de aceitação
+  por sheet, validação (`npm run check` e Academia com print), regras do
+  projeto e o que fazer quando a geração falhar.
+- Nesse caminho o lote não é usado: uma ação por vez é mais simples para um
+  agente, já que o custo de "ir ao chat" não existe.
+- Dúvida dele sobre o lote querer refazer o `light-punch` era pasta antiga:
+  `referencia/pedidos/urubu-light-punch` e `urubu-idle` continuavam lá depois
+  de prontas. Apagadas. O lote lista corretamente só as sete que faltam.
+**Verificado:** `npm run check` verde. Lote conferido listando só o que falta.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** o prompt do Codex ainda não rodou. Ponto de dúvida: se o
+`image_gen` built-in consegue salvar direto num caminho do disco ou se o
+agente precisa de outro passo para isso. O prompt pede o resultado salvo em
+`referencia/urubu/<acao>-gpt.png` e deixa o caminho a cargo dele.
