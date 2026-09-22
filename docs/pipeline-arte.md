@@ -202,6 +202,42 @@ mixels do Spriterrific, não SNES; e o atlas de UI segue o formato do que já
 está em `public/assets/ui/fighting/` (mesmo manifest, mesmo chroma), para o
 HUD não precisar de código novo.
 
+## Lote: tudo que falta numa conversa só (desde 22/09/2026)
+
+O caminho normal. Uma ida ao ChatGPT resolve o mascote inteiro.
+
+```
+npm run sprite -- lote urubu --skin frente --aguardar
+```
+
+O comando descobre quais ações ainda não têm sheet própria, agrupa em
+mensagens (até 3 ações e 13 quadros por imagem, medido no olho: acima disso
+o chat desalinha as fileiras) e monta a pasta
+`referencia/pedidos/<slug>-lote/`:
+
+| Arquivo | O que é |
+|---|---|
+| `1-personagem.png` | o modelo oficial |
+| `movimento-N.png` | as ações da mensagem N, **uma por fileira** |
+| `texto-N.txt` | o texto da mensagem N |
+| `roteiro.md` | tudo na ordem, para consultar |
+
+Na **mesma conversa**: mensagem 1 leva o personagem, a descrição travada e a
+primeira imagem de movimento. Da segunda em diante o texto é curto, porque o
+personagem já está no contexto do chat, e só muda a imagem anexada.
+
+Com `--aguardar`, o comando fica esperando: você salva o resultado de cada
+mensagem, ele separa as fileiras, monta uma sheet por ação, registra no JSON
+e já copia o texto da mensagem seguinte. Oito ações saem em quatro
+mensagens numa conversa só.
+
+Se o chat devolver número de fileiras diferente do pedido, o comando avisa e
+**não registra nada**, para não gravar ação trocada.
+
+## Uma ação por vez
+
+Quando for refazer só uma coisa:
+
 ## Dois comandos, do pedido à Academia (desde 22/09/2026)
 
 O trabalho braçal em volta da geração está automatizado. O que continua
@@ -311,7 +347,7 @@ JSON dizia `idle.png`. São três passos, sempre:
    obrigatório para o Spriterrific.
 2. **Alinhar** à grade do motor (256×256, 5 colunas, pés na linha do idle):
    ```
-   python scripts/alinhar-sheet.py referencia/<slug>/<acao>-gemini.png public/assets/lutadores/<slug>/<acao>.png --ref public/assets/lutadores/<slug>/idle.png
+   python scripts/alinhar_sheet.py referencia/<slug>/<acao>-gemini.png public/assets/lutadores/<slug>/<acao>.png --ref public/assets/lutadores/<slug>/idle.png
    ```
    O script imprime `frames` e `defaultVisual` prontos para o JSON.
 3. **Registrar** em `src/game/lutadores/<slug>.json`: na ação, trocar `file`,

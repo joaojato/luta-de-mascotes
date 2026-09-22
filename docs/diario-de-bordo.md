@@ -592,3 +592,46 @@ tinha acabado de salvar na pasta. Segunda vez na mesma sessão.
 **Em aberto:** o `idle` do modelo novo, que é o que falta para a skin frente
 poder virar a base. Depois: walk-forward, hit-high, block-high, crouch,
 jump, knockdown, heavy-kick e special.
+
+## 2026-09-22: lote, o mascote inteiro numa conversa só
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "esse processo ainda está ruim, não tem forma melhor de fazer
+isso não?" Perguntei o que pesava e ele marcou duas: uma conversa para todas
+as ações, e várias ações por imagem.
+**Feito:**
+- `npm run sprite -- lote <slug> --skin <skin> --aguardar`: descobre as ações
+  que ainda não têm sheet própria, agrupa em mensagens (até 3 ações e 13
+  quadros por imagem), monta uma imagem de movimento com **uma ação por
+  fileira**, escreve o texto de cada mensagem e um `roteiro.md`. Com
+  `--aguardar`, processa cada resultado salvo, separa as fileiras, monta uma
+  sheet por ação, registra no JSON e já copia o texto da mensagem seguinte.
+  Para o Urubu: 8 ações em 4 mensagens, numa conversa.
+- Da segunda mensagem em diante o texto é curto: o personagem já está no
+  contexto do chat, então só muda a imagem anexada.
+- `alinhar-sheet.py` virou `alinhar_sheet.py` (importável) e foi reescrito em
+  funções: `preparar`, `separar`, `montar`, `regua_de`. `separar` agora
+  devolve os quadros **agrupados por fileira** e aceita esperado por fileira.
+  O `sprite.py` importa em vez de chamar por subprocess.
+- Bug latente corrigido na reescrita: com ação única espalhada em duas
+  fileiras (8 quadros em 2 linhas de 4), o alinhador antigo aplicava o número
+  esperado **dentro de cada fileira** e cortaria quadro bom no meio. Agora o
+  alvo vale para o total quando a ação é uma só.
+- Salvaguarda: se o chat devolver número de fileiras diferente do pedido, o
+  comando avisa e não registra nada, para não gravar ação trocada.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build).
+Regressão do soco: mesmos 6 quadros e mesmo `defaultVisual` de antes.
+Separação por fileira testada nas 4 imagens do lote ([4,6], [6,3], [5,4,4],
+[6]): todas bateram. Ponta a ponta do bloco testado com duas ações numa
+imagem: duas sheets gravadas, JSON e `sobrescreve` atualizados; teste
+revertido em seguida.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o fluxo de uma ação por conversa.
+Motivo dado por ele: ainda era trabalho braçal demais.
+**Aprovado explicitamente:** nada, mas ele escolheu as duas direções na
+pergunta.
+**Atrito:** heredoc de bash com aspas dentro quebrou duas vezes ao inserir
+código Python; passei a usar a ferramenta de edição direta para código.
+**Em aberto:** o lote ainda não rodou com resultado de verdade do chat. A
+primeira rodada dele é o teste real, em especial se o chat mantém as
+fileiras separadas.

@@ -112,6 +112,10 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   comandos com seis passos manuais no meio ainda é trabalho braçal. Medir
   automação pelo número de vezes que ele precisa sair do lugar.
   (2026-09-22)
+- **Quando ele diz "ainda está ruim", perguntar o que pesa antes de
+  construir.** Dei duas opções erradas na cabeça (API e robô de navegador) e
+  ele queria outra coisa: menos idas ao chat. Quatro opções concretas
+  resolveram em uma pergunta. (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)

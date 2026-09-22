@@ -143,10 +143,11 @@ os marcos do roteiro são pequenos e cada um termina com algo jogável.
 - `lutador-novo`: o pipeline completo de um mascote novo, do briefing ao JSON
   validado na Academia. Usar sempre que entrar mascote.
 
-Sheet nova entra por dois comandos, não à mão (ver `docs/pipeline-arte.md`):
-`npm run sprite -- pedido <slug> <acao>` monta prompt e referências para o
-chat; `npm run sprite -- entrega <slug> <acao> <arquivo>` alinha, grava e
-registra no JSON.
+Sheet nova entra por comando, não à mão (ver `docs/pipeline-arte.md`). O
+caminho normal é `npm run sprite -- lote <slug> --skin <skin> --aguardar`:
+monta as mensagens para uma conversa só no ChatGPT, com várias ações por
+imagem, e registra cada resultado que o João salvar. Para refazer uma ação
+isolada, `npm run sprite -- pedido <slug> <acao> --aguardar`.
 - `fechar-sessao`: verificação, diário, commit e push. Usar ao final de toda
   sessão ou quando o João disser "fecha", "terminamos", "commita".
 

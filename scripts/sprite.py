@@ -34,6 +34,9 @@ from pathlib import Path
 
 from PIL import Image
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import alinhar_sheet  # noqa: E402
+
 RAIZ = Path(__file__).resolve().parent.parent
 PUBLIC = RAIZ / 'public'
 LUTADORES = RAIZ / 'src' / 'game' / 'lutadores'
@@ -300,19 +303,26 @@ def entregar(slug: str, acao_nome: str, entrada: Path, skin: str | None, fps: in
     if not regua.exists():
         sys.exit(f'falta a régua de escala em {regua}')
 
-    medidas = RAIZ / '.sprite-medidas.json'
-    alinhar = subprocess.run(
-        [sys.executable, str(RAIZ / 'scripts' / 'alinhar-sheet.py'), str(entrada), str(saida),
-         '--ref', str(regua), '--json', str(medidas),
-         '--esperados', str(esperados or QUADROS.get(acao_nome, 0))],
-        cwd=RAIZ,
+    fileiras = alinhar_sheet.separar(
+        alinhar_sheet.preparar(entrada), QUADROS.get(acao_nome, 0) if not esperados else esperados
     )
-    if alinhar.returncode != 0:
-        return alinhar.returncode
+    quadros = [q for fileira in fileiras for q in fileira]
+    if not quadros:
+        sys.exit('nenhum quadro encontrado na imagem')
 
-    dados = json.loads(medidas.read_text(encoding='utf-8'))
-    medidas.unlink()
+    sheet, dados = alinhar_sheet.montar(quadros, alinhar_sheet.regua_de(regua))
+    sheet.save(saida, optimize=True)
 
+    registrar(lutador, caminho_json, acao_nome, dados, destino_skin, fps)
+    print(f'sheet em {saida.relative_to(RAIZ)}')
+    avisar_golpe(acao_nome)
+    print('Confira na Academia antes de dar por pronto.')
+    return 0
+
+
+def registrar(lutador: dict, caminho_json: Path, acao_nome: str, dados: dict,
+              destino_skin: str, fps: int | None) -> None:
+    """Escreve a ação no JSON do mascote e marca o arquivo como próprio da skin."""
     _, amostra = carregar_lutador(REFERENCIA_MOVIMENTO)
     modelo = next((a for a in amostra['actions'] if a['action'] == acao_nome), None)
 
@@ -337,14 +347,236 @@ def entregar(slug: str, acao_nome: str, entrada: Path, skin: str | None, fps: in
     caminho_json.write_text(
         json.dumps(lutador, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
     )
+    print(f'JSON: {acao_nome}, {acao["frames"]} quadros, {acao["frameRate"]} fps')
+
+
+def avisar_golpe(acao_nome: str) -> None:
+    if acao_nome in ('light-punch', 'heavy-kick', 'special'):
+        print(f'  ATENÇÃO: {acao_nome} precisa de `attack` (quadros ativos e caixa), '
+              'que sai na Academia.')
+
+
+# Quantas ações e quantos quadros cabem numa imagem só sem o chat perder a
+# mão. Acima disso as poses começam a sair desalinhadas entre as fileiras.
+LOTE_ACOES = 3
+LOTE_QUADROS = 13
+
+
+def copiar(texto: str) -> None:
+    try:
+        subprocess.run(['clip'], input=texto.encode('utf-16-le'), check=True)
+    except Exception as erro:
+        print(f'(não consegui copiar: {erro})')
+
+
+def acoes_faltando(lutador: dict, skin: str | None) -> list[str]:
+    """Ações que ainda não têm sheet própria na skin de destino."""
+    _, amostra = carregar_lutador(REFERENCIA_MOVIMENTO)
+    tem_referencia = {a['action'] for a in amostra['actions']}
+
+    if skin:
+        variante = next((v for v in lutador.get('skins') or [] if v['pasta'] == skin), None)
+        if variante is not None and 'sobrescreve' in variante:
+            proprios = set(variante['sobrescreve'])
+            return [
+                a['action'] for a in lutador['actions']
+                if a['action'] in tem_referencia and f'{a["action"]}.png' not in proprios
+            ]
+
+    # Skin base: falta o que ainda aponta para a sheet de outra ação.
+    return [
+        a['action'] for a in lutador['actions']
+        if a['action'] in tem_referencia and a['file'] != f'{a["action"]}.png'
+    ]
+
+
+def agrupar(acoes: list[str]) -> list[list[str]]:
+    """Junta ações em blocos que cabem numa imagem só."""
+    blocos, atual, quadros = [], [], 0
+    for acao in acoes:
+        custo = QUADROS.get(acao, 5)
+        if atual and (len(atual) >= LOTE_ACOES or quadros + custo > LOTE_QUADROS):
+            blocos.append(atual)
+            atual, quadros = [], 0
+        atual.append(acao)
+        quadros += custo
+    if atual:
+        blocos.append(atual)
+    return blocos
+
+
+def imagem_de_movimento(acoes: list[str], destino: Path, indice: int) -> list[int]:
+    """Uma imagem com uma ação por fileira. Devolve quantos quadros em cada."""
+    _, amostra = carregar_lutador(REFERENCIA_MOVIMENTO)
+    raiz = PUBLIC / amostra['assetRoot'].lstrip('/')
+
+    linhas, contagem = [], []
+    for acao in acoes:
+        spec = next(a for a in amostra['actions'] if a['action'] == acao)
+        quadros = escolher(
+            quadros_da_sheet(raiz / spec['file'], spec['frames']), QUADROS.get(acao, 5)
+        )
+        recortes = [q.crop(bbox_alpha(q)) for q in quadros]
+        linhas.append(recortes)
+        contagem.append(len(recortes))
+
+    escala = 2
+    folga_x, folga_y = 20, 60
+    largura = max(
+        sum(r.width for r in linha) * escala + folga_x * (len(linha) + 1) for linha in linhas
+    )
+    alturas = [max(r.height for r in linha) * escala for linha in linhas]
+    altura = sum(alturas) + folga_y * (len(linhas) + 1)
+
+    imagem = Image.new('RGBA', (largura, altura), (255, 255, 255, 255))
+    y = folga_y
+    for linha, alt in zip(linhas, alturas):
+        x = folga_x
+        for recorte in linha:
+            g = recorte.resize((recorte.width * escala, recorte.height * escala), Image.NEAREST)
+            imagem.alpha_composite(g, (x, y + alt - g.height))
+            x += g.width + folga_x
+        y += alt + folga_y
+
+    imagem.convert('RGB').save(destino / f'movimento-{indice}.png')
+    return contagem
+
+
+def texto_das_linhas(acoes: list[str], contagem: list[int]) -> str:
+    return '\n'.join(
+        f'{i + 1}. "{acao}" ({contagem[i]} frames): {MOVIMENTO.get(acao, "as shown")}'
+        for i, acao in enumerate(acoes)
+    )
+
+
+def comando_lote(args) -> int:
+    _, lutador = carregar_lutador(args.slug)
+    faltando = args.acoes or acoes_faltando(lutador, args.skin)
+    if not faltando:
+        print('nada faltando: todas as ações já têm sheet própria.')
+        return 0
+
+    blocos = agrupar(faltando)
+    destino = PEDIDOS / f'{args.slug}-lote'
+    destino.mkdir(parents=True, exist_ok=True)
+
+    modelo = RAIZ / 'referencia' / args.slug / 'modelo-oficial.png'
+    if not modelo.exists():
+        sys.exit(f'falta o modelo oficial em {modelo}')
+    Image.open(modelo).save(destino / '1-personagem.png')
+
+    contagens = [imagem_de_movimento(bloco, destino, i + 1) for i, bloco in enumerate(blocos)]
+
+    primeira = f"""Image 1 is the ONLY reference for who the character is.
+Image 2 is the ONLY reference for how the body moves.
+
+Image 2 has {len(blocos[0])} rows, one per action. Redraw it with the
+character from image 1: same number of rows, same number of frames per row,
+same order, every pose and limb angle exactly as in image 2. Do not copy
+anything else from image 2: not the clothes, not the colors, not the face,
+not the body proportions.
+
+THE CHARACTER (never change any of this):
+{descricao(args.slug)}
+
+THE ROWS, top to bottom:
+{texto_das_linhas(blocos[0], contagens[0])}
+
+The character faces LEFT in every frame, side view, and never turns toward
+the camera. All frames in a row sit on the same baseline.
+
+Style: high fidelity pixel art for a 2D arcade fighting game, bold flat
+colors, clean dark outlines, same pixel density as image 1.
+
+Transparent background (a flat white background is also fine). No text, no
+letters, no numbers, no logo, no crest, no sponsor, no ground shadow, no
+motion lines, no glow, no extra characters, no frame borders."""
+
+    (destino / 'texto-1.txt').write_text(primeira, encoding='utf-8')
+
+    roteiro = [
+        f'# Lote do {args.slug}: {len(faltando)} ações em {len(blocos)} mensagens',
+        '',
+        'Tudo na **mesma conversa**, na ordem. O personagem fica no contexto do',
+        'chat, então da segunda mensagem em diante o texto é curto.',
+        '',
+        '## Mensagem 1',
+        '',
+        'Anexa `1-personagem.png` e `movimento-1.png`, e cola:',
+        '',
+        '```',
+        primeira,
+        '```',
+        '',
+    ]
+
+    for i, bloco in enumerate(blocos[1:], start=2):
+        seguinte = (
+            'Same character, same style, same rules as before. New motion '
+            f'reference attached: {len(bloco)} rows, top to bottom:\n'
+            f'{texto_das_linhas(bloco, contagens[i - 1])}'
+        )
+        (destino / f'texto-{i}.txt').write_text(seguinte, encoding='utf-8')
+        roteiro += [f'## Mensagem {i}', '', f'Anexa `movimento-{i}.png`, e cola:', '',
+                    '```', seguinte, '```', '']
+
+    (destino / 'roteiro.md').write_text('\n'.join(roteiro), encoding='utf-8')
+
+    print(f'lote pronto em {destino}')
+    for i, bloco in enumerate(blocos, start=1):
+        print(f'  mensagem {i}: {", ".join(bloco)} ({sum(contagens[i - 1])} quadros)')
+
+    if args.abrir or args.aguardar:
+        copiar(primeira)
+        subprocess.run(['explorer', str(destino)])
+        os.startfile('https://chatgpt.com/')
+        print()
+        print('ChatGPT aberto, texto da mensagem 1 já copiado.')
 
     print()
-    print(f'sheet em {saida.relative_to(RAIZ)}')
-    print(f'JSON atualizado: {acao_nome}, {acao["frames"]} quadros, {acao["frameRate"]} fps')
-    if acao_nome in ('light-punch', 'heavy-kick', 'special'):
-        print('ATENÇÃO: golpe precisa de `attack` (quadros ativos e caixa). '
-              'Conferir na Academia e definir.')
-    print('Confira na Academia antes de dar por pronto.')
+    print('Por mensagem: cola o texto, arrasta a imagem, envia, salva o resultado.')
+    print('Os textos na ordem estão em roteiro.md.')
+
+    if not args.aguardar:
+        return 0
+
+    for i, bloco in enumerate(blocos, start=1):
+        print()
+        print(f'--- mensagem {i}: {", ".join(bloco)} ---')
+        baixado = vigiar(args.minutos)
+        if not baixado:
+            print('parei aqui. O que já entrou está registrado.')
+            return 1
+        entregar_bloco(args.slug, bloco, contagens[i - 1], baixado, args.skin)
+        if i < len(blocos):
+            copiar((destino / f'texto-{i + 1}.txt').read_text(encoding='utf-8'))
+            print(f'texto da mensagem {i + 1} copiado. Anexa movimento-{i + 1}.png.')
+    return 0
+
+
+def entregar_bloco(slug: str, acoes: list[str], quadros_por_acao: list[int],
+                   entrada: Path, skin: str | None) -> int:
+    """Processa uma imagem com várias ações, uma por fileira."""
+    caminho_json, lutador = carregar_lutador(slug)
+    destino_skin = skin or skin_base(lutador)
+
+    _, amostra = carregar_lutador(REFERENCIA_MOVIMENTO)
+    regua = alinhar_sheet.regua_de(PUBLIC / amostra['assetRoot'].lstrip('/') / 'idle.png')
+
+    fileiras = alinhar_sheet.separar(alinhar_sheet.preparar(entrada), quadros_por_acao)
+    if len(fileiras) != len(acoes):
+        print(f'esperava {len(acoes)} fileiras ({", ".join(acoes)}) e achei {len(fileiras)}.')
+        print('não registrei nada: peça a imagem de novo, uma fileira por ação.')
+        return 1
+
+    for acao, quadros in zip(acoes, fileiras):
+        print(f'{acao}:')
+        sheet, dados = alinhar_sheet.montar(quadros, regua)
+        saida = pasta_skin(lutador, destino_skin) / f'{acao}.png'
+        saida.parent.mkdir(parents=True, exist_ok=True)
+        sheet.save(saida, optimize=True)
+        registrar(lutador, caminho_json, acao, dados, destino_skin, None)
+        avisar_golpe(acao)
     return 0
 
 
@@ -372,6 +604,17 @@ def main() -> int:
     ent.add_argument('--skin', help='pasta da skin (padrão: a base)')
     ent.add_argument('--fps', type=int)
     ent.set_defaults(func=comando_entrega)
+
+    lot = sub.add_parser('lote', help='tudo que falta, numa conversa só')
+    lot.add_argument('slug')
+    lot.add_argument('--acoes', nargs='*', help='em vez de descobrir o que falta')
+    lot.add_argument('--skin', help='pasta da skin de destino (padrão: a base)')
+    lot.add_argument('--abrir', action='store_true',
+                     help='copia o texto, abre a pasta e o ChatGPT')
+    lot.add_argument('--aguardar', action='store_true',
+                     help='implica --abrir e processa cada imagem que você salvar, na ordem')
+    lot.add_argument('--minutos', type=int, default=20)
+    lot.set_defaults(func=comando_lote)
 
     args = p.parse_args()
     return args.func(args)
