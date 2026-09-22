@@ -142,6 +142,11 @@ os marcos do roteiro são pequenos e cada um termina com algo jogável.
   descrição ou imagem de referência via API. Pede `SPRITERRIFIC_API_KEY`.
 - `lutador-novo`: o pipeline completo de um mascote novo, do briefing ao JSON
   validado na Academia. Usar sempre que entrar mascote.
+
+Sheet nova entra por dois comandos, não à mão (ver `docs/pipeline-arte.md`):
+`npm run sprite -- pedido <slug> <acao>` monta prompt e referências para o
+chat; `npm run sprite -- entrega <slug> <acao> <arquivo>` alinha, grava e
+registra no JSON.
 - `fechar-sessao`: verificação, diário, commit e push. Usar ao final de toda
   sessão ou quando o João disser "fecha", "terminamos", "commita".
 

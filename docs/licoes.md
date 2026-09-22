@@ -96,6 +96,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **`git add -A` sem olhar o `git status` em sessão longa.** Ele salva
   arquivo na pasta enquanto eu trabalho; um PNG bruto entrou no repositório
   sem conferência. Conferir a lista antes do commit, sempre. (2026-09-22)
+- **O ChatGPT acertou o sprite onde o Spriterrific gastou crédito.** O
+  método dele (referência de personagem + descrição travada + referência de
+  movimento de outro lutador) é o que funciona, e o trabalho repetitivo
+  estava no preparo, não na geração. Automatizar o que cerca a IA rende
+  mais que trocar a IA. (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)

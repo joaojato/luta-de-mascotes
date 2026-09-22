@@ -447,3 +447,46 @@ está mexendo nas pastas ao mesmo tempo.
 alinhada entra na pasta dela e no `sobrescreve`. O `block-low` que ele gerou
 precisa voltar ao Gemini: três dos quatro quadros saíram de frente para a
 câmera, e o primeiro é guarda em pé, não bloqueio baixo.
+
+## 2026-09-22: pedido e entrega de sprite viram dois comandos
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "tem como automatizar esse processo? atualmente eu estou usando
+o chat gpt para fazer os sprites (ele tem feito muito bem). Eu preciso mandar
+a foto do sprite de referência do personagem e uma descrição detalhada para
+que ele não alucine. A partir daí eu mando um sprite de referência com os
+golpes e peço para fazer os mesmos movimentos, coloca o urubu no lugar do
+outro."
+**Feito:**
+- `docs/mascotes/urubu.md`: a descrição visual travada, em inglês, entre
+  marcas `DESCRICAO:INICIO`/`FIM`, lida pelo script. Era o pedaço que ele
+  reescrevia à mão a cada pedido.
+- `scripts/sprite.py pedido <slug> <acao>`: monta
+  `referencia/pedidos/<slug>-<acao>/` com `prompt.txt` (descrição travada +
+  a frase do movimento + as proibições), `1-personagem.png` (modelo oficial)
+  e `2-movimento.png` (a mesma ação do red-brawler, subamostrada para o
+  número de quadros da ação e ampliada 2×, quadros na mesma linha de base).
+  O prompt separa explicitamente os papéis: imagem 1 é quem o personagem é,
+  imagem 2 é só como o corpo se move, e proíbe copiar roupa, cor, rosto e
+  proporção da imagem 2.
+- `scripts/sprite.py entrega <slug> <acao> <arquivo>`: chama o alinhador,
+  grava na pasta da skin, atualiza a ação no JSON (`frames`, `frameRate` e
+  `repeat` copiados da mesma ação do red-brawler, `defaultVisual` medido) e
+  acrescenta o arquivo em `sobrescreve`. Avisa quando a ação é golpe, que
+  ainda precisa de `attack` definido na Academia.
+- `alinhar-sheet.py` ganhou `--json` para entregar os números ao outro
+  script em vez de ser lido por stdout.
+- `npm run sprite`, e o caminho documentado em `docs/pipeline-arte.md` e no
+  `CLAUDE.md`.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build). Pedido
+do `idle` gerado e conferido (prompt de 1922 caracteres, referência com 4
+de 12 quadros). Entrega testada com o `block-high` que já estava no jogo:
+`git diff` vazio no PNG e no JSON, ou seja, idempotente.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** automação total (gerar pela API da OpenAI ou do Gemini) foi
+apresentada e não feita: custa por imagem e pede chave nova, enquanto o
+chat já está no plano que ele paga. `MOVIMENTO` e `QUADROS` no script são
+chutes por ação e vão se ajustar com o uso.

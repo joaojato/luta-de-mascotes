@@ -132,6 +132,7 @@ def main() -> int:
     p.add_argument('saida')
     p.add_argument('--ref', required=True, help='sheet de referência já na grade (ex. idle.png)')
     p.add_argument('--cols', type=int, default=COLS)
+    p.add_argument('--json', dest='json_saida', help='grava frames e defaultVisual neste arquivo')
     args = p.parse_args()
 
     ref = Image.open(args.ref).convert('RGBA')
@@ -181,6 +182,18 @@ def main() -> int:
     x1 = max(c[2] for c in caixas); y1 = max(c[3] for c in caixas)
     print(f'salvo {args.saida} ({sheet.width}x{sheet.height})')
     print(f'JSON: "frames": {len(quadros)}, "defaultVisual": {{"x": {x0}, "y": {y0}, "width": {x1 - x0}, "height": {y1 - y0}}}')
+
+    if args.json_saida:
+        import json
+        with open(args.json_saida, 'w', encoding='utf-8') as f:
+            json.dump(
+                {
+                    'frames': len(quadros),
+                    'defaultVisual': {'x': x0, 'y': y0, 'width': x1 - x0, 'height': y1 - y0},
+                    'caixas': caixas,
+                },
+                f,
+            )
     return 0
 
 

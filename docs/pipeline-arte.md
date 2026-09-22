@@ -202,6 +202,51 @@ mixels do Spriterrific, não SNES; e o atlas de UI segue o formato do que já
 está em `public/assets/ui/fighting/` (mesmo manifest, mesmo chroma), para o
 HUD não precisar de código novo.
 
+## Dois comandos, do pedido à Academia (desde 22/09/2026)
+
+O trabalho braçal em volta da geração está automatizado. O que continua
+sendo humano é só gerar a imagem no chat, onde o ChatGPT tem ido bem.
+
+```
+npm run sprite -- pedido urubu heavy-kick
+```
+
+Monta `referencia/pedidos/urubu-heavy-kick/` com:
+
+| Arquivo | O que é |
+|---|---|
+| `prompt.txt` | prompt inteiro, com a descrição travada do mascote |
+| `1-personagem.png` | o modelo oficial (`referencia/<slug>/modelo-oficial.png`) |
+| `2-movimento.png` | a mesma ação num lutador que já está no jogo, ampliada |
+
+No chat: anexa as duas imagens **nessa ordem** e cola o `prompt.txt`. O
+prompt diz que a imagem 1 é quem o personagem é e a imagem 2 é só como o
+corpo se move, e proíbe copiar roupa, cor, rosto e proporção da imagem 2.
+
+```
+npm run sprite -- entrega urubu heavy-kick ~/Downloads/resultado.png
+```
+
+Alinha à grade pelo `idle` da skin base, escreve em
+`public/assets/lutadores/<slug>/<skin>/<acao>.png`, atualiza o JSON
+(`frames`, `frameRate`, `repeat`, `defaultVisual`) e acrescenta o arquivo
+em `sobrescreve` da skin. Rodar de novo com o mesmo arquivo não muda nada.
+
+Opções: `--skin frente` manda para outra skin, `--quadros N` muda quantos
+quadros pedir, `--fps N` força a cadência.
+
+**O que o comando não faz:** golpe precisa de `attack` (quais quadros
+acertam e onde), que é julgamento visual e sai na Academia. O comando avisa
+quando a ação é golpe.
+
+**A descrição travada do mascote** fica em `docs/mascotes/<slug>.md`, entre
+as marcas `DESCRICAO:INICIO` e `DESCRICAO:FIM`. Mudou o modelo oficial,
+muda ali, e todo prompt seguinte já sai certo.
+
+**Automação total (gerar sem o chat)** é possível pela API da OpenAI ou do
+Gemini, mas custa por imagem e pede chave nova. Enquanto o chat estiver
+incluído no plano que o João já paga, não compensa.
+
 ## Sheet pelo Gemini (caminho de custo zero, desde 22/09/2026)
 
 O `block-high` do Urubu foi a prova: 4 quadros no mesmo estilo do
