@@ -78,22 +78,22 @@
     },
     {
       "action": "block-high",
-      "label": "Block High (placeholder: idle)",
-      "file": "idle.png",
-      "frames": 10,
-      "frameRate": 6,
+      "label": "Block High",
+      "file": "block-high.png",
+      "frames": 4,
+      "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 74,
+        "x": 66,
         "y": 28,
-        "width": 108,
+        "width": 140,
         "height": 200
       },
       "guard": {
-        "x": 60,
-        "y": 44,
-        "width": 136,
-        "height": 116
+        "x": 56,
+        "y": 30,
+        "width": 140,
+        "height": 120
       }
     },
     {

@@ -202,6 +202,30 @@ mixels do Spriterrific, não SNES; e o atlas de UI segue o formato do que já
 está em `public/assets/ui/fighting/` (mesmo manifest, mesmo chroma), para o
 HUD não precisar de código novo.
 
+## Sheet pelo Gemini (caminho de custo zero, desde 22/09/2026)
+
+O `block-high` do Urubu foi a prova: 4 quadros no mesmo estilo do
+Spriterrific, gerados no Gemini com o anchor e a sheet do idle como
+referência. Só a imagem na pasta **não faz nada**: o motor lê o JSON, e o
+JSON dizia `idle.png`. São três passos, sempre:
+
+1. **Gerar** no Gemini anexando `anchor-w.png` e `idle.png` do mascote
+   (estilo, escala e pose de partida). Pedir uma fileira de quadros, fundo
+   transparente ou verde chapado, mesmo personagem, sem texto. Salvar em
+   `referencia/<slug>/<acao>-gemini.png` (fora do git).
+2. **Alinhar** à grade do motor (256×256, 5 colunas, pés na linha do idle):
+   ```
+   python scripts/alinhar-sheet.py referencia/<slug>/<acao>-gemini.png public/assets/lutadores/<slug>/<acao>.png --ref public/assets/lutadores/<slug>/idle.png
+   ```
+   O script imprime `frames` e `defaultVisual` prontos para o JSON.
+3. **Registrar** em `src/game/lutadores/<slug>.json`: na ação, trocar `file`,
+   `frames`, `frameRate` (10 para golpe e bloqueio, 8 para andar) e
+   `defaultVisual` pelos valores impressos; golpe ganha `attack` (quadros
+   ativos e caixa), bloqueio ganha `guard`. Conferir na Academia.
+
+O João pode fazer os três sozinho. Se preferir, gera, salva em
+`referencia/<slug>/` e avisa o agente, que faz o 2 e o 3 e mostra a Academia.
+
 ## Cenário, passo a passo
 
 1. Três imagens no Nano Banana Pro ou GPT Image, mesma paleta e hora do dia:

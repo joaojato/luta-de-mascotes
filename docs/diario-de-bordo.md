@@ -337,3 +337,30 @@ motivo dado: "estão voando, não estão pisando onde deveriam".
 **Aprovado explicitamente:** nada.
 **Atrito:** nada além do erro de conta.
 **Em aberto:** os mesmos itens da entrada anterior.
+
+## 2026-09-22: primeiro golpe pelo Gemini, script de alinhamento
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "Eu fiz com o gemini o block-high, achei que era só colocar a
+imagem e pronto? o que precisava ser feito? eu preciso sempre te avisar?"
+**Feito:**
+- A sheet do Gemini (2172×724, 4 quadros, fundo transparente, mesmo estilo
+  do Spriterrific) foi para `referencia/urubu/block-high-gemini.png`.
+- `scripts/alinhar-sheet.py`: separa quadros por faixas vazias, aplica a
+  escala do primeiro quadro em relação ao idle de referência, alinha os pés
+  e o centro dos pés, monta a grade 256×256 em 5 colunas, imprime `frames`
+  e `defaultVisual`. Recorta verde se a entrada não tiver alpha.
+- `public/assets/lutadores/urubu/block-high.png` (1280×256) e entrada do
+  `block-high` no `urubu.json` (4 quadros, 10 fps, guard 56/30/140×120).
+- `docs/pipeline-arte.md`: seção "Sheet pelo Gemini" com os três passos.
+**Verificado:** `npm run check` verde. Academia: block high quadro 2/4 com
+guard box sobre braços e cabeça. Zero erro de console.
+**Créditos gastos:** nada. A ADR 0002 ganha evidência a favor do Gemini.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** o servidor de dev tinha caído; subiu de novo. Ele esperava que
+a imagem sozinha bastasse: a Regra do JSON não estava explicada do ponto de
+vista de quem só gera arte.
+**Em aberto:** registrar o prompt que ele usou no Gemini (pedir). Próximas
+sheets pelo mesmo caminho: heavy-kick, walk-forward, hit-high, jump,
+crouch, knockdown, special.

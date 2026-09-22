@@ -73,6 +73,14 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   posicionar cenário, mirar o chão do motor 40 px abaixo de onde o pé deve
   parecer pisar. Deslocar imagem com faixa transparente não resolve: o chão
   é fração da tela, não da imagem. (2026-09-22)
+- **Ele espera que a imagem na pasta baste.** Colocou o `block-high.png` e
+  achou que estava pronto. A Regra do JSON é clara para quem programa, não
+  para quem gera arte. Toda receita de asset precisa terminar com "e aí o
+  JSON", e o script tem de imprimir os números prontos. (2026-09-22)
+- **O Gemini segura o estilo do Spriterrific** quando recebe anchor e sheet
+  do idle como referência: o bloqueio saiu no mesmo traço, 4 quadros, sem
+  gastar crédito. Sheet inteira com referência é outra coisa que quadro
+  avulso, como ele tinha dito em 17/09. (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)
