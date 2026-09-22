@@ -27,6 +27,17 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 
 ## O que não fazer
 
+- **Ele não quer gastar dinheiro no Spriterrific** para o resto dos
+  movimentos. Preço na mesa (US$ 12 do Starter) não mudou isso. O caminho é
+  o de custo zero primeiro: Gemini com as sheets do Urubu como referência de
+  estilo e grade, Spriterrific só para o que falhar. (2026-09-22)
+- **Com um crédito só, ele escolhe o golpe, não o andar.** Eu recomendei
+  `walk_forward` (onde o vídeo é mais forte); ele quis o soco, que é o que
+  mostra o lutador. Priorizar o que comunica, depois o que é tecnicamente
+  difícil. (2026-09-22)
+- **Conta nova para repetir os 500 grátis: não operar.** Dito duas vezes na
+  mesma noite. A recusa é curta, sem sermão, e o trabalho segue no que dá
+  para fazer de graça. (2026-09-22)
 - Chamar Codex de gerador de gráficos. Ele imaginava "Codex pros gráficos";
   Codex é agente de código. Imagem é modelo de imagem. (2026-09-17)
 
@@ -47,6 +58,16 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   são edição curta, com só a instrução de mudança, sobre a imagem já
   gerada; direção se resolve por script (`ImageOps.mirror`), não por
   prompt. (2026-09-17)
+- **Spriterrific com `high-fidelity-v1` joga fora a pose da referência.** O
+  job de personagem a partir de imagem passa por um "candidate" de frente,
+  em pose neutra de braços caídos, e só depois vira de lado. A guarda de
+  luta do Urubu sumiu, o anchor virou um urubu andando de perfil e o idle
+  "andou" apesar da receita de congelamento (as pernas do anchor já estavam
+  em passada). Para lutador, o anchor precisa nascer em guarda: tentar
+  `preserve-reference-v1`; e a receita do idle precisa dizer `guard up,
+  fists raised` além de congelar os pés. Job de personagem exige ao menos
+  uma animação, então o teste mínimo de anchor custa 160, não 60.
+  (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)

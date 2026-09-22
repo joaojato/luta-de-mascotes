@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { FIGHTER_CHARACTER_DEFINITIONS } from '../game/hero';
+import { LUTADORES } from '../game/lutadores';
 import { createSelectionCard, type SelectionCard } from '../game/ui';
 import { SCENE_KEYS, type MatchMode } from '../game/types';
 import { BaseScene } from './BaseScene';
@@ -16,11 +17,10 @@ const P2_COLOR = 0xf43f5e;
 const CARD_WIDTH = 300;
 const CARD_HEIGHT = 384;
 
-// Temporary: only these fighters are selectable in the Play flow. The full
-// roster (incl. the green boxer) remains available in the Fighter Playground.
-const SELECTABLE_FIGHTER_IDS = ['red-brawler', 'jiujitsu-fighter'];
-const SELECTABLE_ROSTER = FIGHTER_CHARACTER_DEFINITIONS.filter((character) =>
-  SELECTABLE_FIGHTER_IDS.includes(character.id)
+// Regra do JSON: quem entra na seleção é decidido no JSON do lutador
+// (`selecionavel`), nunca por lista de ids aqui. Cabem 3 cartas na tela.
+const SELECTABLE_ROSTER = FIGHTER_CHARACTER_DEFINITIONS.filter(
+  (character) => LUTADORES.find((lutador) => lutador.id === character.id)?.selecionavel !== false
 );
 
 interface PlayerCursor {

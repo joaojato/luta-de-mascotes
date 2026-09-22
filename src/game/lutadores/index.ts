@@ -2,6 +2,7 @@ import type { CharacterDefinition } from '../hero';
 import { buildFighterCharacter, type FighterActionSpec } from '../fighterCharacter';
 import type { FighterCombat, FighterStats } from '../types';
 
+import urubu from './urubu.json';
 import redBrawler from './red-brawler.json';
 import greenBoxer from './green-boxer.json';
 import jiujitsuFighter from './jiujitsu-fighter.json';
@@ -17,6 +18,8 @@ export interface LutadorJson {
   /** Pasta pública das sheets, ex. `/assets/lutadores/urubu`. */
   assetRoot: string;
   anchorUsage?: string;
+  /** Falso tira o lutador da tela de seleção (fica só na Academia). Padrão: verdadeiro. */
+  selecionavel?: boolean;
   /** Sobrescreve `DEFAULT_FIGHTER_STATS` só nos campos presentes. */
   stats?: Partial<FighterStats>;
   /** Sobrescreve `DEFAULT_FIGHTER_COMBAT` só nos campos presentes. */
@@ -25,7 +28,7 @@ export interface LutadorJson {
 }
 
 /** Ordem de registro = ordem na seleção. O primeiro é o padrão dos debugs. */
-export const LUTADORES: LutadorJson[] = [redBrawler, greenBoxer, jiujitsuFighter];
+export const LUTADORES: LutadorJson[] = [urubu, redBrawler, greenBoxer, jiujitsuFighter];
 
 export const LUTADOR_CHARACTERS: CharacterDefinition[] = LUTADORES.map(buildLutador);
 

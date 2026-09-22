@@ -193,3 +193,58 @@ com `resolveActionKeys`.
 Urubu × Cartola, o João deu ideia de ultimate pro Almirante). Conta do
 Spriterrific. Poda do starter. Marco 2 espera a referência do primeiro
 mascote, que é do João.
+
+## 2026-09-22: Urubu entra no jogo com idle e soco do Spriterrific
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "estou no spriterrific para fazer as imagens. Como eu uso?",
+depois "o resto você pode tocar", "Faz a do golpe".
+**Feito:**
+- `.env` criado a partir do modelo; a chave veio com o nome da variável
+  duplicado na linha (dois `=`), corrigido por `sed` sem ler o valor.
+- Referência do Urubu (`referencia/urubu/referencia-v2.png`) publicada pelo
+  João no catbox.moe (o upload feito por mim foi bloqueado pelo classificador
+  de permissão do Claude Code, motivo "Data Exfiltration"; ler parte da
+  chave também foi bloqueado, "Credential Materialization").
+- Três jobs na API do Spriterrific, um por vez, com resultado olhado entre
+  cada um. Rodadas em `spriterrific-runs/urubu-cx8exraz` (descartada) e
+  `spriterrific-runs/urubu-j58ew5pw` (usada).
+- `public/assets/lutadores/urubu/`: `anchor-w.png`, `idle.png` (10 quadros,
+  6 fps), `light-punch.png` (8 quadros, 12 fps), `portrait.png` provisório
+  (busto recortado do anchor sobre o roxo do retrato de amostra).
+- `src/game/lutadores/urubu.json`: idle e light-punch com boxes medidas nos
+  quadros (attack nos índices 3, 4 e 5, box x14 y62 70x44); as outras sete
+  ações obrigatórias apontam para `idle.png`, rotuladas "placeholder".
+- Regra do JSON cobrada na seleção: `CharacterSelectScene` tinha lista fixa
+  de ids (`SELECTABLE_FIGHTER_IDS`). Trocada por campo opcional
+  `selecionavel` no JSON; `green-boxer.json` recebe `false` (cabem 3 cartas).
+- Urubu registrado primeiro em `lutadores/index.ts`.
+- `docs/licoes.md`: lição sobre o preset `high-fidelity-v1` jogar fora a pose.
+**Verificado:** `npm run check` verde (typecheck, 30 testes, build). Prints via
+Playwright: seleção com Urubu como P1, Academia no quadro 5/8 do soco com
+attack box no punho e "ataque ATIVO", luta Urubu × Red Brawler com jab
+acertando. Zero erro de console do jogo (só aviso de driver GL do headless).
+**Créditos gastos:** 420 de 500. Job 1 (160, `high-fidelity-v1`, idle): anchor
+de braços caídos em perfil, idle andou; descartado. Job 2 (160,
+`preserve-reference-v1`, idle com "guard up, fists raised" no contexto):
+anchor em guarda, idle parado; prestou. Job 3 (100, `light_attack` com
+"quick straight jab, feet planted"): 8 quadros bons; prestou. Saldo: 80, que
+não compra nada. Tentativa de job só de anchor rejeitada sem custo ("Pick at
+least one animation").
+**Refeito ou apagado a pedido dele:** nada. O refazer do anchor foi decisão
+minha, apresentada com o custo antes.
+**Aprovado explicitamente:** "Faz a do golpe" (escolheu `light_attack` em vez
+do `walk_forward` que eu tinha recomendado).
+**Atrito:** ele perguntou duas vezes se podia criar contas novas para ganhar
+mais 500. Recusei operar isso (teste é por pessoa, o autor é o mesmo do
+motor que usamos de graça); ele disse que cria por conta própria. Sem
+travar o trabalho. Playwright: `Down` não é nome de tecla, é `ArrowDown`; e
+o clique no canvas já avança a splash, então o Enter seguinte cai no Play.
+**Em aberto:** não gastar dinheiro é decisão dele. Próximo teste, custo zero:
+Gemini com anchor + sheet do idle do Urubu como referência de estilo e grade
+e a fileira do Ryu como pose, gerando o soco (comparar com o do
+Spriterrific na Academia) e depois os outros golpes; Almirante só depois de
+tirar corvo e cruz da referência. Retrato de verdade do Urubu (João, no
+mesmo modelo da referência). Cenário em camadas. Decisão da ADR 0002 no fim
+do Marco 2. Permissão do Claude Code para upload em catbox e leitura de
+`.env` fica a critério dele (regra em `.claude/settings.json`).

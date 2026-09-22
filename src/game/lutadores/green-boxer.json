@@ -3,6 +3,7 @@
   "label": "Green Boxer",
   "assetRoot": "/assets/lutadores/_amostra-green-boxer",
   "anchorUsage": "green boxer west-facing high-fidelity anchor",
+  "selecionavel": false,
   "stats": {
     "walkSpeed": 250,
     "jump": 1000

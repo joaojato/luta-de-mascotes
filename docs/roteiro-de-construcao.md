@@ -25,7 +25,11 @@ ele é quebrado em dois, não esticado.
   com scrub de quadro e boxes; 17 testes cobram a Regra do JSON. Poda do
   starter de RPG **não feita** (custa mais que uma noite pelo tamanho do
   shell de debug); fica para quando atrapalhar.
-- [ ] Marco 2
+- [ ] Marco 2, em andamento (22/09/2026): Urubu na seleção e na Academia com
+  `idle` e `light-punch` reais do Spriterrific (420 dos 500 créditos grátis);
+  as outras 7 ações obrigatórias apontam para o idle como placeholder. Falta:
+  demais golpes (teste do Gemini com as sheets do Urubu como referência),
+  retrato de verdade, cenário em camadas, decisão da ADR 0002.
 - [ ] Marco 3 = v1
 - [ ] Marco 4 (se sobrar tempo)
 

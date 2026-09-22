@@ -1,0 +1,155 @@
+{
+  "id": "urubu",
+  "label": "Urubu",
+  "assetRoot": "/assets/lutadores/urubu",
+  "anchorUsage": "urubu west-facing high-fidelity anchor, guard up",
+  "stats": {},
+  "combat": {},
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Idle",
+      "file": "idle.png",
+      "frames": 10,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 74,
+        "y": 28,
+        "width": 108,
+        "height": 200
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Walk Forward (placeholder: idle)",
+      "file": "idle.png",
+      "frames": 10,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 74,
+        "y": 28,
+        "width": 108,
+        "height": 200
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Walk Backward (placeholder: idle)",
+      "file": "idle.png",
+      "frames": 10,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 74,
+        "y": 28,
+        "width": 108,
+        "height": 200
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Crouch (placeholder: idle)",
+      "file": "idle.png",
+      "frames": 10,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 74,
+        "y": 28,
+        "width": 108,
+        "height": 200
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Jump (placeholder: idle)",
+      "file": "idle.png",
+      "frames": 10,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 74,
+        "y": 28,
+        "width": 108,
+        "height": 200
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Block High (placeholder: idle)",
+      "file": "idle.png",
+      "frames": 10,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 74,
+        "y": 28,
+        "width": 108,
+        "height": 200
+      },
+      "guard": {
+        "x": 60,
+        "y": 44,
+        "width": 136,
+        "height": 116
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Hit High (placeholder: idle)",
+      "file": "idle.png",
+      "frames": 10,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 74,
+        "y": 28,
+        "width": 108,
+        "height": 200
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Light Punch",
+      "file": "light-punch.png",
+      "frames": 8,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 60,
+        "y": 28,
+        "width": 128,
+        "height": 200
+      },
+      "attack": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 14,
+          "y": 62,
+          "width": 70,
+          "height": 44
+        }
+      }
+    },
+    {
+      "action": "knockdown",
+      "label": "Knockdown (placeholder: idle)",
+      "file": "idle.png",
+      "frames": 10,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 74,
+        "y": 28,
+        "width": 108,
+        "height": 200
+      }
+    }
+  ]
+}
