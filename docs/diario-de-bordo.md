@@ -635,3 +635,36 @@ código Python; passei a usar a ferramenta de edição direta para código.
 **Em aberto:** o lote ainda não rodou com resultado de verdade do chat. A
 primeira rodada dele é o teste real, em especial se o chat mantém as
 fileiras separadas.
+
+## 2026-09-22: prompt cortado ao osso
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "você está complicando demais. A única coisa que você precisa
+passar no prompt é que ele precisa trocar os personagens e uma descrição de
+como o personagem é. Não precisa falar de método nem nada, ele já faz essas
+coisas automaticamente."
+**Feito:**
+- Prompt de ação única e do lote cortados para duas frases mais a descrição
+  travada: "Replace the fighter in image 2 with the character from image 1.
+  Same N frames, same poses." De 1919 para 841 caracteres.
+- Mensagens seguintes do lote viraram uma linha: "Same character. New
+  reference attached, N rows."
+- Saíram: separação de papéis das imagens, lista de proibições, estilo,
+  enquadramento, direção, baseline e a descrição do movimento por ação. A
+  imagem de referência já carrega tudo isso.
+- `texto_das_linhas` virou órfã e foi removida.
+- Antes disso, na tentativa de resolver a falha de geração, o pedido de
+  fundo transparente virou fundo branco liso, que é o que o gerador do
+  ChatGPT entrega sem falhar. O recorte por borda já dá conta.
+- `sprite.py aguardar <slug> <acao>`: só espera a imagem e entrega, sem
+  remontar o pedido. É o comando de repescagem quando a geração falha.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build). Pedido e
+lote regerados com os textos novos.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o prompt inteiro. Motivo dado por ele:
+o chat já faz método sozinho, só precisa saber o que trocar e por quem.
+**Aprovado explicitamente:** nada.
+**Atrito:** a geração do idle falhou duas vezes no chat ("a ferramenta não
+retornou uma imagem"), o que me levou a mexer no fundo antes de descobrir
+que o problema real era o prompt inchado.
+**Em aberto:** rodar o idle com o prompt curto.

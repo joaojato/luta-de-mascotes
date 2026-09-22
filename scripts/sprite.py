@@ -216,31 +216,11 @@ def comando_pedido(args) -> int:
         x += g.width + 20
     fileira.convert('RGB').save(destino / '2-movimento.png')
 
-    prompt = f"""Image 1 is the ONLY reference for who the character is.
-Image 2 is the ONLY reference for how the body moves.
+    prompt = f"""Replace the fighter in image 2 with the character from
+image 1. Same {len(recortes)} frames, same poses.
 
-Draw the character from image 1 performing the motion shown in image 2.
-Replace the fighter in image 2 with the character from image 1, frame by
-frame, keeping every pose, every limb angle and the spacing between frames
-exactly as they are in image 2. Do not copy anything else from image 2: not
-the clothes, not the colors, not the face, not the body proportions.
-
-THE CHARACTER (never change any of this):
-{descricao(args.slug)}
-
-THE ACTION: "{acao}", {len(recortes)} frames in a single horizontal row,
-evenly spaced, all frames on the same baseline, the whole body visible in
-every frame. The motion is {MOVIMENTO.get(acao, 'the motion shown in image 2')}.
-
-The character faces LEFT in every frame, side view, and never turns toward
-the camera.
-
-Style: high fidelity pixel art for a 2D arcade fighting game, bold flat
-colors, clean dark outlines, same pixel density as image 1.
-
-Transparent background (a flat white background is also fine). No text, no
-letters, no numbers, no logo, no crest, no sponsor, no ground shadow, no
-motion lines, no glow, no extra characters, no frame borders."""
+The character:
+{descricao(args.slug)}"""
 
     (destino / 'prompt.txt').write_text(prompt, encoding='utf-8')
 
@@ -442,13 +422,6 @@ def imagem_de_movimento(acoes: list[str], destino: Path, indice: int) -> list[in
     return contagem
 
 
-def texto_das_linhas(acoes: list[str], contagem: list[int]) -> str:
-    return '\n'.join(
-        f'{i + 1}. "{acao}" ({contagem[i]} frames): {MOVIMENTO.get(acao, "as shown")}'
-        for i, acao in enumerate(acoes)
-    )
-
-
 def comando_lote(args) -> int:
     _, lutador = carregar_lutador(args.slug)
     faltando = args.acoes or acoes_faltando(lutador, args.skin)
@@ -467,30 +440,11 @@ def comando_lote(args) -> int:
 
     contagens = [imagem_de_movimento(bloco, destino, i + 1) for i, bloco in enumerate(blocos)]
 
-    primeira = f"""Image 1 is the ONLY reference for who the character is.
-Image 2 is the ONLY reference for how the body moves.
+    primeira = f"""Replace the fighter in image 2 with the character from
+image 1. Keep the {len(blocos[0])} rows, same poses in each.
 
-Image 2 has {len(blocos[0])} rows, one per action. Redraw it with the
-character from image 1: same number of rows, same number of frames per row,
-same order, every pose and limb angle exactly as in image 2. Do not copy
-anything else from image 2: not the clothes, not the colors, not the face,
-not the body proportions.
-
-THE CHARACTER (never change any of this):
-{descricao(args.slug)}
-
-THE ROWS, top to bottom:
-{texto_das_linhas(blocos[0], contagens[0])}
-
-The character faces LEFT in every frame, side view, and never turns toward
-the camera. All frames in a row sit on the same baseline.
-
-Style: high fidelity pixel art for a 2D arcade fighting game, bold flat
-colors, clean dark outlines, same pixel density as image 1.
-
-Transparent background (a flat white background is also fine). No text, no
-letters, no numbers, no logo, no crest, no sponsor, no ground shadow, no
-motion lines, no glow, no extra characters, no frame borders."""
+The character:
+{descricao(args.slug)}"""
 
     (destino / 'texto-1.txt').write_text(primeira, encoding='utf-8')
 
@@ -512,9 +466,7 @@ motion lines, no glow, no extra characters, no frame borders."""
 
     for i, bloco in enumerate(blocos[1:], start=2):
         seguinte = (
-            'Same character, same style, same rules as before. New motion '
-            f'reference attached: {len(bloco)} rows, top to bottom:\n'
-            f'{texto_das_linhas(bloco, contagens[i - 1])}'
+            f'Same character. New reference attached, {len(bloco)} rows.'
         )
         (destino / f'texto-{i}.txt').write_text(seguinte, encoding='utf-8')
         roteiro += [f'## Mensagem {i}', '', f'Anexa `movimento-{i}.png`, e cola:', '',
@@ -552,6 +504,18 @@ motion lines, no glow, no extra characters, no frame borders."""
             copiar((destino / f'texto-{i + 1}.txt').read_text(encoding='utf-8'))
             print(f'texto da mensagem {i + 1} copiado. Anexa movimento-{i + 1}.png.')
     return 0
+
+
+def comando_aguardar(args) -> int:
+    """Espera a imagem e entrega, sem montar pedido de novo.
+
+    Serve para quando a geração falha no chat e você tenta outra vez: o
+    pedido já está montado, só falta a imagem.
+    """
+    baixado = vigiar(args.minutos)
+    if not baixado:
+        return 1
+    return entregar(args.slug, args.acao, baixado, args.skin, args.fps)
 
 
 def entregar_bloco(slug: str, acoes: list[str], quadros_por_acao: list[int],
@@ -604,6 +568,14 @@ def main() -> int:
     ent.add_argument('--skin', help='pasta da skin (padrão: a base)')
     ent.add_argument('--fps', type=int)
     ent.set_defaults(func=comando_entrega)
+
+    agu = sub.add_parser('aguardar', help='só espera a imagem e entrega (para retry)')
+    agu.add_argument('slug')
+    agu.add_argument('acao')
+    agu.add_argument('--skin', help='pasta da skin de destino (padrão: a base)')
+    agu.add_argument('--fps', type=int)
+    agu.add_argument('--minutos', type=int, default=20)
+    agu.set_defaults(func=comando_aguardar)
 
     lot = sub.add_parser('lote', help='tudo que falta, numa conversa só')
     lot.add_argument('slug')

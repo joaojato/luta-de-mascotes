@@ -116,6 +116,10 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   construir.** Dei duas opções erradas na cabeça (API e robô de navegador) e
   ele queria outra coisa: menos idas ao chat. Quatro opções concretas
   resolveram em uma pergunta. (2026-09-22)
+- **Prompt curto vence prompt blindado.** Eu empilhava método, estilo,
+  proibições e enquadramento; ele cortou para duas coisas: "troca o
+  personagem" e a descrição de quem é o personagem. O chat já faz o resto.
+  De 1900 para 840 caracteres. (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)
