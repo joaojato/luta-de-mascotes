@@ -788,3 +788,38 @@ tronco. Zero erro de console.
 **Aprovado explicitamente:** nada.
 **Atrito:** nada.
 **Em aberto:** faltam walk-forward, walk-backward, hit-high e knockdown.
+
+## 2026-09-22: a skin `frente` fecha as 13 ações, e o motor deixava 4 de fora
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "Tem novas imagens no urubu frente", e no meio da sessão "todas as
+imagens foram inseridas". O Codex despejou o resto das sheets na pasta.
+**Feito:**
+- Sete ações registradas na skin `frente`: heavy-kick (10 quadros, 12 fps),
+  hit-high (6, 12), knockdown (10, 10), walk-forward (8, 8), walk-backward
+  (8, 8), special-charge (5, 14) e special (12, 16). Com as seis anteriores,
+  a skin fecha as 13 ações que o motor conhece.
+- `attack` medido à mão no heavy-kick (quadros 3-5, caixa 22/86 84×80) e no
+  special (quadros 4-6, caixa 34/20 84×112). O comando não mede golpe.
+- **Sobra de quadro vizinho:** `knockdown` e `special` vieram com pedaços de
+  sola do quadro de cima caídos no topo da célula de baixo (4 e 5 quadros
+  sujos). Virou código: `ilhas_soltas` acha a faixa isolada, `registrar`
+  avisa, e `registrar --limpar` apaga antes de medir. Backup das 15 sheets
+  antes de tocar em qualquer uma.
+- **Bug do motor achado por acaso:** `expandirSkins` montava as ações da skin
+  com `lutador.actions.map(...)`, ou seja, só o que existia na base. As
+  quatro ações que só a skin tem (block-low, heavy-kick, special-charge,
+  special) ficavam no JSON e nunca chegavam ao jogo. O block-low estava assim
+  desde ontem. Corrigido, com teste novo que falha sem o conserto (conferido
+  revertendo o patch: "block-low não chegou no motor").
+**Verificado:** `npm run check` verde (typecheck, 38 testes, build). As sete
+sheets conferidas quadro a quadro em contato de revisão, e as caixas de ataque
+desenhadas por cima dos quadros ativos. Dev server servindo as sete com 200.
+**Academia: ainda não.** Sem browser nesta sessão, a conferência das 13
+animações na Academia ficou para o João.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** conferir as 13 na Academia. Depois disso, a `frente` vira a
+base e a `costas` passa a variante, como o roteiro previa.

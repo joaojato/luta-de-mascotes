@@ -91,14 +91,24 @@ function expandirSkins(lutador: LutadorJson): LutadorJson[] {
       label: `${lutador.label} (${skin.label})`,
       assetRoot: `${lutador.assetRoot}/${skin.pasta}`,
       selecionavel: skin.selecionavel ?? false,
-      actions: lutador.actions.map((acao) => {
-        const propria = skin.acoes?.[acao.action];
-        // Ação própria traz os números dela e o arquivo na pasta da skin;
-        // sem ela, herda tudo da base, inclusive o caminho.
-        return propria
-          ? { ...acao, ...propria, file: propria.file ?? `${acao.action}.png` }
-          : { ...acao, file: `../${base.pasta}/${acao.file}` };
-      }),
+      actions: [
+        ...lutador.actions.map((acao) => {
+          const propria = skin.acoes?.[acao.action];
+          // Ação própria traz os números dela e o arquivo na pasta da skin;
+          // sem ela, herda tudo da base, inclusive o caminho.
+          return propria
+            ? { ...acao, ...propria, file: propria.file ?? `${acao.action}.png` }
+            : { ...acao, file: `../${base.pasta}/${acao.file}` };
+        }),
+        // Ação que só esta skin tem: a sheet chegou para o modelo novo antes
+        // de existir na base. Sem isto ela fica no JSON e nunca entra no jogo.
+        ...Object.entries(skin.acoes ?? {})
+          .filter(([nome]) => !lutador.actions.some((acao) => acao.action === nome))
+          .map(
+            ([nome, propria]) =>
+              ({ ...propria, action: nome, file: propria.file ?? `${nome}.png` }) as FighterActionSpec
+          )
+      ],
       anchorFile: daBase('anchor-w.png'),
       portraitFile: daBase('portrait.png')
     } satisfies LutadorJson & { anchorFile: string; portraitFile: string };

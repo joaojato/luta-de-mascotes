@@ -77,6 +77,17 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   achou que estava pronto. A Regra do JSON é clara para quem programa, não
   para quem gera arte. Toda receita de asset precisa terminar com "e aí o
   JSON", e o script tem de imprimir os números prontos. (2026-09-22)
+- **Sheet do Codex vem com sobra do quadro vizinho.** No `knockdown` e no
+  `special` do Urubu de frente, pedaços de sola dos quadros da fileira de
+  cima caíram no topo da célula de baixo (4 e 5 quadros sujos). O olho não
+  pega na sheet inteira, só quando a animação roda. Conferir sempre com
+  `registrar` (ele avisa) e limpar com `registrar --limpar` antes de medir,
+  porque a sobra também estraga o `defaultVisual`. (2026-09-22)
+- **Imagem na pasta e ação no JSON ainda não é ação no jogo.** `expandirSkins`
+  montava a skin só com as ações que a base já tinha, então block-low,
+  heavy-kick, special-charge e special ficavam de fora sem erro nenhum.
+  Silêncio não é aprovação: ação nova pede teste que a cobre por nome.
+  (2026-09-22)
 - **O Gemini segura o estilo do Spriterrific** quando recebe anchor e sheet
   do idle como referência: o bloqueio saiu no mesmo traço, 4 quadros, sem
   gastar crédito. Sheet inteira com referência é outra coisa que quadro

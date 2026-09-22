@@ -519,6 +519,69 @@ The character:
     return 0
 
 
+# Uma sobra do quadro vizinho (pé cortado, sombra solta) chega como faixa
+# isolada dentro da célula. Abaixo disto ela é lixo do gerador, não pose.
+VAO_MINIMO = 24
+
+
+def ilhas_soltas(cel: Image.Image) -> list[tuple[int, int]]:
+    """Faixas horizontais da célula que estão separadas do corpo do lutador.
+
+    O Codex às vezes deixa cair na célula de baixo o pé do quadro de cima.
+    Devolve as faixas (y0, y1) que não são o bloco principal, para avisar ou
+    apagar. Lista vazia quer dizer célula limpa.
+    """
+    px = cel.load()
+    largura, altura = cel.size
+    cheias = [any(px[x, y][3] > ALPHA_MIN for x in range(largura)) for y in range(altura)]
+
+    faixas, inicio = [], None
+    for y, cheia in enumerate(cheias + [False]):
+        if cheia and inicio is None:
+            inicio = y
+        elif not cheia and inicio is not None:
+            if faixas and inicio - faixas[-1][1] < VAO_MINIMO:
+                faixas[-1] = (faixas[-1][0], y)  # vão curto: mesmo corpo
+            else:
+                faixas.append((inicio, y))
+            inicio = None
+
+    if len(faixas) < 2:
+        return []
+    corpo = max(faixas, key=lambda f: f[1] - f[0])
+    return [f for f in faixas if f != corpo]
+
+
+def sheets_com_sobra(caminho: Path) -> list[int]:
+    """Índices dos quadros que têm sobra de quadro vizinho."""
+    sheet = Image.open(caminho).convert('RGBA')
+    colunas = sheet.width // CELL
+    sujos = []
+    for i in range(colunas * (sheet.height // CELL)):
+        col, lin = i % colunas, i // colunas
+        cel = sheet.crop((col * CELL, lin * CELL, (col + 1) * CELL, (lin + 1) * CELL))
+        if ilhas_soltas(cel):
+            sujos.append(i)
+    return sujos
+
+
+def limpar_ilhas(caminho: Path) -> int:
+    """Apaga as sobras de quadro vizinho na sheet. Devolve quantas apagou."""
+    sheet = Image.open(caminho).convert('RGBA')
+    vazio = Image.new('RGBA', (CELL, 1), (0, 0, 0, 0))
+    apagadas = 0
+    for i in range(sheet.width // CELL * (sheet.height // CELL)):
+        col, lin = i % (sheet.width // CELL), i // (sheet.width // CELL)
+        cel = sheet.crop((col * CELL, lin * CELL, (col + 1) * CELL, (lin + 1) * CELL))
+        for y0, y1 in ilhas_soltas(cel):
+            for y in range(y0, y1):
+                sheet.paste(vazio, (col * CELL, lin * CELL + y))
+            apagadas += 1
+    if apagadas:
+        sheet.save(caminho, optimize=True)
+    return apagadas
+
+
 def medir_sheet(caminho: Path) -> dict:
     """Mede uma sheet que JÁ está na grade: quantos quadros e a caixa visual.
 
@@ -558,6 +621,15 @@ def comando_registrar(args) -> int:
     sheet = pasta_skin(lutador, destino_skin) / f'{args.acao}.png'
     if not sheet.exists():
         sys.exit(f'não achei {sheet}')
+
+    if args.limpar:
+        apagadas = limpar_ilhas(sheet)
+        print(f'limpeza: {apagadas} sobra(s) de quadro vizinho apagada(s).')
+    else:
+        sujas = sheets_com_sobra(sheet)
+        if sujas:
+            print(f'  ATENÇÃO: sobra de quadro vizinho nos quadros {sujas}.')
+            print('  Rode de novo com --limpar para apagar antes de registrar.')
 
     dados = medir_sheet(sheet)
     registrar(lutador, caminho_json, args.acao, dados, destino_skin, args.fps)
@@ -634,6 +706,8 @@ def main() -> int:
     reg.add_argument('acao')
     reg.add_argument('--skin', help='pasta da skin (padrão: a base)')
     reg.add_argument('--fps', type=int)
+    reg.add_argument('--limpar', action='store_true',
+                     help='apaga sobra de quadro vizinho antes de medir')
     reg.set_defaults(func=comando_registrar)
 
     agu = sub.add_parser('aguardar', help='só espera a imagem e entrega (para retry)')

@@ -122,6 +122,21 @@ describe('registro de lutadores (Regra do JSON)', () => {
         }
       });
     });
+
+    // A sheet chega para o modelo novo antes de existir na base. Se a ação
+    // só entrar pela lista da base, ela fica no JSON e nunca vira animação.
+    it('ação que só a skin tem entra na lista da skin', () => {
+      const urubu = LUTADORES.find((lutador) => lutador.id === 'urubu');
+      const frente = LUTADORES.find((lutador) => lutador.id === 'urubu-frente');
+      const proprias = Object.keys(
+        urubu?.skins?.find((variante) => variante.pasta === 'frente')?.acoes ?? {}
+      );
+      const naSkin = frente?.actions.map((spec) => spec.action) ?? [];
+
+      proprias
+        .filter((nome) => !urubu?.actions.some((acao) => acao.action === nome))
+        .forEach((nome) => expect(naSkin, `${nome} não chegou no motor`).toContain(nome));
+    });
   });
 
   it('monta uma definição por JSON, na mesma ordem', () => {
