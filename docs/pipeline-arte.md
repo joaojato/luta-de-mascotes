@@ -375,12 +375,12 @@ Cada modelo visual do mascote é uma subpasta de
 
 ```json
 "skins": [
-  { "id": "costas", "label": "perfil", "pasta": "costas" },
-  { "id": "frente", "label": "3/4 de frente", "pasta": "frente",
+  { "id": "frente", "label": "3/4 de frente", "pasta": "frente" },
+  { "id": "costas", "label": "perfil", "pasta": "costas",
     "sobrescreve": ["anchor-w.png", "portrait.png"],
     "acoes": {
-      "jump": { "file": "jump.png", "frames": 8, "frameRate": 10, "repeat": 0,
-                "defaultVisual": { "x": 56, "y": 11, "width": 153, "height": 242 } }
+      "idle": { "file": "idle.png", "frames": 10, "frameRate": 6, "repeat": -1,
+                "defaultVisual": { "x": 73, "y": 26, "width": 110, "height": 202 } }
     } }
 ]
 ```
@@ -393,8 +393,22 @@ Cada modelo visual do mascote é uma subpasta de
   sua caixa. O `idle` de um modelo tem 4 quadros e o do outro tem 10; se o
   número fosse compartilhado, uma das skins tocaria errado e a base passaria
   a apontar para arquivo que não existe na pasta dela.
-- A base mantém o id do mascote (`urubu`); as outras ganham sufixo
-  (`urubu-frente`) e ficam fora da seleção, aparecendo na Academia.
+- A base mantém o id do mascote (`urubu`) e aparece na seleção só com o nome
+  dele, sem o modelo entre parênteses; as outras ganham sufixo
+  (`urubu-costas`) e ficam fora da seleção, aparecendo na Academia.
+
+**Promover uma skin a base** (o modelo novo ficou mais completo que o velho,
+como a `frente` do Urubu em 22/09):
+
+1. As ações da skin nova saem de `acoes` e viram a lista `actions` do
+   mascote, com o campo `action` em cada uma.
+2. A skin velha passa a declarar em `acoes` os números que eram da lista
+   `actions`, e em `sobrescreve` o âncora e o retrato dela.
+3. A skin nova vira o primeiro item de `skins`, sem `acoes` nem
+   `sobrescreve`: ela é a base, os arquivos dela estão todos na pasta.
+4. O que a skin velha nunca teve passa a ser herdado da nova, e na Academia
+   ela mostra o modelo novo naquelas ações. É o sinal visível do que falta
+   nela, e não custa arquivo nenhum.
 
 **Para encaixar uma sheet que já veio alinhada** (o Codex entrega assim):
 salvar em `public/assets/lutadores/<slug>/<skin>/<acao>.png` e rodar

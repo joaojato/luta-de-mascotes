@@ -5,95 +5,92 @@
   "anchorUsage": "urubu west-facing high-fidelity anchor, guard up",
   "skins": [
     {
-      "id": "costas",
-      "label": "perfil",
-      "pasta": "costas"
-    },
-    {
       "id": "frente",
       "label": "3/4 de frente",
-      "pasta": "frente",
-      "sobrescreve": [
-        "anchor-w.png",
-        "portrait.png"
-      ],
+      "pasta": "frente"
+    },
+    {
+      "id": "costas",
+      "label": "perfil",
+      "pasta": "costas",
       "acoes": {
         "idle": {
-          "file": "idle.png",
-          "frames": 4,
-          "frameRate": 8,
-          "repeat": -1,
           "label": "Idle",
+          "file": "idle.png",
+          "frames": 10,
+          "frameRate": 6,
+          "repeat": -1,
           "defaultVisual": {
-            "x": 66,
+            "x": 73,
+            "y": 26,
+            "width": 110,
+            "height": 202
+          }
+        },
+        "walk-forward": {
+          "label": "Walk Forward (placeholder: idle)",
+          "file": "idle.png",
+          "frames": 10,
+          "frameRate": 6,
+          "repeat": -1,
+          "defaultVisual": {
+            "x": 74,
             "y": 28,
-            "width": 123,
+            "width": 108,
             "height": 200
           }
         },
-        "light-punch": {
-          "file": "light-punch.png",
-          "frames": 6,
-          "frameRate": 14,
-          "repeat": 0,
-          "label": "Light Punch",
+        "walk-backward": {
+          "label": "Walk Backward (placeholder: idle)",
+          "file": "idle.png",
+          "frames": 10,
+          "frameRate": 6,
+          "repeat": -1,
           "defaultVisual": {
-            "x": 19,
+            "x": 74,
             "y": 28,
-            "width": 182,
+            "width": 108,
             "height": 200
-          },
-          "attack": {
-            "frames": [
-              2,
-              3
-            ],
-            "bounds": {
-              "x": 19,
-              "y": 65,
-              "width": 72,
-              "height": 40
-            }
-          }
-        },
-        "jump": {
-          "file": "jump.png",
-          "frames": 8,
-          "frameRate": 10,
-          "repeat": 0,
-          "label": "Jump",
-          "defaultVisual": {
-            "x": 56,
-            "y": 11,
-            "width": 153,
-            "height": 242
           }
         },
         "crouch": {
-          "file": "crouch.png",
-          "frames": 5,
-          "frameRate": 10,
+          "label": "Crouch (placeholder: idle)",
+          "file": "idle.png",
+          "frames": 10,
+          "frameRate": 6,
           "repeat": 0,
           "defaultVisual": {
-            "x": 58,
-            "y": 13,
-            "width": 169,
-            "height": 224
-          },
-          "label": "Crouch"
+            "x": 74,
+            "y": 28,
+            "width": 108,
+            "height": 200
+          }
+        },
+        "jump": {
+          "label": "Jump (placeholder: idle)",
+          "file": "idle.png",
+          "frames": 10,
+          "frameRate": 6,
+          "repeat": 0,
+          "defaultVisual": {
+            "x": 73,
+            "y": 26,
+            "width": 110,
+            "height": 202
+          }
         },
         "block-high": {
+          "label": "Block High",
           "file": "block-high.png",
           "frames": 4,
           "frameRate": 10,
           "repeat": 0,
           "defaultVisual": {
-            "x": 49,
-            "y": 40,
-            "width": 158,
-            "height": 191
+            "x": 66,
+            "y": 28,
+            "width": 140,
+            "height": 200
           },
-          "label": "Block High",
           "guard": {
             "x": 56,
             "y": 30,
@@ -101,37 +98,31 @@
             "height": 120
           }
         },
-        "block-low": {
-          "file": "block-low.png",
-          "frames": 4,
-          "frameRate": 10,
+        "hit-high": {
+          "label": "Hit High (placeholder: idle)",
+          "file": "idle.png",
+          "frames": 10,
+          "frameRate": 6,
           "repeat": 0,
           "defaultVisual": {
-            "x": 75,
-            "y": 54,
-            "width": 134,
-            "height": 159
-          },
-          "label": "Block Low",
-          "guard": {
-            "x": 56,
-            "y": 80,
-            "width": 140,
-            "height": 110
+            "x": 74,
+            "y": 28,
+            "width": 108,
+            "height": 200
           }
         },
-        "heavy-kick": {
-          "file": "heavy-kick.png",
-          "frames": 10,
+        "light-punch": {
+          "label": "Light Punch",
+          "file": "light-punch.png",
+          "frames": 8,
           "frameRate": 12,
           "repeat": 0,
           "defaultVisual": {
-            "x": 18,
-            "y": 13,
-            "width": 226,
-            "height": 236
+            "x": 16,
+            "y": 28,
+            "width": 179,
+            "height": 200
           },
-          "label": "Heavy Kick",
           "attack": {
             "frames": [
               3,
@@ -139,105 +130,31 @@
               5
             ],
             "bounds": {
-              "x": 22,
-              "y": 86,
-              "width": 84,
-              "height": 80
+              "x": 14,
+              "y": 62,
+              "width": 70,
+              "height": 44
             }
           }
-        },
-        "hit-high": {
-          "file": "hit-high.png",
-          "frames": 6,
-          "frameRate": 12,
-          "repeat": 0,
-          "defaultVisual": {
-            "x": 38,
-            "y": 12,
-            "width": 204,
-            "height": 238
-          },
-          "label": "Hit High"
         },
         "knockdown": {
-          "file": "knockdown.png",
+          "label": "Knockdown (placeholder: idle)",
+          "file": "idle.png",
           "frames": 10,
-          "frameRate": 10,
+          "frameRate": 6,
           "repeat": 0,
           "defaultVisual": {
-            "x": 10,
-            "y": 14,
-            "width": 237,
-            "height": 236
-          },
-          "label": "Knockdown"
-        },
-        "walk-forward": {
-          "file": "walk-forward.png",
-          "frames": 8,
-          "frameRate": 8,
-          "repeat": -1,
-          "defaultVisual": {
-            "x": 18,
-            "y": 12,
-            "width": 213,
-            "height": 236
-          },
-          "label": "Walk Forward"
-        },
-        "walk-backward": {
-          "file": "walk-backward.png",
-          "frames": 8,
-          "frameRate": 8,
-          "repeat": -1,
-          "defaultVisual": {
-            "x": 32,
-            "y": 13,
-            "width": 194,
-            "height": 236
-          },
-          "label": "Walk Backward"
-        },
-        "special-charge": {
-          "file": "special-charge.png",
-          "frames": 5,
-          "frameRate": 14,
-          "repeat": 0,
-          "defaultVisual": {
-            "x": 45,
-            "y": 49,
-            "width": 164,
-            "height": 175
-          },
-          "label": "Special Charge"
-        },
-        "special": {
-          "file": "special.png",
-          "frames": 12,
-          "frameRate": 16,
-          "repeat": 0,
-          "defaultVisual": {
-            "x": 28,
-            "y": 14,
-            "width": 212,
-            "height": 236
-          },
-          "label": "Special",
-          "attack": {
-            "frames": [
-              4,
-              5,
-              6
-            ],
-            "bounds": {
-              "x": 34,
-              "y": 20,
-              "width": 84,
-              "height": 112
-            }
+            "x": 74,
+            "y": 28,
+            "width": 108,
+            "height": 200
           }
         }
-      }
+      },
+      "sobrescreve": [
+        "anchor-w.png",
+        "portrait.png"
+      ]
     }
   ],
   "stats": {},
@@ -245,87 +162,87 @@
   "actions": [
     {
       "action": "idle",
-      "label": "Idle",
       "file": "idle.png",
-      "frames": 10,
-      "frameRate": 6,
+      "frames": 4,
+      "frameRate": 8,
       "repeat": -1,
+      "label": "Idle",
       "defaultVisual": {
-        "x": 73,
-        "y": 26,
-        "width": 110,
-        "height": 202
+        "x": 66,
+        "y": 28,
+        "width": 123,
+        "height": 200
       }
     },
     {
       "action": "walk-forward",
-      "label": "Walk Forward (placeholder: idle)",
-      "file": "idle.png",
-      "frames": 10,
-      "frameRate": 6,
+      "file": "walk-forward.png",
+      "frames": 8,
+      "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
-        "x": 74,
-        "y": 28,
-        "width": 108,
-        "height": 200
-      }
+        "x": 18,
+        "y": 12,
+        "width": 213,
+        "height": 236
+      },
+      "label": "Walk Forward"
     },
     {
       "action": "walk-backward",
-      "label": "Walk Backward (placeholder: idle)",
-      "file": "idle.png",
-      "frames": 10,
-      "frameRate": 6,
+      "file": "walk-backward.png",
+      "frames": 8,
+      "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
-        "x": 74,
-        "y": 28,
-        "width": 108,
-        "height": 200
-      }
+        "x": 32,
+        "y": 13,
+        "width": 194,
+        "height": 236
+      },
+      "label": "Walk Backward"
     },
     {
       "action": "crouch",
-      "label": "Crouch (placeholder: idle)",
-      "file": "idle.png",
-      "frames": 10,
-      "frameRate": 6,
+      "file": "crouch.png",
+      "frames": 5,
+      "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 74,
-        "y": 28,
-        "width": 108,
-        "height": 200
-      }
+        "x": 58,
+        "y": 13,
+        "width": 169,
+        "height": 224
+      },
+      "label": "Crouch"
     },
     {
       "action": "jump",
-      "label": "Jump (placeholder: idle)",
-      "file": "idle.png",
-      "frames": 10,
-      "frameRate": 6,
+      "file": "jump.png",
+      "frames": 8,
+      "frameRate": 10,
       "repeat": 0,
+      "label": "Jump",
       "defaultVisual": {
-        "x": 73,
-        "y": 26,
-        "width": 110,
-        "height": 202
+        "x": 56,
+        "y": 11,
+        "width": 153,
+        "height": 242
       }
     },
     {
       "action": "block-high",
-      "label": "Block High",
       "file": "block-high.png",
       "frames": 4,
       "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 66,
-        "y": 28,
-        "width": 140,
-        "height": 200
+        "x": 49,
+        "y": 40,
+        "width": 158,
+        "height": 191
       },
+      "label": "Block High",
       "guard": {
         "x": 56,
         "y": 30,
@@ -334,32 +251,78 @@
       }
     },
     {
-      "action": "hit-high",
-      "label": "Hit High (placeholder: idle)",
-      "file": "idle.png",
-      "frames": 10,
-      "frameRate": 6,
+      "action": "block-low",
+      "file": "block-low.png",
+      "frames": 4,
+      "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 74,
-        "y": 28,
-        "width": 108,
-        "height": 200
+        "x": 75,
+        "y": 54,
+        "width": 134,
+        "height": 159
+      },
+      "label": "Block Low",
+      "guard": {
+        "x": 56,
+        "y": 80,
+        "width": 140,
+        "height": 110
       }
     },
     {
-      "action": "light-punch",
-      "label": "Light Punch",
-      "file": "light-punch.png",
-      "frames": 8,
+      "action": "hit-high",
+      "file": "hit-high.png",
+      "frames": 6,
       "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 16,
+        "x": 38,
+        "y": 12,
+        "width": 204,
+        "height": 238
+      },
+      "label": "Hit High"
+    },
+    {
+      "action": "light-punch",
+      "file": "light-punch.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "label": "Light Punch",
+      "defaultVisual": {
+        "x": 19,
         "y": 28,
-        "width": 179,
+        "width": 182,
         "height": 200
       },
+      "attack": {
+        "frames": [
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 19,
+          "y": 65,
+          "width": 72,
+          "height": 40
+        }
+      }
+    },
+    {
+      "action": "heavy-kick",
+      "file": "heavy-kick.png",
+      "frames": 10,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 18,
+        "y": 13,
+        "width": 226,
+        "height": 236
+      },
+      "label": "Heavy Kick",
       "attack": {
         "frames": [
           3,
@@ -367,26 +330,67 @@
           5
         ],
         "bounds": {
-          "x": 14,
-          "y": 62,
-          "width": 70,
-          "height": 44
+          "x": 22,
+          "y": 86,
+          "width": 84,
+          "height": 80
+        }
+      }
+    },
+    {
+      "action": "special-charge",
+      "file": "special-charge.png",
+      "frames": 5,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 45,
+        "y": 49,
+        "width": 164,
+        "height": 175
+      },
+      "label": "Special Charge"
+    },
+    {
+      "action": "special",
+      "file": "special.png",
+      "frames": 12,
+      "frameRate": 16,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 28,
+        "y": 14,
+        "width": 212,
+        "height": 236
+      },
+      "label": "Special",
+      "attack": {
+        "frames": [
+          4,
+          5,
+          6
+        ],
+        "bounds": {
+          "x": 34,
+          "y": 20,
+          "width": 84,
+          "height": 112
         }
       }
     },
     {
       "action": "knockdown",
-      "label": "Knockdown (placeholder: idle)",
-      "file": "idle.png",
+      "file": "knockdown.png",
       "frames": 10,
-      "frameRate": 6,
+      "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 74,
-        "y": 28,
-        "width": 108,
-        "height": 200
-      }
+        "x": 10,
+        "y": 14,
+        "width": 237,
+        "height": 236
+      },
+      "label": "Knockdown"
     }
   ]
 }

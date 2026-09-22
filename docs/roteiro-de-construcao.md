@@ -30,8 +30,9 @@ ele é quebrado em dois, não esticado.
   as outras 7 ações obrigatórias apontam para o idle como placeholder.
   Cenário "Estádio" na tela de escolha, em duas camadas (céu fixo e
   arquibancada que anda), arte do João no Nano Banana. A skin `frente`
-  (modelo novo, gerada pelo Codex) fechou as 13 ações do motor em 22/09.
-  Falta: conferir as 13 na Academia, promover `frente` a base, retrato de
+  (modelo novo, gerada pelo Codex) fechou as 13 ações do motor em 22/09 e
+  virou a base: na seleção há um Urubu só, e o modelo de perfil ficou como
+  variante de Academia. Falta: conferir as 13 na Academia, retrato de
   verdade, torcida animada (fora da v1), decisão da ADR 0002.
 - [ ] Marco 3 = v1
 - [ ] Marco 4 (se sobrar tempo)

@@ -82,42 +82,54 @@ describe('registro de lutadores (Regra do JSON)', () => {
   });
 
   describe('skins (variantes visuais do mesmo mascote)', () => {
+    // Nada aqui cita pasta por nome: a base troca quando um modelo novo fica
+    // pronto (a `frente` virou base em 22/09), e o teste não pode ir junto.
+    const mascote = LUTADORES.find((lutador) => lutador.id === 'urubu');
+    const [base, variante] = mascote?.skins ?? [];
+    const expandida = LUTADORES.find(
+      (lutador) => lutador.id === `urubu-${variante?.id}`
+    ) as (typeof LUTADORES)[number] & { anchorFile?: string; portraitFile?: string };
+
+    it('o mascote entra na seleção só uma vez, pela base', () => {
+      const selecionaveis = LUTADORES.filter(
+        (lutador) => lutador.id.startsWith('urubu') && lutador.selecionavel !== false
+      );
+      expect(selecionaveis.map((lutador) => lutador.id)).toEqual(['urubu']);
+      expect(selecionaveis[0]?.label, 'a base aparece pelo nome do mascote').toBe(mascote?.label);
+      expect(selecionaveis[0]?.assetRoot).toBe(`/assets/lutadores/urubu/${base?.pasta}`);
+    });
+
     it('a skin extra vira um lutador próprio, fora da seleção', () => {
-      const frente = LUTADORES.find((lutador) => lutador.id === 'urubu-frente');
-      expect(frente, 'urubu-frente não foi registrado').toBeTruthy();
-      expect(frente?.selecionavel).toBe(false);
-      expect(frente?.assetRoot).toBe('/assets/lutadores/urubu/frente');
+      expect(expandida, `urubu-${variante?.id} não foi registrado`).toBeTruthy();
+      expect(expandida?.selecionavel).toBe(false);
+      expect(expandida?.assetRoot).toBe(`/assets/lutadores/urubu/${variante?.pasta}`);
+      expect(expandida?.label).toContain(variante?.label ?? '');
     });
 
     // A regra, não um arquivo específico: a lista de ações próprias cresce a
     // cada sheet nova, e o teste não pode quebrar por isso.
     it('o que a skin declara vem dela, o resto vem da base', () => {
-      const urubu = LUTADORES.find((lutador) => lutador.id === 'urubu');
-      const frente = LUTADORES.find((lutador) => lutador.id === 'urubu-frente') as
-        | (typeof LUTADORES)[number] & { anchorFile?: string; portraitFile?: string }
-        | undefined;
-      const skin = urubu?.skins?.find((variante) => variante.pasta === 'frente');
-      const arquivos = new Set(skin?.sobrescreve ?? []);
-      const proprias = skin?.acoes ?? {};
+      const arquivos = new Set(variante?.sobrescreve ?? []);
+      const proprias = variante?.acoes ?? {};
       expect(Object.keys(proprias).length, 'a skin precisa ter ação própria').toBeGreaterThan(0);
 
       const conferirArquivo = (caminho: string | undefined, nome: string): void => {
         expect(caminho, `${nome} sem caminho`).toBe(
-          arquivos.has(nome) ? nome : `../costas/${nome}`
+          arquivos.has(nome) ? nome : `../${base?.pasta}/${nome}`
         );
       };
 
-      conferirArquivo(frente?.anchorFile, 'anchor-w.png');
-      conferirArquivo(frente?.portraitFile, 'portrait.png');
+      conferirArquivo(expandida?.anchorFile, 'anchor-w.png');
+      conferirArquivo(expandida?.portraitFile, 'portrait.png');
 
-      frente?.actions.forEach((spec) => {
+      expandida?.actions.forEach((spec) => {
         const propria = proprias[spec.action];
-        const naBase = urubu?.actions.find((outra) => outra.action === spec.action);
+        const naBase = mascote?.actions.find((outra) => outra.action === spec.action);
         if (propria) {
           expect(spec.file, `${spec.action} é próprio da skin`).not.toContain('../');
           expect(spec.frames, `${spec.action} usa os quadros da skin`).toBe(propria.frames);
         } else {
-          expect(spec.file, `${spec.action} é herdado`).toBe(`../costas/${naBase?.file}`);
+          expect(spec.file, `${spec.action} é herdado`).toBe(`../${base?.pasta}/${naBase?.file}`);
           expect(spec.frames, `${spec.action} usa os quadros da base`).toBe(naBase?.frames);
         }
       });
@@ -126,15 +138,10 @@ describe('registro de lutadores (Regra do JSON)', () => {
     // A sheet chega para o modelo novo antes de existir na base. Se a ação
     // só entrar pela lista da base, ela fica no JSON e nunca vira animação.
     it('ação que só a skin tem entra na lista da skin', () => {
-      const urubu = LUTADORES.find((lutador) => lutador.id === 'urubu');
-      const frente = LUTADORES.find((lutador) => lutador.id === 'urubu-frente');
-      const proprias = Object.keys(
-        urubu?.skins?.find((variante) => variante.pasta === 'frente')?.acoes ?? {}
-      );
-      const naSkin = frente?.actions.map((spec) => spec.action) ?? [];
+      const naSkin = expandida?.actions.map((spec) => spec.action) ?? [];
 
-      proprias
-        .filter((nome) => !urubu?.actions.some((acao) => acao.action === nome))
+      Object.keys(variante?.acoes ?? {})
+        .filter((nome) => !mascote?.actions.some((acao) => acao.action === nome))
         .forEach((nome) => expect(naSkin, `${nome} não chegou no motor`).toContain(nome));
     });
   });

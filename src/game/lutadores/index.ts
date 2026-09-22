@@ -76,7 +76,9 @@ function expandirSkins(lutador: LutadorJson): LutadorJson[] {
   const definicaoBase: LutadorJson = {
     ...lutador,
     assetRoot: raizBase,
-    label: `${lutador.label} (${base.label})`,
+    // A base é o mascote: na seleção ele aparece pelo nome, sem o modelo
+    // entre parênteses. O sufixo fica só nas variantes, que vivem na Academia.
+    label: lutador.label,
     selecionavel: base.selecionavel ?? lutador.selecionavel ?? true
   };
 

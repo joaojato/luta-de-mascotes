@@ -25,6 +25,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   lições destiladas. (pedido dele em 15/09/2026, no Icons4U; herdado aqui
   porque numa matéria de Comunicação o processo é parte da entrega)
 
+- **Um mascote, uma entrada na seleção.** Com a skin nova mais completa que
+  a velha, ele mandou tirar o modelo antigo da seleção e deixar só "Urubu",
+  sem o modelo entre parênteses. Variante é assunto da Academia, não da
+  escolha de personagem. (2026-09-22)
+
 ## O que não fazer
 
 - **Ele não quer gastar dinheiro no Spriterrific** para o resto dos

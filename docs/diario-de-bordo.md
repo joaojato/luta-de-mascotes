@@ -823,3 +823,39 @@ animações na Academia ficou para o João.
 **Atrito:** nada.
 **Em aberto:** conferir as 13 na Academia. Depois disso, a `frente` vira a
 base e a `costas` passa a variante, como o roteiro previa.
+
+## 2026-09-22: a `frente` vira a base e o perfil sai da seleção
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "Tire o urubu (perfil) como um boneco jogável e deixe apenas
+Urubu (para a versão mais completa que acabamos de fazer)."
+**Feito:**
+- As 13 ações da skin `frente` saíram de `acoes` e viraram a lista `actions`
+  do mascote. A `costas` passou a declarar os números antigos em `acoes`
+  (idle 10 quadros, light-punch 8, block-high 4, e os seis placeholders que
+  apontam para o idle dela) e o âncora e o retrato em `sobrescreve`.
+- `expandirSkins`: a base deixou de ganhar o modelo entre parênteses. Na
+  seleção aparece "Urubu"; na Academia, "Urubu (perfil)" fora da seleção.
+- As quatro ações que a `costas` nunca teve (block-low, heavy-kick,
+  special-charge, special) passam a ser herdadas da `frente`. Na Academia
+  ela mostra o modelo novo nessas quatro, o que é o sinal visível do que
+  falta nela.
+- Testes de skin reescritos sem citar pasta por nome: eles descobrem base e
+  variante pelo JSON, então a próxima troca de base não quebra teste. Um
+  teste novo cobra o pedido de hoje: o mascote entra na seleção uma vez só,
+  pela base, e com o nome limpo.
+- `docs/pipeline-arte.md` ganhou a receita de promover skin a base.
+**Verificado:** `npm run check` verde (typecheck, 39 testes, build). Motor
+listado a partir do registro: `urubu` "Urubu" selecionável em
+`/assets/lutadores/urubu/frente` com as 13 sheets próprias, e `urubu-costas`
+"Urubu (perfil)" com `selecionavel=false`.
+**Academia: ainda não.** Continua pendente a conferência visual das 13 na
+Academia, e agora também a tela de seleção com um Urubu só.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada apagado. O modelo antigo virou
+variante, como manda a Regra da Skin.
+**Aprovado explicitamente:** o modelo `frente` do Urubu, ao pedir que ele
+seja o único jogável.
+**Atrito:** nada.
+**Em aberto:** conferir na Academia e na seleção. Depois, cenário e segundo
+mascote (Marco 3).
