@@ -251,6 +251,33 @@ JSON dizia `idle.png`. São três passos, sempre:
 O João pode fazer os três sozinho. Se preferir, gera, salva em
 `referencia/<slug>/` e avisa o agente, que faz o 2 e o 3 e mostra a Academia.
 
+## Skins: testar modelos de roupa sem perder o anterior
+
+Cada modelo visual do mascote é uma subpasta de
+`public/assets/lutadores/<slug>/`, declarada em `skins` no JSON do lutador:
+
+```json
+"skins": [
+  { "id": "costas", "label": "perfil", "pasta": "costas" },
+  { "id": "frente", "label": "3/4 de frente", "pasta": "frente",
+    "sobrescreve": ["anchor-w.png", "portrait.png"] }
+]
+```
+
+- A **primeira é a base** e precisa ter todos os arquivos.
+- As outras listam em `sobrescreve` só o que têm; o resto vem da base.
+- A base mantém o id do mascote (`urubu`); as outras ganham sufixo
+  (`urubu-frente`) e ficam fora da seleção, aparecendo na Academia.
+
+**Para mover uma sheet nova para a skin**: salvar o PNG alinhado em
+`public/assets/lutadores/<slug>/<skin>/<acao>.png` e acrescentar o nome do
+arquivo em `sobrescreve`. Uma linha, e a Academia já mostra a diferença
+apertando A/D.
+
+**Quando a skin nova ficar completa**, trocar a ordem das skins no JSON: a
+que estiver completa vira a primeira (a base), e a antiga passa a listar os
+arquivos dela em `sobrescreve`.
+
 ## Cenário, passo a passo
 
 1. Três imagens no Nano Banana Pro ou GPT Image, mesma paleta e hora do dia:

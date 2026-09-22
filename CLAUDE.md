@@ -48,7 +48,7 @@ src/game/lutadores/lutadores.test.ts   cobra a Regra do JSON por máquina
 src/game/fighterCharacter.ts   monta um lutador a partir da lista de ações
 src/shell/            shell HTML de debug (só em dev, localhost)
 public/assets/lutadores/_amostra-<nome>/   sprites de amostra do Chong-U
-public/assets/lutadores/<slug>/            sprites dos nossos mascotes
+public/assets/lutadores/<slug>/<skin>/     sprites, uma pasta por skin
 public/assets/backgrounds/, stages/, ui/   cenário e HUD de amostra
 ```
 
@@ -59,6 +59,12 @@ Mapa de nomes: `Match` é a Luta, `CharacterSelect` é a Seleção. A `Academia`
 
 Cada uma tem nome para poder ser cobrada depois.
 
+- **Regra da Skin.** Variante visual do mesmo mascote (roupa, modelo de
+  desenho) é uma subpasta de `public/assets/lutadores/<slug>/` declarada em
+  `skins` no JSON. A primeira skin é a base; as outras só listam em
+  `sobrescreve` os arquivos que têm de verdade e herdam o resto. Modelo
+  antigo nunca é apagado, vira skin. Skin extra fica fora da seleção e
+  aparece na Academia.
 - **Regra do JSON.** Lutador é dado, não classe. Adicionar mascote é criar um
   JSON e uma pasta de sprites, zero código novo no motor. Se um mascote precisar
   de código próprio, o motor está errado, não o mascote.

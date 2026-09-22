@@ -404,3 +404,46 @@ frente".
 `block-high` do Gemini) ainda são do modelo velho e precisam ser refeitas,
 o `idle` primeiro. Retrato do Urubu também sai do modelo novo. Almirante
 continua esperando a limpeza de corvo e cruz.
+
+## 2026-09-22: skins, para testar modelo de roupa sem jogar o anterior fora
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "você consegue fazer isso de skin para os personagens? o que eu
+pensei era fazer uma pasta dentro de urubu por exemplo e a gente consegue
+definir as skins. É mais para testar os modelos de roupa. A versão de costas
+ou a versão de frente (eu não quero jogar fora)."
+**Feito:**
+- `skins` opcional no `LutadorJson`: lista de subpastas de `assetRoot`. A
+  primeira é a base e tem tudo; as outras listam em `sobrescreve` só os
+  arquivos próprios e herdam o resto como caminho relativo
+  (`../costas/idle.png`), que navegador e `resolve` do teste normalizam
+  igual. Expansão em `expandirSkins`, dentro de `lutadores/index.ts`: o
+  motor não mudou nem uma linha.
+- Base mantém o id (`urubu`); extra vira `urubu-frente` e nasce fora da
+  seleção (`selecionavel: false`), aparecendo na Academia, que lista tudo.
+- Assets reorganizados: `urubu/costas/` com o que existia (anchor do
+  Spriterrific recuperado do commit cd0fa90, idle, light-punch, block-high,
+  portrait) e `urubu/frente/` com o anchor do modelo novo e um retrato
+  tirado dele.
+- Testes: 2 novos de skin (a extra é lutador próprio fora da seleção; herda
+  o idle da base e usa o próprio anchor). O teste de arquivos passou a
+  resolver `anchorFile`/`portraitFile` em vez de assumir o nome fixo, senão
+  skin que herda o anchor daria falso negativo. 30 para 37 testes.
+- **Regra da Skin** no `CLAUDE.md` e seção no `docs/pipeline-arte.md` com
+  como mover uma sheet para a skin e como promover a skin a base.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build).
+Playwright: Academia mostrando "Urubu (perfil) (1/5)" e "Urubu (3/4 de
+frente) (2/5)", tocando o idle herdado. Zero erro de console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada apagado; o ponto do pedido era
+justamente não apagar o modelo antigo.
+**Aprovado explicitamente:** nada.
+**Atrito:** eu tinha commitado o `block-low.png` bruto em `public/` sem
+olhar, porque rodei `git add -A` enquanto ele salvava arquivo na pasta.
+Removido do repositório no commit seguinte e movido para `referencia/`.
+Lição: conferir `git status` antes do add quando a sessão é longa e ele
+está mexendo nas pastas ao mesmo tempo.
+**Em aberto:** a skin `frente` só tem anchor e retrato. Cada sheet nova
+alinhada entra na pasta dela e no `sobrescreve`. O `block-low` que ele gerou
+precisa voltar ao Gemini: três dos quatro quadros saíram de frente para a
+câmera, e o primeiro é guarda em pé, não bloqueio baixo.

@@ -67,10 +67,35 @@ describe('registro de lutadores (Regra do JSON)', () => {
 
       it('todas as sheets, o âncora e o retrato existem em public/', () => {
         const pasta = resolve(PUBLIC_DIR, `.${lutador.assetRoot}`);
-        ['anchor-w.png', 'portrait.png', ...lutador.actions.map((spec) => spec.file)].forEach((arquivo) => {
+        // Skin herdada aponta para a pasta da base (`../costas/idle.png`);
+        // `resolve` normaliza igual ao navegador.
+        const comArquivos = lutador as typeof lutador & { anchorFile?: string; portraitFile?: string };
+        [
+          comArquivos.anchorFile ?? 'anchor-w.png',
+          comArquivos.portraitFile ?? 'portrait.png',
+          ...lutador.actions.map((spec) => spec.file)
+        ].forEach((arquivo) => {
           expect(existsSync(resolve(pasta, arquivo)), `${lutador.assetRoot}/${arquivo}`).toBe(true);
         });
       });
+    });
+  });
+
+  describe('skins (variantes visuais do mesmo mascote)', () => {
+    it('a skin extra vira um lutador próprio, fora da seleção', () => {
+      const frente = LUTADORES.find((lutador) => lutador.id === 'urubu-frente');
+      expect(frente, 'urubu-frente não foi registrado').toBeTruthy();
+      expect(frente?.selecionavel).toBe(false);
+      expect(frente?.assetRoot).toBe('/assets/lutadores/urubu/frente');
+    });
+
+    it('a skin usa o que tem e herda o resto da base', () => {
+      const frente = LUTADORES.find((lutador) => lutador.id === 'urubu-frente') as
+        | (typeof LUTADORES)[number] & { anchorFile?: string }
+        | undefined;
+      expect(frente?.anchorFile, 'âncora própria').toBe('anchor-w.png');
+      const idle = frente?.actions.find((spec) => spec.action === 'idle');
+      expect(idle?.file, 'idle herdado da base').toBe('../costas/idle.png');
     });
   });
 

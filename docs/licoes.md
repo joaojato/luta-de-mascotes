@@ -90,6 +90,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   era regra do projeto. Toda regra herdada de uma ferramenta precisa dizer
   de qual, senão vira superstição e trava trabalho que podia andar.
   (2026-09-22)
+- **Ele não joga arte fora, e isso é método, não apego.** Pediu skin para
+  guardar o modelo antigo ao trocar de modelo. Toda troca de asset deve
+  perguntar onde o anterior fica, nunca sobrescrever calado. (2026-09-22)
+- **`git add -A` sem olhar o `git status` em sessão longa.** Ele salva
+  arquivo na pasta enquanto eu trabalho; um PNG bruto entrou no repositório
+  sem conferência. Conferir a lista antes do commit, sempre. (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)

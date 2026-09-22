@@ -3,6 +3,22 @@
   "label": "Urubu",
   "assetRoot": "/assets/lutadores/urubu",
   "anchorUsage": "urubu west-facing high-fidelity anchor, guard up",
+  "skins": [
+    {
+      "id": "costas",
+      "label": "perfil",
+      "pasta": "costas"
+    },
+    {
+      "id": "frente",
+      "label": "3/4 de frente",
+      "pasta": "frente",
+      "sobrescreve": [
+        "anchor-w.png",
+        "portrait.png"
+      ]
+    }
+  ],
   "stats": {},
   "combat": {},
   "actions": [
