@@ -333,7 +333,8 @@ export class MatchScene extends BaseScene {
 
   /**
    * Places the chosen stage fit to the viewport height, anchored at world x=0,
-   * and sets up the scrollable world. The stage's on-screen width becomes the
+   * and sets up the scrollable world. A stage with `sky` gets that image
+   * behind it, stretched to the viewport and fixed to the camera. The stage's on-screen width becomes the
    * world width; the camera is bounded to it so it can scroll horizontally and
    * stop at the stage ends (producing corners).
    */
@@ -344,6 +345,15 @@ export class MatchScene extends BaseScene {
     const scale = cam.height / (source.height || stage.height);
     this.stageWorldWidth = (source.width || stage.width) * scale;
     this.maxScroll = Math.max(0, this.stageWorldWidth - cam.width);
+
+    if (stage.sky && this.textures.exists(stage.sky.key)) {
+      this.add
+        .image(0, 0, stage.sky.key)
+        .setOrigin(0, 0)
+        .setDisplaySize(cam.width, cam.height)
+        .setScrollFactor(0)
+        .setDepth(-1);
+    }
 
     this.add.image(0, 0, stage.key).setOrigin(0, 0).setScale(scale).setDepth(0);
     cam.setBounds(0, 0, this.stageWorldWidth, cam.height);

@@ -12,6 +12,17 @@ export interface StageDefinition {
   url: string;
   width: number;
   height: number;
+  /**
+   * Céu opcional: imagem esticada para a tela inteira, desenhada atrás do
+   * cenário e presa à câmera (não rola). O cenário por cima precisa de
+   * transparência onde o céu aparece. Ver `docs/prompt-cenario.md`.
+   */
+  sky?: {
+    key: string;
+    url: string;
+    width: number;
+    height: number;
+  };
 }
 
 /**
@@ -50,14 +61,31 @@ export const STAGE_DEFINITIONS: StageDefinition[] = [
   }
 ];
 
-export const STAGE_IMAGE_ASSETS: ImageAsset[] = STAGE_DEFINITIONS.map((stage) => ({
-  kind: 'image',
-  key: stage.key,
-  url: stage.url,
-  width: stage.width,
-  height: stage.height,
-  usage: `${stage.label.toLowerCase()} fighting-stage background candidate`
-}));
+export const STAGE_IMAGE_ASSETS: ImageAsset[] = STAGE_DEFINITIONS.flatMap((stage) => {
+  const assets: ImageAsset[] = [
+    {
+      kind: 'image',
+      key: stage.key,
+      url: stage.url,
+      width: stage.width,
+      height: stage.height,
+      usage: `${stage.label.toLowerCase()} fighting-stage background candidate`
+    }
+  ];
+
+  if (stage.sky) {
+    assets.push({
+      kind: 'image',
+      key: stage.sky.key,
+      url: stage.sky.url,
+      width: stage.sky.width,
+      height: stage.sky.height,
+      usage: `${stage.label.toLowerCase()} fixed sky layer behind the stage`
+    });
+  }
+
+  return assets;
+});
 
 export const DEFAULT_STAGE_PREVIEW_STATE: StagePreviewDebugState = {
   stageId: STAGE_DEFINITIONS[0].id,

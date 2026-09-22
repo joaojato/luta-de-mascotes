@@ -248,3 +248,35 @@ tirar corvo e cruz da referência. Retrato de verdade do Urubu (João, no
 mesmo modelo da referência). Cenário em camadas. Decisão da ADR 0002 no fim
 do Marco 2. Permissão do Claude Code para upload em catbox e leitura de
 `.env` fica a critério dele (regra em `.claude/settings.json`).
+
+## 2026-09-22: prompts do cenário e camada de céu fixo no motor
+
+**Marco:** Marco 2, em andamento (item "cenário").
+**Pedido:** "Eu quero mudar o cenário, preciso de um prompt para eu gerar
+ambos, tanto o cenário principal quanto o fundo (o céu não mexe, e o cenário
+mexe). É importante também você criar uma seção de escolher o mapa (o padrão
+ou o meu)".
+**Feito:**
+- `docs/prompt-cenario.md`: dois prompts (céu 16:9 fixo; cenário 21:9 com
+  céu em verde chapado para recorte), medidas que o motor impõe (chão a 82%
+  da altura, ajuste a 720 de altura, rolagem acima de 1280 de largura),
+  onde salvar, e o que iterar por script em vez de por prompt.
+- `src/game/stageConfig.ts`: campo opcional `sky` em `StageDefinition`, e
+  o asset dele entra na carga.
+- `src/scenes/MatchScene.ts`: se o cenário tem `sky`, desenha a imagem
+  esticada para a tela, presa à câmera (`scrollFactor 0`), atrás do cenário.
+- Escolher o mapa: a tela `Select Stage` já lista todo cenário registrado;
+  o do João entra como terceira carta quando as imagens chegarem.
+**Verificado:** `npm run check` verde (typecheck, 30 testes, build). Teste
+descartável: rooftop de amostra partido em céu e cenário com topo
+transparente, registrado, luta fotografada em duas posições de câmera: o
+cenário rolou e o céu ficou parado. Teste apagado depois.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** contei errado os Enter do menu no Playwright (o primeiro é o
+Play); custou uma rodada de fotos.
+**Em aberto:** as duas imagens são do João. Quando chegarem: recortar o verde
+da B por script, registrar em `stageConfig.ts`, conferir chão e rolagem na
+luta. Torcida animada e terceira camada (gramado separado) ficam para
+depois da v1.
