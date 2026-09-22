@@ -364,3 +364,43 @@ vista de quem só gera arte.
 **Em aberto:** registrar o prompt que ele usou no Gemini (pedir). Próximas
 sheets pelo mesmo caminho: heavy-kick, walk-forward, hit-high, jump,
 crouch, knockdown, special.
+
+## 2026-09-22: modelo do Urubu trocado, o de 3/4 vira oficial
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "O modelo atual do urubu nos personagens está me incomodando
+porque ele está praticamente de costas, enquanto os outros bonecos estão
+mais de frente", depois "é esse mesmo, é possível usar ele para os
+movimentos? ou ele precisa ter o fundo verde e etc".
+**Feito:**
+- Avaliação do `referencia/urubu/Urubu-alternativo.png` (447×447, figura de
+  248×382, fundo branco): pose 3/4 mostrando o peito, no mesmo enquadramento
+  do Red Brawler, que é exatamente a queixa dele. Cabeça e bico maiores,
+  listras com mais contraste, direção certa (esquerda).
+- Respondido que o fundo verde era exigência do Spriterrific (chroma), não
+  do Gemini. O arquivo serve como está.
+- `referencia/urubu/modelo-oficial.png`: o modelo recortado por
+  preenchimento a partir das bordas (o calção branco fica intacto porque não
+  toca a borda). É o que se anexa no Gemini daqui para frente.
+- `public/assets/lutadores/urubu/anchor-w.png` trocado: figura ampliada 2×
+  em NEAREST (496×764) sobre verde chapado, pés a 92% da altura. O anchor não
+  é desenhado em nenhuma cena, só o teste cobra que exista, então a troca não
+  quebra nada visual.
+- `scripts/alinhar-sheet.py` aprendeu fundo sólido de borda: tenta chroma
+  verde, e se não achar, faz o preenchimento. Testado com fundo branco (2
+  quadros, alinhou) e regressão no `block-high` (mesmos números de antes).
+- `docs/pipeline-arte.md`: molde de prompt por ação, contagem de quadros
+  sugerida por movimento, e a regra de que o `idle` vem primeiro porque o
+  script alinha tudo por ele.
+**Verificado:** `npm run check` verde (typecheck, 30 testes, build).
+**Créditos gastos:** nada. Saldo segue em 80.
+**Refeito ou apagado a pedido dele:** o modelo do Urubu. Motivo dado por ele:
+"está praticamente de costas, enquanto os outros bonecos estão mais de
+frente".
+**Aprovado explicitamente:** "é esse mesmo", sobre o modelo alternativo.
+**Atrito:** uma busca recursiva em `referencia/` travou por causa da pasta
+`chong-u`; refeita direto na pasta do mascote.
+**Em aberto:** as três sheets atuais (`idle` e `light-punch` do Spriterrific,
+`block-high` do Gemini) ainda são do modelo velho e precisam ser refeitas,
+o `idle` primeiro. Retrato do Urubu também sai do modelo novo. Almirante
+continua esperando a limpeza de corvo e cruz.

@@ -209,10 +209,35 @@ Spriterrific, gerados no Gemini com o anchor e a sheet do idle como
 referência. Só a imagem na pasta **não faz nada**: o motor lê o JSON, e o
 JSON dizia `idle.png`. São três passos, sempre:
 
-1. **Gerar** no Gemini anexando `anchor-w.png` e `idle.png` do mascote
-   (estilo, escala e pose de partida). Pedir uma fileira de quadros, fundo
-   transparente ou verde chapado, mesmo personagem, sem texto. Salvar em
+1. **Gerar** no Gemini anexando o **modelo oficial** do mascote
+   (`referencia/<slug>/modelo-oficial.png`) e, quando já houver, a sheet do
+   `idle` (escala e linha dos pés). Salvar em
    `referencia/<slug>/<acao>-gemini.png` (fora do git).
+
+   **A ordem importa: o `idle` vem primeiro.** O script alinha tudo pela
+   sheet do idle, então trocar o idle depois obriga a realinhar o resto.
+
+   Molde do prompt, trocando só o que está entre colchetes:
+
+   > Using the attached character as the exact and only reference for the
+   > character design, generate a 2D fighting game sprite sheet row for the
+   > action "[ação]". [N] frames in a single horizontal row, evenly spaced,
+   > each frame showing the full body with the feet on the same baseline.
+   > The character faces **left** in every frame. [descrição do movimento em
+   > uma frase: o que o corpo faz do primeiro ao último quadro]. Keep the
+   > exact same character design, colors, proportions, outline style and
+   > pixel density as the reference: same bird head, same red and black
+   > striped shirt, same white shorts, same striped socks. Transparent
+   > background. No text, no logos, no crest, no ground shadow, no motion
+   > lines, no extra characters.
+
+   Quadros por ação, o que costuma bastar: `idle` 4, `walk-forward` 6,
+   `light-punch` 6, `heavy-kick` 6, `block-high` 4, `hit-high` 4, `crouch` 3,
+   `jump` 5, `knockdown` 6, `special` 8.
+
+   Fundo: transparente é o ideal. **Fundo branco também serve**, o script
+   remove a partir das bordas sem comer o calção branco. Verde chapado só é
+   obrigatório para o Spriterrific.
 2. **Alinhar** à grade do motor (256×256, 5 colunas, pés na linha do idle):
    ```
    python scripts/alinhar-sheet.py referencia/<slug>/<acao>-gemini.png public/assets/lutadores/<slug>/<acao>.png --ref public/assets/lutadores/<slug>/idle.png

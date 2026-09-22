@@ -81,6 +81,15 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   do idle como referência: o bloqueio saiu no mesmo traço, 4 quadros, sem
   gastar crédito. Sheet inteira com referência é outra coisa que quadro
   avulso, como ele tinha dito em 17/09. (2026-09-22)
+- **Ele compara o mascote com os lutadores de amostra, não com a
+  referência.** O anchor do Spriterrific saiu quase de costas e só incomodou
+  quando ficou lado a lado com o Red Brawler na seleção. Ao avaliar arte
+  nova, montar a comparação lado a lado com quem já está no jogo, não olhar
+  o asset isolado. (2026-09-22)
+- **Fundo verde é exigência do Spriterrific, não do Gemini.** Ele achou que
+  era regra do projeto. Toda regra herdada de uma ferramenta precisa dizer
+  de qual, senão vira superstição e trava trabalho que podia andar.
+  (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)

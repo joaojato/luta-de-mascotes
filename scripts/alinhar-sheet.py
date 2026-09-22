@@ -7,7 +7,9 @@ Uso:
     python scripts/alinhar-sheet.py ENTRADA SAIDA --ref public/assets/lutadores/<slug>/idle.png
 
 O que faz:
-  1. Se a entrada não tiver transparência, recorta verde chapado (#00FF00).
+  1. Se a entrada não tiver transparência, recorta o fundo: verde chapado
+     (#00FF00) ou fundo claro sólido (branco), este por preenchimento a
+     partir das bordas, o que preserva partes brancas do personagem.
   2. Separa os quadros por colunas e linhas vazias (funciona para uma
      fileira ou para uma grade sem células fixas).
   3. Mede a altura da figura no primeiro quadro da referência e no
@@ -23,7 +25,7 @@ import argparse
 import math
 import sys
 
-from PIL import Image, ImageChops, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 CELL = 256
 COLS = 5
@@ -33,6 +35,28 @@ ALPHA_MIN = 8
 def bbox_alpha(im: Image.Image):
     a = im.getchannel('A').point(lambda v: 255 if v > ALPHA_MIN else 0)
     return a.getbbox()
+
+
+def recortar_borda(im: Image.Image) -> Image.Image:
+    """Remove o fundo sólido conectado às bordas (branco, cinza, qualquer cor
+    chapada) por preenchimento a partir dos quatro cantos. Preserva áreas da
+    mesma cor que não toquem a borda, como um calção branco."""
+    rgb = im.convert('RGB')
+    w, h = rgb.size
+    work = rgb.copy()
+    marca = (255, 0, 255)
+    for semente in ((0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)):
+        ImageDraw.floodfill(work, semente, marca, thresh=30)
+    px = work.load()
+    alpha = Image.new('L', (w, h), 255)
+    ap = alpha.load()
+    for y in range(h):
+        for x in range(w):
+            if px[x, y] == marca:
+                ap[x, y] = 0
+    out = rgb.copy()
+    out.putalpha(alpha)
+    return out
 
 
 def recortar_verde(im: Image.Image) -> Image.Image:
@@ -120,8 +144,14 @@ def main() -> int:
     im = Image.open(args.entrada)
     im = im.convert('RGBA')
     if bbox_alpha(im) == (0, 0, im.width, im.height):
-        # sem transparência de verdade: tenta o verde
-        im = recortar_verde(im)
+        # sem transparência: decide entre chroma verde e fundo sólido de borda
+        verde = recortar_verde(im)
+        if bbox_alpha(verde) != (0, 0, im.width, im.height):
+            im = verde
+            print('fundo: verde chapado')
+        else:
+            im = recortar_borda(im)
+            print('fundo: sólido, removido a partir das bordas')
 
     quadros = separar_quadros(im)
     if not quadros:
