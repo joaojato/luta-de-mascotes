@@ -302,32 +302,45 @@ def entregar(slug: str, acao_nome: str, entrada: Path, skin: str | None, fps: in
 
 def registrar(lutador: dict, caminho_json: Path, acao_nome: str, dados: dict,
               destino_skin: str, fps: int | None) -> None:
-    """Escreve a ação no JSON do mascote e marca o arquivo como próprio da skin."""
+    """Escreve a ação no JSON, na skin certa.
+
+    Cada sheet tem sua contagem de quadros e sua caixa, então ação de skin
+    extra vai para o bloco `acoes` dela, e nunca por cima da base: senão a
+    base passa a apontar para arquivo que não existe na pasta dela.
+    """
     _, amostra = carregar_lutador(REFERENCIA_MOVIMENTO)
     modelo = next((a for a in amostra['actions'] if a['action'] == acao_nome), None)
 
-    acao = next((a for a in lutador['actions'] if a['action'] == acao_nome), None)
-    if acao is None:
-        acao = {'action': acao_nome, 'label': acao_nome}
-        lutador['actions'].append(acao)
+    spec = {
+        'file': f'{acao_nome}.png',
+        'frames': dados['frames'],
+        'frameRate': fps or (modelo['frameRate'] if modelo else 10),
+        'repeat': modelo['repeat'] if modelo else 0,
+        'defaultVisual': dados['defaultVisual'],
+    }
 
-    acao['file'] = f'{acao_nome}.png'
-    acao['frames'] = dados['frames']
-    acao['frameRate'] = fps or (modelo['frameRate'] if modelo else 10)
-    acao['repeat'] = modelo['repeat'] if modelo else 0
-    acao['defaultVisual'] = dados['defaultVisual']
-    acao['label'] = acao.get('label', acao_nome).replace(' (placeholder: idle)', '')
+    skins = lutador.get('skins') or []
+    base = skins[0]['pasta'] if skins else ''
+    variante = next((v for v in skins if v['pasta'] == destino_skin), None)
 
-    if destino_skin:
-        for variante in lutador.get('skins') or []:
-            if variante['pasta'] == destino_skin and 'sobrescreve' in variante:
-                if f'{acao_nome}.png' not in variante['sobrescreve']:
-                    variante['sobrescreve'].append(f'{acao_nome}.png')
+    if variante is not None and destino_skin != base:
+        antiga = (variante.setdefault('acoes', {})).get(acao_nome, {})
+        rotulo = antiga.get('label') or acao_nome.replace('-', ' ').title()
+        variante['acoes'][acao_nome] = {**antiga, **spec, 'label': rotulo}
+        onde = f'skin {destino_skin}'
+    else:
+        acao = next((a for a in lutador['actions'] if a['action'] == acao_nome), None)
+        if acao is None:
+            acao = {'action': acao_nome, 'label': acao_nome}
+            lutador['actions'].append(acao)
+        acao.update(spec)
+        acao['label'] = acao.get('label', acao_nome).replace(' (placeholder: idle)', '')
+        onde = 'base'
 
     caminho_json.write_text(
         json.dumps(lutador, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
     )
-    print(f'JSON: {acao_nome}, {acao["frames"]} quadros, {acao["frameRate"]} fps')
+    print(f'JSON ({onde}): {acao_nome}, {spec["frames"]} quadros, {spec["frameRate"]} fps')
 
 
 def avisar_golpe(acao_nome: str) -> None:
@@ -506,6 +519,53 @@ The character:
     return 0
 
 
+def medir_sheet(caminho: Path) -> dict:
+    """Mede uma sheet que JÁ está na grade: quantos quadros e a caixa visual.
+
+    Serve para sheet que chegou pronta (o Codex, por exemplo, já alinha), sem
+    passar de novo pelo recorte e realinhamento.
+    """
+    sheet = Image.open(caminho).convert('RGBA')
+    colunas = sheet.width // CELL
+    linhas = sheet.height // CELL
+
+    caixas = []
+    for i in range(colunas * linhas):
+        col, lin = i % colunas, i // colunas
+        cel = sheet.crop((col * CELL, lin * CELL, (col + 1) * CELL, (lin + 1) * CELL))
+        bb = bbox_alpha(cel)
+        if bb:
+            caixas.append(bb)
+
+    if not caixas:
+        sys.exit(f'{caminho} está vazia')
+
+    return {
+        'frames': len(caixas),
+        'defaultVisual': {
+            'x': min(c[0] for c in caixas),
+            'y': min(c[1] for c in caixas),
+            'width': max(c[2] for c in caixas) - min(c[0] for c in caixas),
+            'height': max(c[3] for c in caixas) - min(c[1] for c in caixas),
+        },
+    }
+
+
+def comando_registrar(args) -> int:
+    """Registra no JSON uma sheet que já está na grade, dentro da pasta da skin."""
+    caminho_json, lutador = carregar_lutador(args.slug)
+    destino_skin = args.skin or skin_base(lutador)
+    sheet = pasta_skin(lutador, destino_skin) / f'{args.acao}.png'
+    if not sheet.exists():
+        sys.exit(f'não achei {sheet}')
+
+    dados = medir_sheet(sheet)
+    registrar(lutador, caminho_json, args.acao, dados, destino_skin, args.fps)
+    avisar_golpe(args.acao)
+    print('Confira na Academia antes de dar por pronto.')
+    return 0
+
+
 def comando_aguardar(args) -> int:
     """Espera a imagem e entrega, sem montar pedido de novo.
 
@@ -568,6 +628,13 @@ def main() -> int:
     ent.add_argument('--skin', help='pasta da skin (padrão: a base)')
     ent.add_argument('--fps', type=int)
     ent.set_defaults(func=comando_entrega)
+
+    reg = sub.add_parser('registrar', help='sheet que já está na grade: só escreve o JSON')
+    reg.add_argument('slug')
+    reg.add_argument('acao')
+    reg.add_argument('--skin', help='pasta da skin (padrão: a base)')
+    reg.add_argument('--fps', type=int)
+    reg.set_defaults(func=comando_registrar)
 
     agu = sub.add_parser('aguardar', help='só espera a imagem e entrega (para retry)')
     agu.add_argument('slug')

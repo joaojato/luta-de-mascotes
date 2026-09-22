@@ -61,10 +61,11 @@ Cada uma tem nome para poder ser cobrada depois.
 
 - **Regra da Skin.** Variante visual do mesmo mascote (roupa, modelo de
   desenho) é uma subpasta de `public/assets/lutadores/<slug>/` declarada em
-  `skins` no JSON. A primeira skin é a base; as outras só listam em
-  `sobrescreve` os arquivos que têm de verdade e herdam o resto. Modelo
-  antigo nunca é apagado, vira skin. Skin extra fica fora da seleção e
-  aparece na Academia.
+  `skins` no JSON. A primeira skin é a base e tem tudo; as outras declaram
+  em `acoes` as ações próprias (com os números delas, porque cada sheet tem
+  sua contagem de quadros) e em `sobrescreve` os arquivos soltos, herdando
+  o resto. Modelo antigo nunca é apagado, vira skin. Skin extra fica fora
+  da seleção e aparece na Academia.
 - **Regra do JSON.** Lutador é dado, não classe. Adicionar mascote é criar um
   JSON e uma pasta de sprites, zero código novo no motor. Se um mascote precisar
   de código próprio, o motor está errado, não o mascote.

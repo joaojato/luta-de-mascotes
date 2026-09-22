@@ -377,19 +377,33 @@ Cada modelo visual do mascote é uma subpasta de
 "skins": [
   { "id": "costas", "label": "perfil", "pasta": "costas" },
   { "id": "frente", "label": "3/4 de frente", "pasta": "frente",
-    "sobrescreve": ["anchor-w.png", "portrait.png"] }
+    "sobrescreve": ["anchor-w.png", "portrait.png"],
+    "acoes": {
+      "jump": { "file": "jump.png", "frames": 8, "frameRate": 10, "repeat": 0,
+                "defaultVisual": { "x": 56, "y": 11, "width": 153, "height": 242 } }
+    } }
 ]
 ```
 
 - A **primeira é a base** e precisa ter todos os arquivos.
-- As outras listam em `sobrescreve` só o que têm; o resto vem da base.
+- As outras declaram em `acoes` as ações próprias, **com os números delas**,
+  e em `sobrescreve` os arquivos soltos (âncora, retrato). Tudo que não
+  estiver declarado é herdado da base, arquivo e números.
+- Por que os números são por skin: cada sheet tem sua contagem de quadros e
+  sua caixa. O `idle` de um modelo tem 4 quadros e o do outro tem 10; se o
+  número fosse compartilhado, uma das skins tocaria errado e a base passaria
+  a apontar para arquivo que não existe na pasta dela.
 - A base mantém o id do mascote (`urubu`); as outras ganham sufixo
   (`urubu-frente`) e ficam fora da seleção, aparecendo na Academia.
 
-**Para mover uma sheet nova para a skin**: salvar o PNG alinhado em
-`public/assets/lutadores/<slug>/<skin>/<acao>.png` e acrescentar o nome do
-arquivo em `sobrescreve`. Uma linha, e a Academia já mostra a diferença
-apertando A/D.
+**Para encaixar uma sheet que já veio alinhada** (o Codex entrega assim):
+salvar em `public/assets/lutadores/<slug>/<skin>/<acao>.png` e rodar
+
+```
+npm run sprite -- registrar <slug> <acao> --skin <skin>
+```
+
+O comando mede a sheet e escreve o JSON na skin certa.
 
 **Quando a skin nova ficar completa**, trocar a ordem das skins no JSON: a
 que estiver completa vira a primeira (a base), e a antiga passa a listar os

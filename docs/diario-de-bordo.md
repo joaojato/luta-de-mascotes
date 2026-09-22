@@ -725,3 +725,45 @@ eu preciso e como deve ser feito."
 `image_gen` built-in consegue salvar direto num caminho do disco ou se o
 agente precisa de outro passo para isso. O prompt pede o resultado salvo em
 `referencia/urubu/<acao>-gpt.png` e deixa o caminho a cargo dele.
+
+## 2026-09-22: Codex entrega o jump, e skin ganha números próprios
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "Esquece tudo que eu te falei de processo de automatização com
+prompt abrindo gpt e blá blá blá. O Codex consegue acessar a pasta, consegue
+gerar imagens e colocar o resultado no lugar certo, ele fez tudo que eu
+queria, você podia simplesmente ter me falado que eu podia usá-lo. Implemente
+o jump.png."
+**Feito:**
+- O Codex gerou e **já alinhou** `public/assets/lutadores/urubu/frente/jump.png`
+  (8 quadros: agacha, impulsiona, ar com pernas dobradas, descida, pouso).
+  Faltava só o registro.
+- `npm run sprite -- registrar <slug> <acao> --skin <skin>`: mede uma sheet
+  que já está na grade e escreve o JSON, sem passar pelo recorte e
+  realinhamento. É o comando para o que o Codex entrega.
+- Bug de modelo que isso expôs: as ações eram compartilhadas entre skins, só
+  o caminho do arquivo mudava. Registrar o `jump` na skin `frente` fez a base
+  apontar para `jump.png`, que não existe na pasta `costas`: teste vermelho e
+  erro de spritesheet no console. Pior, `idle` e `light-punch` já estavam com
+  os números do modelo novo valendo para a skin antiga (4 quadros numa sheet
+  de 10).
+- Correção: skin extra agora declara `acoes`, um bloco por ação **com os
+  números dela**; a base mantém os seus. `sobrescreve` ficou só para arquivo
+  solto (âncora, retrato). `expandirSkins` mescla, `registrar` escreve na
+  skin certa, e o teste de skin virou regra em cima disso.
+- Base restaurada com os números medidos das sheets dela (idle 10 quadros,
+  light-punch 8, block-high 4), e a skin `frente` com idle 4, light-punch 6
+  e jump 8.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build). Academia:
+"Urubu (3/4 de frente)", jump quadro 4/8 no topo do salto; skin `costas`
+conferida na sequência e intacta. Zero erro de console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** todo o fluxo de automação em volta do
+chat. Motivo dado por ele: o Codex já faz o trabalho inteiro sozinho.
+**Aprovado explicitamente:** nada.
+**Atrito:** eu não ofereci o Codex quando ele perguntou de automação, e ele
+descobriu sozinho depois de eu construir três versões de um fluxo que sempre
+parava na porta do chat.
+**Em aberto:** faltam walk-forward, walk-backward, crouch, block-high,
+hit-high e knockdown na skin `frente`. Quando fecharem, ela vira a base e a
+`costas` passa a ser a variante.

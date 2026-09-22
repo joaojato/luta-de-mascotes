@@ -42,10 +42,17 @@ export interface LutadorSkin {
   /** Subpasta dentro do `assetRoot` do lutador, ex. `frente`. */
   pasta: string;
   /**
-   * Arquivos que esta skin tem de verdade (`idle.png`, `anchor-w.png`...).
-   * O que não estiver aqui vem da skin base. Ignorado na base, que tem tudo.
+   * Arquivos soltos que esta skin tem de verdade (`anchor-w.png`,
+   * `portrait.png`). O que não estiver aqui vem da skin base.
    */
   sobrescreve?: string[];
+  /**
+   * Ações que esta skin tem próprias, com os números dela. Cada sheet tem
+   * sua contagem de quadros e sua caixa, então não dá para compartilhar com
+   * a base: o `idle` de um modelo pode ter 4 quadros e o do outro 10.
+   * O que não estiver aqui é herdado da base, arquivo e números.
+   */
+  acoes?: Record<string, Partial<FighterActionSpec>>;
   /** Padrão: só a base entra na seleção; as outras ficam na Academia. */
   selecionavel?: boolean;
 }
@@ -84,7 +91,14 @@ function expandirSkins(lutador: LutadorJson): LutadorJson[] {
       label: `${lutador.label} (${skin.label})`,
       assetRoot: `${lutador.assetRoot}/${skin.pasta}`,
       selecionavel: skin.selecionavel ?? false,
-      actions: lutador.actions.map((acao) => ({ ...acao, file: daBase(acao.file) })),
+      actions: lutador.actions.map((acao) => {
+        const propria = skin.acoes?.[acao.action];
+        // Ação própria traz os números dela e o arquivo na pasta da skin;
+        // sem ela, herda tudo da base, inclusive o caminho.
+        return propria
+          ? { ...acao, ...propria, file: propria.file ?? `${acao.action}.png` }
+          : { ...acao, file: `../${base.pasta}/${acao.file}` };
+      }),
       anchorFile: daBase('anchor-w.png'),
       portraitFile: daBase('portrait.png')
     } satisfies LutadorJson & { anchorFile: string; portraitFile: string };

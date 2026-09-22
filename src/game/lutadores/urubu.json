@@ -15,10 +15,61 @@
       "pasta": "frente",
       "sobrescreve": [
         "anchor-w.png",
-        "portrait.png",
-        "light-punch.png",
-        "idle.png"
-      ]
+        "portrait.png"
+      ],
+      "acoes": {
+        "idle": {
+          "file": "idle.png",
+          "frames": 4,
+          "frameRate": 8,
+          "repeat": -1,
+          "label": "Idle",
+          "defaultVisual": {
+            "x": 66,
+            "y": 28,
+            "width": 123,
+            "height": 200
+          }
+        },
+        "light-punch": {
+          "file": "light-punch.png",
+          "frames": 6,
+          "frameRate": 14,
+          "repeat": 0,
+          "label": "Light Punch",
+          "defaultVisual": {
+            "x": 19,
+            "y": 28,
+            "width": 182,
+            "height": 200
+          },
+          "attack": {
+            "frames": [
+              2,
+              3
+            ],
+            "bounds": {
+              "x": 19,
+              "y": 65,
+              "width": 72,
+              "height": 40
+            }
+          }
+        },
+        "jump": {
+          "file": "jump.png",
+          "frames": 8,
+          "frameRate": 10,
+          "repeat": 0,
+          "label": "Jump",
+          "defaultVisual": {
+            "x": 56,
+            "y": 11,
+            "width": 153,
+            "height": 242
+          }
+        }
+      }
     }
   ],
   "stats": {},
@@ -28,14 +79,14 @@
       "action": "idle",
       "label": "Idle",
       "file": "idle.png",
-      "frames": 4,
-      "frameRate": 8,
+      "frames": 10,
+      "frameRate": 6,
       "repeat": -1,
       "defaultVisual": {
-        "x": 66,
-        "y": 28,
-        "width": 123,
-        "height": 200
+        "x": 73,
+        "y": 26,
+        "width": 110,
+        "height": 202
       }
     },
     {
@@ -88,10 +139,10 @@
       "frameRate": 6,
       "repeat": 0,
       "defaultVisual": {
-        "x": 74,
-        "y": 28,
-        "width": 108,
-        "height": 200
+        "x": 73,
+        "y": 26,
+        "width": 110,
+        "height": 202
       }
     },
     {
@@ -132,25 +183,26 @@
       "action": "light-punch",
       "label": "Light Punch",
       "file": "light-punch.png",
-      "frames": 6,
-      "frameRate": 14,
+      "frames": 8,
+      "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 19,
+        "x": 16,
         "y": 28,
-        "width": 182,
+        "width": 179,
         "height": 200
       },
       "attack": {
         "frames": [
-          2,
-          3
+          3,
+          4,
+          5
         ],
         "bounds": {
-          "x": 19,
-          "y": 65,
-          "width": 72,
-          "height": 40
+          "x": 14,
+          "y": 62,
+          "width": 70,
+          "height": 44
         }
       }
     },

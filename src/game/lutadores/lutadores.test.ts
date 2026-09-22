@@ -89,31 +89,37 @@ describe('registro de lutadores (Regra do JSON)', () => {
       expect(frente?.assetRoot).toBe('/assets/lutadores/urubu/frente');
     });
 
-    // A regra, não um arquivo específico: a lista `sobrescreve` cresce a cada
-    // sheet nova, e o teste não pode quebrar por isso.
-    it('arquivo em `sobrescreve` vem da skin, o resto vem da base', () => {
+    // A regra, não um arquivo específico: a lista de ações próprias cresce a
+    // cada sheet nova, e o teste não pode quebrar por isso.
+    it('o que a skin declara vem dela, o resto vem da base', () => {
       const urubu = LUTADORES.find((lutador) => lutador.id === 'urubu');
       const frente = LUTADORES.find((lutador) => lutador.id === 'urubu-frente') as
         | (typeof LUTADORES)[number] & { anchorFile?: string; portraitFile?: string }
         | undefined;
       const skin = urubu?.skins?.find((variante) => variante.pasta === 'frente');
-      const proprios = new Set(skin?.sobrescreve ?? []);
-      expect(proprios.size, 'a skin precisa declarar o que tem').toBeGreaterThan(0);
+      const arquivos = new Set(skin?.sobrescreve ?? []);
+      const proprias = skin?.acoes ?? {};
+      expect(Object.keys(proprias).length, 'a skin precisa ter ação própria').toBeGreaterThan(0);
 
-      const conferir = (arquivo: string | undefined, nome: string): void => {
-        expect(arquivo, `${nome} sem caminho`).toBeTruthy();
-        if (proprios.has(nome)) {
-          expect(arquivo, `${nome} é próprio`).toBe(nome);
-        } else {
-          expect(arquivo, `${nome} é herdado`).toBe(`../costas/${nome}`);
-        }
+      const conferirArquivo = (caminho: string | undefined, nome: string): void => {
+        expect(caminho, `${nome} sem caminho`).toBe(
+          arquivos.has(nome) ? nome : `../costas/${nome}`
+        );
       };
 
-      conferir(frente?.anchorFile, 'anchor-w.png');
-      conferir(frente?.portraitFile, 'portrait.png');
+      conferirArquivo(frente?.anchorFile, 'anchor-w.png');
+      conferirArquivo(frente?.portraitFile, 'portrait.png');
+
       frente?.actions.forEach((spec) => {
-        const nome = spec.file.split('/').pop() as string;
-        conferir(spec.file, nome);
+        const propria = proprias[spec.action];
+        const naBase = urubu?.actions.find((outra) => outra.action === spec.action);
+        if (propria) {
+          expect(spec.file, `${spec.action} é próprio da skin`).not.toContain('../');
+          expect(spec.frames, `${spec.action} usa os quadros da skin`).toBe(propria.frames);
+        } else {
+          expect(spec.file, `${spec.action} é herdado`).toBe(`../costas/${naBase?.file}`);
+          expect(spec.frames, `${spec.action} usa os quadros da base`).toBe(naBase?.frames);
+        }
       });
     });
   });

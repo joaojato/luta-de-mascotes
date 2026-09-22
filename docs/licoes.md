@@ -120,6 +120,16 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   proibições e enquadramento; ele cortou para duas coisas: "troca o
   personagem" e a descrição de quem é o personagem. O chat já faz o resto.
   De 1900 para 840 caracteres. (2026-09-22)
+- **Devia ter oferecido o Codex na primeira pergunta sobre automação.**
+  Ele perguntou "tem como automatizar?" e eu construí três versões de um
+  fluxo que sempre parava na porta do chat, quando a resposta era "usa o
+  Codex, ele gera imagem e escreve no disco". Antes de automatizar em volta
+  de uma ferramenta, checar se já existe uma que faz o trabalho inteiro.
+  (2026-09-22)
+- **Número de quadros é por skin, não por ação.** O `idle` de um modelo tem
+  4 quadros e o do outro 10. Compartilhar a contagem entre skins faz uma
+  delas tocar errado e a base apontar para arquivo que não existe na pasta
+  dela. (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)
