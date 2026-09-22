@@ -557,3 +557,38 @@ detectado e devolvido em menos de 6 segundos.
 **Em aberto:** dirigir o ChatGPT por Playwright (colar e anexar sozinho) foi
 apresentado e não feito: os termos de uso da OpenAI proíbem acesso
 automatizado à interface, e a conta é dele. Decisão fica com ele.
+
+## 2026-09-22: primeiro sprite do fluxo novo, o soco do Urubu de frente
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** continuação da automação; ele gerou o soco no ChatGPT Plus com o
+pedido montado pelo script e salvou o resultado.
+**Feito:**
+- O soco veio bom de primeira: 6 quadros, modelo novo, virado para a
+  esquerda, poses acompanhando a referência do `red-brawler`. Bruto movido
+  para `referencia/urubu/light-punch-gpt.png`.
+- Bug achado na entrega: o braço esticado do quadro 3 encosta no quadro 4,
+  não sobra coluna vazia e os dois viraram um bloco só (5 quadros em vez de
+  6). Primeira tentativa de correção (dividir bloco largo pela mediana)
+  errou para 7, porque o quadro do soco é legitimamente mais largo. Correção
+  boa: o alinhador recebe quantos quadros o pedido pediu (`--esperados`,
+  vindo de `QUADROS[acao]`) e, faltando quadro, corta o bloco mais largo na
+  coluna com menos pixel, repetindo até fechar a conta.
+- `public/assets/lutadores/urubu/frente/light-punch.png` (6 quadros, 14 fps)
+  e `attack` medido nos quadros 2 e 3 (caixa 19/65, 72×40), onde o punho
+  passa de x=60.
+- `__pycache__` tinha vazado para o repositório num commit anterior:
+  removido e acrescentado ao `.gitignore`.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build).
+Academia: "Urubu (3/4 de frente) (2/5)", light punch quadro 3/6, "ataque
+ATIVO", attack box vermelha no punho esticado. Zero erro de console.
+**Créditos gastos:** nada. Primeira sheet do projeto feita inteira no plano
+que ele já paga.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada com todas as letras, mas ele executou o
+fluxo e entregou o resultado, que é o sinal prático.
+**Atrito:** `git add -A` levou junto o `__pycache__` e o PNG bruto que ele
+tinha acabado de salvar na pasta. Segunda vez na mesma sessão.
+**Em aberto:** o `idle` do modelo novo, que é o que falta para a skin frente
+poder virar a base. Depois: walk-forward, hit-high, block-high, crouch,
+jump, knockdown, heavy-kick e special.

@@ -99,7 +99,30 @@ def faixas_ocupadas(perfil, minimo_vazio):
     return faixas
 
 
-def separar_quadros(im: Image.Image):
+def densidade_colunas(a: Image.Image, x0: int, x1: int, y0: int, y1: int) -> list[int]:
+    """Quantos pixels opacos por coluna, no recorte dado."""
+    faixa = a.crop((x0, y0, x1, y1))
+    return [faixa.crop((x, 0, x + 1, y1 - y0)).histogram()[255] for x in range(x1 - x0)]
+
+
+def dividir_em_dois(a, bloco, y0, y1) -> list[tuple[int, int]]:
+    """Corta um bloco no meio, na coluna com menos pixel.
+
+    Usado quando um braço esticado encosta no quadro vizinho e não sobra
+    coluna vazia entre eles.
+    """
+    x0, x1 = bloco
+    largura = x1 - x0
+    dens = densidade_colunas(a, x0, x1, y0, y1)
+    margem = max(6, largura // 4)
+    ini, fim = margem, largura - margem
+    if ini >= fim:
+        return [bloco]
+    corte = x0 + min(range(ini, fim), key=lambda x: dens[x])
+    return [(x0, corte), (corte, x1)]
+
+
+def separar_quadros(im: Image.Image, esperados: int = 0):
     a = im.getchannel('A').point(lambda v: 255 if v > ALPHA_MIN else 0)
     w, h = a.size
     # linhas: projeta no eixo vertical
@@ -108,8 +131,24 @@ def separar_quadros(im: Image.Image):
     for (y0, y1) in faixas_ocupadas(linhas, minimo_vazio=6):
         faixa = a.crop((0, y0, w, y1))
         colunas = [faixa.crop((x, 0, x + 1, y1 - y0)).getbbox() is not None for x in range(w)]
-        for (x0, x1) in faixas_ocupadas(colunas, minimo_vazio=6):
-            q = im.crop((x0, y0, x1, y1))
+        blocos = [
+            (x0, x1)
+            for (x0, x1) in faixas_ocupadas(colunas, minimo_vazio=6)
+            if (x1 - x0) > 20
+        ]
+
+        # O pedido sabe quantos quadros foram pedidos. Faltando quadro, o
+        # bloco mais largo engoliu um vizinho: corta ele em dois e repete.
+        while esperados and len(blocos) < esperados:
+            maior = max(range(len(blocos)), key=lambda i: blocos[i][1] - blocos[i][0])
+            partes = dividir_em_dois(a, blocos[maior], y0, y1)
+            if len(partes) == 1:
+                break
+            print(f'  bloco de {blocos[maior][1] - blocos[maior][0]}px separado em dois')
+            blocos[maior:maior + 1] = partes
+
+        for (bx0, bx1) in blocos:
+            q = im.crop((bx0, y0, bx1, y1))
             bb = bbox_alpha(q)
             if bb and (bb[2] - bb[0]) > 20 and (bb[3] - bb[1]) > 20:
                 quadros.append(q.crop(bb))
@@ -132,6 +171,8 @@ def main() -> int:
     p.add_argument('saida')
     p.add_argument('--ref', required=True, help='sheet de referência já na grade (ex. idle.png)')
     p.add_argument('--cols', type=int, default=COLS)
+    p.add_argument('--esperados', type=int, default=0,
+                   help='quantos quadros o pedido pediu; separa blocos colados')
     p.add_argument('--json', dest='json_saida', help='grava frames e defaultVisual neste arquivo')
     args = p.parse_args()
 
@@ -154,7 +195,7 @@ def main() -> int:
             im = recortar_borda(im)
             print('fundo: sólido, removido a partir das bordas')
 
-    quadros = separar_quadros(im)
+    quadros = separar_quadros(im, args.esperados)
     if not quadros:
         print('nenhum quadro encontrado', file=sys.stderr)
         return 1

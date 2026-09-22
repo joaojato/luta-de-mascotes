@@ -35,3 +35,7 @@ referencia/
 *.mp4
 *.mov
 *.zip
+
+# Python
+__pycache__/
+*.pyc

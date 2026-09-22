@@ -283,7 +283,8 @@ def comando_entrega(args) -> int:
     return entregar(args.slug, args.acao, entrada, args.skin, args.fps)
 
 
-def entregar(slug: str, acao_nome: str, entrada: Path, skin: str | None, fps: int | None) -> int:
+def entregar(slug: str, acao_nome: str, entrada: Path, skin: str | None, fps: int | None,
+             esperados: int = 0) -> int:
     caminho_json, lutador = carregar_lutador(slug)
 
     base = skin_base(lutador)
@@ -302,7 +303,8 @@ def entregar(slug: str, acao_nome: str, entrada: Path, skin: str | None, fps: in
     medidas = RAIZ / '.sprite-medidas.json'
     alinhar = subprocess.run(
         [sys.executable, str(RAIZ / 'scripts' / 'alinhar-sheet.py'), str(entrada), str(saida),
-         '--ref', str(regua), '--json', str(medidas)],
+         '--ref', str(regua), '--json', str(medidas),
+         '--esperados', str(esperados or QUADROS.get(acao_nome, 0))],
         cwd=RAIZ,
     )
     if alinhar.returncode != 0:

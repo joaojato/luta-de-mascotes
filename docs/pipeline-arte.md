@@ -253,6 +253,12 @@ quadros pedir, `--fps N` força a cadência.
 acertam e onde), que é julgamento visual e sai na Academia. O comando avisa
 quando a ação é golpe.
 
+**Quadros colados:** quando um braço esticado encosta no quadro vizinho não
+sobra coluna vazia e os dois viram um bloco só. O alinhador corrige sozinho
+porque sabe quantos quadros o pedido pediu: faltando quadro, corta o bloco
+mais largo na coluna com menos pixel e repete. Adivinhar pela largura não
+funciona, porque o quadro do soco é legitimamente mais largo que os outros.
+
 **A descrição travada do mascote** fica em `docs/mascotes/<slug>.md`, entre
 as marcas `DESCRICAO:INICIO` e `DESCRICAO:FIM`. Mudou o modelo oficial,
 muda ali, e todo prompt seguinte já sai certo.

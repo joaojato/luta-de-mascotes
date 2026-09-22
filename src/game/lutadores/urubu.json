@@ -15,7 +15,8 @@
       "pasta": "frente",
       "sobrescreve": [
         "anchor-w.png",
-        "portrait.png"
+        "portrait.png",
+        "light-punch.png"
       ]
     }
   ],
@@ -130,26 +131,25 @@
       "action": "light-punch",
       "label": "Light Punch",
       "file": "light-punch.png",
-      "frames": 8,
-      "frameRate": 12,
+      "frames": 6,
+      "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 60,
+        "x": 19,
         "y": 28,
-        "width": 128,
+        "width": 182,
         "height": 200
       },
       "attack": {
         "frames": [
-          3,
-          4,
-          5
+          2,
+          3
         ],
         "bounds": {
-          "x": 14,
-          "y": 62,
-          "width": 70,
-          "height": 44
+          "x": 19,
+          "y": 65,
+          "width": 72,
+          "height": 40
         }
       }
     },
