@@ -208,6 +208,19 @@ O trabalho braçal em volta da geração está automatizado. O que continua
 sendo humano é só gerar a imagem no chat, onde o ChatGPT tem ido bem.
 
 ```
+npm run sprite -- pedido urubu heavy-kick --aguardar --skin frente
+```
+
+Com `--aguardar`, o comando copia o prompt, abre a pasta das imagens, abre
+o ChatGPT numa conversa nova e **fica esperando**. Sobra para o João: colar
+(Ctrl+V), arrastar as duas imagens, e salvar o resultado onde quiser. Assim
+que um PNG novo cair em Downloads ou na Área de Trabalho, o comando alinha,
+grava na pasta da skin e atualiza o JSON sozinho. `--minutos N` muda o
+tempo de espera (padrão 15).
+
+Sem `--aguardar`, ele só monta o pedido:
+
+```
 npm run sprite -- pedido urubu heavy-kick
 ```
 
@@ -243,6 +256,11 @@ quando a ação é golpe.
 **A descrição travada do mascote** fica em `docs/mascotes/<slug>.md`, entre
 as marcas `DESCRICAO:INICIO` e `DESCRICAO:FIM`. Mudou o modelo oficial,
 muda ali, e todo prompt seguinte já sai certo.
+
+**Por que não dirigir o ChatGPT por robô de navegador:** daria para
+automatizar também o colar e o anexar com Playwright, mas os termos de uso
+da OpenAI proíbem acesso automatizado à interface, e a conta é a dele. O
+`--aguardar` chega perto disso sem esse risco.
 
 **Spriterrific não entra neste caminho.** A arte vem do chat que o João já
 paga, o movimento vem de um lutador que já está no jogo, e a escala vem

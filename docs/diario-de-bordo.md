@@ -527,3 +527,33 @@ ferramenta estava no caminho. Explicar o fluxo pelo nome do que ele rejeitou
 **Em aberto:** ele gera o `light-punch` no ChatGPT a partir de
 `referencia/pedidos/urubu-light-punch/`. Depois: `npm run sprite -- entrega
 urubu light-punch <arquivo> --skin frente`, e a hitbox do golpe na Academia.
+
+## 2026-09-22: o comando passa a esperar a imagem e se virar sozinho
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "dentro desse processo tem muitas etapas que eu ainda preciso
+executar e mexer. Eu tive que entrar no gpt, abrir uma conversa nova, colar o
+texto, enviar os arquivos, salvar o resultado, inserir na pasta correta."
+**Feito:**
+- `--aguardar` no `pedido`: copia o prompt, abre a pasta das imagens, abre o
+  ChatGPT numa conversa nova e entra em vigia. Quando um PNG novo aparece em
+  `Downloads` ou na Área de Trabalho, alinha, grava na pasta da skin e
+  atualiza o JSON sem mais nenhum comando.
+- O vigia fotografa o que já existe antes de esperar e só aceita arquivo
+  novo, em vez de chutar "o mais recente"; e espera o tamanho parar de
+  crescer, para não pegar download pela metade.
+- `--skin` e `--minutos` no pedido, para já dizer onde entregar e quanto
+  esperar.
+- `comando_entrega` virou a função `entregar`, chamada pelos dois caminhos.
+- De sete etapas manuais sobraram três: colar, arrastar as duas imagens,
+  salvar o resultado.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build). Vigia
+testado isolado: rodando em segundo plano, um PNG copiado para Downloads foi
+detectado e devolvido em menos de 6 segundos.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** dirigir o ChatGPT por Playwright (colar e anexar sozinho) foi
+apresentado e não feito: os termos de uso da OpenAI proíbem acesso
+automatizado à interface, e a conta é dele. Decisão fica com ele.

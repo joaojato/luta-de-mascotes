@@ -25,9 +25,11 @@ que já está no jogo, e a escala vem dele também.
 """
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 from PIL import Image
@@ -135,6 +137,47 @@ def escolher(quadros: list, quantos: int) -> list:
     return [quadros[round(i * passo)] for i in range(quantos)]
 
 
+PASTAS_VIGIADAS = [Path.home() / 'Downloads', Path.home() / 'Desktop']
+IMAGENS = {'.png', '.jpg', '.jpeg', '.webp'}
+
+
+def vigiar(minutos: int) -> Path | None:
+    """Espera um arquivo de imagem novo em Downloads ou na Área de Trabalho.
+
+    Evita o palpite de "arquivo mais recente" fotografando o que já existe
+    antes de esperar, e só aceita o que aparecer depois. Espera o tamanho
+    parar de crescer para não pegar download pela metade.
+    """
+    antes = {
+        arquivo
+        for pasta in PASTAS_VIGIADAS
+        if pasta.exists()
+        for arquivo in pasta.iterdir()
+        if arquivo.suffix.lower() in IMAGENS
+    }
+    limite = time.time() + minutos * 60
+    print(f'esperando a imagem cair em Downloads ou na Área de Trabalho '
+          f'(até {minutos} min, Ctrl+C para sair)...')
+
+    while time.time() < limite:
+        for pasta in PASTAS_VIGIADAS:
+            if not pasta.exists():
+                continue
+            for arquivo in pasta.iterdir():
+                if arquivo.suffix.lower() not in IMAGENS or arquivo in antes:
+                    continue
+                tamanho = -1
+                while tamanho != arquivo.stat().st_size:
+                    tamanho = arquivo.stat().st_size
+                    time.sleep(0.6)
+                print(f'peguei {arquivo}')
+                return arquivo
+        time.sleep(1.5)
+
+    print('tempo esgotado, nada apareceu.')
+    return None
+
+
 def comando_pedido(args) -> int:
     caminho_json, lutador = carregar_lutador(args.slug)
     acao = args.acao
@@ -204,7 +247,7 @@ motion lines, no glow, no extra characters, no frame borders."""
           f'{len(recortes)} de {spec["frames"]} quadros, ampliado {escala}x')
     print(f'  prompt.txt        {len(prompt)} caracteres')
     print()
-    if args.abrir:
+    if args.abrir or args.aguardar:
         try:
             subprocess.run(['clip'], input=prompt.encode('utf-16-le'), check=True)
             print('prompt copiado para a área de transferência')
@@ -212,20 +255,40 @@ motion lines, no glow, no extra characters, no frame borders."""
             print(f'(não consegui copiar o prompt: {erro})')
         subprocess.run(['explorer', str(destino)])
 
-    print('No chat: anexa as duas imagens na ordem e cola o prompt.txt.')
-    print(f'Depois: python scripts/sprite.py entrega {args.slug} {acao} <arquivo baixado>')
-    return 0
+    if args.abrir or args.aguardar:
+        os.startfile('https://chatgpt.com/')
+        print('ChatGPT aberto numa conversa nova.')
+
+    print()
+    print('1. Ctrl+V no chat (o prompt já está copiado)')
+    print('2. arrasta 1-personagem.png e 2-movimento.png da pasta que abriu')
+    print('3. Enter, e salva a imagem que voltar (Downloads serve)')
+
+    if not args.aguardar:
+        print()
+        print(f'Depois: npm run sprite -- entrega {args.slug} {acao} <arquivo baixado>')
+        return 0
+
+    print()
+    baixado = vigiar(args.minutos)
+    if not baixado:
+        return 1
+    return entregar(args.slug, acao, baixado, args.skin, None)
 
 
 def comando_entrega(args) -> int:
-    caminho_json, lutador = carregar_lutador(args.slug)
     entrada = Path(args.arquivo).expanduser()
     if not entrada.exists():
         sys.exit(f'não achei {entrada}')
+    return entregar(args.slug, args.acao, entrada, args.skin, args.fps)
+
+
+def entregar(slug: str, acao_nome: str, entrada: Path, skin: str | None, fps: int | None) -> int:
+    caminho_json, lutador = carregar_lutador(slug)
 
     base = skin_base(lutador)
-    destino_skin = args.skin or base
-    saida = pasta_skin(lutador, destino_skin) / f'{args.acao}.png'
+    destino_skin = skin or base
+    saida = pasta_skin(lutador, destino_skin) / f'{acao_nome}.png'
     saida.parent.mkdir(parents=True, exist_ok=True)
 
     # A régua de escala é o mesmo lutador de onde saiu a referência de
@@ -249,25 +312,25 @@ def comando_entrega(args) -> int:
     medidas.unlink()
 
     _, amostra = carregar_lutador(REFERENCIA_MOVIMENTO)
-    modelo = next((a for a in amostra['actions'] if a['action'] == args.acao), None)
+    modelo = next((a for a in amostra['actions'] if a['action'] == acao_nome), None)
 
-    acao = next((a for a in lutador['actions'] if a['action'] == args.acao), None)
+    acao = next((a for a in lutador['actions'] if a['action'] == acao_nome), None)
     if acao is None:
-        acao = {'action': args.acao, 'label': args.acao}
+        acao = {'action': acao_nome, 'label': acao_nome}
         lutador['actions'].append(acao)
 
-    acao['file'] = f'{args.acao}.png'
+    acao['file'] = f'{acao_nome}.png'
     acao['frames'] = dados['frames']
-    acao['frameRate'] = args.fps or (modelo['frameRate'] if modelo else 10)
+    acao['frameRate'] = fps or (modelo['frameRate'] if modelo else 10)
     acao['repeat'] = modelo['repeat'] if modelo else 0
     acao['defaultVisual'] = dados['defaultVisual']
-    acao['label'] = acao.get('label', args.acao).replace(' (placeholder: idle)', '')
+    acao['label'] = acao.get('label', acao_nome).replace(' (placeholder: idle)', '')
 
     if destino_skin:
-        for skin in lutador.get('skins') or []:
-            if skin['pasta'] == destino_skin and 'sobrescreve' in skin:
-                if f'{args.acao}.png' not in skin['sobrescreve']:
-                    skin['sobrescreve'].append(f'{args.acao}.png')
+        for variante in lutador.get('skins') or []:
+            if variante['pasta'] == destino_skin and 'sobrescreve' in variante:
+                if f'{acao_nome}.png' not in variante['sobrescreve']:
+                    variante['sobrescreve'].append(f'{acao_nome}.png')
 
     caminho_json.write_text(
         json.dumps(lutador, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
@@ -275,8 +338,8 @@ def comando_entrega(args) -> int:
 
     print()
     print(f'sheet em {saida.relative_to(RAIZ)}')
-    print(f'JSON atualizado: {args.acao}, {acao["frames"]} quadros, {acao["frameRate"]} fps')
-    if args.acao in ('light-punch', 'heavy-kick', 'special'):
+    print(f'JSON atualizado: {acao_nome}, {acao["frames"]} quadros, {acao["frameRate"]} fps')
+    if acao_nome in ('light-punch', 'heavy-kick', 'special'):
         print('ATENÇÃO: golpe precisa de `attack` (quadros ativos e caixa). '
               'Conferir na Academia e definir.')
     print('Confira na Academia antes de dar por pronto.')
@@ -292,7 +355,12 @@ def main() -> int:
     ped.add_argument('acao')
     ped.add_argument('--quadros', type=int)
     ped.add_argument('--abrir', action='store_true',
-                     help='copia o prompt e abre a pasta no explorador')
+                     help='copia o prompt, abre a pasta e o ChatGPT')
+    ped.add_argument('--aguardar', action='store_true',
+                     help='implica --abrir e entrega sozinho a imagem que você salvar')
+    ped.add_argument('--skin', help='pasta da skin de destino (padrão: a base)')
+    ped.add_argument('--minutos', type=int, default=15,
+                     help='quanto tempo esperar a imagem (padrão: 15)')
     ped.set_defaults(func=comando_pedido)
 
     ent = sub.add_parser('entrega', help='alinha o PNG do chat e registra no JSON')

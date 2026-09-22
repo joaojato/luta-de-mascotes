@@ -108,6 +108,10 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **Quando ele acusa uma dependência, checar antes de responder.** Estava
   certo pela metade: a geração não usava, mas a régua de escala usava. A
   parte certa da crítica é a que importa. (2026-09-22)
+- **"Automatizado" para ele é contar as ações dele, não as minhas.** Dois
+  comandos com seis passos manuais no meio ainda é trabalho braçal. Medir
+  automação pelo número de vezes que ele precisa sair do lugar.
+  (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)
