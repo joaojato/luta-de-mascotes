@@ -767,3 +767,24 @@ parava na porta do chat.
 **Em aberto:** faltam walk-forward, walk-backward, crouch, block-high,
 hit-high e knockdown na skin `frente`. Quando fecharem, ela vira a base e a
 `costas` passa a ser a variante.
+
+## 2026-09-22: mais tres do Codex, crouch e os dois bloqueios
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** continuação do jump; o Codex entregou `crouch`, `block-high` e
+`block-low` na pasta da skin enquanto eu corrigia o modelo de skin.
+**Feito:**
+- As três registradas com `npm run sprite -- registrar urubu <acao> --skin
+  frente`: crouch 5 quadros 10 fps, block-high 4, block-low 4.
+- `guard` definido à mão nos dois bloqueios (alto 56/30 140×120, baixo
+  56/80 140×110), que o comando não tem como medir.
+- O Codex fez `block-low` por conta própria, que não estava na minha lista
+  de faltantes porque o motor cai para `block-high` quando falta. Ganho.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build). Academia:
+block high quadro 2/4 com "guarda" ativa e guard box roxa sobre cabeça e
+tronco. Zero erro de console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** faltam walk-forward, walk-backward, hit-high e knockdown.

@@ -68,6 +68,57 @@
             "width": 153,
             "height": 242
           }
+        },
+        "crouch": {
+          "file": "crouch.png",
+          "frames": 5,
+          "frameRate": 10,
+          "repeat": 0,
+          "defaultVisual": {
+            "x": 58,
+            "y": 13,
+            "width": 169,
+            "height": 224
+          },
+          "label": "Crouch"
+        },
+        "block-high": {
+          "file": "block-high.png",
+          "frames": 4,
+          "frameRate": 10,
+          "repeat": 0,
+          "defaultVisual": {
+            "x": 49,
+            "y": 40,
+            "width": 158,
+            "height": 191
+          },
+          "label": "Block High",
+          "guard": {
+            "x": 56,
+            "y": 30,
+            "width": 140,
+            "height": 120
+          }
+        },
+        "block-low": {
+          "file": "block-low.png",
+          "frames": 4,
+          "frameRate": 10,
+          "repeat": 0,
+          "defaultVisual": {
+            "x": 75,
+            "y": 54,
+            "width": 134,
+            "height": 159
+          },
+          "label": "Block Low",
+          "guard": {
+            "x": 56,
+            "y": 80,
+            "width": 140,
+            "height": 110
+          }
         }
       }
     }
