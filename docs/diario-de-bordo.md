@@ -280,3 +280,35 @@ Play); custou uma rodada de fotos.
 da B por script, registrar em `stageConfig.ts`, conferir chão e rolagem na
 luta. Torcida animada e terceira camada (gramado separado) ficam para
 depois da v1.
+
+## 2026-09-22: estádio do João entra no jogo
+
+**Marco:** Marco 2, em andamento (item "cenário" fechado na versão de duas camadas).
+**Pedido:** "Onde eu coloco as imagens do fundo céu e do cenário (ele está
+vindo com uma tela verde)", depois "Pronto".
+**Feito:**
+- João gerou as duas imagens com os prompts de `docs/prompt-cenario.md`
+  (cenário 3168×1344 com céu em verde; céu 2752×1536). Vieram em JPG.
+- Brutos movidos para `referencia/cenarios/` (fora do git).
+- Script (PIL, sem numpy nesta máquina): chroma por `G - max(R,B) > 110`,
+  erosão de 1 px na borda, faixa transparente de 93 px no topo para os pés
+  (82% da altura) caírem 65 px dentro do gramado, redução para 2048 de
+  largura. Despill em dois passos: vizinhança do transparente e, depois,
+  todo pixel claro com verde dominante acima do gramado (o refletor do meio
+  tinha vazamento entre as lâmpadas).
+- `public/assets/cenarios/estadio/cenario.png` (2048×929, 2,7 MB) e
+  `ceu.jpg` (1920×1080, 85 KB).
+- `src/game/stageConfig.ts`: entrada `estadio` com `sky`. Aparece como
+  terceira carta em `Select Stage`.
+**Verificado:** `npm run check` verde. Playwright: luta no estádio em duas
+posições de câmera, céu parado e arquibancada andando, pés no gramado.
+Zero erro de console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada com todas as letras.
+**Atrito:** numpy não existe nesta máquina; refeito só com PIL. Vazamento
+verde no refletor precisou de segundo passo de despill.
+**Em aberto:** o horizonte do céu (morros e brilho) fica escondido atrás da
+arquibancada porque o céu é esticado para a tela inteira; se ele quiser ver
+os morros, gerar o céu com o horizonte mais alto (uns 25% do topo). Torcida
+animada fica para depois da v1.

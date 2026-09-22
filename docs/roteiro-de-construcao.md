@@ -27,9 +27,11 @@ ele é quebrado em dois, não esticado.
   shell de debug); fica para quando atrapalhar.
 - [ ] Marco 2, em andamento (22/09/2026): Urubu na seleção e na Academia com
   `idle` e `light-punch` reais do Spriterrific (420 dos 500 créditos grátis);
-  as outras 7 ações obrigatórias apontam para o idle como placeholder. Falta:
-  demais golpes (teste do Gemini com as sheets do Urubu como referência),
-  retrato de verdade, cenário em camadas, decisão da ADR 0002.
+  as outras 7 ações obrigatórias apontam para o idle como placeholder.
+  Cenário "Estádio" na tela de escolha, em duas camadas (céu fixo e
+  arquibancada que anda), arte do João no Nano Banana. Falta: demais golpes
+  (teste do Gemini com as sheets do Urubu como referência), retrato de
+  verdade, torcida animada (fora da v1), decisão da ADR 0002.
 - [ ] Marco 3 = v1
 - [ ] Marco 4 (se sobrar tempo)
 

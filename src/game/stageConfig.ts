@@ -58,6 +58,15 @@ export const STAGE_DEFINITIONS: StageDefinition[] = [
     url: `${STAGE_ASSET_ROOT}/rooftop-sunset-stage.png`,
     width: 2048,
     height: 768
+  },
+  {
+    id: 'estadio',
+    label: 'Estádio',
+    key: 'estadio-stage',
+    url: '/assets/cenarios/estadio/cenario.png',
+    width: 2048,
+    height: 929,
+    sky: { key: 'estadio-sky', url: '/assets/cenarios/estadio/ceu.jpg', width: 1920, height: 1080 }
   }
 ];
 
