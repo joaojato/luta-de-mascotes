@@ -101,6 +101,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   movimento de outro lutador) é o que funciona, e o trabalho repetitivo
   estava no preparo, não na geração. Automatizar o que cerca a IA rende
   mais que trocar a IA. (2026-09-22)
+- **Nunca explicar um caminho citando a ferramenta que ele rejeitou.** Eu
+  disse "em vez de sobrescrever o do Spriterrific" só para localizar uma
+  pasta, e ele entendeu que a ferramenta estava no fluxo. Descrever pelo que
+  a coisa é, não pelo histórico dela. (2026-09-22)
+- **Quando ele acusa uma dependência, checar antes de responder.** Estava
+  certo pela metade: a geração não usava, mas a régua de escala usava. A
+  parte certa da crítica é a que importa. (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)

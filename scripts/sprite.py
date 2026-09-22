@@ -15,9 +15,13 @@ O pedido vai para `referencia/pedidos/<slug>-<acao>/` (fora do git):
     1-personagem.png    o modelo oficial do mascote
     2-movimento.png     a mesma ação num lutador que já está no jogo
 
-A entrega alinha pelo idle da skin base, escreve a sheet na pasta da skin e
-atualiza o JSON do mascote (`frames`, `frameRate`, `repeat`,
-`defaultVisual`) e a lista `sobrescreve` da skin.
+A entrega alinha pela escala do lutador de amostra (o mesmo de onde saiu a
+referência de movimento), escreve a sheet na pasta da skin e atualiza o JSON
+do mascote (`frames`, `frameRate`, `repeat`, `defaultVisual`) e a lista
+`sobrescreve` da skin.
+
+Nada aqui usa Spriterrific: a arte vem do chat, o movimento vem do lutador
+que já está no jogo, e a escala vem dele também.
 """
 import argparse
 import json
@@ -200,6 +204,14 @@ motion lines, no glow, no extra characters, no frame borders."""
           f'{len(recortes)} de {spec["frames"]} quadros, ampliado {escala}x')
     print(f'  prompt.txt        {len(prompt)} caracteres')
     print()
+    if args.abrir:
+        try:
+            subprocess.run(['clip'], input=prompt.encode('utf-16-le'), check=True)
+            print('prompt copiado para a área de transferência')
+        except Exception as erro:
+            print(f'(não consegui copiar o prompt: {erro})')
+        subprocess.run(['explorer', str(destino)])
+
     print('No chat: anexa as duas imagens na ordem e cola o prompt.txt.')
     print(f'Depois: python scripts/sprite.py entrega {args.slug} {acao} <arquivo baixado>')
     return 0
@@ -216,9 +228,13 @@ def comando_entrega(args) -> int:
     saida = pasta_skin(lutador, destino_skin) / f'{args.acao}.png'
     saida.parent.mkdir(parents=True, exist_ok=True)
 
-    regua = pasta_skin(lutador, base) / 'idle.png'
+    # A régua de escala é o mesmo lutador de onde saiu a referência de
+    # movimento, para o resultado voltar na escala das poses que o chat copiou.
+    # Nunca depende de sheet anterior do próprio mascote.
+    _, base_amostra = carregar_lutador(REFERENCIA_MOVIMENTO)
+    regua = PUBLIC / base_amostra['assetRoot'].lstrip('/') / 'idle.png'
     if not regua.exists():
-        sys.exit(f'falta o idle da skin base em {regua}: é a régua de escala')
+        sys.exit(f'falta a régua de escala em {regua}')
 
     medidas = RAIZ / '.sprite-medidas.json'
     alinhar = subprocess.run(
@@ -275,6 +291,8 @@ def main() -> int:
     ped.add_argument('slug')
     ped.add_argument('acao')
     ped.add_argument('--quadros', type=int)
+    ped.add_argument('--abrir', action='store_true',
+                     help='copia o prompt e abre a pasta no explorador')
     ped.set_defaults(func=comando_pedido)
 
     ent = sub.add_parser('entrega', help='alinha o PNG do chat e registra no JSON')

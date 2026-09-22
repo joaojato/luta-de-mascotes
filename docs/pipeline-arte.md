@@ -227,7 +227,8 @@ corpo se move, e proíbe copiar roupa, cor, rosto e proporção da imagem 2.
 npm run sprite -- entrega urubu heavy-kick ~/Downloads/resultado.png
 ```
 
-Alinha à grade pelo `idle` da skin base, escreve em
+Alinha à grade pela escala do lutador de amostra (o mesmo de onde saiu a
+referência de movimento), escreve em
 `public/assets/lutadores/<slug>/<skin>/<acao>.png`, atualiza o JSON
 (`frames`, `frameRate`, `repeat`, `defaultVisual`) e acrescenta o arquivo
 em `sobrescreve` da skin. Rodar de novo com o mesmo arquivo não muda nada.
@@ -243,9 +244,10 @@ quando a ação é golpe.
 as marcas `DESCRICAO:INICIO` e `DESCRICAO:FIM`. Mudou o modelo oficial,
 muda ali, e todo prompt seguinte já sai certo.
 
-**Automação total (gerar sem o chat)** é possível pela API da OpenAI ou do
-Gemini, mas custa por imagem e pede chave nova. Enquanto o chat estiver
-incluído no plano que o João já paga, não compensa.
+**Spriterrific não entra neste caminho.** A arte vem do chat que o João já
+paga, o movimento vem de um lutador que já está no jogo, e a escala vem
+desse mesmo lutador. A pasta `costas/` do Urubu só existe porque modelo
+antigo vira skin, nunca é apagado; ela não é usada para gerar nada.
 
 ## Sheet pelo Gemini (caminho de custo zero, desde 22/09/2026)
 

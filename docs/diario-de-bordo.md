@@ -490,3 +490,40 @@ de 12 quadros). Entrega testada com o `block-high` que já estava no jogo:
 apresentada e não feita: custa por imagem e pede chave nova, enquanto o
 chat já está no plano que ele paga. `MOVIMENTO` e `QUADROS` no script são
 chutes por ação e vão se ajustar com o uso.
+
+## 2026-09-22: régua de alinhamento sai da sheet antiga
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "eu não quero usar o spriterrific para fazer isso. O dev desse
+jogo já fez alguns personagens e é possível usar as sprites que ele gerou de
+movimento para adaptar com o personagem que eu quero simplesmente mandando
+para o chat gpt."
+**Feito:**
+- Ele leu o fluxo como dependente do Spriterrific. A geração nunca foi: o
+  pedido monta modelo do Urubu + fileira do `red-brawler` (o lutador que veio
+  do Chong-U) + descrição travada, e a imagem sai do ChatGPT dele. Mas a
+  crítica acertou um ponto real: a **régua de escala** do alinhamento
+  apontava para o `idle` da skin base do próprio mascote, que hoje é a sheet
+  do Spriterrific. Trocada para o `idle` do `red-brawler`, o mesmo lutador de
+  onde sai a referência de movimento. Agora nada no caminho olha para arte
+  do Spriterrific.
+- `--abrir` no pedido: copia o `prompt.txt` para a área de transferência e
+  abre a pasta no explorador, para o trabalho no chat ser só colar e
+  arrastar.
+- Cabeçalho do script e `docs/pipeline-arte.md` dizem com todas as letras
+  que Spriterrific não entra, e que a pasta `costas/` existe só porque
+  modelo antigo vira skin.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build). Pedido do
+`light-punch` regerado com a régua nova. Entrega testada na skin `frente` e
+revertida em seguida (tinha escrito arte do modelo antigo na skin nova).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a régua do alinhamento. Motivo dado por
+ele: não quer Spriterrific em nenhuma parte do processo.
+**Aprovado explicitamente:** nada.
+**Atrito:** ele ficou irritado, e a causa foi minha: na mensagem anterior eu
+citei "o do Spriterrific" ao explicar o `--skin`, o que fez parecer que a
+ferramenta estava no caminho. Explicar o fluxo pelo nome do que ele rejeitou
+é convite a mal-entendido.
+**Em aberto:** ele gera o `light-punch` no ChatGPT a partir de
+`referencia/pedidos/urubu-light-punch/`. Depois: `npm run sprite -- entrega
+urubu light-punch <arquivo> --skin frente`, e a hitbox do golpe na Academia.
