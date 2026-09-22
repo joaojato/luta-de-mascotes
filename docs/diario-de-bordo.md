@@ -312,3 +312,28 @@ verde no refletor precisou de segundo passo de despill.
 arquibancada porque o céu é esticado para a tela inteira; se ele quiser ver
 os morros, gerar o céu com o horizonte mais alto (uns 25% do topo). Torcida
 animada fica para depois da v1.
+
+## 2026-09-22: lutadores flutuando no estádio, chão vira propriedade do cenário
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "Os lutadores estão voando. Tem alguma forma de corrigir isso com
+o menu de debug? Eles não estão pisando onde deveriam".
+**Feito:**
+- Causa: a faixa transparente de 93 px que eu tinha acrescentado no topo do
+  cenário empurrou o gramado para baixo, mas o motor manteve os pés a 82%
+  da tela (`GROUND_FRACTION` fixo). Conta errada minha.
+- Correção no motor: `groundFraction` opcional em `StageDefinition`
+  (`DEFAULT_GROUND_FRACTION = 0.82`), `MatchScene` lê do cenário. Não é
+  menu de debug: é um número por cenário, no registro.
+- `cenario.png` refeito sem a faixa (2048×869), mesmo recorte e despill.
+- Estádio com `groundFraction: 0.92`. O primeiro chute (0.876) deixou os pés
+  na beirada do gramado, porque os sprites têm ~27 px de margem abaixo dos
+  pés na célula (×1,6 = 43 px na tela). Anotado em `docs/prompt-cenario.md`.
+**Verificado:** `npm run check` verde. Playwright: luta no estádio com os dois
+em pé no gramado, sombra na grama, abaixo do alambrado. Zero erro de console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o posicionamento do chão do estádio,
+motivo dado: "estão voando, não estão pisando onde deveriam".
+**Aprovado explicitamente:** nada.
+**Atrito:** nada além do erro de conta.
+**Em aberto:** os mesmos itens da entrada anterior.

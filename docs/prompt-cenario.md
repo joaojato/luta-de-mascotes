@@ -79,12 +79,14 @@ Anexar: `anchor-w.png` do Urubu (estilo) e
    registro o cenário em `src/game/stageConfig.ts` e ele aparece na tela
    `Select Stage` ao lado dos dois rooftops de amostra.
 3. Conferir na luta: o céu parado, a arquibancada andando, os pés no gramado.
-   Se o chão não bater, eu ajusto por script (corte ou preenchimento), não
-   gera de novo.
+   Se o chão não bater, o ajuste é o número `groundFraction` no registro do
+   cenário (`src/game/stageConfig.ts`), não corte de imagem nem geração
+   nova. Atenção: os sprites têm uns 27 px de margem abaixo dos pés na
+   célula de 256, então o pé visível fica ~43 px acima do ponto de chão.
 
 ## Iteração que costuma ser necessária
 
-- Chão fora dos 82%: corrigir por script, não por prompt.
+- Chão fora do lugar: corrigir com `groundFraction`, não por prompt.
 - Texto ou escudo apareceu em placa ou bandeira: pedir edição curta sobre a
   imagem gerada, só com a mudança ("remove the letters on the boards, keep
   everything else"), como já aprendido com a referência dos mascotes.

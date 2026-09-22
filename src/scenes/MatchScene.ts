@@ -3,13 +3,12 @@ import * as Phaser from 'phaser';
 import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fighter';
 import { getCharacterDefinition } from '../game/hero';
 import { MatchHud } from '../game/matchHud';
-import { getStageDefinition } from '../game/stageConfig';
+import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
 import { spawnHitSpark, type VfxColor } from '../game/vfx';
 import { BaseScene } from './BaseScene';
 
-const GROUND_FRACTION = 0.82;
 const EDGE_MARGIN = 170;
 const DEPTH_FRONT = 8;
 const DEPTH_BACK = 5;
@@ -362,7 +361,8 @@ export class MatchScene extends BaseScene {
   /** Spawns P1 (left, facing right) and P2 (right, facing left). */
   private spawnFighters(): void {
     const cam = this.cameras.main;
-    const groundY = Math.round(cam.height * GROUND_FRACTION);
+    const stage = getStageDefinition(this.config.stageId);
+    const groundY = Math.round(cam.height * (stage.groundFraction ?? DEFAULT_GROUND_FRACTION));
     const minX = EDGE_MARGIN;
     const maxX = this.stageWorldWidth - EDGE_MARGIN;
     const center = this.stageWorldWidth / 2;

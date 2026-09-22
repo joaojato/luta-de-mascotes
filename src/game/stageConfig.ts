@@ -23,7 +23,15 @@ export interface StageDefinition {
     width: number;
     height: number;
   };
+  /**
+   * Onde os pés dos lutadores encostam, como fração da altura da tela
+   * (0 = topo, 1 = base). Padrão 0.82. Cada cenário ajusta o seu; ver
+   * `docs/prompt-cenario.md`.
+   */
+  groundFraction?: number;
 }
+
+export const DEFAULT_GROUND_FRACTION = 0.82;
 
 /**
  * The computed placement of a stage when fit to a viewport: vertical-fit scale,
@@ -65,8 +73,9 @@ export const STAGE_DEFINITIONS: StageDefinition[] = [
     key: 'estadio-stage',
     url: '/assets/cenarios/estadio/cenario.png',
     width: 2048,
-    height: 929,
-    sky: { key: 'estadio-sky', url: '/assets/cenarios/estadio/ceu.jpg', width: 1920, height: 1080 }
+    height: 869,
+    sky: { key: 'estadio-sky', url: '/assets/cenarios/estadio/ceu.jpg', width: 1920, height: 1080 },
+    groundFraction: 0.92
   }
 ];
 

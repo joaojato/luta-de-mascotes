@@ -68,6 +68,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   fists raised` além de congelar os pés. Job de personagem exige ao menos
   uma animação, então o teste mínimo de anchor custa 160, não 60.
   (2026-09-22)
+- **Pé visível não é o ponto de chão.** Os sprites do Spriterrific têm ~27
+  px de margem abaixo dos pés na célula de 256 (43 px na tela a 1,6×). Ao
+  posicionar cenário, mirar o chão do motor 40 px abaixo de onde o pé deve
+  parecer pisar. Deslocar imagem com faixa transparente não resolve: o chão
+  é fração da tela, não da imagem. (2026-09-22)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)
