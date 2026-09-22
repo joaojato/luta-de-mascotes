@@ -16,7 +16,8 @@
       "sobrescreve": [
         "anchor-w.png",
         "portrait.png",
-        "light-punch.png"
+        "light-punch.png",
+        "idle.png"
       ]
     }
   ],
@@ -27,13 +28,13 @@
       "action": "idle",
       "label": "Idle",
       "file": "idle.png",
-      "frames": 10,
-      "frameRate": 6,
+      "frames": 4,
+      "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
-        "x": 74,
+        "x": 66,
         "y": 28,
-        "width": 108,
+        "width": 123,
         "height": 200
       }
     },

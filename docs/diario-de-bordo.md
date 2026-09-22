@@ -668,3 +668,28 @@ o chat já faz método sozinho, só precisa saber o que trocar e por quem.
 retornou uma imagem"), o que me levou a mexer no fundo antes de descobrir
 que o problema real era o prompt inchado.
 **Em aberto:** rodar o idle com o prompt curto.
+
+## 2026-09-22: idle do modelo novo entra sozinho
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "vamos fazer o movimento de quando o player está parado."
+**Feito:**
+- Com o prompt curto, a geração funcionou na primeira. O vigia pegou a
+  imagem em `Downloads`, recortou o fundo, separou os 4 quadros, alinhou e
+  gravou `public/assets/lutadores/urubu/frente/idle.png` com o JSON
+  atualizado (4 quadros, 8 fps), sem nenhum comando meu no meio.
+- Teste de skin estava frágil: fixava que o `idle` da skin `frente` era
+  herdado da base. Como agora ela tem idle próprio, quebrou. Reescrito como
+  regra: todo arquivo listado em `sobrescreve` tem de vir da pasta da skin,
+  e todo o resto tem de vir da base. Não quebra mais a cada sheet nova.
+**Verificado:** `npm run check` verde (typecheck, 37 testes, build). Academia:
+"Urubu (3/4 de frente) (2/5)", idle 1/4 em 8 fps, guarda alta, pés
+plantados. Zero erro de console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** duas falhas de geração antes do prompt ser cortado.
+**Em aberto:** a skin `frente` tem idle, soco, âncora e retrato. Faltam
+walk-forward, walk-backward, crouch, jump, block-high, hit-high e
+knockdown, que saem em 3 mensagens do lote. Quando fechar, ela vira a base
+e a `costas` passa a ser a variante.
