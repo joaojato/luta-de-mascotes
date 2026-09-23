@@ -783,6 +783,147 @@ def comando_escalar(args) -> int:
     return 0
 
 
+# Regra do Eixo: faixas medidas nos três lutadores de amostra do Chong-U, que
+# são a referência de movimento. Neles o tamanho de um quadro (raiz da área
+# contra o idle) fica entre 0,89 e 1,07, o quadro 0 de toda ação é o idle, e o
+# tronco quase não sai do eixo. O gerador desenha cada quadro solto, e sem
+# isto o mascote pulsa e escorrega de lado dentro da mesma ação.
+FAIXA_TAMANHO = (0.94, 1.06)
+EIXO_PARADO = 6    # px de folga do tronco em ação que não sai do lugar
+EIXO_GOLPE = 20    # px no meio de um golpe, que pode inclinar o corpo
+GOLPES = {'hit-high', 'light-punch', 'heavy-kick', 'heavy-punch', 'special'}
+SEM_EIXO = {'idle', 'knockdown'}   # a régua, e a queda que precisa deslizar
+
+
+def medir_quadro(cel: Image.Image) -> dict | None:
+    """Área, centro do tronco e ponto do pé de um quadro."""
+    alfa = cel.getchannel('A').point(lambda v: 255 if v > ALPHA_MIN else 0)
+    bb = alfa.getbbox()
+    if not bb:
+        return None
+    px = alfa.load()
+    altura = bb[3] - bb[1]
+    # Tronco: a faixa entre o pescoço e o quadril. Cabeça, braço estendido e
+    # perna de chute puxam o centro da figura inteira; o tronco não.
+    t0, t1 = bb[1] + int(altura * 0.15), bb[1] + int(altura * 0.6)
+    area = soma = n = 0
+    for y in range(bb[1], bb[3]):
+        for x in range(bb[0], bb[2]):
+            if px[x, y]:
+                area += 1
+                if t0 <= y < t1:
+                    soma += x
+                    n += 1
+    pe_x, pe_y = ancora_de(cel)
+    return {'area': area, 'tronco': soma / max(n, 1), 'pe': (pe_x, pe_y), 'altura': altura}
+
+
+def firmar_sheet(caminho: Path, regua: dict, acao_nome: str) -> list[tuple[float, float, float]]:
+    """Põe cada quadro no tamanho e no eixo do idle, dentro das faixas.
+
+    Cada quadro é escalado em torno do próprio pé, então o chão não muda.
+    Devolve, por quadro, (fator, deslocamento x, deslocamento y) para as
+    caixas irem junto.
+    """
+    sheet = Image.open(caminho).convert('RGBA')
+    cols = sheet.width // CELL
+    nova = Image.new('RGBA', sheet.size, (0, 0, 0, 0))
+    medidas = []
+    for i in range(cols * (sheet.height // CELL)):
+        col, lin = i % cols, i // cols
+        cel = sheet.crop((col * CELL, lin * CELL, (col + 1) * CELL, (lin + 1) * CELL))
+        m = medir_quadro(cel)
+        if m:
+            medidas.append((col, lin, cel, m))
+
+    ultimo = len(medidas) - 1
+    transformacoes = []
+    for k, (col, lin, cel, m) in enumerate(medidas):
+        tamanho = (m['area'] / regua['area']) ** 0.5
+        fator = min(max(tamanho, FAIXA_TAMANHO[0]), FAIXA_TAMANHO[1]) / tamanho
+        if k == 0:
+            # O quadro 0 é a guarda, a mesma pose do idle: ali vale a altura,
+            # que é a medida exata, e não a faixa.
+            tamanho = m['altura'] / regua['altura']
+            fator = 1 / tamanho
+        fx, fy = m['pe']
+        tronco = fx + (m['tronco'] - fx) * fator
+        desvio = tronco - regua['tronco']
+        if acao_nome in SEM_EIXO:
+            folga = abs(desvio)
+        elif acao_nome in GOLPES and 0 < k < ultimo:
+            folga = EIXO_GOLPE
+        else:
+            folga = EIXO_PARADO
+        dx = min(max(desvio, -folga), folga) - desvio
+
+        ox, oy = fx - fx * fator + dx, fy - fy * fator
+        lado = max(1, round(CELL * fator))
+        folgada = Image.new('RGBA', (CELL * 3, CELL * 3), (0, 0, 0, 0))
+        folgada.alpha_composite(
+            cel.resize((lado, lado), Image.LANCZOS), (CELL + round(ox), CELL + round(oy))
+        )
+        nova.alpha_composite(folgada.crop((CELL, CELL, CELL * 2, CELL * 2)), (col * CELL, lin * CELL))
+        transformacoes.append((fator, ox, oy))
+        print(f'  quadro {k}: tamanho {tamanho:.2f} -> {tamanho * fator:.2f}, '
+              f'tronco {desvio:+.0f} -> {desvio + dx:+.0f} px')
+
+    nova.save(caminho, optimize=True)
+    return transformacoes
+
+
+def comando_firmar(args) -> int:
+    """Firma cada quadro de uma sheet no tamanho e no eixo do `idle`.
+
+    Complementa o `escalar`: aquele acerta a sheet inteira pelo quadro 0,
+    este acerta quadro a quadro o que o gerador desenhou solto.
+    """
+    caminho_json, lutador = carregar_lutador(args.slug)
+    destino_skin = args.skin or skin_base(lutador)
+    pasta = pasta_skin(lutador, destino_skin)
+    sheet = pasta / f'{args.acao}.png'
+    if not sheet.exists():
+        sys.exit(f'não achei {sheet}')
+    if args.acao == 'idle':
+        sys.exit('o idle é a régua, não se firma')
+
+    regua = medir_quadro(primeiro_quadro(pasta / 'idle.png'))
+    print(f'{args.acao}:')
+    transformacoes = firmar_sheet(sheet, regua, args.acao)
+    # Escalar em torno do pé arredonda o pixel e pode afundar um ou outro.
+    fixar_chao(sheet, int(regua['pe'][1]), so_abaixo=True)
+
+    spec_antiga = acao_no_json(lutador, args.acao, destino_skin)
+    registrar(lutador, caminho_json, args.acao, medir_sheet(sheet), destino_skin,
+              spec_antiga.get('frameRate'))
+
+    # As caixas acompanham a média dos quadros em que valem.
+    caminho_json, lutador = carregar_lutador(args.slug)
+    spec = acao_no_json(lutador, args.acao, destino_skin)
+
+    def media(quadros: list[int]) -> tuple[float, tuple[float, float]]:
+        ts = [transformacoes[q] for q in quadros if q < len(transformacoes)] or transformacoes
+        return (sum(t[0] for t in ts) / len(ts),
+                (sum(t[1] for t in ts) / len(ts), sum(t[2] for t in ts) / len(ts)))
+
+    if 'attack' in spec:
+        fator, desloc = media(spec['attack']['frames'])
+        spec['attack']['bounds'] = mover_caixa(spec['attack']['bounds'], fator, desloc)
+        print(f'  attack movida para {spec["attack"]["bounds"]}')
+    for span in spec.get('attackSpans', []):
+        fator, desloc = media(span['frames'])
+        span['bounds'] = mover_caixa(span['bounds'], fator, desloc)
+    if 'guard' in spec:
+        fator, desloc = media(list(range(1, len(transformacoes))))
+        spec['guard'] = mover_caixa(spec['guard'], fator, desloc)
+        print(f'  guard movida para {spec["guard"]}')
+    caminho_json.write_text(
+        json.dumps(lutador, indent=2, ensure_ascii=False) + chr(10), encoding='utf-8'
+    )
+    print('Confira na Academia antes de dar por pronto.')
+    return 0
+
+
 def acao_no_json(lutador: dict, acao_nome: str, destino_skin: str) -> dict:
     """A ação como ela está gravada: na skin extra, ou na lista da base."""
     skins = lutador.get('skins') or []
@@ -877,6 +1018,12 @@ def main() -> int:
                      help='só tira do chão o quadro que afundou (ação aérea)')
     esc.add_argument('--fps', type=int)
     esc.set_defaults(func=comando_escalar)
+
+    fir = sub.add_parser('firmar', help='põe cada quadro no tamanho e no eixo do idle')
+    fir.add_argument('slug')
+    fir.add_argument('acao')
+    fir.add_argument('--skin', help='pasta da skin (padrão: a base)')
+    fir.set_defaults(func=comando_firmar)
 
     agu = sub.add_parser('aguardar', help='só espera a imagem e entrega (para retry)')
     agu.add_argument('slug')

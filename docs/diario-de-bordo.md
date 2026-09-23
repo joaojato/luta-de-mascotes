@@ -900,3 +900,33 @@ sheet, mas sempre uma de cada vez, nunca uma ao lado da outra na mesma
 régua.
 **Em aberto:** conferir na Academia. O `knockdown` e o `special` são os que
 mais mudaram de posição.
+
+## 2026-09-23: a Regra do Eixo, e o Urubu para de escorregar
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** usar os movimentos do Jiu-Jitsu Fighter, Green Boxer e Red
+Brawler como referência máxima; o Urubu cresce, diminui e sai do eixo.
+**Feito:**
+- Medido quadro a quadro nos quatro lutadores (tamanho pela raiz da área,
+  tronco pela faixa entre 15% e 60% da altura, pé). O chão já estava certo.
+  Os defeitos eram dentro de cada sheet: tronco pulando até 40 px entre
+  quadros vizinhos (os de referência ficam em ~10), heavy-kick terminando
+  29 px fora do lugar, e o quadro 0 de block-high, block-low e
+  special-charge entre 0,78 e 0,89 do idle (o `--fator` à mão da sessão
+  passada ficou curto). Nos três do Chong-U o quadro 0 de toda ação é o idle.
+- Comando novo: `npm run sprite -- firmar <slug> <acao>`. Quadro 0 vai para
+  a altura do idle; os outros ficam na faixa 0,94-1,06 de tamanho,
+  escalados em torno do pé; o tronco volta para ±6 px do eixo (±20 no meio
+  de golpe); nada afunda no chão; attack e guard boxes acompanham.
+- Aplicado nas 12 ações do Urubu `frente`. Conferido em prancha com o idle
+  de fantasma e na Academia (playwright, 13 ações quadro a quadro, sem erro
+  no console): tamanho e eixo estáveis, caixas de soco e chute no lugar.
+**Verificado:** `npm run check` verde (typecheck, 44 testes, build).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** as 12 sheets reescritas de novo.
+**Aprovado explicitamente:** nada.
+**Atrito:** a Régua do Idle da sessão passada acertou a sheet inteira e eu
+dei por resolvido sem olhar quadro a quadro contra os de referência.
+**Em aberto:** o hit-high tem uma sobra solta no topo do último quadro
+(`registrar --limpar` resolve); a Regra do Eixo ainda não é teste, porque o
+teste em TS não lê pixel.

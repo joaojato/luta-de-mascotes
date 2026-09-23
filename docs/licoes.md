@@ -86,6 +86,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   aprovei todas; ele abriu o jogo e viu o mascote crescer e encolher entre
   os golpes. Defeito de escala só aparece com as ações **lado a lado na
   mesma régua**, e agora é teste (Regra da Régua do Idle). (2026-09-22)
+- **Acertar a sheet inteira não basta: o gerador desenha cada quadro solto.**
+  Depois da Régua do Idle o Urubu ainda pulsava e escorregava de lado dentro
+  da mesma ação (tronco pulando 30 a 40 px entre quadros vizinhos, bloqueio
+  com a guarda a 85% do idle). Ele notou comparando com os três do Chong-U,
+  e são eles a referência de movimento: quadro 0 igual ao idle, tamanho
+  estável, tronco no eixo. Medir sempre contra eles, quadro a quadro, e
+  nunca aceitar `--fator` à mão sem sobrepor ao idle. (2026-09-23)
 - **Para medir escala de personagem, a altura da pose em pé ganha do resto.**
   A área do bico exagera (o gerador desenha o bico em tamanhos variados) e o
   perfil de silhueta quebra com braço erguido. A prova barata é sobrepor a

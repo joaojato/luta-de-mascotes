@@ -79,6 +79,11 @@ Cada uma tem nome para poder ser cobrada depois.
   entra por `npm run sprite -- escalar <slug> <acao>`, nunca à mão. Quem sai
   do chão (salto, especial, queda) pode subir, mas ninguém afunda no piso.
   Cobrada por teste em `lutadores.test.ts`.
+- **Regra do Eixo.** Dentro de uma ação, cada quadro tem o tamanho e o eixo
+  do idle, como nos três lutadores do Chong-U: o quadro 0 é o idle, o
+  tamanho fica entre 0,94 e 1,06 e o tronco não escorrega de lado (±6 px
+  parado, ±20 px no meio de golpe). Toda sheet nova passa por
+  `npm run sprite -- firmar <slug> <acao>` depois do `escalar`.
 - **Regra do Placeholder.** Todo asset herdado do Chong-U vive em pasta com
   prefixo `_amostra` e é trocado pelo nosso antes de qualquer link público.
   O motor existe sem depender da nossa arte, que é o gargalo e é estocástica.

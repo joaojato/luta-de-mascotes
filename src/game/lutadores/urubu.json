@@ -181,9 +181,9 @@
       "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
-        "x": 45,
+        "x": 47,
         "y": 28,
-        "width": 180,
+        "width": 173,
         "height": 200
       },
       "label": "Walk Forward"
@@ -195,9 +195,9 @@
       "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
-        "x": 47,
+        "x": 56,
         "y": 27,
-        "width": 165,
+        "width": 152,
         "height": 201
       },
       "label": "Walk Backward"
@@ -210,9 +210,9 @@
       "repeat": 0,
       "defaultVisual": {
         "x": 61,
-        "y": 28,
-        "width": 163,
-        "height": 200
+        "y": 29,
+        "width": 154,
+        "height": 199
       },
       "label": "Crouch"
     },
@@ -224,10 +224,10 @@
       "repeat": 0,
       "label": "Jump",
       "defaultVisual": {
-        "x": 59,
-        "y": 16,
-        "width": 134,
-        "height": 212
+        "x": 61,
+        "y": 10,
+        "width": 132,
+        "height": 218
       }
     },
     {
@@ -238,16 +238,16 @@
       "repeat": 0,
       "defaultVisual": {
         "x": 45,
-        "y": 50,
-        "width": 158,
-        "height": 178
+        "y": 29,
+        "width": 155,
+        "height": 199
       },
       "label": "Block High",
       "guard": {
-        "x": 45,
-        "y": 54,
-        "width": 130,
-        "height": 110
+        "x": 39,
+        "y": 50,
+        "width": 133,
+        "height": 112
       }
     },
     {
@@ -257,17 +257,17 @@
       "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 74,
-        "y": 73,
-        "width": 134,
-        "height": 155
+        "x": 58,
+        "y": 28,
+        "width": 137,
+        "height": 200
       },
       "label": "Block Low",
       "guard": {
-        "x": 60,
-        "y": 78,
-        "width": 130,
-        "height": 100
+        "x": 53,
+        "y": 77,
+        "width": 131,
+        "height": 101
       }
     },
     {
@@ -278,9 +278,9 @@
       "repeat": 0,
       "defaultVisual": {
         "x": 52,
-        "y": 28,
-        "width": 172,
-        "height": 200
+        "y": 29,
+        "width": 164,
+        "height": 199
       },
       "label": "Hit High"
     },
@@ -304,7 +304,7 @@
         ],
         "bounds": {
           "x": 18,
-          "y": 64,
+          "y": 65,
           "width": 74,
           "height": 40
         }
@@ -319,7 +319,7 @@
       "defaultVisual": {
         "x": 34,
         "y": 29,
-        "width": 192,
+        "width": 185,
         "height": 199
       },
       "label": "Heavy Kick",
@@ -330,7 +330,7 @@
           5
         ],
         "bounds": {
-          "x": 36,
+          "x": 33,
           "y": 88,
           "width": 76,
           "height": 74
@@ -344,10 +344,10 @@
       "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 45,
-        "y": 53,
-        "width": 164,
-        "height": 175
+        "x": 47,
+        "y": 28,
+        "width": 159,
+        "height": 200
       },
       "label": "Special Charge"
     },
@@ -358,9 +358,9 @@
       "frameRate": 16,
       "repeat": 0,
       "defaultVisual": {
-        "x": 43,
+        "x": 44,
         "y": 29,
-        "width": 178,
+        "width": 162,
         "height": 199
       },
       "label": "Special",
@@ -371,10 +371,10 @@
           6
         ],
         "bounds": {
-          "x": 46,
-          "y": 32,
-          "width": 72,
-          "height": 104
+          "x": 47,
+          "y": 33,
+          "width": 71,
+          "height": 103
         }
       }
     },
