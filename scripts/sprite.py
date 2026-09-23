@@ -638,6 +638,161 @@ def comando_registrar(args) -> int:
     return 0
 
 
+def ancora_de(cel: Image.Image) -> tuple[float, int]:
+    """Centro dos pés e linha do chão de um quadro."""
+    bb = bbox_alpha(cel)
+    return alinhar_sheet.centro_dos_pes(cel.crop(bb)) + bb[0], bb[3]
+
+
+def primeiro_quadro(caminho: Path) -> Image.Image:
+    return Image.open(caminho).convert('RGBA').crop((0, 0, CELL, CELL))
+
+
+def escalar_sheet(caminho: Path, fator: float, destino: tuple[float, int]) -> tuple[float, float]:
+    """Põe a sheet na escala e no chão da referência, sem achatar o movimento.
+
+    A célula inteira é reduzida em torno do pé do primeiro quadro, e não o
+    recorte de cada figura: assim o salto continua subindo e o knockdown
+    continua deitado. Devolve o deslocamento aplicado, para as caixas irem
+    junto.
+    """
+    sheet = Image.open(caminho).convert('RGBA')
+    cols = sheet.width // CELL
+    ox, oy = ancora_de(sheet.crop((0, 0, CELL, CELL)))
+    dx, dy = destino
+    desloc_x, desloc_y = dx - ox * fator, dy - oy * fator
+
+    nova = Image.new('RGBA', sheet.size, (0, 0, 0, 0))
+    lado = max(1, round(CELL * fator))
+    for i in range(cols * (sheet.height // CELL)):
+        col, lin = i % cols, i // cols
+        cel = sheet.crop((col * CELL, lin * CELL, (col + 1) * CELL, (lin + 1) * CELL))
+        if not bbox_alpha(cel):
+            continue
+        # Folga de uma célula de cada lado para aceitar deslocamento negativo.
+        folgada = Image.new('RGBA', (CELL * 3, CELL * 3), (0, 0, 0, 0))
+        folgada.alpha_composite(
+            cel.resize((lado, lado), Image.LANCZOS),
+            (CELL + round(desloc_x), CELL + round(desloc_y))
+        )
+        nova.alpha_composite(
+            folgada.crop((CELL, CELL, CELL * 2, CELL * 2)), (col * CELL, lin * CELL)
+        )
+
+    nova.save(caminho, optimize=True)
+    return desloc_x, desloc_y
+
+
+def fixar_chao(caminho: Path, chao: int, so_abaixo: bool = False) -> list[int]:
+    """Põe o pé de cada quadro na mesma linha do chão.
+
+    O gerador move o chão de um quadro para o outro, e na tela isso vira
+    tremor vertical. Só para ação que fica em pé: quem sai do chão (salto,
+    queda) precisa do movimento que tem, e para essas `so_abaixo` sobe apenas
+    o quadro que afundou no piso, deixando o resto do voo como está.
+    """
+    sheet = Image.open(caminho).convert('RGBA')
+    cols = sheet.width // CELL
+    nova_sheet = Image.new('RGBA', sheet.size, (0, 0, 0, 0))
+    ajustes = []
+    for i in range(cols * (sheet.height // CELL)):
+        col, lin = i % cols, i // cols
+        cel = sheet.crop((col * CELL, lin * CELL, (col + 1) * CELL, (lin + 1) * CELL))
+        bb = bbox_alpha(cel)
+        if not bb:
+            continue
+        dy = chao - bb[3]
+        if so_abaixo:
+            dy = min(dy, 0)
+        ajustes.append(dy)
+        folgada = Image.new('RGBA', (CELL, CELL * 3), (0, 0, 0, 0))
+        folgada.alpha_composite(cel, (0, CELL + dy))
+        nova_sheet.alpha_composite(folgada.crop((0, CELL, CELL, CELL * 2)), (col * CELL, lin * CELL))
+    nova_sheet.save(caminho, optimize=True)
+    return ajustes
+
+
+def mover_caixa(caixa: dict, fator: float, desloc: tuple[float, float]) -> dict:
+    """Leva uma caixa (attack, guard) para a escala nova."""
+    return {
+        'x': round(caixa['x'] * fator + desloc[0]),
+        'y': round(caixa['y'] * fator + desloc[1]),
+        'width': round(caixa['width'] * fator),
+        'height': round(caixa['height'] * fator),
+    }
+
+
+def comando_escalar(args) -> int:
+    """Refaz a proporção de uma sheet pela escala e pelo chão do `idle`.
+
+    O gerador entrega cada ação num tamanho, e na luta o mascote cresce e
+    encolhe. A régua é sempre o `idle` da mesma pasta, e o fator sai da pose
+    em pé do primeiro quadro (guarda), que quase toda ação tem.
+    """
+    caminho_json, lutador = carregar_lutador(args.slug)
+    destino_skin = args.skin or skin_base(lutador)
+    pasta = pasta_skin(lutador, destino_skin)
+    sheet = pasta / f'{args.acao}.png'
+    referencia = pasta / f'{args.referencia}.png'
+    if not sheet.exists():
+        sys.exit(f'não achei {sheet}')
+    if not referencia.exists():
+        sys.exit(f'não achei a régua {referencia}')
+    if sheet == referencia:
+        sys.exit('a régua não se reescala')
+
+    bb_ref = bbox_alpha(primeiro_quadro(referencia))
+    bb_acao = bbox_alpha(primeiro_quadro(sheet))
+    alvo = bb_ref[3] - bb_ref[1]
+    atual = bb_acao[3] - bb_acao[1]
+    fator = args.fator if args.fator else alvo / atual
+
+    print(f'{args.acao}: quadro 0 com {atual}px, régua {args.referencia} com {alvo}px '
+          f'-> fator {fator:.3f}')
+    if not args.fator and not 0.5 < fator < 1.6:
+        sys.exit('fator fora do esperado: o quadro 0 não deve ser pose em pé. '
+                 'Passe --fator à mão.')
+
+    chao = ancora_de(primeiro_quadro(referencia))
+    desloc = escalar_sheet(sheet, fator, chao)
+    if args.chao or args.piso:
+        ajustes = fixar_chao(sheet, int(chao[1]), so_abaixo=args.piso)
+        print(f'chão em y={int(chao[1])}: ajuste de {min(ajustes)} a {max(ajustes)} px')
+
+    dados = medir_sheet(sheet)
+    registrar(lutador, caminho_json, args.acao, dados, destino_skin, args.fps)
+
+    # As caixas foram medidas na escala antiga e precisam ir junto.
+    caminho_json, lutador = carregar_lutador(args.slug)
+    spec = acao_no_json(lutador, args.acao, destino_skin)
+    for campo in ('attack', 'guard'):
+        if campo in spec:
+            alvo_caixa = spec[campo]['bounds'] if campo == 'attack' else spec[campo]
+            movida = mover_caixa(alvo_caixa, fator, desloc)
+            if campo == 'attack':
+                spec['attack']['bounds'] = movida
+            else:
+                spec['guard'] = movida
+            print(f'  {campo} movida para {movida}')
+    for span in spec.get('attackSpans', []):
+        span['bounds'] = mover_caixa(span['bounds'], fator, desloc)
+    caminho_json.write_text(
+        json.dumps(lutador, indent=2, ensure_ascii=False) + chr(10), encoding='utf-8'
+    )
+    print('Confira na Academia antes de dar por pronto.')
+    return 0
+
+
+def acao_no_json(lutador: dict, acao_nome: str, destino_skin: str) -> dict:
+    """A ação como ela está gravada: na skin extra, ou na lista da base."""
+    skins = lutador.get('skins') or []
+    base = skins[0]['pasta'] if skins else ''
+    if destino_skin and destino_skin != base:
+        variante = next((v for v in skins if v['pasta'] == destino_skin), None)
+        return (variante or {}).get('acoes', {}).get(acao_nome, {})
+    return next((a for a in lutador['actions'] if a['action'] == acao_nome), {})
+
+
 def comando_aguardar(args) -> int:
     """Espera a imagem e entrega, sem montar pedido de novo.
 
@@ -709,6 +864,19 @@ def main() -> int:
     reg.add_argument('--limpar', action='store_true',
                      help='apaga sobra de quadro vizinho antes de medir')
     reg.set_defaults(func=comando_registrar)
+
+    esc = sub.add_parser('escalar', help='refaz a proporção de uma sheet pela régua do idle')
+    esc.add_argument('slug')
+    esc.add_argument('acao')
+    esc.add_argument('--skin', help='pasta da skin (padrão: a base)')
+    esc.add_argument('--referencia', default='idle', help='sheet que serve de régua')
+    esc.add_argument('--fator', type=float, help='em vez de medir pela pose em pé')
+    esc.add_argument('--chao', action='store_true',
+                     help='põe o pé de todo quadro na mesma linha (ação que fica em pé)')
+    esc.add_argument('--piso', action='store_true',
+                     help='só tira do chão o quadro que afundou (ação aérea)')
+    esc.add_argument('--fps', type=int)
+    esc.set_defaults(func=comando_escalar)
 
     agu = sub.add_parser('aguardar', help='só espera a imagem e entrega (para retry)')
     agu.add_argument('slug')

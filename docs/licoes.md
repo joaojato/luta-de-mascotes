@@ -82,6 +82,14 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   achou que estava pronto. A Regra do JSON é clara para quem programa, não
   para quem gera arte. Toda receita de asset precisa terminar com "e aí o
   JSON", e o script tem de imprimir os números prontos. (2026-09-22)
+- **Conferir sheet sozinha não mostra proporção.** Eu olhei uma por uma e
+  aprovei todas; ele abriu o jogo e viu o mascote crescer e encolher entre
+  os golpes. Defeito de escala só aparece com as ações **lado a lado na
+  mesma régua**, e agora é teste (Regra da Régua do Idle). (2026-09-22)
+- **Para medir escala de personagem, a altura da pose em pé ganha do resto.**
+  A área do bico exagera (o gerador desenha o bico em tamanhos variados) e o
+  perfil de silhueta quebra com braço erguido. A prova barata é sobrepor a
+  figura escalada na silhueta do idle e olhar. (2026-09-22)
 - **Sheet do Codex vem com sobra do quadro vizinho.** No `knockdown` e no
   `special` do Urubu de frente, pedaços de sola dos quadros da fileira de
   cima caíram no topo da célula de baixo (4 e 5 quadros sujos). O olho não

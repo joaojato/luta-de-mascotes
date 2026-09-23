@@ -74,6 +74,11 @@ Cada uma tem nome para poder ser cobrada depois.
 - **Regra do Fim de Semana.** Cada marco do roteiro roda no navegador ao final
   de uma janela de trabalho real (uma noite ou um fim de semana). Marco que
   não roda no fim da janela foi grande demais e é quebrado em dois.
+- **Regra da Régua do Idle.** O `idle` da skin é a régua de toda ação dela:
+  mesma escala de desenho e mesmo pé no chão. Sheet que chega fora de escala
+  entra por `npm run sprite -- escalar <slug> <acao>`, nunca à mão. Quem sai
+  do chão (salto, especial, queda) pode subir, mas ninguém afunda no piso.
+  Cobrada por teste em `lutadores.test.ts`.
 - **Regra do Placeholder.** Todo asset herdado do Chong-U vive em pasta com
   prefixo `_amostra` e é trocado pelo nosso antes de qualquer link público.
   O motor existe sem depender da nossa arte, que é o gargalo e é estocástica.

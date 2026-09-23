@@ -65,6 +65,27 @@ describe('registro de lutadores (Regra do JSON)', () => {
         });
       });
 
+      // Regra da Régua do Idle: o mascote não cresce nem encolhe de uma ação
+      // para a outra, e o pé cai sempre na mesma linha. O `idle` é a régua.
+      // Quem sai do chão pode subir, mas ninguém afunda no piso.
+      it('toda ação pisa na linha do idle (Regra da Régua)', () => {
+        const idle = lutador.actions.find((spec) => spec.action === 'idle');
+        const chao = (idle?.defaultVisual.y ?? 0) + (idle?.defaultVisual.height ?? 0);
+        const aereas = ['jump', 'special', 'knockdown'];
+
+        lutador.actions.forEach((spec) => {
+          const linha = spec.defaultVisual.y + spec.defaultVisual.height;
+          expect(linha, `${spec.action}: afundou ${linha - chao}px no chão`).toBeLessThanOrEqual(
+            chao + 2
+          );
+          if (!aereas.includes(spec.action)) {
+            expect(linha, `${spec.action}: pé fora da linha do idle`).toBeGreaterThanOrEqual(
+              chao - 2
+            );
+          }
+        });
+      });
+
       it('todas as sheets, o âncora e o retrato existem em public/', () => {
         const pasta = resolve(PUBLIC_DIR, `.${lutador.assetRoot}`);
         // Skin herdada aponta para a pasta da base (`../costas/idle.png`);

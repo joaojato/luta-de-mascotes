@@ -859,3 +859,44 @@ seja o único jogável.
 **Atrito:** nada.
 **Em aberto:** conferir na Academia e na seleção. Depois, cenário e segundo
 mascote (Marco 3).
+
+## 2026-09-22: a Régua do Idle, e o mascote para de crescer
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** "Precisa refazer as proporções baseando-se no Idle (as outras
+estão um pouco distorcidas, crescendo, diminuindo)."
+**Feito:**
+- Medido: o Codex entrega cada sheet num tamanho. O quadro de guarda ia de
+  199px (idle) a 236px (hit-high, special, walk), e a linha dos pés variava
+  de 213 a 253. Na luta isso é o mascote crescendo e encolhendo a cada golpe.
+- **Três métricas testadas antes de escolher.** Área do bico: ordenava certo
+  mas exagerava a diferença (dizia 1,41 onde o certo era 1,18), porque o
+  Codex desenha o bico em tamanhos diferentes. Altura da cabeça por perfil de
+  silhueta: falhou feio (deu 0,56 para o special, por causa do braço erguido).
+  Altura da figura no quadro de guarda: **certa**, confirmada sobrepondo o
+  hit-high escalado por 0,843 sobre a silhueta do idle.
+- Comando novo: `npm run sprite -- escalar <slug> <acao>`. Mede o fator pela
+  pose em pé do quadro 0 contra o `idle` da mesma pasta, reduz a célula
+  inteira (não o recorte de cada figura, senão o salto deixa de subir) e
+  recoloca no pé e no chão do idle. `--fator` para as três poses que nunca
+  ficam eretas (bloqueios e carga), `--chao` para fixar o pé em todo quadro,
+  `--piso` para tirar do chão só o quadro que afundou numa ação aérea.
+- Aplicado nas 12 ações. Todas com o pé em y=228 e altura de guarda 199-201,
+  menos as poses naturalmente baixas. O salto sobe 53px, o uppercut 16px.
+- Caixas remedidas depois da escala: light-punch (quadros 2-3), heavy-kick
+  (3-5), special (4-6), e as duas guard boxes. Conferidas desenhadas por cima
+  dos quadros ativos.
+- **Regra da Régua do Idle** virou teste: toda ação pisa na linha do idle, e
+  quem sai do chão pode subir mas não afunda. Os três lutadores de amostra
+  já passavam; o Urubu não.
+**Verificado:** `npm run check` verde (typecheck, 44 testes, build).
+**Academia: ainda não.** Continua pendente a conferência visual.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** as 12 sheets foram reescritas em
+escala nova. Nada apagado.
+**Aprovado explicitamente:** nada.
+**Atrito:** ele viu a distorção antes de mim. Eu tinha conferido sheet por
+sheet, mas sempre uma de cada vez, nunca uma ao lado da outra na mesma
+régua.
+**Em aberto:** conferir na Academia. O `knockdown` e o `special` são os que
+mais mudaram de posição.
