@@ -46,6 +46,8 @@ src/game/lutadores/<slug>.json   um JSON por lutador: ações, boxes, stats
 src/game/lutadores/index.ts      registro; ordem = ordem na seleção
 src/game/lutadores/lutadores.test.ts   cobra a Regra do JSON por máquina
 src/game/fighterCharacter.ts   monta um lutador a partir da lista de ações
+src/controle/         controle pelo corpo: celular (controle.html), relay
+                      no Vite, gestos.ts (pose vira FighterInput)
 src/shell/            shell HTML de debug (só em dev, localhost)
 public/assets/lutadores/_amostra-<nome>/   sprites de amostra do Chong-U
 public/assets/lutadores/<slug>/<skin>/     sprites, uma pasta por skin
@@ -94,6 +96,8 @@ Cada uma tem nome para poder ser cobrada depois.
 - **Regra da v1.** A v1 é: 2 mascotes, 1 cenário, 4 golpes por mascote, 2
   jogadores no mesmo teclado. A CPU veio de brinde no motor herdado e pode
   ficar. Nada além disso é construído antes de a v1 rodar de ponta a ponta.
+  Exceção aberta pelo João em 01/10/2026: o controle pelo corpo (celular
+  como câmera, ADR 0004).
 
 ## Anti-referência
 

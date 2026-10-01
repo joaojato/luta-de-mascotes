@@ -34,6 +34,11 @@ ele é quebrado em dois, não esticado.
   virou a base: na seleção há um Urubu só, e o modelo de perfil ficou como
   variante de Academia. Falta: conferir as 13 na Academia, retrato de
   verdade, torcida animada (fora da v1), decisão da ADR 0002.
+- [x] Fora de ordem, por ordem do João (01/10/2026): **controle pelo
+  corpo**. O celular vira câmera por QR code, lê o corpo com MediaPipe e
+  manda para o jogo no PC; teclado continua valendo. Testado com celular
+  simulado: o Urubu anda, defende, soca, chuta e tira vida da CPU. Falta o
+  teste com celular e gente de verdade (`npm run dev:celular`, menu Celular).
 - [ ] Marco 3 = v1
 - [ ] Marco 4 (se sobrar tempo)
 

@@ -1,8 +1,14 @@
 # Controle por câmera: análise (01/10/2026)
 
-Proposta, não decisão. Pela Regra da v1, nada daqui é construído antes de a
-v1 rodar de ponta a ponta. Entra como candidato do Marco 4, ao lado dos
-Ultimates.
+**Atualização do mesmo dia:** o João mandou construir antes da v1, com o
+celular como câmera (QR code, jogo no PC). Feito: decisão em
+`docs/decisoes/0004-controle-celular.md`, gestos em `docs/gdd.md`, código em
+`src/controle/`. Como rodar: `npm run dev:celular`, abrir
+`https://localhost:5173`, menu **Celular**, escanear o QR.
+
+O texto abaixo é a análise original, mantida como registro. Duas coisas
+mudaram na construção: o caminho virou o celular (não a webcam do PC), e a
+guarda só defende parada, porque no motor bloquear trava o passo.
 
 ## O que o Fight_Detection entrega
 

@@ -7,6 +7,7 @@ export const SCENE_KEYS = {
   CharacterSelect: 'CharacterSelectScene',
   Match: 'MatchScene',
   Academia: 'AcademiaScene',
+  Conectar: 'ConectarScene',
   AssetCatalog: 'AssetCatalogScene',
   AnimationLab: 'AnimationLabScene',
   BackgroundTest: 'BackgroundTestScene',

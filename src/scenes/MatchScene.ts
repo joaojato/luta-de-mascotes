@@ -1,5 +1,7 @@
 import * as Phaser from 'phaser';
 
+import { celular, juntarInputs } from '../controle/celularNoJogo';
+import { PainelCelular } from '../controle/painelCelular';
 import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fighter';
 import { getCharacterDefinition } from '../game/hero';
 import { MatchHud } from '../game/matchHud';
@@ -61,6 +63,7 @@ export class MatchScene extends BaseScene {
   private p1Keys!: PlayerKeys;
   private p2Keys!: PlayerKeys;
   private cpu?: CpuController;
+  private paineisCelular: { jogador: 1 | 2; painel: PainelCelular }[] = [];
 
   private phase: MatchPhase = 'intro';
   private roundNumber = 1;
@@ -103,6 +106,7 @@ export class MatchScene extends BaseScene {
     this.spawnFighters();
     this.registerKeys();
     this.createControlsLegend();
+    this.createPaineisCelular();
 
     this.hud = new MatchHud(this, {
       mode: this.config.mode,
@@ -136,6 +140,8 @@ export class MatchScene extends BaseScene {
       this.p1?.destroy();
       this.p2?.destroy();
       this.hud?.destroy();
+      this.paineisCelular.forEach(({ painel }) => painel.destruir());
+      this.paineisCelular = [];
     });
   }
 
@@ -150,12 +156,17 @@ export class MatchScene extends BaseScene {
     const seconds = delta / 1000;
     const fighting = this.phase === 'fighting';
 
-    const p1Input = fighting ? this.readKeys(this.p1Keys) : { ...NEUTRAL_FIGHTER_INPUT };
+    // O celular é lido todo quadro, mesmo fora da luta, para golpe da
+    // introdução não sair atrasado quando o round começa.
+    const p1Celular = celular.input(1);
+    const p2Celular = celular.input(2);
+    const p1Input = fighting ? juntarInputs(this.readKeys(this.p1Keys), p1Celular) : { ...NEUTRAL_FIGHTER_INPUT };
     const p2Input = fighting
       ? this.cpu
         ? this.cpu.update(time)
-        : this.readKeys(this.p2Keys)
+        : juntarInputs(this.readKeys(this.p2Keys), p2Celular)
       : { ...NEUTRAL_FIGHTER_INPUT };
+    this.updatePaineisCelular();
 
     // Crouching (and crouch-block) is disabled for now: defense is simply
     // block-or-not. The geometric guard-box model still resolves blocks via the
@@ -476,6 +487,34 @@ export class MatchScene extends BaseScene {
       heavy: Phaser.Input.Keyboard.JustDown(keys.heavy),
       special: Phaser.Input.Keyboard.JustDown(keys.special)
     };
+  }
+
+  /** Esqueleto de cada celular num canto da tela, só enquanto ele estiver conectado. */
+  private createPaineisCelular(): void {
+    celular.iniciar();
+    const { width } = this.cameras.main;
+    const jogadores: (1 | 2)[] = this.config.mode === '1vcpu' ? [1] : [1, 2];
+    this.paineisCelular = jogadores.map((jogador) => ({
+      jogador,
+      painel: new PainelCelular(this, jogador, {
+        x: jogador === 1 ? 16 : width - 16 - 100,
+        y: 500,
+        largura: 100,
+        altura: 140,
+        comandos: false,
+        depth: HUD_DEPTH
+      })
+    }));
+  }
+
+  private updatePaineisCelular(): void {
+    this.paineisCelular.forEach(({ jogador, painel }) => {
+      const conectado = celular.jogadores[jogador].conectado;
+      painel.setVisivel(conectado);
+      if (conectado) {
+        painel.atualizar();
+      }
+    });
   }
 
   /** Draws the control legend at the bottom of the screen. */

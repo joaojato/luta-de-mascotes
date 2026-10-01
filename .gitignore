@@ -36,6 +36,9 @@ referencia/
 *.mov
 *.zip
 
+# Projeto vizinho com repositório próprio (4,7 GB), só de referência
+Fight_Detection/
+
 # Python
 __pycache__/
 *.pyc

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#020617" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Controle · Luta de Mascotes</title>
+    <style>
+      :root {
+        --fundo: #020617;
+        --painel: #0f172a;
+        --texto: #f8fafc;
+        --suave: #94a3b8;
+        --cor: #38bdf8;
+        --erro: #fca5a5;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; background: var(--fundo); color: var(--texto); font-family: ui-monospace, Menlo, Consolas, monospace; }
+      body { display: flex; flex-direction: column; gap: 12px; padding: 16px; }
+      h1 { margin: 0; font-size: 22px; color: var(--cor); }
+      #status { color: var(--suave); font-size: 14px; min-height: 1.4em; }
+      #status.erro { color: var(--erro); }
+      #palco { position: relative; flex: 1; min-height: 0; background: var(--painel); border: 2px solid #1e293b; border-radius: 12px; overflow: hidden; }
+      #palco video, #palco canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+      #palco.espelho video, #palco.espelho canvas { transform: scaleX(-1); }
+      #dica { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: var(--suave); line-height: 1.5; }
+      .botoes { display: flex; gap: 8px; }
+      button { flex: 1; padding: 14px 10px; font: inherit; font-size: 15px; border: 0; border-radius: 10px; background: #1e293b; color: var(--texto); }
+      button.principal { background: var(--cor); color: var(--fundo); font-weight: 700; }
+      button:disabled { opacity: 0.4; }
+    </style>
+  </head>
+  <body>
+    <h1 id="titulo">Controle</h1>
+    <div id="status">Procurando o jogo...</div>
+    <div id="palco">
+      <video id="video" playsinline muted></video>
+      <canvas id="tela"></canvas>
+      <div id="dica">Apoie o celular em pé, na altura da cintura, a uns 2,5 m, com o corpo inteiro na imagem. Depois olhe para a tela do jogo.</div>
+    </div>
+    <div class="botoes">
+      <button id="ligar" class="principal">Ligar câmera</button>
+    </div>
+    <div class="botoes">
+      <button id="trocar" disabled>Trocar câmera</button>
+      <button id="calibrar" disabled>Calibrar de novo</button>
+    </div>
+    <script type="module" src="/src/controle/celular.ts"></script>
+  </body>
+</html>

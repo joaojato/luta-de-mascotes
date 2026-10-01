@@ -954,3 +954,37 @@ depois, como usar a detecção do Fight_Detection como controle alternativo.
 **Atrito:** nenhum.
 **Em aberto:** decidir caminho A ou B; a pasta `Fight_Detection/` (4,7 GB,
 repositório próprio) segue solta dentro deste repo, fora do git.
+
+## 2026-10-01: controle pelo corpo, com o celular como câmera
+
+**Marco:** fora de ordem, por ordem do João (Marco 2 segue em andamento).
+**Pedido:** "só faz acontecer um jogo que rode com esses movimentos como
+controle", depois de aprovar o celular como câmera via QR code.
+**Feito:**
+- `controle.html`: o celular abre a câmera, roda o MediaPipe Pose e manda os
+  33 pontos do corpo (2D e 3D) por WebSocket.
+- Relay dentro do Vite (`src/controle/relay.ts`) e endereço que diz o IP da
+  máquina para o QR. `npm run dev:celular` liga HTTPS com certificado próprio.
+- `gestos.ts`: calibração de 1 s parado; passo anda, guarda parada defende,
+  soco (pose 3D, pega soco de frente), joelho alto chuta, pulo pula, mãos
+  pro alto soltam o especial (pose de torcida). 20 testes com corpo sintético.
+- Tela "Celular" no menu: QR por jogador, esqueleto ao vivo, comandos acesos.
+  Na Luta, o celular soma com o teclado e aparece num painel no canto.
+- ADR 0004, tabela de gestos no GDD, `Fight_Detection/` no `.gitignore`.
+**Verificado:** `npm run check` verde (typecheck, 64 testes, build).
+De ponta a ponta com Playwright: "celular" com câmera falsa tocando um vídeo
+livre de treino de boxe (Wikimedia, CC BY-SA) conecta, calibra e acende a
+guarda em 78 de 80 leituras; celular simulado na Luta fez o Urubu andar de
+x=246 a x=643, dar 3 socos e 1 chute (animação no mesmo milissegundo do
+gesto) e tirar 21% da vida da CPU.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** celular como câmera, construir antes da v1.
+**Atrito:** três limites caíram no primeiro contato com dado real: a guarda
+exigia os dois punhos visíveis (na guarda um esconde o outro), a guarda
+travava o passo (bloquear no motor para o lutador) e andar para perto da
+câmera virava pulo. Corrigidos com teste para cada um.
+**Em aberto:** teste com celular e gente de verdade; headless rodou a 5 fps
+sem GPU, o celular deve dar mais e não foi medido; Safari do iPhone com
+certificado próprio pode recusar o WebSocket; Wi-Fi da PUC pode isolar os
+aparelhos (plano: PC no roteador do celular).

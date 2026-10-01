@@ -83,6 +83,29 @@ parado, sem animação própria, para economizar crédito.
 Números exatos (dano, frames de startup, active, recovery) ficam no JSON do
 mascote, não aqui. Aqui é a intenção.
 
+## Controle pelo corpo (João, 01/10/2026)
+
+Além do teclado, cada jogador pode jogar com o corpo: escaneia o QR code da
+tela "Celular", apoia o celular em pé na altura da cintura, a uns 2,5 m, e
+luta na frente dele. O teclado continua valendo junto. Técnica em
+`docs/decisoes/0004-controle-celular.md`; limites em `src/controle/gestos.ts`.
+
+Antes de lutar, ficar 1 s parado de frente: é a calibração. Toda medida é
+relativa a essa postura, então não importa a altura do jogador.
+
+| Comando | Gesto | Observação |
+|---|---|---|
+| Andar | passo para o lado e ficar lá; voltar ao centro para | é posição, não passada |
+| Agachar | agachar de verdade | o motor ainda não usa agachar na luta |
+| Pular | pular de verdade | |
+| Defender | guarda de boxe, punhos no rosto, **parado** | andando de guarda, anda |
+| Soco | soco de qualquer braço, de frente ou de lado | |
+| Chute | joelho alto, ou pé acima do joelho da outra perna | |
+| Especial | **pose de torcida**: as duas mãos acima da cabeça por um instante | precisa da barra cheia, como no teclado |
+
+A pose de torcida é decisão de Comunicação: o jogador comemora como
+arquibancada para soltar o golpe do mascote.
+
 ## Ultimates (ideia do João, 17/09/2026)
 
 Cada mascote tem **um ataque especial grande, o ultimate, que vem de algo do

@@ -29,6 +29,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   a velha, ele mandou tirar o modelo antigo da seleção e deixar só "Urubu",
   sem o modelo entre parênteses. Variante é assunto da Academia, não da
   escolha de personagem. (2026-09-22)
+- **Controle por câmera antes da v1, por ordem dele.** Eu disse que pela
+  Regra da v1 isso esperava o Marco 4; ele respondeu "só faz acontecer um
+  jogo que rode com esses movimentos como controle". Escolheu o celular
+  como câmera (QR code, jogo no PC) no lugar da webcam e do Fight_Detection.
+  A regra cede porque a instrução mais recente dele vence o contrato.
+  (2026-10-01)
 
 ## O que não fazer
 

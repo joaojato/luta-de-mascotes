@@ -1,7 +1,12 @@
 import { defineConfig } from 'vitest/config';
+import basicSsl from '@vitejs/plugin-basic-ssl';
+import type { Plugin, PreviewServer, ViteDevServer } from 'vite';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import type { IncomingMessage, ServerResponse } from 'node:http';
+
+import { CAMINHO_INFO } from './src/controle/protocolo';
+import { infoControle, pendurarRelay } from './src/controle/relay';
 
 const PUBLIC_ROOT = resolve(import.meta.dirname, 'public');
 const SAVE_TARGETS = new Set([
@@ -50,8 +55,26 @@ function resolveSaveTarget(target: unknown): string | null {
   return outputPath.startsWith(PUBLIC_ROOT) ? outputPath : null;
 }
 
-export default defineConfig({
+/**
+ * Controle por celular: o relay que repassa a pose do celular para o jogo e o
+ * endereço que diz o IP da máquina na rede, para montar o QR code.
+ */
+function controleCelular(): Plugin {
+  const instalar = (server: ViteDevServer | PreviewServer): void => {
+    server.middlewares.use(CAMINHO_INFO, (_request, response) => sendJson(response, 200, infoControle()));
+    if (server.httpServer) {
+      pendurarRelay(server.httpServer);
+    }
+  };
+  return { name: 'controle-celular', configureServer: instalar, configurePreviewServer: instalar };
+}
+
+export default defineConfig(({ mode }) => ({
   plugins: [
+    controleCelular(),
+    // A câmera do celular só abre em HTTPS. `npm run dev:celular` liga um
+    // certificado próprio; o celular avisa uma vez e segue.
+    ...(mode === 'celular' ? [basicSsl()] : []),
     {
       name: 'starter-debug-json-writer',
       configureServer(server) {
@@ -93,8 +116,16 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173
   },
+  build: {
+    rolldownOptions: {
+      input: {
+        main: resolve(import.meta.dirname, 'index.html'),
+        controle: resolve(import.meta.dirname, 'controle.html')
+      }
+    }
+  },
   test: {
     // Material bruto e referências ficam fora do git e fora da suíte.
-    exclude: ['**/node_modules/**', '**/dist/**', 'referencia/**', 'spriterrific-runs/**']
+    exclude: ['**/node_modules/**', '**/dist/**', 'referencia/**', 'spriterrific-runs/**', 'Fight_Detection/**']
   }
-});
+}));

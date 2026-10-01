@@ -10,6 +10,7 @@ import { LevelSelectScene } from '../scenes/LevelSelectScene';
 import { CharacterSelectScene } from '../scenes/CharacterSelectScene';
 import { MatchScene } from '../scenes/MatchScene';
 import { AcademiaScene } from '../scenes/AcademiaScene';
+import { ConectarScene } from '../scenes/ConectarScene';
 import { SettingsScene } from '../scenes/SettingsScene';
 
 export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Game {
@@ -48,6 +49,7 @@ export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Ga
       CharacterSelectScene,
       MatchScene,
       AcademiaScene,
+      ConectarScene,
       SettingsScene
     ]
   });
