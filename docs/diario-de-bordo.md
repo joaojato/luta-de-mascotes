@@ -930,3 +930,27 @@ dei por resolvido sem olhar quadro a quadro contra os de referência.
 **Em aberto:** o hit-high tem uma sobra solta no topo do último quadro
 (`registrar --limpar` resolve); a Regra do Eixo ainda não é teste, porque o
 teste em TS não lê pixel.
+
+## 2026-10-01: controle por câmera, análise a partir do Fight_Detection
+
+**Marco:** Marco 2, em andamento.
+**Pedido:** entre Vibeboxing e Fight_Detection, qual era qual e como rodar;
+depois, como usar a detecção do Fight_Detection como controle alternativo.
+**Feito:**
+- Vibeboxing (jogo de socar alvo, MediaPipe Hands) identificado; o João o
+  apagou e ficou com o Fight_Detection.
+- Lido o pipeline do Fight_Detection: 4 classes (PARADO, ANDANDO, SOCO,
+  CHUTE) mais BRIGA, juntas por pessoa.
+- Medida a latência da LSTM com as amostras do dataset: 22 quadros até
+  virar SOCO e 16 até CHUTE (mediana), ~1 s a 15-20 fps. Lenta demais para
+  gatilho de luta.
+- Análise em `docs/controle-camera.md`: o motor já aceita uma terceira fonte
+  de `FighterInput`; gestos por geometria; recomendação de pose no navegador
+  (MediaPipe) em vez da ponte Python.
+**Verificado:** `npm run check` (só docs mudaram).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** Fight_Detection no lugar do Vibeboxing.
+**Atrito:** nenhum.
+**Em aberto:** decidir caminho A ou B; a pasta `Fight_Detection/` (4,7 GB,
+repositório próprio) segue solta dentro deste repo, fora do git.
