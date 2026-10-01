@@ -181,9 +181,9 @@
       "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
-        "x": 47,
+        "x": 49,
         "y": 28,
-        "width": 173,
+        "width": 171,
         "height": 200
       },
       "label": "Walk Forward"
@@ -195,7 +195,7 @@
       "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
-        "x": 56,
+        "x": 58,
         "y": 27,
         "width": 152,
         "height": 201
@@ -209,10 +209,10 @@
       "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 61,
-        "y": 29,
-        "width": 154,
-        "height": 199
+        "x": 52,
+        "y": 38,
+        "width": 144,
+        "height": 190
       },
       "label": "Crouch"
     },
@@ -224,30 +224,30 @@
       "repeat": 0,
       "label": "Jump",
       "defaultVisual": {
-        "x": 61,
-        "y": 10,
-        "width": 132,
-        "height": 218
+        "x": 62,
+        "y": 18,
+        "width": 133,
+        "height": 209
       }
     },
     {
       "action": "block-high",
-      "file": "block-high.png",
+      "file": "block-high-v2.png",
       "frames": 4,
       "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 45,
-        "y": 29,
-        "width": 155,
-        "height": 199
+        "x": 60,
+        "y": 37,
+        "width": 135,
+        "height": 191
       },
       "label": "Block High",
       "guard": {
-        "x": 39,
-        "y": 50,
-        "width": 133,
-        "height": 112
+        "x": 28,
+        "y": 41,
+        "width": 140,
+        "height": 118
       }
     },
     {
@@ -257,44 +257,44 @@
       "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 58,
-        "y": 28,
-        "width": 137,
-        "height": 200
+        "x": 63,
+        "y": 54,
+        "width": 128,
+        "height": 174
       },
       "label": "Block Low",
       "guard": {
-        "x": 53,
-        "y": 77,
-        "width": 131,
-        "height": 101
+        "x": 43,
+        "y": 69,
+        "width": 138,
+        "height": 106
       }
     },
     {
       "action": "hit-high",
-      "file": "hit-high.png",
+      "file": "hit-high-v2.png",
       "frames": 6,
       "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 52,
-        "y": 29,
-        "width": 164,
-        "height": 199
+        "x": 51,
+        "y": 24,
+        "width": 170,
+        "height": 204
       },
       "label": "Hit High"
     },
     {
       "action": "light-punch",
-      "file": "light-punch.png",
+      "file": "light-punch-v2.png",
       "frames": 6,
       "frameRate": 14,
       "repeat": 0,
       "label": "Light Punch",
       "defaultVisual": {
-        "x": 18,
+        "x": 7,
         "y": 28,
-        "width": 182,
+        "width": 197,
         "height": 200
       },
       "attack": {
@@ -303,10 +303,10 @@
           3
         ],
         "bounds": {
-          "x": 18,
-          "y": 65,
-          "width": 74,
-          "height": 40
+          "x": 8,
+          "y": 74,
+          "width": 92,
+          "height": 38
         }
       }
     },
@@ -317,10 +317,10 @@
       "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 34,
-        "y": 29,
-        "width": 185,
-        "height": 199
+        "x": 37,
+        "y": 31,
+        "width": 189,
+        "height": 197
       },
       "label": "Heavy Kick",
       "attack": {
@@ -330,10 +330,10 @@
           5
         ],
         "bounds": {
-          "x": 33,
-          "y": 88,
-          "width": 76,
-          "height": 74
+          "x": 39,
+          "y": 89,
+          "width": 75,
+          "height": 73
         }
       }
     },
@@ -344,10 +344,10 @@
       "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 47,
-        "y": 28,
-        "width": 159,
-        "height": 200
+        "x": 37,
+        "y": 37,
+        "width": 165,
+        "height": 191
       },
       "label": "Special Charge"
     },
@@ -358,10 +358,10 @@
       "frameRate": 16,
       "repeat": 0,
       "defaultVisual": {
-        "x": 44,
-        "y": 29,
-        "width": 162,
-        "height": 199
+        "x": 50,
+        "y": 30,
+        "width": 178,
+        "height": 198
       },
       "label": "Special",
       "attack": {
@@ -371,8 +371,8 @@
           6
         ],
         "bounds": {
-          "x": 47,
-          "y": 33,
+          "x": 55,
+          "y": 34,
           "width": 71,
           "height": 103
         }
@@ -385,10 +385,10 @@
       "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 20,
-        "y": 29,
-        "width": 215,
-        "height": 199
+        "x": 24,
+        "y": 30,
+        "width": 213,
+        "height": 197
       },
       "label": "Knockdown"
     }

@@ -1,10 +1,12 @@
 /**
- * Lado do jogo do controle por celular. Uma conexão só com o relay, que vive
- * entre as cenas: a tela de conexão, a Luta e a Academia leem daqui.
+ * Lado do jogo do controle por celular. Uma conexão só com o cano
+ * (`canal.ts`), que vive entre as cenas: a tela de conexão, a Luta e a
+ * Academia leem daqui.
  */
 import { NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fighter';
 import { LeitorDeGestos, poseDoQuadro, type Pose } from './gestos';
-import { CAMINHO_RELAY, ehJogador, type Jogador } from './protocolo';
+import { abrirCanoDoJogo } from './canal';
+import { ehJogador, ehSala, gerarSala, type Jogador } from './protocolo';
 
 export interface SituacaoCelular {
   conectado: boolean;
@@ -14,10 +16,29 @@ export interface SituacaoCelular {
   fps: number;
 }
 
-const RECONECTAR_MS = 2000;
+const CHAVE_SALA = 'luta-de-mascotes:sala';
+
+/**
+ * A sala fica guardada no navegador: recarregar a página do jogo não obriga
+ * ninguém a escanear de novo.
+ */
+function salaGuardada(): string {
+  try {
+    const guardada = window.localStorage.getItem(CHAVE_SALA);
+    if (ehSala(guardada)) {
+      return guardada;
+    }
+    const nova = gerarSala();
+    window.localStorage.setItem(CHAVE_SALA, nova);
+    return nova;
+  } catch {
+    return gerarSala();
+  }
+}
 
 class CelularNoJogo {
   private iniciado = false;
+  private salaAtual: string | null = null;
   private conectadoAoRelay = false;
   private ultimaChegada: Record<Jogador, number> = { 1: 0, 2: 0 };
 
@@ -26,13 +47,25 @@ class CelularNoJogo {
     2: { conectado: false, leitor: new LeitorDeGestos(), ultimaPose: null, fps: 0 }
   };
 
-  /** Liga a conexão com o relay. Pode ser chamado várias vezes. */
+  /** Liga o cano até os celulares. Pode ser chamado várias vezes. */
   iniciar(): void {
     if (this.iniciado || typeof window === 'undefined') {
       return;
     }
     this.iniciado = true;
-    this.conectar();
+    void abrirCanoDoJogo(this.sala, {
+      noAr: (noAr) => {
+        this.conectadoAoRelay = noAr;
+      },
+      celular: (jogador, conectado) => this.receberCelular(jogador, conectado),
+      mensagem: (mensagem) => this.receber(mensagem)
+    });
+  }
+
+  /** Código que vai no QR code. */
+  get sala(): string {
+    this.salaAtual ??= salaGuardada();
+    return this.salaAtual;
   }
 
   get relayNoAr(): boolean {
@@ -48,32 +81,16 @@ class CelularNoJogo {
     return situacao.leitor.consumir();
   }
 
-  private conectar(): void {
-    const protocolo = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const socket = new WebSocket(`${protocolo}://${window.location.host}${CAMINHO_RELAY}`);
-
-    socket.addEventListener('open', () => {
-      this.conectadoAoRelay = true;
-      socket.send(JSON.stringify({ t: 'ola', papel: 'jogo' }));
-    });
-    socket.addEventListener('message', (evento) => this.receber(evento.data));
-    socket.addEventListener('close', () => {
-      this.conectadoAoRelay = false;
-      ([1, 2] as const).forEach((j) => this.marcarDesconectado(j));
-      window.setTimeout(() => this.conectar(), RECONECTAR_MS);
-    });
+  private receberCelular(jogador: Jogador, conectado: boolean): void {
+    if (conectado) {
+      this.jogadores[jogador].conectado = true;
+      this.jogadores[jogador].leitor.recalibrar();
+    } else {
+      this.marcarDesconectado(jogador);
+    }
   }
 
-  private receber(dados: unknown): void {
-    if (typeof dados !== 'string') {
-      return;
-    }
-    let mensagem: { t?: unknown; jogador?: unknown; conectado?: unknown };
-    try {
-      mensagem = JSON.parse(dados);
-    } catch {
-      return;
-    }
+  private receber(mensagem: { t?: unknown; jogador?: unknown }): void {
     if (!ehJogador(mensagem.jogador)) {
       return;
     }
@@ -81,14 +98,6 @@ class CelularNoJogo {
     const situacao = this.jogadores[jogador];
 
     switch (mensagem.t) {
-      case 'celular':
-        if (mensagem.conectado) {
-          situacao.conectado = true;
-          situacao.leitor.recalibrar();
-        } else {
-          this.marcarDesconectado(jogador);
-        }
-        break;
       case 'pose': {
         const pose = poseDoQuadro(mensagem as Parameters<typeof poseDoQuadro>[0]);
         situacao.conectado = true;

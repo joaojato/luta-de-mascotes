@@ -32,7 +32,7 @@ import sys
 import time
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageChops
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import alinhar_sheet  # noqa: E402
@@ -783,90 +783,96 @@ def comando_escalar(args) -> int:
     return 0
 
 
-# Regra do Eixo: faixas medidas nos três lutadores de amostra do Chong-U, que
-# são a referência de movimento. Neles o tamanho de um quadro (raiz da área
-# contra o idle) fica entre 0,89 e 1,07, o quadro 0 de toda ação é o idle, e o
-# tronco quase não sai do eixo. O gerador desenha cada quadro solto, e sem
-# isto o mascote pulsa e escorrega de lado dentro da mesma ação.
-FAIXA_TAMANHO = (0.94, 1.06)
-EIXO_PARADO = 6    # px de folga do tronco em ação que não sai do lugar
-EIXO_GOLPE = 20    # px no meio de um golpe, que pode inclinar o corpo
-GOLPES = {'hit-high', 'light-punch', 'heavy-kick', 'heavy-punch', 'special'}
-SEM_EIXO = {'idle', 'knockdown'}   # a régua, e a queda que precisa deslizar
+# Regra do Eixo: nos três lutadores do Chong-U, que são a referência de
+# movimento, o quadro 0 de toda ação é o idle pixel por pixel, e nas ações
+# paradas os pés não saem do lugar em nenhum quadro. O gerador desenha cada
+# quadro solto, em outra escala e outro ponto. Aqui cada quadro é encaixado
+# por sobreposição no idle, pela parte do corpo que a ação não mexe.
+PELAS_PERNAS = {'crouch', 'block-high', 'block-low', 'hit-high', 'light-punch', 'special-charge'}
+PELO_TRONCO = {'walk-forward', 'walk-backward'}
+# O resto (salto, chute, especial, queda) tira o pé do chão: só o quadro 0
+# encaixa no idle, e a sheet inteira segue a mesma transformação.
+ESCALAS = [s / 100 for s in range(90, 113)]
+DESLOCAMENTOS = range(-40, 41)
 
 
-def medir_quadro(cel: Image.Image) -> dict | None:
-    """Área, centro do tronco e ponto do pé de um quadro."""
-    alfa = cel.getchannel('A').point(lambda v: 255 if v > ALPHA_MIN else 0)
-    bb = alfa.getbbox()
-    if not bb:
-        return None
-    px = alfa.load()
-    altura = bb[3] - bb[1]
-    # Tronco: a faixa entre o pescoço e o quadril. Cabeça, braço estendido e
-    # perna de chute puxam o centro da figura inteira; o tronco não.
-    t0, t1 = bb[1] + int(altura * 0.15), bb[1] + int(altura * 0.6)
-    area = soma = n = 0
-    for y in range(bb[1], bb[3]):
-        for x in range(bb[0], bb[2]):
-            if px[x, y]:
-                area += 1
-                if t0 <= y < t1:
-                    soma += x
-                    n += 1
-    pe_x, pe_y = ancora_de(cel)
-    return {'area': area, 'tronco': soma / max(n, 1), 'pe': (pe_x, pe_y), 'altura': altura}
+def mascara(cel: Image.Image) -> Image.Image:
+    return cel.getchannel('A').point(lambda v: 255 if v > ALPHA_MIN else 0).convert('1')
 
 
-def firmar_sheet(caminho: Path, regua: dict, acao_nome: str) -> list[tuple[float, float, float]]:
-    """Põe cada quadro no tamanho e no eixo do idle, dentro das faixas.
+def encaixar(cel: Image.Image, regua: Image.Image, faixa: tuple[int, int],
+             chao: int) -> tuple[float, float, float, float]:
+    """Escala e deslocamento que mais sobrepõem o quadro à régua na faixa.
 
-    Cada quadro é escalado em torno do próprio pé, então o chão não muda.
-    Devolve, por quadro, (fator, deslocamento x, deslocamento y) para as
-    caixas irem junto.
+    O pé do quadro vai sempre para a linha do chão; a busca é na escala (em
+    torno do centro da célula) e no deslocamento horizontal. Devolve
+    (fator, ox, oy, sobreposição) no formato de `mover_caixa`.
     """
+    alvo = regua.crop((0, faixa[0], CELL, faixa[1]))
+    base = mascara(cel)
+    fundo = base.getbbox()[3]
+    melhor = (0.0, 1.0, 0.0, 0.0)
+    for s in ESCALAS:
+        lado = round(CELL * s)
+        oy = chao - fundo * s
+        ox0 = CELL / 2 - CELL / 2 * s
+        tela = Image.new('1', (CELL * 3, CELL * 3), 0)
+        tela.paste(base.resize((lado, lado)), (CELL + round(ox0), CELL + round(oy)))
+        caixa = tela.getbbox()
+        for dx in DESLOCAMENTOS:
+            # Nada pode sair da célula: pé cortado é pior que pé fora do lugar.
+            if caixa[0] - dx < CELL or caixa[2] - dx > CELL * 2:
+                continue
+            janela = tela.crop((CELL - dx, CELL + faixa[0], CELL * 2 - dx, CELL + faixa[1]))
+            comum = ImageChops.logical_and(janela, alvo).histogram()[255]
+            uniao = ImageChops.logical_or(janela, alvo).histogram()[255]
+            nota = comum / max(uniao, 1)
+            if nota > melhor[0]:
+                melhor = (nota, s, ox0 + dx, oy)
+    nota, s, ox, oy = melhor
+    return s, ox, oy, nota
+
+
+def aplicar(cel: Image.Image, fator: float, ox: float, oy: float) -> Image.Image:
+    lado = max(1, round(CELL * fator))
+    folgada = Image.new('RGBA', (CELL * 3, CELL * 3), (0, 0, 0, 0))
+    folgada.alpha_composite(cel.resize((lado, lado), Image.LANCZOS), (CELL + round(ox), CELL + round(oy)))
+    return folgada.crop((CELL, CELL, CELL * 2, CELL * 2))
+
+
+def firmar_sheet(caminho: Path, idle: Image.Image, acao_nome: str) -> list[tuple[float, float, float]]:
+    """Encaixa cada quadro no idle. Devolve (fator, ox, oy) por quadro, para
+    as caixas irem junto."""
+    regua = mascara(idle)
+    topo, chao = regua.getbbox()[1], regua.getbbox()[3]
+    altura = chao - topo
+    if acao_nome in PELAS_PERNAS:
+        faixa = (chao - int(altura * 0.45), chao)
+    elif acao_nome in PELO_TRONCO:
+        faixa = (topo, topo + int(altura * 0.55))
+    else:
+        faixa = (topo, chao)
+
     sheet = Image.open(caminho).convert('RGBA')
     cols = sheet.width // CELL
     nova = Image.new('RGBA', sheet.size, (0, 0, 0, 0))
-    medidas = []
+    transformacoes = []
+    primeiro = None
     for i in range(cols * (sheet.height // CELL)):
         col, lin = i % cols, i // cols
         cel = sheet.crop((col * CELL, lin * CELL, (col + 1) * CELL, (lin + 1) * CELL))
-        m = medir_quadro(cel)
-        if m:
-            medidas.append((col, lin, cel, m))
-
-    ultimo = len(medidas) - 1
-    transformacoes = []
-    for k, (col, lin, cel, m) in enumerate(medidas):
-        tamanho = (m['area'] / regua['area']) ** 0.5
-        fator = min(max(tamanho, FAIXA_TAMANHO[0]), FAIXA_TAMANHO[1]) / tamanho
-        if k == 0:
-            # O quadro 0 é a guarda, a mesma pose do idle: ali vale a altura,
-            # que é a medida exata, e não a faixa.
-            tamanho = m['altura'] / regua['altura']
-            fator = 1 / tamanho
-        fx, fy = m['pe']
-        tronco = fx + (m['tronco'] - fx) * fator
-        desvio = tronco - regua['tronco']
-        if acao_nome in SEM_EIXO:
-            folga = abs(desvio)
-        elif acao_nome in GOLPES and 0 < k < ultimo:
-            folga = EIXO_GOLPE
+        if not bbox_alpha(cel):
+            continue
+        if primeiro is not None and acao_nome not in PELAS_PERNAS | PELO_TRONCO:
+            fator, ox, oy = primeiro
+            nota = None
         else:
-            folga = EIXO_PARADO
-        dx = min(max(desvio, -folga), folga) - desvio
-
-        ox, oy = fx - fx * fator + dx, fy - fy * fator
-        lado = max(1, round(CELL * fator))
-        folgada = Image.new('RGBA', (CELL * 3, CELL * 3), (0, 0, 0, 0))
-        folgada.alpha_composite(
-            cel.resize((lado, lado), Image.LANCZOS), (CELL + round(ox), CELL + round(oy))
-        )
-        nova.alpha_composite(folgada.crop((CELL, CELL, CELL * 2, CELL * 2)), (col * CELL, lin * CELL))
+            fator, ox, oy, nota = encaixar(cel, regua, faixa, chao)
+            primeiro = primeiro or (fator, ox, oy)
+        nova.alpha_composite(aplicar(cel, fator, ox, oy), (col * CELL, lin * CELL))
         transformacoes.append((fator, ox, oy))
-        print(f'  quadro {k}: tamanho {tamanho:.2f} -> {tamanho * fator:.2f}, '
-              f'tronco {desvio:+.0f} -> {desvio + dx:+.0f} px')
+        extra = f', sobreposição {nota:.2f}' if nota is not None else ' (segue o quadro 0)'
+        print(f'  quadro {len(transformacoes) - 1}: escala {fator:.2f}, x {ox:+.0f}{extra}')
 
     nova.save(caminho, optimize=True)
     return transformacoes
@@ -887,11 +893,11 @@ def comando_firmar(args) -> int:
     if args.acao == 'idle':
         sys.exit('o idle é a régua, não se firma')
 
-    regua = medir_quadro(primeiro_quadro(pasta / 'idle.png'))
+    idle = primeiro_quadro(pasta / 'idle.png')
     print(f'{args.acao}:')
-    transformacoes = firmar_sheet(sheet, regua, args.acao)
-    # Escalar em torno do pé arredonda o pixel e pode afundar um ou outro.
-    fixar_chao(sheet, int(regua['pe'][1]), so_abaixo=True)
+    transformacoes = firmar_sheet(sheet, idle, args.acao)
+    # Escalar arredonda o pixel e pode afundar um ou outro no chão.
+    fixar_chao(sheet, bbox_alpha(idle)[3], so_abaixo=True)
 
     spec_antiga = acao_no_json(lutador, args.acao, destino_skin)
     registrar(lutador, caminho_json, args.acao, medir_sheet(sheet), destino_skin,

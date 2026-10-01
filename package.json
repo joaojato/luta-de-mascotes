@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "1.0.1",
+    "@supabase/supabase-js": "2.117.2",
     "phaser": "4.0.0",
     "qrcode": "1.5.4"
   },

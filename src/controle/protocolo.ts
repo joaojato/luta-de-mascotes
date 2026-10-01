@@ -44,3 +44,29 @@ export interface InfoControle {
 export function ehJogador(valor: unknown): valor is Jogador {
   return valor === 1 || valor === 2;
 }
+
+/**
+ * Sala: o código que junta os celulares a um jogo quando a conversa passa
+ * pela internet (Supabase, ADR 0005). Vai no QR code; no relay local é
+ * ignorada, porque lá o servidor já é a sala.
+ */
+export const PARAM_SALA = 'sala';
+const LETRAS_SALA = 'abcdefghjkmnpqrstuvwxyz23456789';
+const TAMANHO_SALA = 6;
+
+export function gerarSala(aleatorio: () => number = Math.random): string {
+  let sala = '';
+  for (let i = 0; i < TAMANHO_SALA; i += 1) {
+    sala += LETRAS_SALA[Math.floor(aleatorio() * LETRAS_SALA.length)];
+  }
+  return sala;
+}
+
+export function ehSala(valor: unknown): valor is string {
+  return typeof valor === 'string' && new RegExp(`^[${LETRAS_SALA}]{${TAMANHO_SALA}}$`).test(valor);
+}
+
+/** Um canal por jogador: o celular do P1 não recebe a pose do P2. */
+export function nomeDoCanal(sala: string, jogador: Jogador): string {
+  return `luta-${sala}-p${jogador}`;
+}

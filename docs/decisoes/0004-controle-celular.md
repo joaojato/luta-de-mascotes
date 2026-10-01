@@ -1,7 +1,7 @@
 # ADR 0004: controle por câmera do celular
 
 **Data:** 2026-10-01
-**Status:** aceito
+**Status:** aceito; o caminho pela internet é da 0005
 
 ## Contexto
 

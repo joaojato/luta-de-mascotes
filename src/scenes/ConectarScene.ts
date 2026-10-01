@@ -3,7 +3,7 @@ import QRCode from 'qrcode';
 
 import { celular } from '../controle/celularNoJogo';
 import { PainelCelular } from '../controle/painelCelular';
-import { CAMINHO_INFO, type InfoControle, type Jogador } from '../controle/protocolo';
+import { CAMINHO_INFO, PARAM_SALA, type InfoControle, type Jogador } from '../controle/protocolo';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
 
@@ -104,7 +104,10 @@ export class ConectarScene extends BaseScene {
     }
 
     const porta = window.location.port ? `:${window.location.port}` : '';
-    await Promise.all(([1, 2] as const).map((jogador) => this.mostrarQr(jogador, `https://${host}${porta}/controle.html?j=${jogador}`)));
+    const sala = `${PARAM_SALA}=${celular.sala}`;
+    await Promise.all(
+      ([1, 2] as const).map((jogador) => this.mostrarQr(jogador, `https://${host}${porta}/controle.html?j=${jogador}&${sala}`))
+    );
   }
 
   private async mostrarQr(jogador: Jogador, url: string): Promise<void> {

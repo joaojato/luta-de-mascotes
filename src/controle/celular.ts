@@ -1,18 +1,17 @@
 /**
  * Página do celular (controle.html): abre a câmera, roda o MediaPipe Pose e
- * manda os pontos para o jogo pelo relay. Não interpreta gesto nenhum.
+ * manda os pontos para o jogo pelo cano (`canal.ts`). Não interpreta gesto
+ * nenhum.
  */
 import { FilesetResolver, PoseLandmarker, type PoseLandmarkerResult } from '@mediapipe/tasks-vision';
 
-import { CAMINHO_RELAY, type Jogador, type MensagemCelular } from './protocolo';
+import { abrirCanoDoCelular, type CanoDoCelular } from './canal';
+import { ehSala, PARAM_SALA, type Jogador, type MensagemCelular } from './protocolo';
 
 // Mesma versão do package.json: o wasm precisa casar com o código JS.
 const WASM = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/wasm';
 const MODELO =
   'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task';
-const RECONECTAR_MS = 1500;
-/** Se a rede engasgar, descarta quadro em vez de acumular atraso. */
-const LIMITE_FILA_BYTES = 32 * 1024;
 const SEM_PESSOA_MS = 100;
 
 const OSSOS: [number, number][] = [
@@ -31,12 +30,14 @@ const botaoLigar = $<HTMLButtonElement>('ligar');
 const botaoTrocar = $<HTMLButtonElement>('trocar');
 const botaoCalibrar = $<HTMLButtonElement>('calibrar');
 
-const jogador: Jogador = new URLSearchParams(window.location.search).get('j') === '2' ? 2 : 1;
+const parametros = new URLSearchParams(window.location.search);
+const jogador: Jogador = parametros.get('j') === '2' ? 2 : 1;
+const sala = parametros.get(PARAM_SALA);
 const corJogador = jogador === 1 ? '#38bdf8' : '#f87171';
 document.documentElement.style.setProperty('--cor', corJogador);
 titulo.textContent = `Controle P${jogador}`;
 
-let socket: WebSocket | null = null;
+let cano: CanoDoCelular | null = null;
 let conectado = false;
 let landmarker: PoseLandmarker | null = null;
 let fluxo: MediaStream | null = null;
@@ -63,32 +64,24 @@ function atualizarStatus(): void {
 }
 
 function enviar(mensagem: MensagemCelular): void {
-  if (!socket || socket.readyState !== WebSocket.OPEN || socket.bufferedAmount > LIMITE_FILA_BYTES) {
-    return;
-  }
-  socket.send(JSON.stringify(mensagem));
+  cano?.enviar(mensagem);
 }
 
-function conectar(): void {
-  const protocolo = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  const ws = new WebSocket(`${protocolo}://${window.location.host}${CAMINHO_RELAY}`);
-  socket = ws;
-  ws.addEventListener('open', () => {
-    conectado = true;
-    ws.send(JSON.stringify({ t: 'ola', papel: 'celular', jogador }));
-    atualizarStatus();
-  });
-  ws.addEventListener('close', (evento) => {
-    conectado = false;
-    socket = null;
-    if (evento.code === 4000) {
+async function conectar(): Promise<void> {
+  cano = await abrirCanoDoCelular(jogador, ehSala(sala) ? sala : null, {
+    conectado(agora) {
+      conectado = agora;
+      atualizarStatus();
+    },
+    expulso() {
       mensagemFixa = 'Outro celular entrou como este jogador.';
       mostrar(mensagemFixa, true);
-      return;
     }
-    atualizarStatus();
-    window.setTimeout(conectar, RECONECTAR_MS);
   });
+  if (!cano) {
+    mensagemFixa = 'Endereço sem sala. Escaneie de novo o QR code na tela do jogo.';
+    mostrar(mensagemFixa, true);
+  }
 }
 
 async function criarLandmarker(): Promise<PoseLandmarker> {
@@ -245,4 +238,4 @@ document.addEventListener('visibilitychange', () => {
 });
 window.setInterval(atualizarStatus, 500);
 
-conectar();
+void conectar();

@@ -35,6 +35,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   como câmera (QR code, jogo no PC) no lugar da webcam e do Fight_Detection.
   A regra cede porque a instrução mais recente dele vence o contrato.
   (2026-10-01)
+- **Servidor local no celular não serve.** Testando, ele achou o
+  `npm run dev` instável no celular e pediu o jogo na Vercel, com endereço
+  fixo. O relay do ADR 0004 mora dentro do Vite e não existe num build
+  estático: hospedar o jogo pede trocar o caminho do celular até o PC.
+  (2026-10-01)
 
 ## O que não fazer
 
@@ -92,6 +97,14 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   aprovei todas; ele abriu o jogo e viu o mascote crescer e encolher entre
   os golpes. Defeito de escala só aparece com as ações **lado a lado na
   mesma régua**, e agora é teste (Regra da Régua do Idle). (2026-09-22)
+- **Pós-processo não conserta desenho inconsistente.** A Regra do Eixo
+  (82c2e6b) piorou o block-high: ao forçar o quadro 0 para a altura do idle,
+  ele ficou maior que os quadros 1-3. Ele mostrou o Red Brawler: pés
+  cravados, tamanho igual. Medido: nos três do Chong-U o quadro 0 de toda
+  ação é o idle pixel por pixel e os pés não mexem nas ações paradas; no
+  Urubu o quadro 0 cobre só 61-91% do idle, porque cada quadro foi desenhado
+  do zero. Escalar e deslocar só aproxima. O conserto está na geração:
+  partir do idle e mexer só no que a ação mexe. (2026-09-23)
 - **Acertar a sheet inteira não basta: o gerador desenha cada quadro solto.**
   Depois da Régua do Idle o Urubu ainda pulsava e escorregava de lado dentro
   da mesma ação (tronco pulando 30 a 40 px entre quadros vizinhos, bloqueio

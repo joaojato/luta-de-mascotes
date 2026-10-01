@@ -988,3 +988,43 @@ câmera virava pulo. Corrigidos com teste para cada um.
 sem GPU, o celular deve dar mais e não foi medido; Safari do iPhone com
 certificado próprio pode recusar o WebSocket; Wi-Fi da PUC pode isolar os
 aparelhos (plano: PC no roteador do celular).
+
+## 2026-10-01: o celular passa pela internet (Supabase), rumo à Vercel
+
+**Marco:** fora de ordem, controle pelo corpo (Marco 2 segue em andamento).
+**Pedido:** "sobe isso no vercel, essa versão de ficar acessando pelo npm run
+dev tá muito instável (pelo menos para o celular)"; depois, "consegue fazer
+isso do supabase então? e comite tudo".
+**Feito:**
+- Diagnóstico: o relay da ADR 0004 vive dentro do Vite; num build estático
+  na Vercel o celular não acharia o jogo.
+- `src/controle/canal.ts`: o cano entre celular e jogo, com dois jeitos e as
+  mesmas mensagens. Com `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` no
+  build, vai pelo Supabase Realtime (`canalSupabase.ts`, carregado só nesse
+  caso); sem elas, segue o relay do Vite.
+- Sala de 6 letras guardada no navegador do PC, no QR code; um canal por
+  jogador; presença diz quem está na sala; vale o celular que entrou por
+  último; pose só sai com o jogo na sala, no máximo 20 por segundo (cota de
+  100 eventos/s do plano gratuito).
+- ADR 0005, `.env.example` com as duas variáveis, `@supabase/supabase-js`
+  2.117.2 fixado.
+- Junto, a pedido dele ("comite tudo"), o que estava solto desde 23/09: o
+  `firmar` refeito para encaixar cada quadro no idle por sobreposição, as
+  sheets do Urubu nesse estado, e as `-v2` de block-high, hit-high e
+  light-punch que apareceram na pasta e que o JSON já usa (as `-v2` do andar
+  existem mas não estão ligadas). Não conferi esse lote de sprites.
+**Verificado:** `npm run check` verde (typecheck, 73 testes, build). Relay
+local de ponta a ponta com Playwright: jogo entra no relay, celular falso
+aparece como P1, o leitor responde, a saída é percebida.
+**Supabase: não testado de ponta a ponta.** Falta o projeto: o CLI do
+Supabase não está logado nesta máquina.
+**Vercel: não publicado.** A CLI desta máquina está na conta da Icons4u, que
+o contrato proíbe; falta a conta pessoal.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** Supabase como caminho do celular.
+**Atrito:** o repositório no GitHub está público, contra a ADR 0003; avisado,
+não mexi.
+**Em aberto:** projeto no Supabase (URL e chave anon no `.env` e na Vercel),
+teste com celular de verdade, deploy pela conta pessoal, repositório privado.
+
