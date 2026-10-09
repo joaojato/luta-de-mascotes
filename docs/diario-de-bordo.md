@@ -1062,3 +1062,20 @@ bota cortada pelo alinhador. Corrigidos; lições registradas.
 **Em aberto:** revisar todas as ações no ritmo do jogo e liberar o Almirante
 na seleção depois da revisão completa na Academia. A ultimate da caravela,
 o agarrão e as falas permanecem no planejamento.
+
+## 2026-10-09: Almirante liberado como personagem jogável
+
+**Marco:** 2, segue em andamento.
+**Pedido:** adicionar o Almirante como personagem jogável; João não entendeu
+por que o mascote completo aparecia apenas na Academia.
+**Feito:** `selecionavel: true` no JSON; teste exige que o Almirante seja
+selecionável. Documentação atualizada e restrição anterior retirada.
+**Verificado:** `npm run check` aprovado (typecheck, 80 testes, build).
+No navegador, Almirante aparece na seleção e inicia a luta como P1 contra
+Jiu-Jitsu Fighter controlado pela CPU, com retrato, nome e sprites corretos.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** restrição à Academia, que impedia jogar.
+**Aprovado explicitamente:** nada.
+**Atrito:** tratei a revisão visual como bloqueio da entrega jogável. Lição
+registrada para não repetir essa etapa de aprovação desnecessária.
+**Em aberto:** nada para liberar o personagem; restante do Marco 2 permanece.

@@ -3,7 +3,7 @@
   "label": "Almirante",
   "assetRoot": "/assets/lutadores/almirante",
   "anchorUsage": "Almirante em guarda, voltado para a esquerda",
-  "selecionavel": false,
+  "selecionavel": true,
   "stats": {
     "walkSpeed": 250,
     "jump": 1000

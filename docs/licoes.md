@@ -210,3 +210,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   alta do Almirante só variava a guarda comum e reduzia um quadro. Refazer
   com os dois antebraços cobrindo o rosto, usando o idle como identidade,
   antes de tentar compensar o desenho com escala por quadro. (2026-10-09)
+
+- **Mascote entregue deve estar jogável.** O João não entendeu por que o
+  Almirante com todas as sprites aparecia só na Academia e pediu sua liberação.
+  A Academia serve para conferir; não deve virar uma etapa de aprovação que
+  impede entregar o personagem jogável solicitado. (2026-10-09)

@@ -119,5 +119,5 @@ Create a single square pixel-art bust portrait for character selection of exactl
 - `npm run check`: typecheck, 80 testes e build aprovados.
 - Prévia animada: `public/assets/lutadores/almirante/previa.gif`; prancha de
   poses principais: `public/assets/lutadores/almirante/previa.png`.
-- Registro inicialmente restrito à Academia (`selecionavel: false`) para
-  revisar o conjunto antes de liberar os golpes na luta.
+- Registro jogável (`selecionavel: true`), disponível na seleção e na
+  Academia, por pedido do João em 09/10/2026.

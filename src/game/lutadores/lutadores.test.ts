@@ -105,6 +105,7 @@ describe('registro de lutadores (Regra do JSON)', () => {
   it('Almirante registra todos os movimentos em sheets próprias', () => {
     const almirante = LUTADORES.find((lutador) => lutador.id === 'almirante');
     expect(almirante).toBeTruthy();
+    expect(almirante!.selecionavel).toBe(true);
     const completas = [
       ...ACOES_OBRIGATORIAS, 'block-low', 'heavy-punch', 'heavy-kick',
       'special-charge', 'special'
