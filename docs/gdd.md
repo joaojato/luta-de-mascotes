@@ -168,3 +168,26 @@ luta acontece. Sem placa de patrocínio legível.
 - Mais mascotes: entram só por JSON + sprites, ver Regra do JSON.
 - Torcida reagindo ao placar (som e animação).
 - Trilha por mascote (Suno).
+
+
+## Almirante: conjunto de sprites (09/10/2026)
+
+Pedido do João: todos os movimentos a partir do Green Boxer, respeitando as
+correções do Urubu. Modelo visual: referência já existente do Almirante, com
+chapéu preto, barba castanha, casaco naval preto com ombreiras prateadas e
+forro vermelho, colete e calça cinza, botas pretas com punhos vermelhos.
+Sem corvo, cruzes, escudos, armas ou texto.
+
+- Slug: `almirante`; skin inicial: `base` (casaco naval).
+- Silhueta: chapéu largo, ombreiras e casaco comprido aberto sobre pernas fortes.
+- Paleta: preto, cinza/prata e vermelho.
+- Arquétipo existente: agarrão pesado. Esta entrega adapta as ações do Green
+  Boxer; agarrão e ultimate da caravela continuam no planejamento do GDD.
+- Stats e combate: base do Green Boxer para comparar as animações.
+- Falas de entrada e vitória: ainda não definidas.
+- Ações: idle, andar para frente e para trás, agachar, saltar, defesa alta e
+  baixa, reação ao golpe, soco leve, soco forte, chute forte, preparação do
+  especial, especial e queda. O chute complementa o conjunto do Green Boxer,
+  que só possui soco forte. Especial: sequência de socos, como o modelo base.
+- Conferência: células de 256×256, cinco colunas, régua do idle, chão comum,
+  ausência de fragmentos vizinhos e inspeção na Academia antes da seleção.

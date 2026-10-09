@@ -1028,3 +1028,37 @@ não mexi.
 **Em aberto:** projeto no Supabase (URL e chave anon no `.env` e na Vercel),
 teste com celular de verdade, deploy pela conta pessoal, repositório privado.
 
+
+## 2026-10-09: sprites completas do Almirante a partir do Green Boxer
+
+**Marco:** 2, arte dos mascotes, segue em andamento.
+**Pedido:** todos os movimentos do Almirante a partir das sprites do Green
+Boxer, lembrando o processo do Urubu e as correções apontadas pelo João.
+**Feito:**
+- Leitura das lições de escala, eixo, primeiro quadro, sobreposição e sobras.
+- 14 sheets na skin `base`, 102 quadros, retrato e âncora. Green Boxer como
+  movimento; referência existente do Almirante como identidade; chute
+  complementar a partir do Red Brawler. Imagem gerada pela ferramenta integrada.
+- Especial e preparação com arquivos próprios. Removidos corvo, cruzes,
+  símbolos e armas da referência. Modelo original preservado na referência.
+- Primeiro quadro idêntico ao idle; chão comum e alinhamento por deslocamento,
+  sem escalar os quadros individualmente. Salto conserva afastamento do chão.
+- Defesa alta refeita: a primeira só variava a guarda e reduzia um quadro.
+- Importador corrigido para conservar a bota da queda: x negativo fazia a
+  figura deitada sair da célula. Caso sintético confirmou todos os pixels.
+- JSON na Academia, com janelas ativas conforme os quadros estendidos;
+  teste cobre as 14 ações e exige sheets próprias, sem reutilizar placeholders.
+- Prévia GIF das 14 ações, prancha PNG e prompts em `docs/almirante-sprites.md`.
+**Verificado:** 102 quadros na prancha; sequência e células vazias;
+transparência, primeiro quadro e ausência de sobras por máquina. No navegador,
+Almirante na Academia, quadro ativo do chute (6/10) e especial (3/8) com boxes.
+`npm run check`: typecheck, 80 testes e build aprovados.
+**Créditos gastos:** 0 do Spriterrific.
+**Refeito ou apagado a pedido dele:** nada nesta sessão; consideradas as
+correções antigas do Urubu. Defesa alta refeita por falha identificada na QA.
+**Aprovado explicitamente:** nada.
+**Atrito:** linhas de grade no primeiro idle, defesa alta sem pose de bloqueio,
+bota cortada pelo alinhador. Corrigidos; lições registradas.
+**Em aberto:** revisar todas as ações no ritmo do jogo e liberar o Almirante
+na seleção depois da revisão completa na Academia. A ultimate da caravela,
+o agarrão e as falas permanecem no planejamento.

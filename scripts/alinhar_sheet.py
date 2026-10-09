@@ -243,8 +243,15 @@ def montar(quadros: list[Image.Image], regua: tuple[int, int, float], cols: int 
     for i, q in enumerate(quadros):
         nw, nh = max(1, round(q.width * escala)), max(1, round(q.height * escala))
         qs = q.resize((nw, nh), Image.LANCZOS)
+        if nw > CELL or nh > CELL:
+            raise ValueError(f'quadro {i} excede a célula: {nw}x{nh}')
         x = int(round(centro - centro_dos_pes(qs)))
+        # Em quedas, o centro dos pés fica numa ponta do corpo deitado.
+        # Conter o quadro evita cortar a cabeça/bota ou invadir o vizinho.
+        x = max(0, min(CELL - nw, x))
         y = int(round(base - nh))
+        if y < 0:
+            raise ValueError(f'quadro {i} ultrapassa o topo em {-y}px')
         col, lin = i % cols, i // cols
         sheet.alpha_composite(qs, (col * CELL + x, lin * CELL + y))
         caixas.append((x, y, x + nw, y + nh))

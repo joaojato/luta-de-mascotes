@@ -200,3 +200,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   passa o texto e a do projeto commita. (2026-09-17)
 - Motor antes da arte continua valendo, só que o motor agora é o herdado.
   Arte é estocástica e custa crédito; o jogo já existe antes dela. (2026-09-17)
+
+- **Queda alinhada pelo centro dos pés pode cortar a figura.** No Almirante,
+  o corpo deitado cabia nos 256 pixels, mas o alinhador calculava x=-6 e
+  cortava a bota. Limitar x pela largura total conserva a figura e evita
+  invasão da célula vizinha. Conferir pixels preservados, não só a caixa.
+  (2026-10-09)
+- **Pedido de bloquear precisa mudar a guarda de verdade.** A primeira defesa
+  alta do Almirante só variava a guarda comum e reduzia um quadro. Refazer
+  com os dois antebraços cobrindo o rosto, usando o idle como identidade,
+  antes de tentar compensar o desenho com escala por quadro. (2026-10-09)

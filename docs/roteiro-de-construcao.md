@@ -34,6 +34,11 @@ ele é quebrado em dois, não esticado.
   virou a base: na seleção há um Urubu só, e o modelo de perfil ficou como
   variante de Academia. Falta: conferir as 13 na Academia, retrato de
   verdade, torcida animada (fora da v1), decisão da ADR 0002.
+- [ ] Arte do Almirante (09/10/2026): 14 ações e 102 quadros, retrato e
+  âncora gerados com as poses do Green Boxer; chute complementar do Red
+  Brawler. JSON registrado na Academia, prévia animada e prancha de poses.
+  Check com 80 testes aprovado. Revisão completa na Academia e liberação
+  na seleção continuam pendentes; Marco 2 permanece aberto.
 - [x] Fora de ordem, por ordem do João (01/10/2026): **controle pelo
   corpo**. O celular vira câmera por QR code, lê o corpo com MediaPipe e
   manda para o jogo no PC; teclado continua valendo. Testado com celular

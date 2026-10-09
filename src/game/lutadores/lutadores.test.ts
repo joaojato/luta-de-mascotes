@@ -102,6 +102,19 @@ describe('registro de lutadores (Regra do JSON)', () => {
     });
   });
 
+  it('Almirante registra todos os movimentos em sheets próprias', () => {
+    const almirante = LUTADORES.find((lutador) => lutador.id === 'almirante');
+    expect(almirante).toBeTruthy();
+    const completas = [
+      ...ACOES_OBRIGATORIAS, 'block-low', 'heavy-punch', 'heavy-kick',
+      'special-charge', 'special'
+    ];
+    expect(almirante!.actions.map((acao) => acao.action).sort()).toEqual(completas.sort());
+    expect(new Set(almirante!.actions.map((acao) => acao.file)).size).toBe(completas.length);
+    expect(almirante!.assetRoot).toBe('/assets/lutadores/almirante/base');
+    expect(almirante!.actions.every((acao) => !acao.file.includes('..'))).toBe(true);
+  });
+
   describe('skins (variantes visuais do mesmo mascote)', () => {
     // Nada aqui cita pasta por nome: a base troca quando um modelo novo fica
     // pronto (a `frente` virou base em 22/09), e o teste não pode ir junto.
