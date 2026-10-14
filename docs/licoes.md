@@ -41,6 +41,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   estático: hospedar o jogo pede trocar o caminho do celular até o PC.
   (2026-10-01)
 
+- **Seleção é grade de quadrados, não carta grande.** Ele achou feia a
+  seleção herdada (cartas lado a lado, retrato ocupando a tela) e pediu o
+  modelo Mortal Kombat: o elenco todo numa tela, em retângulos pequenos.
+  Tela de escolha mostra o elenco; o lutador grande fica na lateral.
+  (2026-10-14)
+
 ## O que não fazer
 
 - **Ele não quer gastar dinheiro no Spriterrific** para o resto dos

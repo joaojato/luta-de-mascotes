@@ -1079,3 +1079,28 @@ Jiu-Jitsu Fighter controlado pela CPU, com retrato, nome e sprites corretos.
 **Atrito:** tratei a revisão visual como bloqueio da entrega jogável. Lição
 registrada para não repetir essa etapa de aprovação desnecessária.
 **Em aberto:** nada para liberar o personagem; restante do Marco 2 permanece.
+
+## 2026-10-14: Seleção no modelo Mortal Kombat
+
+**Marco:** 2, segue em andamento.
+**Pedido:** a seleção com cartas grandes lado a lado estava feia; ele quer o
+elenco inteiro numa tela, em retângulos pequenos, como no Mortal Kombat. E
+perguntou por que só alguns golpes funcionam na luta, se a Academia mostra mais.
+**Feito:** `CharacterSelectScene` refeita: grade de quadrados de 116 px no
+centro (até 6 por linha, linha incompleta centralizada), retrato recortado
+pelo topo, P1 e P2 animados em guarda nas laterais com o nome embaixo,
+cenário escolhido escurecido ao fundo. Navegação em 2D (WASD e setas), cursor
+pula o quadro do outro jogador, trava com borda dourada e o lutador da
+lateral solta um soco. Na pergunta dos golpes: o motor tem só três botões de
+ataque; o `heavy-punch` do Almirante e do Saci existe mas nunca é chamado,
+porque o pesado prefere o `heavy-kick`.
+**Verificado:** `npm run check` aprovado (typecheck, 89 testes, build). No
+navegador: grade com os 5 lutadores, D leva o P1 do Urubu ao Saci pulando o
+Almirante do P2, trava toca `saci-light-punch`, Enter do P2 abre a luta
+Saci contra Jiu-Jitsu Fighter; em 1vCPU a CPU sorteia outro e a luta começa.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a seleção de cartas grandes do Chong-U.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** quarto botão de ataque para o `heavy-punch`, se ele quiser;
+o resto das telas (menu, modo, cenário) segue no visual herdado.
