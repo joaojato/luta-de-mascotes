@@ -1104,3 +1104,20 @@ Saci contra Jiu-Jitsu Fighter; em 1vCPU a CPU sorteia outro e a luta começa.
 **Atrito:** nenhum.
 **Em aberto:** quarto botão de ataque para o `heavy-punch`, se ele quiser;
 o resto das telas (menu, modo, cenário) segue no visual herdado.
+
+## 2026-10-23: Zip do amigo conferido
+
+**Marco:** 2, segue em andamento.
+**Pedido:** ver o que dá para aproveitar do `referencia/luta-de-mascotes-main.zip`,
+que seria um lutador novo feito por um amigo.
+**Feito:** extraído fora do repo e comparado arquivo a arquivo. O comentário
+do zip é `81ea894` e os 223 arquivos são idênticos ao nosso HEAD: é o
+"Download ZIP" do GitHub deste repositório, sem lutador novo.
+**Verificado:** nenhum arquivo só no zip; nenhum difere do HEAD.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** pedir ao amigo o material de verdade. O repositório está
+**público** com assets `_amostra`, contra o NUNCA do contrato; decidir se
+volta a privado (os colaboradores continuam com acesso).
