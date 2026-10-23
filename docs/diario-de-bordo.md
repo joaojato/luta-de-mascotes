@@ -1121,3 +1121,5 @@ do zip é `81ea894` e os 223 arquivos são idênticos ao nosso HEAD: é o
 **Em aberto:** pedir ao amigo o material de verdade. O repositório está
 **público** com assets `_amostra`, contra o NUNCA do contrato; decidir se
 volta a privado (os colaboradores continuam com acesso).
+Atualização no mesmo dia: por ordem dele, repositório voltou a **privado**
+(`gh repo view` confirma `PRIVATE`). Ele vai olhar o zip pessoalmente.
