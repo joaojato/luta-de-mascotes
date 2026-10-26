@@ -1123,3 +1123,25 @@ do zip é `81ea894` e os 223 arquivos são idênticos ao nosso HEAD: é o
 volta a privado (os colaboradores continuam com acesso).
 Atualização no mesmo dia: por ordem dele, repositório voltou a **privado**
 (`gh repo view` confirma `PRIVATE`). Ele vai olhar o zip pessoalmente.
+
+## 2026-10-26: Guia de sprites para os integrantes do grupo
+
+**Marco:** 2, produção de arte.
+**Pedido:** reunir instruções completas para os amigos enviarem aos seus GPTs,
+da conexão com Git às referências, parâmetros, geração e entrega de sprites.
+**Feito:** criado `docs/guia-sprites-para-amigos.md`, com prompt pronto,
+acesso ao repositório, referências disponíveis no clone, descrição travada,
+idle como régua, parâmetros de sheets, comandos reais do importador,
+revisão na Academia e entrega por PR ou pacote somente de arte.
+Destacado que `referencia/` não vem no clone e que Download ZIP do GitHub
+não inclui imagens produzidas apenas na máquina do colaborador.
+**Verificado:** comandos confrontados com `scripts/sprite.py`; `npm run check`
+aprovado: typecheck, 8 arquivos de teste, 94 testes e build. Build com aviso
+de tamanho de chunk. Verificação executada sobre a árvore local existente,
+que já tinha alterações de código e sprites de outra tarefa.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** revisão visual dos futuros mascotes cabe à etapa de produção;
+nesta sessão somente documentação foi criada, sem mudança no jogo.
