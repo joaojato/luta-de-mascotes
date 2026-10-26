@@ -1145,3 +1145,22 @@ que já tinha alterações de código e sprites de outra tarefa.
 **Atrito:** nenhum.
 **Em aberto:** revisão visual dos futuros mascotes cabe à etapa de produção;
 nesta sessão somente documentação foi criada, sem mudança no jogo.
+
+## 2026-10-26: Entrega de sprites pelo Google Drive
+
+**Marco:** 2, produção de arte.
+**Pedido:** orientar os amigos a conectar também o Google Drive para enviar
+os sprites ao João.
+**Feito:** guia e prompt inicial atualizados com conexão da conta Google,
+pasta por mascote e versão, upload pelo conector quando disponível ou manual,
+compartilhamento com a conta confirmada de João e conferência da entrega.
+Drive definido como canal recomendado para arte; integração segue por PR.
+**Verificado:** instruções consultadas na documentação oficial da OpenAI e
+Google; diff de documentação revisado. Código não alterado. Check da sessão
+anterior aprovado com 94 testes, sem repetição por alteração apenas textual.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** orientação de envio prioriza Drive.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** cada integrante conecta sua conta e usa a pasta/e-mail que
+João fornecer; nenhuma pasta foi criada nem compartilhada nesta sessão.

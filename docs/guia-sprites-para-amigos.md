@@ -7,7 +7,7 @@ Base conferida em 26/10/2026: scripts do projeto, produção do Urubu, produçã
 ## 1. O que combinar antes de começar
 
 - Qual mascote você vai produzir e qual será seu identificador, por exemplo `tigre`. Use minúsculas, sem espaços nem acentos nos nomes de arquivos.
-- Se vai fazer somente arte ou também integrar ao jogo. Os dois caminhos de entrega estão na seção 10.
+- Se vai fazer somente arte ou também integrar ao jogo. Para enviar os sprites ao João, use preferencialmente uma pasta compartilhada no Google Drive, conforme a seção 10. Se também integrar código, envie o pull request.
 - Se já existe um modelo aprovado, use esse modelo. Se não existe, comece pela imagem de identidade e pelo idle. Não gere todas as ações antes disso.
 - Cada pessoa trabalha em um mascote e em sua própria branch. João reúne as contribuições. Não substitua o trabalho de outro integrante.
 
@@ -50,9 +50,19 @@ no JSON correto; revise caixas e quadros ativos na Academia; execute
 npm run check. Não altere o motor para acomodar um mascote. Se uma ideia
 precisar de mecânica nova, entregue a arte e descreva a pendência ao João.
 
+Conecte também o Google Drive à minha sessão, se essa integração estiver
+disponível, orientando-me a entrar na minha própria conta Google.
+Confira se consegue ler e enviar arquivos; não presuma que conexão dá
+permissão de upload. Organize os PNGs originais e o relatório numa pasta
+de entrega compartilhada com João. Se não conseguir enviar pelo conector,
+disponibilize os arquivos para download e me oriente no upload manual.
+Confirme o conteúdo enviado e o acesso de João antes de declarar entregue.
+
 No fim, entregue os arquivos novos de verdade e um relatório com ações,
 quadros, fps, referências, verificações e pendências. Use branch própria
-e pull request, ou pacote só com a arte se não tiver Git. Não envie um
+e pull request para integração, e Google Drive para entregar a arte.
+Se não tiver Git, a pasta no Drive basta para João receber os sprites.
+Não envie um
 Download ZIP do repositório como se fosse o personagem produzido.
 ```
 
@@ -262,6 +272,32 @@ Execute `npm run check`, que reúne TypeScript, testes e build. Registre o resul
 
 ## 10. Como enviar a entrega correta
 
+### Caminho recomendado para os sprites Google Drive
+
+Conecte o Google Drive ao seu GPT para facilitar a consulta às referências e a organização da entrega. Cada integrante conecta sua própria conta. A conexão com o GPT e o compartilhamento com João são etapas distintas: conectar sua conta não dá acesso automático ao João.
+
+1. Na área de apps ou plugins da sua versão do ChatGPT/Codex, procure **Google Drive**, escolha conectar e siga o login do Google. Confira a conta e as permissões solicitadas. A disponibilidade e os nomes dos menus podem variar conforme a conta e o ambiente. Se a integração não aparecer, use o Drive pelo navegador; isso não impede a entrega.
+2. Depois, envie ao GPT: “Use o Google Drive conectado. Confira se você consegue consultar a pasta de entrega e fazer upload dos PNGs. Se só puder ler, prepare os arquivos para eu enviar manualmente.”
+3. Se João já forneceu uma pasta do grupo, use o link exato e crie uma subpasta para o seu mascote. Para adicionar arquivos, sua conta precisa ter permissão de edição nessa pasta. Se não houver pasta do grupo, crie uma no seu próprio Drive e compartilhe com o e-mail Google que João informar. Não deduza o e-mail pelo usuário do GitHub.
+4. Organize cada entrega em uma pasta, por exemplo `Luta de Mascotes/Entregas/tigre/seunome-v01/`, com `LEIA-ME.md`, `modelo-aprovado.png`, `sprites/` e, se houver, `originais/` e `previa.gif`. Use a estrutura e o relatório descritos na opção B abaixo. Os PNGs individuais devem estar disponíveis; ZIP pode acompanhar como cópia adicional.
+5. Peça ao GPT para enviar os arquivos se ele tiver essa capacidade. Se não tiver, baixe os PNGs originais do chat, abra a pasta em `drive.google.com` e use **Novo > Upload de arquivo/Upload de pasta**, ou arraste os arquivos para a pasta. Aguarde o upload terminar. Não envie somente links temporários de download do chat.
+6. Compartilhe a pasta com João como leitor para receber e baixar, ou editor se ele precisar organizar e ajustar os arquivos. Confira se o download está permitido. Na pasta do grupo, confira se João já tem acesso. Não é necessário tornar os arquivos públicos.
+7. Reabra a pasta no Drive e confirme nomes, quantidade e presença dos PNGs. Abra ao menos um arquivo para conferir o conteúdo. Se o GPT fez o envio, peça que liste os arquivos na pasta após o upload. Isso confere o conteúdo, mas não substitui a verificação das permissões de João.
+8. Envie ao João o **link da pasta**, mascote, versão, lista de ações e pendências. Confirme que a permissão foi concedida à conta correta. Preserve essa versão da entrega; correções seguintes ficam em `v02`, sem apagar a anterior.
+
+Mensagem pronta para acompanhar o link:
+
+```text
+João, os sprites do [MASCOTE] estão nesta pasta: [LINK DO DRIVE].
+Versão: [v01]. Ações: [LISTA].
+Arquivos: [PNGs finais na grade / originais que precisam alinhar].
+Conferido: [O QUE FOI VERIFICADO]. Pendências: [LISTA OU NENHUMA].
+Compartilhei com sua conta [E-MAIL CONFIRMADO] como [LEITOR/EDITOR].
+Integração no jogo: [NÃO FEITA / LINK DO PR].
+```
+
+O Drive é o canal recomendado para entregar imagens e referências ao João. O Git continua sendo usado para versionar os assets finais integrados e os dados do jogo. Colocar um PNG no Drive não o registra no JSON nem o inclui no jogo.
+
 ### Opção A Arte e integração por branch e pull request
 
 Revise a lista de mudanças. Adicione somente os caminhos do seu trabalho, nunca `git add -A` sem inspeção. Exemplo para um mascote novo com skin base:
@@ -282,9 +318,9 @@ Inclua também o registro em `index.ts` e outros arquivos necessários que você
 
 Abra um pull request da sua branch para `main`. Escreva quais ações foram adicionadas, como foram verificadas, quais pendências existem e anexe uma prévia quando possível. Envie ao João o link do PR e o identificador do commit. João faz a revisão e a integração com o restante do grupo. Não faça merge nem push direto em `main` como parte desta entrega.
 
-### Opção B Somente arte por pacote
+### Opção B Somente arte em pasta no Drive ou pacote
 
-Envie um ZIP criado a partir dos seus arquivos, com esta estrutura de exemplo:
+Organize a pasta de entrega no Drive com esta estrutura de exemplo. Se necessário, envie também um ZIP criado a partir desses mesmos arquivos:
 
 ```text
 tigre-entrega/
@@ -324,6 +360,8 @@ Referências e originais podem acompanhar o pacote para João, mas ficam fora do
 | Problema | Próxima ação |
 |---|---|
 | GPT diz que não acessa o GitHub | Enviar os arquivos da seção 4 ou trabalhar no clone local com um agente que tenha acesso |
+| Drive conectado, mas GPT não consegue enviar PNG | Baixar os arquivos e fazer upload manual na pasta de entrega |
+| João abre o link e recebe pedido de acesso | Conferir o compartilhamento com o e-mail Google correto e as permissões da pasta |
 | Falta `modelo-oficial.png` | Obter o modelo aprovado ou copiar a âncora aprovada para o caminho local exigido |
 | Script diz que falta JSON ou descrição | Preparar a estrutura do mascote antes de executar `pedido` |
 | Ação não existe no Red Brawler | Escolher referência compatível manualmente; não inventar suporte no script |
@@ -339,5 +377,7 @@ Referências e originais podem acompanhar o pacote para João, mas ficam fora do
 ## 12. Fontes para consulta
 
 O método visual deste guia vem de `docs/licoes.md`, `docs/almirante-sprites.md`, `docs/mascotes/urubu.md`, `docs/mascotes/almirante.md`, `scripts/sprite.py` e `scripts/alinhar_sheet.py`. O diário de 23/10 registra o problema do ZIP sem alterações.
+
+Para conexão e entrega no Drive: [conexões e login nas contas Google no ChatGPT](https://learn.chatgpt.com/docs/enterprise/shared-connections), [upload de arquivos e pastas](https://support.google.com/drive/answer/2424368?hl=pt-BR) e [compartilhamento e níveis de acesso](https://support.google.com/drive/answer/7166529?hl=pt-BR). As capacidades disponíveis devem ser conferidas na sessão de cada integrante.
 
 Para o fluxo de colaboração: [clonar um repositório](https://github.com/git-guides/git-clone), [criar e trocar branches](https://git-scm.com/docs/git-switch), [selecionar arquivos para o commit](https://git-scm.com/docs/git-add/) e [pull requests](https://docs.github.com/en/pull-requests/reference/pull-requests). Clone baixa o projeto; a branch guarda sua contribuição; o commit registra os arquivos selecionados; push envia a branch; o pull request apresenta a alteração para revisão.
