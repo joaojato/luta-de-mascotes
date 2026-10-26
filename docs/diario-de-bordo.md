@@ -1164,3 +1164,26 @@ anterior aprovado com 94 testes, sem repetição por alteração apenas textual.
 **Atrito:** nenhum.
 **Em aberto:** cada integrante conecta sua conta e usa a pasta/e-mail que
 João fornecer; nenhuma pasta foi criada nem compartilhada nesta sessão.
+
+## 2026-10-26: Fluxo de sprites conduzido pelo GPT
+
+**Marco:** 2, produção de arte.
+**Pedido:** detalhar conexões e etapas executadas pelo GPT, deixando ao
+integrante somente autenticação e permissões.
+**Feito:** prompt reescrito e sequência operacional em 11 etapas incluída
+no guia, da descoberta de ferramentas à conferência do Drive. Definidas
+responsabilidades, evidências de conclusão, retomada após autorização,
+leitura versus escrita, obtenção das referências, geração e revisão pelo
+agente. Procedimentos manuais classificados como alternativas excepcionais.
+**Verificado:** documentação oficial de conexões relida; ferramentas
+expostas de Drive consultadas para confirmar capacidades e restrições de
+upload. Diff textual revisado; nenhum código de jogo alterado. Check da
+sessão anterior aprovado com 94 testes; sem repetição por mudança textual.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** roteiro que transferia tarefas de
+baixar, renomear, gerar em outro chat e fazer upload para o integrante.
+**Aprovado explicitamente:** nada.
+**Atrito:** o fluxo anterior ainda dependia de operação manual.
+**Em aberto:** fluxo depende de sessão com geração, processamento e escrita
+no Drive; consentimento não fornece ferramentas inexistentes. Pasta do
+grupo ou conta Google confirmada do destinatário ainda deve ser identificada.

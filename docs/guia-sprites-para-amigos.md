@@ -1,6 +1,8 @@
 # Guia de criação e entrega de sprites de Luta de Mascotes
 
-Este documento é para os integrantes do grupo e para o GPT que vai ajudá-los. O objetivo é entregar um mascote consistente com o jogo, com imagens utilizáveis e arquivos identificados. Leia o guia inteiro ou envie este arquivo ao seu GPT junto com o pedido da seção 2.
+Este documento é para os integrantes do grupo e para o GPT que vai executar a produção. O objetivo é que o GPT conecte os serviços, busque as referências, produza, revise e entregue os sprites pelo Google Drive. O integrante fornece a tarefa inicial, autentica as próprias contas e concede as permissões solicitadas. A sequência operacional está na seção 3; os detalhes técnicos posteriores são instruções para o agente.
+
+Para executar esse fluxo, a sessão precisa reunir acesso ao GitHub privado, geração de imagens com referências, processamento de PNGs e upload e compartilhamento no Drive. Conectar contas não cria ferramentas ausentes. O GPT deve conferir esses requisitos antes de começar e acionar a conexão ou instalação disponível no ambiente. Uma sessão que só conversa ou pesquisa não garante a produção e entrega automáticas.
 
 Base conferida em 26/10/2026: scripts do projeto, produção do Urubu, produção do Almirante e lições registradas no diário. Há instruções antigas sobre ferramentas pagas em outros documentos. Para esta tarefa, o caminho recomendado é gerar imagens no chat que você já utiliza, usando personagens e movimentos do repositório como referência. Não é necessário contratar Spriterrific.
 
@@ -8,25 +10,40 @@ Base conferida em 26/10/2026: scripts do projeto, produção do Urubu, produçã
 
 - Qual mascote você vai produzir e qual será seu identificador, por exemplo `tigre`. Use minúsculas, sem espaços nem acentos nos nomes de arquivos.
 - Se vai fazer somente arte ou também integrar ao jogo. Para enviar os sprites ao João, use preferencialmente uma pasta compartilhada no Google Drive, conforme a seção 10. Se também integrar código, envie o pull request.
-- Se já existe um modelo aprovado, use esse modelo. Se não existe, comece pela imagem de identidade e pelo idle. Não gere todas as ações antes disso.
+- Se já existe um modelo aprovado, o GPT deve localizá-lo e usá-lo. Caso contrário, deve criar a identidade e conferir o idle contra os padrões do projeto antes das demais ações.
 - Cada pessoa trabalha em um mascote e em sua própria branch. João reúne as contribuições. Não substitua o trabalho de outro integrante.
 
 O jogo é de luta 2D com mascotes reinterpretados, atitude de torcida e visual de arcade, próximo da direção de Street Fighter Alpha. Não usar sangue, escudos, patrocinadores, nomes de clubes ou texto na roupa. Preserve a personalidade do mascote sem copiar o desenho oficial.
 
 ## 2. Pedido pronto para enviar ao seu GPT
 
-Copie o bloco abaixo e substitua os campos entre colchetes. Anexe este guia. Se o GPT não consegue acessar o repositório, envie também os arquivos indicados na seção 4.
+Envie este guia junto com o bloco abaixo. O nome do mascote é a única escolha criativa obrigatória no pedido inicial. Informe também a pasta do grupo, se já tiver o link; ela deve permitir acesso de João. Se o destinatário ainda não estiver identificado, o GPT pede esse dado uma única vez, pois não pode deduzir o e-mail de João.
 
 ```text
-Você vai me ajudar a produzir os sprites do mascote [NOME], identificador
-[SLUG], para o jogo Luta de Mascotes. Minha entrega será [SOMENTE ARTE /
-ARTE E INTEGRAÇÃO]. Meu modelo aprovado é [ARQUIVO OU AINDA NÃO EXISTE].
+Execute a produção e entrega dos sprites do mascote [NOME] para o jogo
+Luta de Mascotes, seguindo o guia anexado. Pasta do grupo no Google Drive:
+[LINK, SE JÁ DISPONÍVEL]. Meu trabalho será dar acesso e permissões.
+Derive o slug do nome. O padrão é entregar arte no Drive; só integre
+ao código se isso também estiver incluído no meu pedido.
 
 Leia o guia anexado e siga suas etapas até a entrega. O repositório é
 https://github.com/joaojato/luta-de-mascotes. Não presuma que consegue
 acessá-lo nem que tem ferramenta de geração de imagens, terminal ou Git.
-Confira suas capacidades e use o caminho possível. Se faltar acesso,
-indique exatamente quais arquivos eu preciso anexar e continue com eles.
+Faça o diagnóstico e execute as etapas da seção 3 na ordem. Descubra as
+ferramentas disponíveis, inicie os fluxos de conexão do GitHub e Drive e
+mostre as telas oficiais de autorização. Eu faço o login e aprovo nelas.
+Se não puder iniciar a conexão, indique o único caminho exato para ativá-la
+no meu ambiente e retome assim que ela estiver disponível. Nunca peça
+senhas, tokens ou códigos de autenticação na conversa.
+
+Depois das autorizações, você busca e baixa referências, prepara arquivos,
+gera e processa imagens, revisa, cria a pasta e envia a entrega. Não me
+passe comandos de terminal, prompts para outro chat ou tarefas de baixar,
+renomear, arrastar, compactar, fazer upload ou configurar compartilhamento.
+Use ferramentas próprias ou, quando disponível e autorizado, controle de
+computador para concluir essas operações. Se faltar capacidade real,
+identifique o requisito específico e a forma de habilitá-lo; não transforme
+uma limitação em uma lista de trabalho manual para mim nem simule sucesso.
 
 Primeiro leia CLAUDE.md, docs/licoes.md, docs/gdd.md e este guia.
 Consulte docs/almirante-sprites.md para o processo que já funcionou.
@@ -42,31 +59,71 @@ quadro. A saída final usa PNG com alpha, células 256x256 e cinco colunas.
 Para cada ação, informe referências anexadas e a função de cada uma,
 quantidade de quadros, sequência de poses, nome e destino do arquivo.
 Não afirme que gerou, salvou, testou, enviou ou integrou sem ter feito.
-Se não puder gerar imagens, prepare o prompt e as referências para eu
-usar em um chat com geração de imagens, depois receba o PNG para revisão.
+Se a ferramenta de imagem estiver indisponível, solicite habilitar uma
+sessão que tenha geração com referências e processamento de arquivos.
+Preserve o progresso para retomar; não declare a produção concluída.
 
 Se houver integração: confira scripts/sprite.py --help; registre os PNGs
 no JSON correto; revise caixas e quadros ativos na Academia; execute
 npm run check. Não altere o motor para acomodar um mascote. Se uma ideia
 precisar de mecânica nova, entregue a arte e descreva a pendência ao João.
 
-Conecte também o Google Drive à minha sessão, se essa integração estiver
-disponível, orientando-me a entrar na minha própria conta Google.
-Confira se consegue ler e enviar arquivos; não presuma que conexão dá
-permissão de upload. Organize os PNGs originais e o relatório numa pasta
-de entrega compartilhada com João. Se não conseguir enviar pelo conector,
-disponibilize os arquivos para download e me oriente no upload manual.
-Confirme o conteúdo enviado e o acesso de João antes de declarar entregue.
+Confira leitura e escrita no Drive. Está autorizado criar uma pasta nova
+para esta entrega, enviar os PNGs, referências e relatório, e compartilhar
+essa pasta com a conta confirmada de João, com download permitido.
+Se usar a pasta do grupo, preserve seu compartilhamento e os demais arquivos.
+Não apague versões anteriores. Não torne arquivos públicos.
+Gere e revise o idle por conta própria contra o padrão do projeto antes
+de continuar as ações, sem pedir aprovação de cada imagem. Só faça perguntas
+quando faltar informação indispensável ou houver decisão fora do escopo.
+Não contrate ferramentas nem compre créditos.
 
 No fim, entregue os arquivos novos de verdade e um relatório com ações,
 quadros, fps, referências, verificações e pendências. Use branch própria
 e pull request para integração, e Google Drive para entregar a arte.
 Se não tiver Git, a pasta no Drive basta para João receber os sprites.
-Não envie um
-Download ZIP do repositório como se fosse o personagem produzido.
+Não envie um Download ZIP do repositório como se fosse o personagem produzido.
+Ao terminar, mostre o link real da pasta, lista de arquivos, verificações,
+permissões conferidas e pendências. Apresente a mensagem para João aqui;
+não envie mensagem por e-mail ou outro serviço sem pedido específico.
 ```
 
-## 3. Acesso ao Git e preparação local
+## 3. Sequência que o GPT deve executar
+
+Este é o procedimento principal. O agente conduz a execução e retoma após cada autorização. As instruções de terminal e de upload manual nas seções seguintes são referências técnicas e alternativas excepcionais; não devem ser repassadas ao integrante no fluxo automático.
+
+| Etapa | O GPT executa | O integrante faz | Evidência para continuar |
+|---|---|---|---|
+| 1 Diagnóstico | Identifica ferramentas de conexão, GitHub, Drive, geração e processamento de imagens | Nada | Capacidades verificadas na sessão |
+| 2 Conexão GitHub | Aciona a integração disponível e o fluxo oficial de login e seleção do repositório | Autentica sua conta e autoriza acesso ao repositório | Leitura real de `CLAUDE.md` em `joaojato/luta-de-mascotes` |
+| 3 Conexão Drive | Aciona a integração Google Drive e seu fluxo oficial de conexão | Escolhe sua conta Google e aprova as permissões | Leitura real da pasta de destino ou da raiz autorizada |
+| 4 Destino | Identifica a pasta do grupo pelo link; verifica acesso ou cria pasta própria da entrega | Autoriza escrita/compartilhamento se a plataforma pedir | ID e link retornados pela ferramenta, conta destinatária confirmada |
+| 5 Preparação | Busca documentos, ficha, âncora, idle e sheets de movimento; obtém os PNGs completos | Nada | Arquivos disponíveis para a ferramenta de imagem |
+| 6 Plano | Define slug, skin, descrição, ações e contagens conforme o jogo; registra as escolhas | Nada, salvo informação indispensável ausente | Plano curto e referências identificadas |
+| 7 Identidade e idle | Gera ou reutiliza modelo aprovado, gera idle e verifica identidade, escala e chão | Autoriza a execução da ferramenta quando solicitado | PNGs inspecionados e idle aceito pelo próprio agente conforme o guia |
+| 8 Ações | Gera uma ação por vez, corrige inconsistências e monta sheets finais | Nada | PNGs com alpha e grade correta |
+| 9 Revisão | Confere dimensões, quadros, transparência, sequência e comparação visual; produz relatório e prévia | Nada | Checklist da seção 9 preenchido com resultados reais |
+| 10 Entrega | Cria subpastas, envia arquivos originais e finais e o relatório; configura o acesso de João | Aprova a ação de compartilhamento se solicitada | Arquivos listados novamente e permissões lidas após a escrita |
+| 11 Fechamento | Apresenta link real, inventário, verificações e pendências; integra por PR apenas se solicitado | Nada | Pasta acessível à conta confirmada e arquivos conferidos |
+
+### Regras de conexão e retomada para o agente
+
+1. Descubra as ferramentas realmente expostas. Se houver gerenciador de integrações, use-o para localizar GitHub e Google Drive e apresentar a conexão necessária. Não invente nomes de botões ou chame APIs que não existem na sessão.
+2. Reutilize conexões válidas. Peça nova autorização apenas para conexão ausente, acesso negado ou ação que a plataforma exigir. Informe qual serviço e qual acesso faltam. Login e consentimento pertencem ao usuário nas telas oficiais.
+3. No GitHub, acesso de leitura basta para buscar referências e produzir arte. Escrita e branch são necessárias somente para integração solicitada. Se o repositório privado retornar 404/403, confira conta e autorização. Caso falte convite, João precisa concedê-lo; o GPT não consegue criar acesso só com o consentimento do integrante.
+4. No Drive, confira leitura, criação de pasta, upload de PNG e consulta de permissões. Conexão que só pesquisa documentos não atende à entrega automática. Se faltar uma dessas ações no conector, procure integração compatível ou use controle de computador autorizado, se disponível. Se não houver caminho, registre a limitação e peça habilitar o recurso específico.
+5. Não use a primeira pasta de nome parecido como destino. Confirme por link/ID e contexto do projeto. Se não existir destino, crie uma pasta exclusiva e compartilhe com o e-mail confirmado de João. Se esse e-mail não estiver no pedido, no projeto ou numa fonte autorizada inequívoca, peça-o uma vez. Informação ausente não se resolve com permissão.
+6. Antes de rodar scripts, confira ambiente e dependências. O agente prepara o clone ou a cópia de trabalho isolada e executa os comandos; o integrante não precisa instalar e operar o Git manualmente no fluxo principal. Se não houver execução de código, habilite um ambiente apropriado antes de prometer sheets alinhadas e validação automática.
+7. Para upload, use o formato de referência de arquivo que a ferramenta da sessão realmente aceita. Não presuma que um caminho local é acessível pelo conector. Se necessário, materialize o arquivo pelo mecanismo do ambiente antes de enviar. Nunca substitua o PNG por um texto contendo seu caminho ou um link temporário.
+8. Após uma falha ou tempo esgotado, consulte a pasta antes de repetir o upload para evitar duplicação. Preserve arquivos gerados e mantenha um registro por ação com estado `pendente`, `gerada`, `revisada` ou `enviada`. Retome da primeira etapa incompleta depois da autorização.
+9. Não peça um “posso continuar?” a cada etapa já autorizada. Apresente progresso e siga. Se um serviço exigir confirmação de escrita ou compartilhamento, apresente a ação concreta, a pasta e o destinatário e aguarde essa confirmação.
+10. Um link de pasta comprova sua existência, não a entrega completa. No fim, leia novamente conteúdo e permissões. Se não puder testar com a conta de João, diga “permissão para a conta confirmada conferida; abertura pelo destinatário não testada”, sem afirmar que entrou na conta dele.
+
+### Critério de conclusão do fluxo automático
+
+O trabalho termina quando os PNGs finais e o relatório estão na pasta real do Drive, o conteúdo foi relido e o acesso de João foi conferido. Sem autorização pendente, o agente deve continuar até esse ponto. Se uma ferramenta estiver ausente ou o limite de geração impedir concluir, preserve a entrega parcial, identifique exatamente o que falta e indique a condição de retomada. Não apresente instruções manuais como se a automação tivesse sido concluída.
+
+### Preparação local de referência para execução pelo agente
 
 ### Com acesso de colaborador
 
@@ -94,9 +151,9 @@ Para uma cópia local já existente, confira `git status` antes de atualizar. Co
 
 Um chat que lê arquivos do GitHub não necessariamente consegue escrever neles, gerar imagens ou executar o jogo. Verifique o que está disponível na sessão. O acesso ao GitHub também não transfere arquivos da sua máquina automaticamente.
 
-### Sem Git ou sem terminal
+### Alternativa excepcional sem Git ou terminal
 
-Peça ao João os arquivos da seção 4 e siga o caminho de arte. Você pode produzir as imagens no seu chat e entregar um pacote para o João integrar. Não precisa configurar API ou ambiente de programação para desenhar.
+O agente deve primeiro procurar as referências por ferramentas conectadas e verificar se consegue processar as imagens no próprio ambiente. Se não conseguir, informe a capacidade ausente e preserve o trabalho para retomar em uma sessão compatível. O caminho com anexos e operação manual só deve ser usado se o integrante escolher expressamente essa alternativa.
 
 ## 4. O que procurar e quais imagens usar
 
@@ -116,7 +173,7 @@ Peça ao João os arquivos da seção 4 e siga o caminho de arte. Você pode pro
 
 Não use o retrato de busto como única referência de corpo. Não use a skin `costas` do Urubu para substituir silenciosamente o modelo `frente`. As pastas `_amostra-*` são referências internas de pose; seus personagens não são a arte final do novo mascote.
 
-Se o GPT só recebe anexos, envie: este guia, descrição do mascote, imagem de identidade, idle aprovado e a sheet da ação desejada. Para integrar, envie também o JSON do mascote e os arquivos de código que o GPT precisar consultar.
+Se o integrante escolher a alternativa manual com anexos, os materiais necessários são: este guia, descrição do mascote, imagem de identidade, idle aprovado e sheet da ação desejada. Para integrar, também são necessários o JSON e o código pertinente. No fluxo automático, o agente obtém esses arquivos diretamente das fontes conectadas.
 
 ## 5. Fixar o personagem e aprovar o idle
 
@@ -124,7 +181,7 @@ Se o GPT só recebe anexos, envie: este guia, descrição do mascote, imagem de 
 2. Salve essa descrição em `docs/mascotes/<slug>.md`. Para o script ler, coloque o texto entre `<!-- DESCRICAO:INICIO -->` e `<!-- DESCRICAO:FIM -->`, como nos exemplos do Urubu e do Almirante.
 3. Gere uma imagem de corpo inteiro, em guarda, vista de três quartos voltada para a esquerda. Inclua cabeça, mãos, pés e acessórios com folga. Fundo transparente, sem cenário.
 4. Corrija defeitos pontuais com uma instrução curta: por exemplo, remover somente o símbolo do chapéu. Não recomece a descrição inteira a cada ajuste.
-5. Gere o idle: pés plantados, guarda alta e respiração discreta. Compare com Almirante e Urubu, lado a lado na mesma escala.
+5. Gere o idle: pés plantados, guarda alta e respiração discreta. Compare com Almirante e Urubu, lado a lado na mesma escala. No fluxo automático, o próprio GPT faz essa revisão e as correções necessárias, sem transferir ao integrante a inspeção de cada imagem.
 6. Com o idle aprovado, trave a identidade. Use seu primeiro quadro como base para as demais ações. Trocar o idle depois exige revisar toda a coleção.
 
 Molde para a identidade:
@@ -274,7 +331,9 @@ Execute `npm run check`, que reúne TypeScript, testes e build. Registre o resul
 
 ### Caminho recomendado para os sprites Google Drive
 
-Conecte o Google Drive ao seu GPT para facilitar a consulta às referências e a organização da entrega. Cada integrante conecta sua própria conta. A conexão com o GPT e o compartilhamento com João são etapas distintas: conectar sua conta não dá acesso automático ao João.
+O GPT deve executar as etapas de conexão e entrega da seção 3. Cada integrante autentica sua própria conta e aprova as permissões. Conectar sua conta ao GPT não dá acesso automático ao João; o agente configura e confere o compartilhamento da pasta de entrega.
+
+O procedimento abaixo detalha as operações de interface que o agente pode executar quando houver controle de computador autorizado. O usuário só deve operá-las manualmente se escolher essa alternativa, após o agente identificar que não existe ferramenta suficiente para concluir o fluxo automático.
 
 1. Na área de apps ou plugins da sua versão do ChatGPT/Codex, procure **Google Drive**, escolha conectar e siga o login do Google. Confira a conta e as permissões solicitadas. A disponibilidade e os nomes dos menus podem variar conforme a conta e o ambiente. Se a integração não aparecer, use o Drive pelo navegador; isso não impede a entrega.
 2. Depois, envie ao GPT: “Use o Google Drive conectado. Confira se você consegue consultar a pasta de entrega e fazer upload dos PNGs. Se só puder ler, prepare os arquivos para eu enviar manualmente.”

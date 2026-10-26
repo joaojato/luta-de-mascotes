@@ -192,6 +192,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 
 ## Sobre o método
 
+- **Guia para os amigos deve orientar o GPT a executar o trabalho.** João
+  pediu uma sequência de conexões, produção e envio pelo Drive em que o
+  integrante só autentica e concede permissões. Baixar, renomear, montar
+  prompts e fazer upload são tarefas do agente quando há ferramentas;
+  limitações precisam ser identificadas antes de prometer automação.
+  (2026-10-26)
+
 - O João prefere **partir de código pronto e adaptar** a construir motor do
   zero, mesmo com trade-off de licença apresentado. Ver algo lutando na
   primeira sessão pesa mais que pureza de arquitetura. A Regra do Retângulo
