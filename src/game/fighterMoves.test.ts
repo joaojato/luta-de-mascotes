@@ -105,7 +105,7 @@ describe('fighter move integration', () => {
     const before = fighter.x;
     const kick = fighter.getActiveAttack()!;
     expect(kick.move).toBe('voadora');
-    expect(kick.profile.kind).toBe('low');
+    expect(kick.profile.kind).toBe('kick');
     fighter.update(.05, NEUTRAL_FIGHTER_INPUT);
     expect(fighter.x).toBeGreaterThan(before + 15);
     complete('heavy-kick');
@@ -140,9 +140,9 @@ describe('fighter move integration', () => {
     sprite.frame.name = 2;
     expect(fighter.getActiveAttack()!.signature).toBeGreaterThan(first.signature);
   });
-  it('keeps the heavy going under quick punches (armor) and reports the guard held', () => {
+  it('keeps the heavy punch going under quick punches (armor) and reports the guard held', () => {
     const {fighter, sprite} = setup('urubu');
-    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true, crouch:true});
     expect(fighter.isInHeavy).toBe(true);
     const health = fighter.health01;
     fighter.applyHit({kind:'high', height:'high', damage:5, knockback:100, hitstun:300}, -1, false, true);
@@ -163,10 +163,23 @@ describe('fighter move integration', () => {
     fighter.update(.1, NEUTRAL_FIGHTER_INPUT);
     expect(sprite.anims.currentAnim.key).toBe('urubu-heavy-kick');
   });
-  it('ignores the low kick button while the sheet is missing', () => {
-    const {fighter, sprite} = setup('urubu');
-    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, lowKick:true});
-    expect(sprite.anims.currentAnim.key).toBe('urubu-idle');
+  it('turns the two attack buttons into four moves with down held', () => {
+    const cases: [Partial<typeof NEUTRAL_FIGHTER_INPUT>, string, string][] = [
+      [{light:true}, 'soco-rapido', 'urubu-light-punch'],
+      [{light:true, crouch:true}, 'soco-forte', 'urubu-heavy-kick'],
+      [{heavy:true}, 'chute-basico', 'urubu-heavy-kick'],
+      [{heavy:true, crouch:true}, 'chute-baixo', 'urubu-heavy-kick']
+    ];
+    for (const [input, move, sheet] of cases) {
+      const {fighter, sprite} = setup('urubu');
+      fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, ...input});
+      expect(sprite.anims.currentAnim.key).toBe(sheet);
+      sprite.frame.name = move === 'soco-rapido' ? 2 : 4;
+      expect(fighter.getActiveAttack()?.move).toBe(move);
+    }
+    const saci = setup('saci');
+    saci.fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true, crouch:true});
+    expect(saci.sprite.anims.currentAnim.key).toBe('saci-heavy-punch');
   });
   it('falls back to the ground when struck in the air', () => {
     const {fighter, sprite} = setup('urubu');
@@ -193,7 +206,7 @@ describe('fighter move integration', () => {
   });
   it('releases one traveling shot, retains it after recovery, keeps its direction and consumes it on impact', () => {
     const {fighter, sprite, complete, visual} = setup('almirante');
-    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true, crouch:true});
     expect(sprite.anims.currentAnim.key).toBe('almirante-heavy-punch');
     expect(fighter.meter01).toBeLessThan(.01);
     fighter.update(.2, NEUTRAL_FIGHTER_INPUT);
@@ -214,7 +227,7 @@ describe('fighter move integration', () => {
   });
   it('clears a shot on round reset and cancels a special interrupted during its freeze', () => {
     const first = setup('almirante');
-    first.fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
+    first.fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true, crouch:true});
     first.fighter.update(.3, NEUTRAL_FIGHTER_INPUT);
     first.fighter.resetForRound(200, 1);
     expect(first.fighter.getActiveAttack()).toBeNull();

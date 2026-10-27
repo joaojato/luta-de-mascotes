@@ -22,8 +22,11 @@ describe('special traversal and flight timing', () => {
   it('guards: heavy breaks the crouching guard, low kick and flying kick break the standing one', () => {
     expect(guardHolds('soco-rapido', 'alta')).toBe(true);
     expect(guardHolds('soco-rapido', 'baixa')).toBe(true);
-    expect(guardHolds('golpe-forte', 'alta')).toBe(true);
-    expect(guardHolds('golpe-forte', 'baixa')).toBe(false);
+    expect(guardHolds('soco-forte', 'alta')).toBe(true);
+    expect(guardHolds('soco-forte', 'baixa')).toBe(false);
+    expect(guardHolds('chute-basico', 'alta')).toBe(true);
+    expect(guardHolds('chute-basico', 'baixa')).toBe(true);
+    expect(guardHolds('chute-baixo', 'baixa')).toBe(true);
     expect(guardHolds('chute-baixo', 'alta')).toBe(false);
     expect(guardHolds('voadora', 'alta')).toBe(false);
     expect(guardHolds('voadora', 'baixa')).toBe(true);

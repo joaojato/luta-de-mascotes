@@ -65,6 +65,9 @@ export const DEFAULT_FIGHTER_COMBAT: FighterCombat = {
   lowDamage: 12,
   lowKnockback: 340,
   lowHitstun: 440,
+  kickDamage: 9,
+  kickKnockback: 260,
+  kickHitstun: 360,
   lowKickDamage: 6,
   lowKickKnockback: 160,
   lowKickHitstun: 300,
@@ -100,6 +103,9 @@ export const FIGHTER_COMBAT_FIELDS: FighterCombatField[] = [
   { id: 'lowDamage', label: 'Low dmg', min: 1, max: 50, step: 1 },
   { id: 'lowKnockback', label: 'Low kb', min: 0, max: 800, step: 10 },
   { id: 'lowHitstun', label: 'Low stun', min: 0, max: 1200, step: 20 },
+  { id: 'kickDamage', label: 'Kick dmg', min: 1, max: 50, step: 1 },
+  { id: 'kickKnockback', label: 'Kick kb', min: 0, max: 800, step: 10 },
+  { id: 'kickHitstun', label: 'Kick stun', min: 0, max: 1200, step: 20 },
   { id: 'lowKickDamage', label: 'Low kick dmg', min: 1, max: 50, step: 1 },
   { id: 'lowKickKnockback', label: 'Low kick kb', min: 0, max: 800, step: 10 },
   { id: 'lowKickHitstun', label: 'Low kick stun', min: 0, max: 1200, step: 20 },
@@ -224,6 +230,16 @@ export function getAttackProfile(combat: FighterCombat, kind: AttackKind): Attac
       damage: combat.highDamage,
       knockback: combat.highKnockback,
       hitstun: combat.highHitstun
+    };
+  }
+
+  if (kind === 'kick') {
+    return {
+      kind: 'kick',
+      height: 'high',
+      damage: combat.kickDamage,
+      knockback: combat.kickKnockback,
+      hitstun: combat.kickHitstun
     };
   }
 

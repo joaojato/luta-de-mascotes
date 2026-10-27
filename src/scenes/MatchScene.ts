@@ -468,7 +468,6 @@ export class MatchScene extends BaseScene {
       jump: Phaser.Input.Keyboard.JustDown(keys.jump),
       light: Phaser.Input.Keyboard.JustDown(keys.light),
       heavy: Phaser.Input.Keyboard.JustDown(keys.heavy),
-      lowKick: Phaser.Input.Keyboard.JustDown(keys.lowKick),
       special: Phaser.Input.Keyboard.JustDown(keys.special)
     };
   }

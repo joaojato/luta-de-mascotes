@@ -16,9 +16,9 @@ describe('botões da luta', () => {
     const mesmoLado = atribuirTecla(CONTROLES_PADRAO, 'p1', 'light', 'G');
     expect(mesmoLado.p1.light).toBe('G');
     expect(mesmoLado.p1.heavy).toBe('F');
-    const outroLado = atribuirTecla(CONTROLES_PADRAO, 'p1', 'lowKick', 'L');
-    expect(outroLado.p1.lowKick).toBe('L');
-    expect(outroLado.p2.special).toBe('B');
+    const outroLado = atribuirTecla(CONTROLES_PADRAO, 'p1', 'special', 'L');
+    expect(outroLado.p1.special).toBe('L');
+    expect(outroLado.p2.special).toBe('V');
     expect(CONTROLES_PADRAO.p1.light).toBe('F');
   });
   it('mostra nomes curtos', () => {

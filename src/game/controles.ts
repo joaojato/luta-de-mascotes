@@ -8,17 +8,16 @@
 
 export type Lado = 'p1' | 'p2';
 
-export type ComandoLuta = 'left' | 'right' | 'jump' | 'crouch' | 'block' | 'light' | 'heavy' | 'lowKick' | 'special';
+export type ComandoLuta = 'left' | 'right' | 'jump' | 'crouch' | 'block' | 'light' | 'heavy' | 'special';
 
 export const COMANDOS_LUTA: { id: ComandoLuta; nome: string }[] = [
   { id: 'left', nome: 'Esquerda' },
   { id: 'right', nome: 'Direita' },
   { id: 'jump', nome: 'Pular' },
-  { id: 'crouch', nome: 'Agachar' },
+  { id: 'crouch', nome: 'Agachar (baixo)' },
   { id: 'block', nome: 'Defender' },
   { id: 'light', nome: 'Soco' },
-  { id: 'heavy', nome: 'Forte' },
-  { id: 'lowKick', nome: 'Chute baixo' },
+  { id: 'heavy', nome: 'Chute' },
   { id: 'special', nome: 'Especial' }
 ];
 
@@ -26,7 +25,7 @@ export type MapaBotoes = Record<ComandoLuta, string>;
 export type Controles = Record<Lado, MapaBotoes>;
 
 export const CONTROLES_PADRAO: Controles = {
-  p1: { left: 'A', right: 'D', jump: 'W', crouch: 'S', block: 'C', light: 'F', heavy: 'G', lowKick: 'B', special: 'V' },
+  p1: { left: 'A', right: 'D', jump: 'W', crouch: 'S', block: 'C', light: 'F', heavy: 'G', special: 'V' },
   p2: {
     left: 'LEFT',
     right: 'RIGHT',
@@ -35,7 +34,6 @@ export const CONTROLES_PADRAO: Controles = {
     block: 'FORWARD_SLASH',
     light: 'COMMA',
     heavy: 'PERIOD',
-    lowKick: 'K',
     special: 'L'
   }
 };

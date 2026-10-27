@@ -17,7 +17,6 @@ const ROTULOS: Record<Comando, string> = {
   block: 'GUARDA',
   light: 'SOCO',
   heavy: 'CHUTE',
-  lowKick: 'RASTEIRA',
   special: 'TORCIDA'
 };
 

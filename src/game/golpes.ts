@@ -6,7 +6,14 @@
  */
 import type { CharacterDefinition } from './hero';
 
-export type GolpeId = 'soco-rapido' | 'golpe-forte' | 'chute-baixo' | 'soco-no-ar' | 'voadora' | 'especial';
+export type GolpeId =
+  | 'soco-rapido'
+  | 'soco-forte'
+  | 'chute-basico'
+  | 'chute-baixo'
+  | 'soco-no-ar'
+  | 'voadora'
+  | 'especial';
 
 export interface Golpe {
   id: GolpeId;
@@ -30,20 +37,28 @@ export const GOLPES: Golpe[] = [
     regra: 'emenda outro soco; agachado passa por baixo'
   },
   {
-    id: 'golpe-forte',
-    nome: 'Golpe forte',
-    comando: 'Forte',
-    acoes: ['heavy-kick', 'heavy-punch'],
-    quebraGalho: [],
+    id: 'soco-forte',
+    nome: 'Soco forte',
+    comando: 'Baixo + Soco',
+    acoes: ['heavy-punch'],
+    quebraGalho: ['heavy-kick'],
     regra: 'lento; quebra a defesa baixa; aguenta soco rápido'
+  },
+  {
+    id: 'chute-basico',
+    nome: 'Chute básico',
+    comando: 'Chute',
+    acoes: ['heavy-kick'],
+    quebraGalho: ['heavy-punch'],
+    regra: 'dano médio; qualquer guarda segura'
   },
   {
     id: 'chute-baixo',
     nome: 'Chute baixo',
-    comando: 'Chute baixo',
+    comando: 'Baixo + Chute',
     acoes: ['low-kick'],
-    quebraGalho: [],
-    regra: 'interrompe o golpe forte'
+    quebraGalho: ['heavy-kick', 'heavy-punch'],
+    regra: 'interrompe o soco forte; só a guarda baixa segura'
   },
   {
     id: 'soco-no-ar',
@@ -56,7 +71,7 @@ export const GOLPES: Golpe[] = [
   {
     id: 'voadora',
     nome: 'Voadora',
-    comando: 'Forte, no ar',
+    comando: 'Chute, no ar',
     acoes: ['jump-kick'],
     quebraGalho: ['heavy-kick', 'heavy-punch'],
     regra: 'mergulho em diagonal; quebra a defesa alta'
@@ -88,8 +103,8 @@ export function golpesDoLutador(character: CharacterDefinition): GolpeDoLutador[
   const existe = (acao: string) => character.animations.some((animation) => animation.action === acao);
 
   return GOLPES.map((golpe) => {
-    // O JSON pode trocar a sheet do Forte (o tiro do Almirante sai do soco forte).
-    const doJson = golpe.id === 'golpe-forte' ? character.moves?.heavy?.action : undefined;
+    // O JSON pode trocar a sheet do soco forte (o tiro do Almirante sai dele).
+    const doJson = golpe.id === 'soco-forte' ? character.moves?.heavy?.action : undefined;
     const propria = [doJson, ...golpe.acoes].find((acao): acao is string => acao !== undefined && existe(acao));
     if (propria) {
       return { golpe, situacao: 'tem', acao: propria };

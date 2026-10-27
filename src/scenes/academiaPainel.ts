@@ -29,7 +29,8 @@ type Aba = 'golpes' | 'botoes' | 'ajustes';
 const CAMPOS_AJUSTE: { id: keyof FighterCombat; nome: string; dica: string }[] = [
   { id: 'maxHealth', nome: 'Vida', dica: 'pontos de vida no começo do round' },
   { id: 'highDamage', nome: 'Soco rápido', dica: 'dano; vale também para o soco no ar' },
-  { id: 'lowDamage', nome: 'Golpe forte', dica: 'dano; vale também para a voadora e o tiro' },
+  { id: 'lowDamage', nome: 'Soco forte', dica: 'dano; vale também para o tiro' },
+  { id: 'kickDamage', nome: 'Chute básico', dica: 'dano; vale também para a voadora' },
   { id: 'lowKickDamage', nome: 'Chute baixo', dica: 'dano' },
   { id: 'specialDamage', nome: 'Especial', dica: 'dano por acerto (o especial acerta várias vezes)' },
   { id: 'meterSeconds', nome: 'Especial enche em', dica: 'segundos de luta para a barra encher sozinha; 0 = só batendo e apanhando' }

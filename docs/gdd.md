@@ -73,25 +73,35 @@ golpes da Regra da v1 por pedido explícito do João. O catálogo vive em
 tem e o que falta. Golpe sem sheet própria aparece como "faltando"; quando há
 um quebra-galho, a Academia diz qual sheet está sendo usada no lugar.
 
-| Golpe | Botão | Sheet (`action`) | Regra |
-|---|---|---|---|
-| Soco rápido | Soco | `light-punch` | rápido; apertar de novo depois do quadro ativo emenda outro soco. Agachado passa por baixo. Bate na armadura do Golpe forte sem interromper. O do Almirante dá dois jabs por aperto. |
-| Golpe forte | Forte | `heavy-kick` ou `heavy-punch` | lento e potente; **quebra a defesa baixa** (só a guarda em pé segura). Aguenta Soco rápido sem parar (armadura). |
-| Chute baixo | Chute baixo | `low-kick` | rápido, rente ao chão; **interrompe o Golpe forte**. |
-| Soco no ar | Soco, no ar | `jump-punch` (quebra-galho: `light-punch`) | um golpe por pulo. Pega quem está agachado. |
-| Voadora | Forte, no ar | `jump-kick` (quebra-galho: chute forte) | mergulho em diagonal para a frente; **quebra a defesa alta** (só a guarda agachada segura). |
-| Especial | Especial, barra cheia | `special-charge` + `special` | próprio de cada mascote. |
+Dois botões de ataque, Soco e Chute; segurar Baixo muda o golpe (João,
+27/10/2026). O antigo botão Forte virou o Chute.
+
+| | Soco | Chute |
+|---|---|---|
+| Em pé | Soco rápido | Chute básico |
+| Baixo + | Soco forte | Chute baixo |
+| No ar | Soco no ar | Voadora |
+
+| Golpe | Sheet (`action`) | Regra |
+|---|---|---|
+| Soco rápido | `light-punch` | rápido; apertar de novo depois do quadro ativo emenda outro soco. Agachado passa por baixo. Bate na armadura do Soco forte sem interromper. O do Almirante dá dois jabs por aperto. |
+| Soco forte | `heavy-punch` (quebra-galho: `heavy-kick`) | lento e potente; **quebra a defesa baixa**. Aguenta Soco rápido sem parar (armadura). O do Almirante é o tiro; o do Bira é a patada. |
+| Chute básico | `heavy-kick` | dano médio; qualquer guarda segura. |
+| Chute baixo | `low-kick` (quebra-galho: `heavy-kick`) | rente ao chão; **interrompe o Soco forte**; só a guarda agachada segura. |
+| Soco no ar | `jump-punch` (quebra-galho: `light-punch`) | um golpe por pulo. Pega quem está agachado. |
+| Voadora | `jump-kick` (quebra-galho: `heavy-kick`) | mergulho em diagonal para a frente; **quebra a defesa alta**. |
+| Especial | `special-charge` + `special` | próprio de cada mascote. |
 
 Projéteis:
 
-- **Tiro do Almirante** (o Forte dele): passa por cima de quem pula e por
+- **Tiro do Almirante** (o Soco forte dele): passa por cima de quem pula e por
   cima de quem agacha.
 - **Caravela do Almirante** (especial): passa por baixo de quem pula;
   agachar não salva.
 
-Defesa: guarda em pé (Defender) segura Soco rápido, Golpe forte e projétil;
-guarda agachada (Defender + Agachar) segura Soco rápido, Chute baixo e
-Voadora. Agachar sem guarda é esquiva do Soco rápido e do Tiro.
+Defesa: guarda em pé (Defender) segura Soco rápido, Soco forte, Chute
+básico e projétil; guarda agachada (Defender + Baixo) segura Soco rápido,
+Chute básico, Chute baixo e Voadora. Agachar sem guarda é esquiva do Soco rápido e do Tiro.
 
 Botões são remapeáveis por lado do teclado na Academia (aba Botões) e valem
 na luta. Números exatos (dano, vida, carga do especial) ficam no JSON do

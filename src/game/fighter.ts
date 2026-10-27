@@ -57,6 +57,18 @@ const JUMP_LANDING_SECONDS = 0.1;
 /** Flying kick: the dive forward and down the moment the kick comes out. */
 const FLYING_KICK_SPEED_X = 380;
 const FLYING_KICK_DROP = 300;
+/** Damage profile of each catalog move (Ajustes tab edits these per fighter). */
+const ATTACK_KIND_OF: Record<AttackMove, AttackKind> = {
+  'soco-rapido': 'high',
+  'soco-no-ar': 'high',
+  'soco-forte': 'low',
+  'chute-basico': 'kick',
+  voadora: 'kick',
+  'chute-baixo': 'lowKick',
+  especial: 'special',
+  tiro: 'low',
+  onda: 'special'
+};
 
 /**
  * A live attack from a fighter on its current animation frame: the world-space
@@ -116,7 +128,6 @@ export interface FighterInput {
   jump: boolean;
   light: boolean;
   heavy: boolean;
-  lowKick: boolean;
   special: boolean;
 }
 
@@ -129,7 +140,6 @@ export const NEUTRAL_FIGHTER_INPUT: FighterInput = {
   jump: false,
   light: false,
   heavy: false,
-  lowKick: false,
   special: false
 };
 
@@ -143,13 +153,16 @@ interface FighterActionKeys {
   blockLow: string;
   hitHigh: string;
   lightPunch: string;
-  heavy: string;
-  /** Low kick button; null while the sheet is missing (the button does nothing). */
-  lowKick: string | null;
-  /** Light button in the air (`jump-punch`, or the light punch meanwhile). */
+  /** Down + punch (`heavy-punch`; the JSON may pick another sheet, e.g. a shot). */
+  heavyPunch: string;
+  /** Kick button (`heavy-kick`). */
+  kick: string;
+  /** Down + kick (`low-kick`, or the kick meanwhile). */
+  lowKick: string;
+  /** Punch in the air (`jump-punch`, or the light punch meanwhile). */
   airLight: string;
-  /** Heavy button in the air: the flying kick (`jump-kick`, or a heavy kick meanwhile). */
-  airHeavy: string;
+  /** Kick in the air: the flying kick (`jump-kick`, or the kick meanwhile). */
+  airKick: string;
   specialCharge: string;
   special: string;
   knockdown: string;
@@ -203,6 +216,8 @@ export class Fighter {
   private jumpPhase: 'prepare' | 'air' | 'attack' | 'land' | null = null;
   private jumpClock = 0;
   private airAttackUsed = false;
+  /** The catalog move being thrown (several moves may share one sheet). */
+  private strike: AttackMove | null = null;
   /** Strike pressed during the jump wind-up, thrown as soon as the feet leave the ground. */
   private bufferedAirAttack: 'light' | 'heavy' | null = null;
   private diveVelX = 0;
@@ -310,7 +325,7 @@ export class Fighter {
 
   /** Mid heavy on the ground: the quick punch bounces off (armor). */
   get isInHeavy(): boolean {
-    return this.grounded && this.locked && this.currentAnimKey === this.actionKeys.heavy;
+    return this.grounded && this.locked && this.strike === 'soco-forte';
   }
 
   /** Whether the fighter is crouching on the ground (with or without guard). */
@@ -479,7 +494,7 @@ export class Fighter {
     if (this.currentAnimKey === this.actionKeys.special && this.character.moves?.special?.kind === 'projectile') {
       return null;
     }
-    if (this.currentAnimKey === this.actionKeys.heavy && this.character.moves?.heavy?.kind === 'projectile') return null;
+    if (this.strike === 'soco-forte' && this.character.moves?.heavy?.kind === 'projectile') return null;
     if (this.attackConnected || this.defeated) {
       return null;
     }
@@ -601,13 +616,8 @@ export class Fighter {
     // Cancel pending action completion callbacks when a move is interrupted.
     this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.specialCharge}`);
     this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.special}`);
-    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.lightPunch}`);
-    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.heavy}`);
-    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.airHeavy}`);
-    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.airLight}`);
-    if (this.actionKeys.lowKick) {
-      this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.lowKick}`);
-    }
+    this.removeStrikeListeners();
+    this.strike = null;
 
     if (blocked) {
       this.knockbackVel = attackerFacing * profile.knockback * 0.35;
@@ -648,6 +658,7 @@ export class Fighter {
     this.clearProjectile();
     this.jumpPhase = null;
     this.diveVelX = 0;
+    this.strike = null;
     this.sprite.anims.resume();
     this.posX = Phaser.Math.Clamp(x, this.minX, this.maxX);
     this.facing = facing;
@@ -730,7 +741,7 @@ export class Fighter {
       // Quick punch: pressing again after the hit frames throws the next one.
       this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.lightPunch}`);
       this.sprite.stop();
-      this.startOneShot(this.actionKeys.lightPunch);
+      this.startStrike('soco-rapido');
     }
     if (!this.grounded) {
       this.updateAirborne(seconds, input);
@@ -758,6 +769,11 @@ export class Fighter {
   private resolveActionKeys(): FighterActionKeys {
     const key = (action: string): string =>
       findCharacterAnimationKeyByAction(this.character.id, action) ?? this.character.animations[0].key;
+    // First sheet the character really has, in order of preference (catalog quebra-galhos).
+    const find = (...actions: (string | undefined)[]): string | undefined =>
+      actions
+        .map((action) => (action ? findCharacterAnimationKeyByAction(this.character.id, action) : null))
+        .find((found): found is string => found !== null);
 
     return {
       idle: key('idle'),
@@ -769,18 +785,11 @@ export class Fighter {
       blockLow: findCharacterAnimationKeyByAction(this.character.id, 'block-low') ?? key('block-high'),
       hitHigh: key('hit-high'),
       lightPunch: key('light-punch'),
-      heavy:
-        (this.character.moves?.heavy?.action ? key(this.character.moves.heavy.action) : undefined) ??
-        findCharacterAnimationKeyByAction(this.character.id, 'heavy-kick') ??
-        findCharacterAnimationKeyByAction(this.character.id, 'heavy-punch') ??
-        key('light-punch'),
-      lowKick: findCharacterAnimationKeyByAction(this.character.id, 'low-kick'),
-      airLight: findCharacterAnimationKeyByAction(this.character.id, 'jump-punch') ?? key('light-punch'),
-      airHeavy:
-        findCharacterAnimationKeyByAction(this.character.id, 'jump-kick') ??
-        findCharacterAnimationKeyByAction(this.character.id, 'heavy-kick') ??
-        findCharacterAnimationKeyByAction(this.character.id, 'heavy-punch') ??
-        key('light-punch'),
+      heavyPunch: find(this.character.moves?.heavy?.action, 'heavy-punch', 'heavy-kick') ?? key('light-punch'),
+      kick: find('heavy-kick', 'heavy-punch') ?? key('light-punch'),
+      lowKick: find('low-kick', 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
+      airLight: find('jump-punch') ?? key('light-punch'),
+      airKick: find('jump-kick', 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
       specialCharge: findCharacterAnimationKeyByAction(this.character.id, 'special-charge') ?? key('crouch'),
       special: findCharacterAnimationKeyByAction(this.character.id, 'special') ?? key('heavy-kick'),
       knockdown: key('knockdown')
@@ -805,40 +814,21 @@ export class Fighter {
     if (!this.locked) {
       return null;
     }
-    if (this.currentAnimKey === this.actionKeys.lightPunch || this.currentAnimKey === this.actionKeys.airLight) {
-      return 'high';
-    }
-    if (this.actionKeys.lowKick !== null && this.currentAnimKey === this.actionKeys.lowKick) {
-      return 'lowKick';
-    }
-    if (this.currentAnimKey === this.actionKeys.heavy || this.currentAnimKey === this.actionKeys.airHeavy) {
-      return 'low';
-    }
     if (this.currentAnimKey === this.actionKeys.special) {
       return 'special';
     }
 
-    return null;
+    return this.strike ? ATTACK_KIND_OF[this.strike] : null;
   }
 
   /** Which catalog move the current strike is (air and ground share sheets). */
   private currentMove(): AttackMove {
-    const key = this.currentAnimKey;
-    if (key === this.actionKeys.special) {
-      return 'especial';
-    }
-    if (key === this.actionKeys.lowKick) {
-      return 'chute-baixo';
-    }
-    if (!this.grounded) {
-      return key === this.actionKeys.airHeavy ? 'voadora' : 'soco-no-ar';
-    }
-    return key === this.actionKeys.heavy ? 'golpe-forte' : 'soco-rapido';
+    return this.currentAnimKey === this.actionKeys.special ? 'especial' : (this.strike ?? 'soco-rapido');
   }
 
   /** A quick punch past its last hit frame can be chained into the next one. */
   private canChainJab(): boolean {
-    if (!this.grounded || !this.locked || this.currentAnimKey !== this.actionKeys.lightPunch) {
+    if (!this.grounded || !this.locked || this.strike !== 'soco-rapido') {
       return false;
     }
     const animation = getCharacterAnimationDefinition(this.character.id, this.actionKeys.lightPunch);
@@ -927,7 +917,7 @@ export class Fighter {
     const airStrike = input.light ? 'light' : input.heavy ? 'heavy' : this.bufferedAirAttack;
     if (this.jumpPhase === 'air' && airStrike && !this.airAttackUsed) {
       this.bufferedAirAttack = null;
-      this.startAirAttack(airStrike === 'light' ? this.actionKeys.airLight : this.actionKeys.airHeavy);
+      this.startAirAttack(airStrike === 'light' ? 'soco-no-ar' : 'voadora');
     }
     if (this.jumpPhase === 'air' || this.jumpPhase === 'attack') {
       this.jumpClock += seconds;
@@ -976,16 +966,13 @@ export class Fighter {
       this.startJump();
       return;
     }
+    // Two attack buttons; holding down turns them into the heavy punch and the low kick.
     if (input.light) {
-      this.startOneShot(this.actionKeys.lightPunch);
+      this.startStrike(input.crouch ? 'soco-forte' : 'soco-rapido');
       return;
     }
     if (input.heavy) {
-      this.startOneShot(this.actionKeys.heavy);
-      return;
-    }
-    if (input.lowKick && this.actionKeys.lowKick) {
-      this.startOneShot(this.actionKeys.lowKick);
+      this.startStrike(input.crouch ? 'chute-baixo' : 'chute-basico');
       return;
     }
     if (input.block) {
@@ -1069,7 +1056,19 @@ export class Fighter {
    * to idle.
    * @param animKey - The action animation key to play.
    */
+  private startStrike(move: AttackMove): void {
+    const sheet: Partial<Record<AttackMove, string>> = {
+      'soco-rapido': this.actionKeys.lightPunch,
+      'soco-forte': this.actionKeys.heavyPunch,
+      'chute-basico': this.actionKeys.kick,
+      'chute-baixo': this.actionKeys.lowKick
+    };
+    this.startOneShot(sheet[move] ?? this.actionKeys.lightPunch);
+    this.strike = move;
+  }
+
   private startOneShot(animKey: string): void {
+    this.strike = null;
     this.specialClock = 0;
     this.shotReleased = false;
     this.locked = true;
@@ -1081,11 +1080,24 @@ export class Fighter {
     this.sprite.once(`animationcomplete-${animKey}`, () => {
       this.locked = false;
       this.currentAnimKey = '';
+      this.strike = null;
 
       if (this.grounded) {
         this.playState(this.actionKeys.idle, true);
       }
     });
+  }
+
+  /** Drops pending "back to idle" callbacks of an interrupted strike. */
+  private removeStrikeListeners(): void {
+    new Set([
+      this.actionKeys.lightPunch,
+      this.actionKeys.heavyPunch,
+      this.actionKeys.kick,
+      this.actionKeys.lowKick,
+      this.actionKeys.airLight,
+      this.actionKeys.airKick
+    ]).forEach((key) => this.sprite.removeAllListeners(`animationcomplete-${key}`));
   }
 
   /**
@@ -1095,6 +1107,7 @@ export class Fighter {
    * hit window so the move lands a combo.
    */
   private startSpecial(): void {
+    this.strike = null;
     this.locked = true;
     this.meter = 0;
     this.currentReverse = false;
@@ -1240,15 +1253,17 @@ export class Fighter {
   }
 
   /** One strike per jump: plays the attack mid-air, then returns to the flight pose. */
-  private startAirAttack(animKey: string): void {
+  private startAirAttack(move: 'soco-no-ar' | 'voadora'): void {
+    const animKey = move === 'voadora' ? this.actionKeys.airKick : this.actionKeys.airLight;
     this.jumpPhase = 'attack';
     this.airAttackUsed = true;
+    this.strike = move;
     this.currentAnimKey = animKey;
     this.attackId += 1;
     this.attackConnected = false;
     this.attackActiveLast = false;
     let startFrame = 0;
-    if (animKey === this.actionKeys.airHeavy) {
+    if (move === 'voadora') {
       // Flying kick: dives forward-down and comes out already on the kick frame.
       this.diveVelX = this.facing * FLYING_KICK_SPEED_X;
       // On the way up the jump keeps rising; past the apex the kick dives.
@@ -1262,6 +1277,7 @@ export class Fighter {
     this.sprite.once(`animationcomplete-${animKey}`, () => {
       if (this.jumpPhase !== 'attack') return;
       this.diveVelX = 0;
+      this.strike = null;
       this.jumpPhase = 'air';
       this.currentAnimKey = this.actionKeys.jump;
       this.showJumpFrame(this.jumpAirFrame());
@@ -1271,8 +1287,8 @@ export class Fighter {
   /** Touchdown: cancels an unfinished air strike and holds the landing squat. */
   private startLanding(): void {
     this.diveVelX = 0;
-    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.airLight}`);
-    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.airHeavy}`);
+    this.strike = null;
+    this.removeStrikeListeners();
     this.showJumpFrame(this.jumpFrames().land);
     this.jumpPhase = 'land';
     this.jumpClock = JUMP_LANDING_SECONDS;
@@ -1315,7 +1331,7 @@ export class Fighter {
   private updateSpecialMotion(seconds: number): void {
     const isSpecial = this.currentAnimKey === this.actionKeys.special;
     const move = isSpecial ? this.character.moves?.special
-      : this.currentAnimKey === this.actionKeys.heavy ? this.character.moves?.heavy : undefined;
+      : this.strike === 'soco-forte' ? this.character.moves?.heavy : undefined;
     if (!move || !this.locked) return;
     this.specialClock += seconds;
     const animation = this.currentAnimation();

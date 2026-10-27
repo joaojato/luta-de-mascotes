@@ -133,6 +133,9 @@ export const DEBUG_PANELS: DebugPanelDefinition[] = [
         <label class="number-row"><span>Low dmg</span><input id="fighter-combat-lowDamage" type="number" min="1" max="50" step="1" /></label>
         <label class="number-row"><span>Low kb</span><input id="fighter-combat-lowKnockback" type="number" min="0" max="800" step="10" /></label>
         <label class="number-row"><span>Low stun</span><input id="fighter-combat-lowHitstun" type="number" min="0" max="1200" step="20" /></label>
+        <label class="number-row"><span>Kick dmg</span><input id="fighter-combat-kickDamage" type="number" min="1" max="50" step="1" /></label>
+        <label class="number-row"><span>Kick kb</span><input id="fighter-combat-kickKnockback" type="number" min="0" max="800" step="10" /></label>
+        <label class="number-row"><span>Kick stun</span><input id="fighter-combat-kickHitstun" type="number" min="0" max="1200" step="20" /></label>
         <label class="number-row"><span>Low kick dmg</span><input id="fighter-combat-lowKickDamage" type="number" min="1" max="50" step="1" /></label>
         <label class="number-row"><span>Low kick kb</span><input id="fighter-combat-lowKickKnockback" type="number" min="0" max="800" step="10" /></label>
         <label class="number-row"><span>Low kick stun</span><input id="fighter-combat-lowKickHitstun" type="number" min="0" max="1200" step="20" /></label>

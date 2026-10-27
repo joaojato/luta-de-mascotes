@@ -71,10 +71,11 @@ export type AttackMove = GolpeId | 'tiro' | 'onda';
 /** Standing guard (`alta`) or crouching guard (`baixa`). */
 export type GuardStance = 'alta' | 'baixa';
 
-/** Which guard stops each move: heavy breaks the low guard, low kick and flying kick break the high one. */
+/** Which guard stops each move: heavy punch breaks the low guard, low kick and flying kick break the high one. */
 const GUARDS: Record<AttackMove, GuardStance[]> = {
   'soco-rapido': ['alta', 'baixa'],
-  'golpe-forte': ['alta'],
+  'soco-forte': ['alta'],
+  'chute-basico': ['alta', 'baixa'],
   'chute-baixo': ['baixa'],
   'soco-no-ar': ['alta', 'baixa'],
   voadora: ['baixa'],
@@ -97,7 +98,7 @@ export function jumpsOver(move: AttackMove, airborne: boolean): boolean {
   return airborne && (move === 'tiro' || move === 'onda');
 }
 
-/** A heavy in progress shrugs off the quick punch (armor); anything else interrupts it. */
+/** A heavy punch in progress shrugs off the quick punch (armor); anything else interrupts it. */
 export function armorAbsorbs(move: AttackMove, defenderInHeavy: boolean): boolean {
   return defenderInHeavy && move === 'soco-rapido';
 }

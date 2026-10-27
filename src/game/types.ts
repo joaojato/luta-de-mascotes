@@ -131,7 +131,7 @@ export type AttackHeight = 'high' | 'low';
  * The attack source: the light button (`high`), the heavy button (`low`), the
  * low kick button (`lowKick`), or a meter-fuelled `special` move (multi-hit).
  */
-export type AttackKind = 'high' | 'low' | 'lowKick' | 'special';
+export type AttackKind = 'high' | 'low' | 'kick' | 'lowKick' | 'special';
 
 /**
  * Per-character combat tuning. The light attack button is the "high" attack and
@@ -147,7 +147,11 @@ export interface FighterCombat {
   lowDamage: number;
   lowKnockback: number;
   lowHitstun: number;
-  /** Low kick (Chute baixo): quick, interrupts a heavy. */
+  /** Kick button (Chute básico, and the flying kick in the air). */
+  kickDamage: number;
+  kickKnockback: number;
+  kickHitstun: number;
+  /** Low kick (Chute baixo): quick, interrupts a heavy punch. */
   lowKickDamage: number;
   lowKickKnockback: number;
   lowKickHitstun: number;
