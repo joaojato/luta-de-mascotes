@@ -97,6 +97,10 @@ Botões são remapeáveis por lado do teclado na Academia (aba Botões) e valem
 na luta. Números exatos (dano, vida, carga do especial) ficam no JSON do
 mascote e podem ser testados na aba Ajustes da Academia. Aqui é a intenção.
 
+Especial: a barra enche batendo, apanhando e também sozinha com o tempo de
+luta (`meterSeconds`, padrão 45 s; 0 desliga). Decisão do Claude para dar
+sentido ao "tempo para carregar a habilidade" pedido pelo João.
+
 ## Controle pelo corpo (João, 01/10/2026)
 
 Além do teclado, cada jogador pode jogar com o corpo: escaneia o QR code da

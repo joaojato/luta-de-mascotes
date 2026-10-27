@@ -1,3 +1,4 @@
+import { carregarAjustes } from './ajustesDev';
 import { FIGHTER_CHARACTER_DEFINITIONS, getCharacterDefinition } from './hero';
 import { LUTADORES, LUTADOR_COMBAT_OVERRIDES, LUTADOR_STAT_OVERRIDES } from './lutadores';
 import type {
@@ -69,7 +70,8 @@ export const DEFAULT_FIGHTER_COMBAT: FighterCombat = {
   lowKickHitstun: 300,
   specialDamage: 6,
   specialKnockback: 150,
-  specialHitstun: 240
+  specialHitstun: 240,
+  meterSeconds: 45
 };
 
 /**
@@ -103,7 +105,8 @@ export const FIGHTER_COMBAT_FIELDS: FighterCombatField[] = [
   { id: 'lowKickHitstun', label: 'Low kick stun', min: 0, max: 1200, step: 20 },
   { id: 'specialDamage', label: 'Special dmg', min: 1, max: 50, step: 1 },
   { id: 'specialKnockback', label: 'Special kb', min: 0, max: 800, step: 10 },
-  { id: 'specialHitstun', label: 'Special stun', min: 0, max: 1200, step: 20 }
+  { id: 'specialHitstun', label: 'Special stun', min: 0, max: 1200, step: 20 },
+  { id: 'meterSeconds', label: 'Meter fill s', min: 0, max: 300, step: 5 }
 ];
 
 /**
@@ -154,11 +157,14 @@ export function buildDefaultFighterStats(): Record<string, FighterStats> {
  */
 export function buildDefaultFighterCombat(): Record<string, FighterCombat> {
   const combat: Record<string, FighterCombat> = {};
+  const ajustes = carregarAjustes();
 
   FIGHTER_CHARACTER_DEFINITIONS.forEach((character) => {
     combat[character.id] = clampFighterCombat({
       ...DEFAULT_FIGHTER_COMBAT,
-      ...FIGHTER_COMBAT_OVERRIDES[character.id]
+      ...FIGHTER_COMBAT_OVERRIDES[character.id],
+      // Ajustes feitos na Academia (modo dev) valem por cima do JSON.
+      ...ajustes[character.id]
     });
   });
 

@@ -195,7 +195,7 @@ describe('fighter move integration', () => {
     const {fighter, sprite, complete, visual} = setup('almirante');
     fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
     expect(sprite.anims.currentAnim.key).toBe('almirante-heavy-punch');
-    expect(fighter.meter01).toBe(0);
+    expect(fighter.meter01).toBeLessThan(.01);
     fighter.update(.2, NEUTRAL_FIGHTER_INPUT);
     expect(fighter.getActiveAttack()).toBeNull();
     fighter.update(.06, NEUTRAL_FIGHTER_INPUT);
@@ -236,7 +236,7 @@ describe('fighter move integration', () => {
     expect(wave.profile.kind).toBe('special');
     expect(wave.move).toBe('onda');
     expect(wave.rect.height).toBe(220);
-    expect(fighter.meter01).toBe(0);
+    expect(fighter.meter01).toBeLessThan(.01);
     complete('special');
     fighter.markAttackConnected(wave.signature);
     expect(fighter.getActiveAttack()).toBeNull();
@@ -249,5 +249,15 @@ describe('fighter move integration', () => {
     expect(effectVisual.destroy).not.toHaveBeenCalled();
     fighter.update(4, NEUTRAL_FIGHTER_INPUT);
     expect(effectVisual.destroy).toHaveBeenCalledOnce();
+  });
+});
+
+describe('special meter', () => {
+  it('fills on its own over the configured fight time', () => {
+    const {fighter} = setup('urubu');
+    for (let i = 0; i < 44; i++) fighter.update(1, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.isMeterReady).toBe(false);
+    fighter.update(1.5, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.isMeterReady).toBe(true);
   });
 });

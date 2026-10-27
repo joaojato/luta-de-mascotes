@@ -720,6 +720,10 @@ export class Fighter {
     if (this.jumpPhase === 'prepare' && (input.light || input.heavy)) {
       this.bufferedAirAttack = input.light ? 'light' : 'heavy';
     }
+    const meterSeconds = this.combat().meterSeconds;
+    if (meterSeconds > 0 && this.hasSpecial) {
+      this.gainMeter((METER_MAX * seconds) / meterSeconds);
+    }
     this.updateCustomJump(seconds);
     this.updateSpecialMotion(seconds);
     if (input.light && this.canChainJab()) {

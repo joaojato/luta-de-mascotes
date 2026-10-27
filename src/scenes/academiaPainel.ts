@@ -15,6 +15,7 @@ import {
 import { GOLPES, golpesDoLutador, type SituacaoGolpe } from '../game/golpes';
 import { FIGHTER_CHARACTER_DEFINITIONS, getCharacterDefinition } from '../game/hero';
 import { LUTADORES } from '../game/lutadores';
+import type { FighterCombat } from '../game/types';
 
 /**
  * Painel HTML da Academia, por cima do canvas: aba Golpes (o que cada mascote
@@ -22,7 +23,17 @@ import { LUTADORES } from '../game/lutadores';
  * HTML porque clique, tabela e captura de tecla saem de graça no DOM.
  */
 
-type Aba = 'golpes' | 'botoes';
+type Aba = 'golpes' | 'botoes' | 'ajustes';
+
+/** Números que a aba Ajustes deixa mexer (o resto continua no JSON e no shell de debug). */
+const CAMPOS_AJUSTE: { id: keyof FighterCombat; nome: string; dica: string }[] = [
+  { id: 'maxHealth', nome: 'Vida', dica: 'pontos de vida no começo do round' },
+  { id: 'highDamage', nome: 'Soco rápido', dica: 'dano; vale também para o soco no ar' },
+  { id: 'lowDamage', nome: 'Golpe forte', dica: 'dano; vale também para a voadora e o tiro' },
+  { id: 'lowKickDamage', nome: 'Chute baixo', dica: 'dano' },
+  { id: 'specialDamage', nome: 'Especial', dica: 'dano por acerto (o especial acerta várias vezes)' },
+  { id: 'meterSeconds', nome: 'Especial enche em', dica: 'segundos de luta para a barra encher sozinha; 0 = só batendo e apanhando' }
+];
 
 const SIMBOLO: Record<SituacaoGolpe, string> = { tem: '✓', 'quebra-galho': '~', faltando: '✗' };
 const COR: Record<SituacaoGolpe, string> = { tem: '#4ade80', 'quebra-galho': '#facc15', faltando: '#f87171' };
@@ -43,6 +54,12 @@ const TECLAS_VALIDAS = new Set(TECLA_POR_CODIGO.values());
 export interface PainelAcademiaOpcoes {
   /** Clique numa célula da tabela: mostrar este golpe deste lutador. */
   onEscolher: (characterId: string, acao: string) => void;
+  /** Números de combate valendo agora para o lutador. */
+  lerCombate: (characterId: string) => FighterCombat;
+  /** Grava um ajuste (vale na próxima luta e fica salvo no navegador). */
+  ajustarCombate: (characterId: string, campo: keyof FighterCombat, valor: number) => void;
+  /** Volta o lutador aos números do JSON. */
+  restaurarCombate: (characterId: string) => void;
 }
 
 export class PainelAcademia {
@@ -72,6 +89,7 @@ export class PainelAcademia {
       zIndex: '20'
     } satisfies Partial<CSSStyleDeclaration>);
     this.raiz.addEventListener('click', (evento) => this.aoClicar(evento));
+    this.raiz.addEventListener('change', (evento) => this.aoMudar(evento));
     document.body.appendChild(this.raiz);
     // Captura antes do Phaser: enquanto espera tecla, a Academia não reage.
     window.addEventListener('keydown', this.aoTeclar, true);
@@ -143,8 +161,26 @@ export class PainelAcademia {
       this.aviso = 'Botões de volta ao padrão.';
     } else if (acao === 'golpe' && lutador && sheet) {
       this.opcoes.onEscolher(lutador, sheet);
+    } else if (acao === 'restaurar') {
+      this.opcoes.restaurarCombate(this.lutadorAtual());
+      this.aviso = 'Números do JSON de volta.';
     }
     this.render();
+  }
+
+  private aoMudar(evento: Event): void {
+    const campo = (evento.target as HTMLInputElement).dataset.campo as keyof FighterCombat | undefined;
+    const valor = Number((evento.target as HTMLInputElement).value);
+    if (!campo || !Number.isFinite(valor)) {
+      return;
+    }
+    this.opcoes.ajustarCombate(this.lutadorAtual(), campo, valor);
+    this.aviso = 'Salvo. Vale na próxima luta.';
+    this.render();
+  }
+
+  private lutadorAtual(): string {
+    return this.characterId || ELENCO[0].id;
   }
 
   private render(): void {
@@ -153,10 +189,10 @@ export class PainelAcademia {
 
     this.raiz.innerHTML = `
       <div style="display:flex;gap:6px;margin-bottom:10px">
-        ${aba('golpes', 'Golpes')}${aba('botoes', 'Botões')}
+        ${aba('golpes', 'Golpes')}${aba('botoes', 'Botões')}${aba('ajustes', 'Ajustes')}
         <span style="margin-left:auto;color:#64748b;align-self:center">Tab esconde</span>
       </div>
-      ${this.aba === 'golpes' ? this.htmlGolpes() : this.htmlBotoes()}
+      ${this.aba === 'golpes' ? this.htmlGolpes() : this.aba === 'botoes' ? this.htmlBotoes() : this.htmlAjustes()}
       ${this.aviso ? `<p style="color:#facc15;margin:10px 0 0">${this.aviso}</p>` : ''}
     `;
   }
@@ -194,6 +230,22 @@ export class PainelAcademia {
       <p style="color:#94a3b8;margin:6px 0">✓ tem · ~ quebra-galho · ✗ falta. Clique para ver o golpe.</p>
       <h4 style="margin:10px 0 4px">${atual.label}</h4>
       <ul style="margin:0;padding-left:18px">${detalhe}</ul>
+    `;
+  }
+
+  private htmlAjustes(): string {
+    const id = this.lutadorAtual();
+    const combate = this.opcoes.lerCombate(id);
+    const linhas = CAMPOS_AJUSTE.map(
+      ({ id: campo, nome, dica }) =>
+        `<tr title="${dica}"><td style="padding:3px 6px">${nome}</td><td><input data-campo="${campo}" type="number" min="0" step="1" value="${combate[campo]}" style="width:80px;font:inherit;background:#1e293b;color:#f8fafc;border:1px solid #475569;border-radius:4px;padding:3px 6px" /></td><td style="color:#94a3b8">${campo === 'meterSeconds' ? 's' : ''}</td></tr>`
+    ).join('');
+
+    return `
+      <p style="margin:0 0 6px">Modo dev · <b>${getCharacterDefinition(id).label}</b> (troque com A/D)</p>
+      <table style="border-collapse:collapse">${linhas}</table>
+      <p style="color:#94a3b8;margin:8px 0">Fica salvo neste navegador por cima do JSON. Para valer para todo mundo, passe o número para o <code>combat</code> do JSON do mascote.</p>
+      <button data-acao="restaurar" style="${estiloBotao(false)}">Voltar ao JSON</button>
     `;
   }
 

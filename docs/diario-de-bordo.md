@@ -1266,3 +1266,37 @@ não levar trabalho alheio pela metade.
 **Em aberto:** para o Codex, o bloqueio alto no modelo Urubu: o quadro 3
 baixa os braços e o motor congela nele. Golpe aéreo usa o soco e o chute de
 chão; sheet própria de pulo com golpe fica para depois. Testar no navegador.
+
+## 2026-10-27: Catálogo de golpes, botões e modo dev na Academia
+
+**Marco:** 2, segue em andamento.
+**Pedido:** soco rápido, Forte que quebra a defesa baixa, tiro e caravela
+puláveis (só o tiro esquivável agachado), voadora no ar que quebra a defesa
+alta, chute baixo que interrompe o Forte; ver na Academia o que cada mascote
+tem e o que falta; remapear botões por lado; modo dev com dano, vida e carga
+do especial. Divisão nova: Codex faz arte, Claude faz mecânica.
+**Feito:** catálogo em `src/game/golpes.ts` e no GDD. Regras puras em
+`moveMechanics.ts` (guarda por golpe, esquiva, pulo sobre projétil,
+armadura do Forte contra soco rápido). Soco rápido emenda outro depois do
+quadro ativo. Voadora mergulha em diagonal e sai já no quadro do chute;
+golpe apertado na preparação do pulo sai na decolagem. Chute baixo tem botão
+(B / K), perfil de dano e fica inerte até chegar `low-kick.png`. Academia:
+painel HTML com abas Golpes (tabela mascote × golpe), Botões (P1 e P2,
+salvos no navegador, tecla repetida troca de lugar) e Ajustes (vida, danos e
+carga do especial por mascote, por cima do JSON). Barra do especial enche
+sozinha em 45 s. Vite deixa de recarregar a página quando o Codex grava em
+`output/`, que entrou no `.gitignore` (169 MB de material bruto).
+**Verificado:** `npm run check` com 11 arquivos e 144 testes, build ok. No
+Chrome: tabela e remapeamento na Academia, aba Ajustes gravando, luta
+Urubu × Almirante com voadora avançando 71 px, guarda baixa reconhecida e
+socos tirando vida, sem erro de página. O teste no navegador achou um erro
+real (painel de debug sem os campos novos) e um furo de jogo (golpe apertado
+na preparação do pulo se perdia); os dois corrigidos.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** "socos rápidos (vasco tem)" foi lido como o jab duplo do
+Almirante; para os outros virou soco que emenda. Conferir com o João.
+**Em aberto:** mecânica dos especiais que o Codex já desenhou (meteoro do
+Urubu, bicada do Galo, patada e mordida do Bira); sheets `low-kick`,
+`jump-kick` e `jump-punch` para pedir ao Codex.

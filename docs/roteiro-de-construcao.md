@@ -48,6 +48,11 @@ ele é quebrado em dois, não esticado.
   manda para o jogo no PC; teclado continua valendo. Testado com celular
   simulado: o Urubu anda, defende, soca, chuta e tira vida da CPU. Falta o
   teste com celular e gente de verdade (`npm run dev:celular`, menu Celular).
+- [ ] Golpes e Academia (27/10/2026): catálogo de golpes com regras de
+  guarda, esquiva e armadura; voadora, soco no ar, chute baixo (sem sheet
+  ainda); Academia com abas Golpes, Botões e Ajustes. Falta: mecânica dos
+  especiais novos do Codex (meteoro do Urubu, bicada do Galo, Bira) e as
+  sheets `low-kick`, `jump-kick`, `jump-punch`.
 - [ ] Marco 3 = v1
 - [ ] Marco 4 (se sobrar tempo)
 - [ ] Tarefa futura, pedida pelo João em 27/10/2026: **redesenhar os

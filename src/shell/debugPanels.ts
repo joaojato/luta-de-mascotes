@@ -139,6 +139,7 @@ export const DEBUG_PANELS: DebugPanelDefinition[] = [
         <label class="number-row"><span>Special dmg</span><input id="fighter-combat-specialDamage" type="number" min="1" max="50" step="1" /></label>
         <label class="number-row"><span>Special kb</span><input id="fighter-combat-specialKnockback" type="number" min="0" max="800" step="10" /></label>
         <label class="number-row"><span>Special stun</span><input id="fighter-combat-specialHitstun" type="number" min="0" max="1200" step="20" /></label>
+        <label class="number-row"><span>Meter fill s</span><input id="fighter-combat-meterSeconds" type="number" min="0" max="300" step="5" /></label>
       </div>
       <div class="panel-group__row">
         <button id="fighter-reset-stats" class="shell-button" type="button">Reset fighter</button>

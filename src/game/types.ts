@@ -157,6 +157,8 @@ export interface FighterCombat {
   specialKnockback: number;
   /** Per-hit hitstun (ms) of the meter special. */
   specialHitstun: number;
+  /** Seconds of fighting for the special meter to fill on its own (0 = only hits fill it). */
+  meterSeconds: number;
 }
 
 /** A resolved single-attack profile derived from {@link FighterCombat}. */

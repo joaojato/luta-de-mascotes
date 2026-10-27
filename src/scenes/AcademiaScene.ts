@@ -1,13 +1,15 @@
 import * as Phaser from 'phaser';
 
-import { FIGHTER_BOUNDS_FIELDS } from '../game/fighterConfig';
+import { carregarAjustes, salvarAjustes } from '../game/ajustesDev';
+import { clampFighterCombat, DEFAULT_FIGHTER_COMBAT, FIGHTER_BOUNDS_FIELDS, getFighterCombat } from '../game/fighterConfig';
+import { LUTADOR_COMBAT_OVERRIDES } from '../game/lutadores';
 import {
   CHARACTER_DEFINITIONS,
   resolveHeroBoundsFrame,
   type CharacterDefinition,
   type HeroAnimationDefinition
 } from '../game/hero';
-import { SCENE_KEYS, type FighterBoundsVisibility, type Rect } from '../game/types';
+import { SCENE_KEYS, type FighterBoundsVisibility, type FighterCombat, type Rect } from '../game/types';
 import { PainelAcademia } from './academiaPainel';
 import { BaseScene } from './BaseScene';
 
@@ -88,7 +90,22 @@ export class AcademiaScene extends BaseScene {
         .setOrigin(1, 0)
     );
 
-    this.painel = new PainelAcademia({ onEscolher: (characterId, acao) => this.showMove(characterId, acao) });
+    this.painel = new PainelAcademia({
+      onEscolher: (characterId, acao) => this.showMove(characterId, acao),
+      lerCombate: (characterId) => getFighterCombat(this.app.debugStore.getState().fighterPlayground, characterId),
+      ajustarCombate: (characterId, campo, valor) => {
+        const ajustes = carregarAjustes();
+        ajustes[characterId] = { ...ajustes[characterId], [campo]: valor };
+        salvarAjustes(ajustes);
+        this.applyCombat(characterId, { ...LUTADOR_COMBAT_OVERRIDES[characterId], ...ajustes[characterId] });
+      },
+      restaurarCombate: (characterId) => {
+        const ajustes = carregarAjustes();
+        delete ajustes[characterId];
+        salvarAjustes(ajustes);
+        this.applyCombat(characterId, LUTADOR_COMBAT_OVERRIDES[characterId] ?? {});
+      }
+    });
     this.painel.mostrarLutador(character.id);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.painel.destroy());
 
@@ -154,6 +171,17 @@ export class AcademiaScene extends BaseScene {
 
     keyboard.on('keydown-ESC', () => this.goToMenu());
     keyboard.on('keydown-BACKSPACE', () => this.goToMenu());
+  }
+
+  /** Põe os números na store que a Luta lê (o JSON por baixo, o ajuste por cima). */
+  private applyCombat(characterId: string, overrides: Partial<FighterCombat>): void {
+    const playground = this.app.debugStore.getState().fighterPlayground;
+    this.app.debugStore.patchState({
+      fighterPlayground: {
+        ...playground,
+        combat: { ...playground.combat, [characterId]: clampFighterCombat({ ...DEFAULT_FIGHTER_COMBAT, ...overrides }) }
+      }
+    });
   }
 
   /** Clique na tabela de golpes: pula para o lutador e a sheet do golpe. */
