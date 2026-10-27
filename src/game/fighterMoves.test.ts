@@ -157,6 +157,34 @@ describe('fighter move integration', () => {
     guard.update(1/60, {...NEUTRAL_FIGHTER_INPUT, block:true, crouch:true});
     expect(guard.guardStance).toBe('baixa');
   });
+  it('Saci lobs the pipe in an arc that falls to the ground', () => {
+    const {fighter, effectVisual} = setup('saci');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
+    fighter.update(.25, NEUTRAL_FIGHTER_INPUT);
+    const pipe = fighter.getActiveAttack()!;
+    expect(pipe.move).toBe('cachimbo');
+    const startY = pipe.rect.y;
+    fighter.update(.2, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.getActiveAttack()!.rect.y).toBeLessThan(startY);
+    for (let i = 0; i < 90 && fighter.getActiveAttack(); i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.getActiveAttack()).toBeNull();
+    expect(effectVisual.destroy).toHaveBeenCalled();
+  });
+  it('Cartola throws the rice powder without a charge sheet; a clean hit stuns for 1.5 s', () => {
+    const {fighter, sprite, special} = setup('cartola');
+    special();
+    expect(sprite.anims.currentAnim.key).toBe('cartola-special');
+    fighter.update(.3, NEUTRAL_FIGHTER_INPUT);
+    const cloud = fighter.getActiveAttack()!;
+    expect(cloud.move).toBe('nuvem');
+    expect(cloud.profile.stunMs).toBe(1500);
+    const victim = setup('urubu').fighter;
+    victim.applyHit(cloud.profile, 1, false);
+    victim.update(1.4, NEUTRAL_FIGHTER_INPUT);
+    expect(victim.isStunned).toBe(true);
+    victim.update(.2, NEUTRAL_FIGHTER_INPUT);
+    expect(victim.isStunned).toBe(false);
+  });
   it('keeps a strike pressed during the jump wind-up and throws it on takeoff', () => {
     const {fighter, sprite} = setup('urubu');
     fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, jump:true});
@@ -169,8 +197,8 @@ describe('fighter move integration', () => {
     const cases: [Partial<typeof NEUTRAL_FIGHTER_INPUT>, string, string][] = [
       [{light:true}, 'soco-rapido', 'urubu-light-punch'],
       [{light:true, crouch:true}, 'soco-forte', 'urubu-heavy-punch'],
-      [{heavy:true}, 'chute-basico', 'urubu-heavy-kick'],
-      [{heavy:true, crouch:true}, 'chute-baixo', 'urubu-heavy-kick']
+      [{heavy:true}, 'chute-basico', 'urubu-beak-pull'],
+      [{heavy:true, crouch:true}, 'chute-baixo', 'urubu-low-kick']
     ];
     for (const [input, move, sheet] of cases) {
       const {fighter, sprite} = setup('urubu');

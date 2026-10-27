@@ -71,7 +71,9 @@ const ATTACK_KIND_OF: Record<AttackMove, AttackKind> = {
   'chute-baixo': 'lowKick',
   especial: 'special',
   tiro: 'low',
-  onda: 'special'
+  onda: 'special',
+  nuvem: 'special',
+  cachimbo: 'kick'
 };
 
 /**
@@ -97,6 +99,10 @@ interface TravelingProjectile {
   x: number;
   previousX: number;
   y: number;
+  /** Vertical speed and gravity of an arcing projectile (0 for a straight one). */
+  vy: number;
+  gravity: number;
+  floorY: number;
   facing: 1 | -1;
   life: number;
   signature: number;
@@ -339,6 +345,11 @@ export class Fighter {
   /** Whether the last step moved this fighter away from `x`. */
   isMovingAwayFrom(x: number): boolean {
     return this.lastDx !== 0 && Math.sign(this.lastDx) === Math.sign(this.posX - x);
+  }
+
+  /** Still reeling from a hit (hitstun or a powder stun), unable to act. */
+  get isStunned(): boolean {
+    return this.hitstunTimer > 0;
   }
 
   /** Whether the fighter is off the ground (projectiles pass under). */
@@ -687,7 +698,7 @@ export class Fighter {
 
     this.stunIsBlock = false;
     this.locked = false;
-    this.hitstunTimer = profile.hitstun / 1000;
+    this.hitstunTimer = Math.max(profile.hitstun, profile.stunMs ?? 0) / 1000;
     this.currentAnimKey = '';
     this.playState(this.actionKeys.hitHigh, false);
   }
@@ -1115,13 +1126,14 @@ export class Fighter {
     };
     this.startOneShot(sheet[move] ?? this.actionKeys.lightPunch);
     this.strike = move;
-    const heavy = this.character.moves?.heavy;
-    if (move === 'soco-forte' && heavy?.effect) {
-      const animation = getCharacterAnimationDefinition(this.character.id, this.actionKeys.heavyPunch);
+    const extra = this.strikeMove();
+    const effect = extra?.effect;
+    if (effect) {
+      const animation = getCharacterAnimationDefinition(this.character.id, sheet[move] ?? this.actionKeys.lightPunch);
       const attackId = this.attackId;
-      this.scene.time.delayedCall(((heavy.effectFrame ?? 0) / animation.frameRate) * 1000, () => {
-        if (this.attackId === attackId && this.strike === 'soco-forte' && heavy.effect) {
-          this.spawnEffect(heavy.effect, this.posX + this.facing * 40 * this.appliedScale, this.groundY - 20 * this.appliedScale);
+      this.scene.time.delayedCall(((extra.effectFrame ?? 0) / animation.frameRate) * 1000, () => {
+        if (this.attackId === attackId && this.strike === move) {
+          this.spawnEffect(effect, this.posX + this.facing * 40 * this.appliedScale, this.groundY - 20 * this.appliedScale);
         }
       });
     }
@@ -1384,6 +1396,15 @@ export class Fighter {
     }
 
     this.currentAnimKey = this.actionKeys.specialCharge;
+    if (this.character.moves?.special?.skipCharge) {
+      // The special sheet already winds up: hold the guard through the cut-in, then go.
+      this.scene.time.delayedCall(SUPER_FREEZE_MS, () => {
+        if (!this.defeated && this.locked && this.currentAnimKey === this.actionKeys.specialCharge) {
+          this.executeSpecial();
+        }
+      });
+      return;
+    }
     this.sprite.play({ key: this.actionKeys.specialCharge, repeat: 0 }, true);
     this.sprite.once(`animationcomplete-${this.actionKeys.specialCharge}`, () => {
       if (this.defeated) {
@@ -1624,19 +1645,37 @@ export class Fighter {
   private spawnProjectile(move: ProjectileMoveConfig, kind: AttackKind): void {
     const width = move.hitWidth ?? 12;
     const height = move.hitHeight ?? 12;
-    const x = this.posX+this.facing*(move.visualFile ? width/2+20 : 90*this.appliedScale);
-    const baseline = this.groundY-24*this.appliedScale;
-    const y = move.visualFile ? baseline-height/2 : this.groundY-175*this.appliedScale;
-    const visual = move.visualFile
-      ? this.scene.add.sprite(x, baseline, `${this.character.id}-special-effect`, 0)
-        .setOrigin(.5, 1).setScale(move.visualScale ?? 2).setFlipX(this.facing === 1)
-        .setDepth(this.depthBase+2).play(`${this.character.id}-special-effect`)
-      : this.scene.add.rectangle(x, y, 14, 5, 0xffdf8a).setDepth(this.depthBase+1);
-    const life = move.visualFile ? (this.projectileMaxX-this.projectileMinX+width)/(move.speed ?? 900)+1 : 2;
-    this.projectiles.push({x, previousX:x, y, facing:this.facing, life,
-      signature:this.attackId, visual, width, height, speed:move.speed ?? 900,
-      profile:{...getAttackProfile(this.combat(), kind), height:'high'}, connected:false,
-      move: kind === 'special' ? 'onda' : 'tiro',
+    const speed = move.speed ?? 900;
+    const effectKey = move.visualEffect
+      ? findCharacterAnimationKeyByAction(this.character.id, `fx-${move.visualEffect}`)
+      : null;
+    let x: number;
+    let y: number;
+    let visual: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
+    if (effectKey) {
+      // Effect-sheet projectile (pipe, powder cloud): centred at hand height.
+      x = this.posX + this.facing * 70 * this.appliedScale;
+      y = this.groundY - (move.launchHeight ?? 110) * this.appliedScale;
+      visual = this.scene.add.sprite(x, y, effectKey, 0)
+        .setOrigin(.5, .5).setScale(move.visualScale ?? this.appliedScale).setFlipX(this.facing === 1)
+        .setDepth(this.depthBase+2).play(effectKey);
+    } else {
+      x = this.posX+this.facing*(move.visualFile ? width/2+20 : 90*this.appliedScale);
+      const baseline = this.groundY-24*this.appliedScale;
+      y = move.visualFile ? baseline-height/2 : this.groundY-175*this.appliedScale;
+      visual = move.visualFile
+        ? this.scene.add.sprite(x, baseline, `${this.character.id}-special-effect`, 0)
+          .setOrigin(.5, 1).setScale(move.visualScale ?? 2).setFlipX(this.facing === 1)
+          .setDepth(this.depthBase+2).play(`${this.character.id}-special-effect`)
+        : this.scene.add.rectangle(x, y, 14, 5, 0xffdf8a).setDepth(this.depthBase+1);
+    }
+    const life = move.range !== undefined ? move.range / speed
+      : move.visualFile ? (this.projectileMaxX-this.projectileMinX+width)/speed+1 : 2;
+    this.projectiles.push({x, previousX:x, y, vy: -(move.launchVy ?? 0), gravity: move.gravity ?? 0,
+      floorY: this.groundY - 24 * this.appliedScale, facing:this.facing, life,
+      signature:this.attackId, visual, width, height, speed,
+      profile:{...getAttackProfile(this.combat(), kind), height:'high', stunMs: move.stunMs}, connected:false,
+      move: (move.move as AttackMove | undefined) ?? (kind === 'special' ? 'onda' : 'tiro'),
       persistOnHit:move.persistOnHit ?? false});
   }
 
@@ -1644,9 +1683,14 @@ export class Fighter {
     this.projectiles = this.projectiles.filter(shot => {
     shot.previousX = shot.x;
     shot.x += shot.facing*shot.speed*seconds;
+    // Arcing projectiles (the pipe) rise, fall and end on the ground.
+    shot.vy += shot.gravity*seconds;
+    shot.y += shot.vy*seconds;
     shot.life -= seconds;
     shot.visual.x = shot.x;
-    if (shot.life <= 0 || shot.x+shot.width/2 < this.projectileMinX-100 || shot.x-shot.width/2 > this.projectileMaxX+100 || this.defeated) {
+    shot.visual.y = shot.gravity > 0 ? shot.y : shot.visual.y;
+    const landed = shot.gravity > 0 && shot.y >= shot.floorY;
+    if (landed || shot.life <= 0 || shot.x+shot.width/2 < this.projectileMinX-100 || shot.x-shot.width/2 > this.projectileMaxX+100 || this.defeated) {
       shot.visual.destroy();
       return false;
     }

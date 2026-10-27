@@ -56,8 +56,11 @@ describe('registro de lutadores (Regra do JSON)', () => {
       });
 
       it('golpes têm hitbox e bloqueios têm guard box', () => {
+        // Especial de projétil acerta pela entidade lançada, não pelo corpo.
+        const especialDeProjetil = lutador.moves?.special?.kind === 'projectile';
         lutador.actions.forEach((spec) => {
-          if (spec.action.startsWith('light-') || spec.action.startsWith('heavy-') || spec.action === 'special') {
+          const golpe = spec.action.startsWith('light-') || spec.action.startsWith('heavy-') || spec.action === 'low-kick';
+          if (golpe || (spec.action === 'special' && !especialDeProjetil)) {
             expect(spec.attack ?? spec.attackSpans, `${spec.action} sem attack`).toBeTruthy();
           }
           if (spec.action.startsWith('block-')) {

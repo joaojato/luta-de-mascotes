@@ -174,6 +174,8 @@ export interface AttackProfile {
   hitstun: number;
   /** True for the final hit of a special: launches harder for a combo finish. */
   finisher?: boolean;
+  /** Stun (ms) that replaces the hitstun when longer (e.g. a powder cloud). */
+  stunMs?: number;
 }
 
 export interface FighterBoundsVisibility {

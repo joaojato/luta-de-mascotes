@@ -11,8 +11,8 @@ describe('catálogo de golpes', () => {
     const urubu = situacoes('urubu');
     expect(urubu['soco-rapido']).toEqual(['tem', 'light-punch']);
     expect(urubu['soco-forte']).toEqual(['tem', 'heavy-punch']);
-    expect(urubu['chute-basico']).toEqual(['tem', 'heavy-kick']);
-    expect(urubu['chute-baixo']).toEqual(['quebra-galho', 'heavy-kick']);
+    expect(urubu['chute-basico']).toEqual(['tem', 'beak-pull']);
+    expect(urubu['chute-baixo']).toEqual(['tem', 'low-kick']);
     expect(urubu['voadora']).toEqual(['quebra-galho', 'heavy-kick']);
     expect(urubu['soco-no-ar']).toEqual(['quebra-galho', 'light-punch']);
     expect(urubu['especial'][0]).toBe('tem');

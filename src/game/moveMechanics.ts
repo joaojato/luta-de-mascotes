@@ -52,6 +52,20 @@ export interface ProjectileMoveConfig {
   hitWidth?: number;
   hitHeight?: number;
   persistOnHit?: boolean;
+  /** Projectile: rules tag (`tiro`, `onda`, `nuvem`, `cachimbo`); default `onda` for specials, `tiro` otherwise. */
+  move?: string;
+  /** Projectile drawn with an effect sheet from `effects`, centred `launchHeight` frame px above the ground. */
+  visualEffect?: string;
+  launchHeight?: number;
+  /** Projectile arc: initial upward speed and gravity (px/s, px/s²); it ends when it falls to the ground. */
+  launchVy?: number;
+  gravity?: number;
+  /** Projectile stops after this many px (a cloud that dissipates). */
+  range?: number;
+  /** Extra stun (ms) on a clean hit; a valid guard avoids it. */
+  stunMs?: number;
+  /** Special that skips the charge sheet (its own sheet already winds up). */
+  skipCharge?: boolean;
   /** How the defender escapes (advance specials). */
   dodge?: SpecialDodge | string;
   /** No guard holds it. */
@@ -147,7 +161,7 @@ export function jumpFlightFrame(elapsed: number, duration: number, first: number
 }
 
 /** Which move a live hitbox belongs to (GDD, "Golpes"): heavy projectile = `tiro`, special projectile = `onda` (the caravel). */
-export type AttackMove = GolpeId | 'tiro' | 'onda';
+export type AttackMove = GolpeId | 'tiro' | 'onda' | 'nuvem' | 'cachimbo';
 
 /** Standing guard (`alta`) or crouching guard (`baixa`). */
 export type GuardStance = 'alta' | 'baixa';
@@ -162,7 +176,9 @@ const GUARDS: Record<AttackMove, GuardStance[]> = {
   voadora: ['baixa'],
   especial: ['alta', 'baixa'],
   tiro: ['alta'],
-  onda: ['alta']
+  onda: ['alta'],
+  nuvem: ['alta', 'baixa'],
+  cachimbo: ['alta', 'baixa']
 };
 
 export function guardHolds(move: AttackMove, stance: GuardStance | null): boolean {

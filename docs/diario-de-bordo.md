@@ -1365,3 +1365,25 @@ baixo", depois "chute"; ficou no Chute.
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** `low-kick`, `jump-kick`, `jump-punch` para os outros cinco.
+
+## 2026-10-27: Golpes próprios v3 ligados
+
+**Marco:** 2, segue em andamento.
+**Pedido:** colocar tudo o que o Codex entregou na v3.
+**Feito:** Cartola com bengalada (soco forte), varredura (chute baixo) e Pó
+de Arroz (nuvem que atordoa 1,5 s, guarda evita, sem sheet de preparação);
+Urubu com bicada que puxa no Chute; Saci arremessa o cachimbo em parábola no
+Chute; Galo com chute giratório e rastro de garras; chutes antigos viraram o
+chute baixo. Motor: projétil com efeito próprio, arco e gravidade, alcance
+curto e atordoamento; efeito em qualquer golpe; especial sem preparação.
+Caixas de golpe medidas na ponta real de cada ataque.
+**Verificado:** `npm run check` com 115 testes, build ok. Chrome: Pó de
+Arroz atordoa, cachimbo cai em arco e acerta, giro do Galo, bicada (9) e
+bengalada (12) acertam; sem erro de página.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** no Chrome sem janela o jogo pula quadros e o teste perde janelas
+de golpe curtas; conferir quadro a quadro antes de concluir que errou.
+**Em aberto:** `low-kick` do Bira; `jump-kick` e `jump-punch` dos seis;
+animação de atordoado.

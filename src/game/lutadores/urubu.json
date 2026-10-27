@@ -243,6 +243,59 @@
       }
     },
     {
+      "action": "low-kick",
+      "label": "Chute baixo (chute clássico)",
+      "file": "low-kick-classic-v3.png",
+      "frames": 10,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 37,
+        "y": 31,
+        "width": 189,
+        "height": 197
+      },
+      "attack": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 39,
+          "y": 89,
+          "width": 75,
+          "height": 73
+        }
+      }
+    },
+    {
+      "action": "beak-pull",
+      "label": "Bicada que puxa",
+      "file": "kick-beak-clamp-pull-v3.png",
+      "frames": 8,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 10,
+        "y": 28,
+        "width": 236,
+        "height": 200
+      },
+      "attack": {
+        "frames": [
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 9,
+          "y": 63,
+          "width": 90,
+          "height": 64
+        }
+      }
+    },
+    {
       "action": "special-charge",
       "file": "special-thermal-charge-v1.png",
       "frames": 5,
@@ -334,6 +387,10 @@
         "frameRate": 16,
         "repeat": -1
       }
+    },
+    "kick": {
+      "kind": "strike",
+      "action": "beak-pull"
     }
   }
 }

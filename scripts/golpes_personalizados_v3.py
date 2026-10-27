@@ -99,13 +99,13 @@ def render_scenes(specs):
         x=300 if id=='saci-pipe-throw' else 425 if id=='cartola-rice' else 525
         sprite(id,f,x,500,True)
         if id=='cartola-rice' and .285<t<1.15:
-            u=(t-.285)/.865;sprite('rice-cloud',min(7,int(u*8)),510+u*125,365,True,270,True)
+            u=(t-.285)/.865;sprite('rice-cloud',min(7,int(u*8)),585+u*50,365,True,270,True)
         if id=='saci-pipe-throw' and .215<t<1.20:
             u=(t-.215)/.985
             # This is visual choreography only: parabolic trajectory to ground.
             px=350+u*450;py=335-230*u+344*u*u
             sprite('pipe-projectile',int(u*16)%6,px,py,True,256,True)
-        if id=='galo-spin-kick' and .25<t<.59:sprite('slash',min(5,int((t-.25)*18)),625,385,True,190,True)
+        if id=='galo-spin-kick' and .25<t<.59:sprite('slash',min(5,int((t-.25)*18)),630,345,True,190,True)
         return stage.convert('RGB')
     ids=[s['id'] for s in specs if s['kind']=='body']
     for id in ids:
@@ -114,7 +114,7 @@ def render_scenes(specs):
     frames=[render('cartola-rice',i/25,True).resize((640,360),Image.Resampling.NEAREST) for i in range(55)]
     frames[0].save(OUT/'cartola-rice-blocked-scene.gif',save_all=True,append_images=frames[1:],duration=40,loop=0)
     board=Image.new('RGB',(1440,588),'#101721');draw=ImageDraw.Draw(board)
-    for i,(id,t) in enumerate([('cartola-heavy-cane',.30),('cartola-low-cane',.30),('cartola-rice',.44),('urubu-beak-rip',.30),('saci-pipe-throw',.65),('galo-spin-kick',.28)]):
+    for i,(id,t) in enumerate([('cartola-heavy-cane',.235),('cartola-low-cane',.30),('cartola-rice',.70),('urubu-beak-rip',.30),('saci-pipe-throw',.65),('galo-spin-kick',.28)]):
         x,y=i%3*480,i//3*294;draw.text((x+8,y+6),names[id],fill='white');board.paste(render(id,t).resize((480,270),Image.Resampling.NEAREST),(x,y+24))
     board.save(OUT/'storyboard.png')
     cards=''.join(f'<article><h2>{names[id]}</h2><img src="{id}-scene.gif"></article>' for id in ids)

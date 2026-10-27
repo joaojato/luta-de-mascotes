@@ -228,6 +228,49 @@
       }
     },
     {
+      "action": "low-kick",
+      "label": "Chute baixo (chute clássico)",
+      "file": "low-kick-classic-v3.png",
+      "frames": 14,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 0,
+        "y": 30,
+        "width": 242,
+        "height": 200
+      },
+      "attack": {
+        "frames": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "bounds": {
+          "x": 0,
+          "y": 85,
+          "width": 115,
+          "height": 50
+        }
+      }
+    },
+    {
+      "action": "pipe-throw",
+      "label": "Troca e arremesso do cachimbo",
+      "file": "kick-pipe-swap-throw-v3.png",
+      "frames": 8,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 33,
+        "y": 26,
+        "width": 190,
+        "height": 202
+      }
+    },
+    {
       "action": "heavy-punch",
       "label": "Soco forte (cruzado)",
       "file": "heavy-cross-v2.png",
@@ -307,6 +350,27 @@
       "kind": "dash",
       "startFrame": 2,
       "endFrame": 6
+    },
+    "kick": {
+      "kind": "projectile",
+      "action": "pipe-throw",
+      "releaseFrame": 3,
+      "speed": 420,
+      "launchVy": 520,
+      "gravity": 1400,
+      "visualEffect": "pipe",
+      "launchHeight": 150,
+      "hitWidth": 40,
+      "hitHeight": 40,
+      "move": "cachimbo"
+    },
+    "effects": {
+      "pipe": {
+        "file": "pipe-lob-projectile-v3.png",
+        "frames": 6,
+        "frameRate": 16,
+        "repeat": -1
+      }
     }
   }
 }

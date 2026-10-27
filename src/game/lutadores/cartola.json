@@ -5,7 +5,9 @@
   "anchorUsage": "Cartola, padrão Urubu, guarda voltada para a esquerda",
   "selecionavel": true,
   "stats": {},
-  "combat": {},
+  "combat": {
+    "specialDamage": 8
+  },
   "skins": [
     {
       "id": "urubu-v1",
@@ -190,27 +192,27 @@
     },
     {
       "action": "heavy-punch",
-      "label": "Soco forte (cruzado)",
-      "file": "heavy-cross-v2.png",
-      "frames": 6,
-      "frameRate": 12,
+      "label": "Bengalada",
+      "file": "heavy-cane-v3.png",
+      "frames": 8,
+      "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 14,
-        "y": 26,
-        "width": 189,
-        "height": 202
+        "x": 24,
+        "y": 27,
+        "width": 208,
+        "height": 201
       },
       "attack": {
         "frames": [
-          2,
-          3
+          3,
+          4
         ],
         "bounds": {
-          "x": 5,
-          "y": 65,
-          "width": 100,
-          "height": 55
+          "x": 18,
+          "y": 80,
+          "width": 90,
+          "height": 34
         }
       }
     },
@@ -242,6 +244,33 @@
       }
     },
     {
+      "action": "low-kick",
+      "label": "Varredura de bengala",
+      "file": "low-cane-sweep-v3.png",
+      "frames": 8,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 6,
+        "y": 61,
+        "width": 244,
+        "height": 167
+      },
+      "attack": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 22,
+          "y": 191,
+          "width": 90,
+          "height": 37
+        }
+      }
+    },
+    {
       "action": "special-charge",
       "file": "special-charge.png",
       "frames": 5,
@@ -257,29 +286,16 @@
     },
     {
       "action": "special",
-      "file": "special.png",
-      "frames": 12,
-      "frameRate": 16,
+      "label": "Pó de Arroz",
+      "file": "special-rice-throw-v3.png",
+      "frames": 10,
+      "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 54,
-        "y": 31,
-        "width": 166,
-        "height": 197
-      },
-      "label": "Special",
-      "attack": {
-        "frames": [
-          4,
-          5,
-          6
-        ],
-        "bounds": {
-          "x": 55,
-          "y": 34,
-          "width": 71,
-          "height": 103
-        }
+        "x": 28,
+        "y": 26,
+        "width": 200,
+        "height": 202
       }
     },
     {
@@ -296,5 +312,27 @@
       },
       "label": "Knockdown"
     }
-  ]
+  ],
+  "moves": {
+    "special": {
+      "kind": "projectile",
+      "skipCharge": true,
+      "releaseFrame": 4,
+      "speed": 260,
+      "range": 160,
+      "visualEffect": "rice",
+      "launchHeight": 130,
+      "hitWidth": 140,
+      "hitHeight": 120,
+      "stunMs": 1500,
+      "move": "nuvem"
+    },
+    "effects": {
+      "rice": {
+        "file": "rice-powder-cloud-v3.png",
+        "frames": 8,
+        "frameRate": 16
+      }
+    }
+  }
 }

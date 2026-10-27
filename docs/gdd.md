@@ -107,6 +107,19 @@ Botões são remapeáveis por lado do teclado na Academia (aba Botões) e valem
 na luta. Números exatos (dano, vida, carga do especial) ficam no JSON do
 mascote e podem ser testados na aba Ajustes da Academia. Aqui é a intenção.
 
+## Golpes próprios por mascote (v3, 27/10/2026)
+
+Onde o mascote foge do esqueleto (arte do Codex em `docs/golpes-personalizados-v3.md`):
+
+| Mascote | Chute | Baixo + Soco | Baixo + Chute | Especial |
+|---|---|---|---|---|
+| Urubu | bicada que fecha e puxa (`beak-pull`) | cruzado | chute clássico | meteoro |
+| Almirante | tiro de garrucha (projétil reto) | cruzado | chute normal | caravela |
+| Saci | troca e arremessa o cachimbo: projétil em parábola, cai no chão; qualquer guarda segura | cruzado | chute de mãos | tornado |
+| Cartola | chute normal | bengalada | varredura de bengala (só a guarda baixa segura) | Pó de Arroz: nuvem curta que atordoa 1,5 s; qualquer guarda evita; sem animação de preparação |
+| Bira | chute normal | patada com garras | (quebra-galho: chute normal) | galope e bote |
+| Galo | chute giratório com rastro de garras | cruzado | chute frontal | bicada em voo |
+
 ## Especiais de avanço (27/10/2026)
 
 Arte do Codex, mecânica no motor por tipo, configurada em `moves.special`

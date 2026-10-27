@@ -37,3 +37,10 @@ Alinhamento, sem redesenho; conferir se ficou bom aos olhos:
 
 Próximas entregas: manter as pernas na linha do idle em todo quadro que
 começa ou termina no chão (Regra da Régua do Idle, cobrada por teste).
+
+## Atualização 27/10/2026, depois da v3
+
+Já ligados: cruzado (v2), jab duplo (v2), golpes próprios v3 (bengala e Pó de
+Arroz, bicada do Urubu, cachimbo do Saci, giro do Galo) e os chutes baixos
+clássicos. Ainda faltam: `low-kick.png` do Bira, e `jump-kick.png` e
+`jump-punch.png` dos seis. Animação de vítima atordoada segue adiada.

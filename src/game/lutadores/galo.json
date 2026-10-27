@@ -233,6 +233,59 @@
       }
     },
     {
+      "action": "low-kick",
+      "label": "Chute baixo (chute clássico)",
+      "file": "low-kick-classic-v3.png",
+      "frames": 10,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 31,
+        "y": 40,
+        "width": 204,
+        "height": 188
+      },
+      "attack": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 39,
+          "y": 89,
+          "width": 75,
+          "height": 73
+        }
+      }
+    },
+    {
+      "action": "spin-kick",
+      "label": "Chute giratório",
+      "file": "kick-spinning-talon-v3.png",
+      "frames": 10,
+      "frameRate": 16,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 27,
+        "y": 23,
+        "width": 202,
+        "height": 205
+      },
+      "attack": {
+        "frames": [
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 21,
+          "y": 72,
+          "width": 90,
+          "height": 66
+        }
+      }
+    },
+    {
       "action": "special-charge",
       "file": "special-peck-charge-v1.png",
       "frames": 5,
@@ -310,6 +363,19 @@
       ],
       "hopHeight": 45,
       "landFrame": 9
+    },
+    "kick": {
+      "kind": "strike",
+      "action": "spin-kick",
+      "effect": "talon",
+      "effectFrame": 4
+    },
+    "effects": {
+      "talon": {
+        "file": "talon-slash-fx-v3.png",
+        "frames": 6,
+        "frameRate": 18
+      }
     }
   }
 }
