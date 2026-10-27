@@ -9,9 +9,6 @@ import saci from './saci.json';
 import cartola from './cartola.json';
 import cachorro from './cachorro.json';
 import galo from './galo.json';
-import redBrawler from './red-brawler.json';
-import greenBoxer from './green-boxer.json';
-import jiujitsuFighter from './jiujitsu-fighter.json';
 
 /**
  * Regra do JSON: lutador é dado, não classe. Um arquivo por mascote aqui
@@ -71,7 +68,7 @@ export interface LutadorSkin {
  * teste normalizam igual.
  * @param lutador - O JSON do mascote, com ou sem skins.
  */
-function expandirSkins(lutador: LutadorJson): LutadorJson[] {
+export function expandirSkins(lutador: LutadorJson): LutadorJson[] {
   const skins = lutador.skins;
   if (!skins || skins.length === 0) {
     return [lutador];
@@ -144,7 +141,7 @@ function expandirSkins(lutador: LutadorJson): LutadorJson[] {
 }
 
 /** Ordem de registro = ordem na seleção. O primeiro é o padrão dos debugs. */
-export const LUTADORES: LutadorJson[] = [urubu, almirante, saci, cartola, cachorro, galo, redBrawler, greenBoxer, jiujitsuFighter].flatMap(
+export const LUTADORES: LutadorJson[] = [urubu, almirante, saci, cartola, cachorro, galo].flatMap(
   expandirSkins
 );
 

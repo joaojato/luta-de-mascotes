@@ -201,6 +201,14 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 
 ## Sobre o método
 
+- **"Os que a gente fez e eu não gostei" eram as variantes, não o mascote.**
+  Pedido para guardar "cartola, bira e urubu v1": tirei Cartola e Bira
+  inteiros e ele reclamou na hora, porque a versão boa (padrão Urubu, na
+  seleção) tinha ido junto. O que ele queria fora eram só as variantes da
+  Academia (Arte anterior do Cartola e do Bira, Urubu de perfil). Antes de
+  tirar mascote do jogo, nomear exatamente qual versão sai e qual fica, com o
+  rótulo que aparece na Academia. (2026-10-27)
+
 - **Arte das animações fica com o Codex; o Claude fica na mecânica.** No
   meio do pedido de agachar, pulo e bloqueio, o João avisou que o Codex vai
   mudar as animações que incomodam. A troca do quadro final do bloqueio do

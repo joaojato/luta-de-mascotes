@@ -3,7 +3,8 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { LUTADORES, LUTADOR_CHARACTERS } from './index';
+import { expandirSkins, LUTADORES, LUTADOR_CHARACTERS, type LutadorJson } from './index';
+import urubuJson from './urubu.json';
 
 // Ações que o motor resolve pelo nome sem fallback (ver `resolveActionKeys`
 // em fighter.ts). Um lutador sem uma delas quebra na luta. As outras
@@ -119,25 +120,43 @@ describe('registro de lutadores (Regra do JSON)', () => {
   describe('skins (variantes visuais do mesmo mascote)', () => {
     // Nada aqui cita pasta por nome: a base troca quando um modelo novo fica
     // pronto (a `frente` virou base em 22/09), e o teste não pode ir junto.
-    const mascote = LUTADORES.find((lutador) => lutador.id === 'urubu');
-    const [base, variante] = mascote?.skins ?? [];
-    const expandida = LUTADORES.find(
-      (lutador) => lutador.id === `urubu-${variante?.id}`
-    ) as (typeof LUTADORES)[number] & { anchorFile?: string; portraitFile?: string };
+    // O elenco atual não tem mascote com duas skins (as variantes foram para
+    // `arquivo/`), então a regra é cobrada num mascote de teste: o Urubu com
+    // uma skin inventada, que herda quase tudo e traz uma ação só dela.
+    const idleBase = urubuJson.actions.find((acao) => acao.action === 'idle')!;
+    const fixture = {
+      ...urubuJson,
+      skins: [
+        urubuJson.skins[0],
+        {
+          id: 'teste',
+          label: 'Teste',
+          pasta: 'teste',
+          sobrescreve: ['portrait.png'],
+          acoes: {
+            idle: { ...idleBase, file: 'idle.png', frames: 2 },
+            'so-na-skin': { ...idleBase, label: 'Só na skin', file: 'so-na-skin.png' }
+          }
+        }
+      ]
+    } as unknown as LutadorJson;
+    const expandidos = expandirSkins(fixture);
+    const mascote = expandidos[0];
+    const [base, variante] = fixture.skins ?? [];
+    const raiz = fixture.assetRoot;
+    const expandida = expandidos[1] as LutadorJson & { anchorFile?: string; portraitFile?: string };
 
     it('o mascote entra na seleção só uma vez, pela base', () => {
-      const selecionaveis = LUTADORES.filter(
-        (lutador) => lutador.id.startsWith('urubu') && lutador.selecionavel !== false
-      );
-      expect(selecionaveis.map((lutador) => lutador.id)).toEqual(['urubu']);
+      const selecionaveis = expandidos.filter((lutador) => lutador.selecionavel !== false);
+      expect(selecionaveis.map((lutador) => lutador.id)).toEqual([mascote?.id]);
       expect(selecionaveis[0]?.label, 'a base aparece pelo nome do mascote').toBe(mascote?.label);
-      expect(selecionaveis[0]?.assetRoot).toBe(`/assets/lutadores/urubu/${base?.pasta}`);
+      expect(selecionaveis[0]?.assetRoot).toBe(`${raiz}/${base?.pasta}`);
     });
 
     it('a skin extra vira um lutador próprio, fora da seleção', () => {
-      expect(expandida, `urubu-${variante?.id} não foi registrado`).toBeTruthy();
+      expect(expandida, `${mascote?.id}-${variante?.id} não foi registrado`).toBeTruthy();
       expect(expandida?.selecionavel).toBe(false);
-      expect(expandida?.assetRoot).toBe(`/assets/lutadores/urubu/${variante?.pasta}`);
+      expect(expandida?.assetRoot).toBe(`${raiz}/${variante?.pasta}`);
       expect(expandida?.label).toContain(variante?.label ?? '');
     });
 

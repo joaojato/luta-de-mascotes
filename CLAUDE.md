@@ -24,9 +24,10 @@ no espírito visual de Street Fighter. É o trabalho do João para a matéria
 - **Não é um projeto do zero.** Desde 17/09/2026 o código **nasce do Vibe
   Fighter do Chong-U** (`github.com/chongdashu/vibe-fighter`, público, sem
   licença declarada). Decisão em `docs/decisoes/0003-base-chong-u.md`.
-  O que isso obriga: repositório privado; os três lutadores e o cenário dele
-  são placeholder (Regra do Placeholder) e saem antes do link público; o
-  motor é reorganizado aos poucos para as regras abaixo, não reescrito.
+  O que isso obriga: repositório privado; o cenário dele é placeholder
+  (Regra do Placeholder) e sai antes do link público (os três lutadores de
+  amostra já foram para `arquivo/lutadores/` em 27/10/2026); o motor é
+  reorganizado aos poucos para as regras abaixo, não reescrito.
 - **Não é produto.** É trabalho acadêmico. Sem monetização, sem loja, sem
   conta de usuário, sem escudo oficial de clube no build público (ver Regra
   do Escudo).
@@ -49,7 +50,7 @@ src/game/fighterCharacter.ts   monta um lutador a partir da lista de ações
 src/controle/         controle pelo corpo: celular (controle.html), relay
                       no Vite, gestos.ts (pose vira FighterInput)
 src/shell/            shell HTML de debug (só em dev, localhost)
-public/assets/lutadores/_amostra-<nome>/   sprites de amostra do Chong-U
+arquivo/lutadores/    lutadores e variantes guardados, fora do jogo (LEIA-ME)
 public/assets/lutadores/<slug>/<skin>/     sprites, uma pasta por skin
 public/assets/backgrounds/, stages/, ui/   cenário e HUD de amostra
 ```

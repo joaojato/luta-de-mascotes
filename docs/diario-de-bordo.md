@@ -1324,3 +1324,22 @@ alinhados (3 e 13 px) e registrados em `docs/pedidos-codex.md`.
 **Em aberto:** conferir a esquiva de cada especial jogando de verdade;
 sheets `heavy-punch` (Urubu, Cartola, Galo), `low-kick`, `jump-kick`,
 `jump-punch`.
+
+## 2026-10-27: Lutadores e variantes guardados em arquivo/
+
+**Marco:** 2, segue em andamento.
+**Pedido:** guardar os lutadores que não usamos: as três amostras do
+Chong-U e as versões de que ele não gostou.
+**Feito:** `arquivo/lutadores/` com LEIA-ME de como trazer de volta: Red
+Brawler, Green Boxer e Jiu-Jitsu Fighter (JSON e sprites), Urubu de perfil
+(skin `costas`), Arte anterior do Cartola e do Bira. Elenco: Urubu,
+Almirante, Saci, Cartola, Bira e Galo, cada um com uma versão. Teste da
+Regra da Skin passou a usar um mascote de teste. Contrato atualizado.
+**Verificado:** `npm run check` aprovado (resultado no commit).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** primeiro tirei Cartola e Bira
+inteiros; ele reclamou que a versão boa tinha ido junto. Os dois voltaram
+idênticos e só a Arte anterior foi guardada. Lição registrada.
+**Aprovado explicitamente:** nada.
+**Atrito:** "cartola, bira e urubu v1" lido como mascotes inteiros.
+**Em aberto:** cenário de amostra do Chong-U ainda em uso.
