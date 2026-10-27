@@ -1234,3 +1234,35 @@ Vercel: nenhum projeto do jogo na conta; nunca foi publicado.
 **Atrito:** nenhum.
 **Em aberto:** publicar na Vercel esbarra no NUNCA do contrato enquanto
 Red Brawler e Jiu-Jitsu Fighter (`_amostra`) estiverem na seleção.
+
+## 2026-10-27: Agachar, pulo e golpe no ar
+
+**Marco:** 2, segue em andamento.
+**Pedido:** agachar como esquiva; pulo parecia dar um segundo pulo; não dava
+para bater no ar; bloqueio do Urubu e das skins dele solta a guarda (o Saci
+mantém as mãos no rosto).
+**Feito:** agachar religado na luta (estava forçado a falso). Regra da
+esquiva em `moveMechanics.ts`: soco alto de quem está no chão passa por cima
+de quem está agachado; chute forte, golpe no ar e especial acertam. Pulo em
+três fases para todos: preparação no chão (quadros 1 e 2, 0,1 s), voo com os
+quadros 3 a 7 seguindo o arco da física, aterrissagem agachada (0,1 s). O
+segundo pulo era a sheet tocando a preparação com o corpo já subindo. Um
+golpe por pulo no ar (fraco = soco, forte = chute). Quem apanha no ar cai
+em vez de flutuar no hitstun. Saci passa a usar `moves.jump`
+(`takeoff`, `airEnd`, `land`) no lugar de `jumpTakeoffFrame`. Agachar do
+Urubu, Cartola e Cachorro de 10 para 20 fps, para a esquiva aparecer.
+**Verificado:** `npm run check` com 8 arquivos e 130 testes aprovados,
+build ok. Testes novos cobrem preparação no chão, quadros de voo sem voltar,
+golpe aéreo, agachar e queda após golpe. Não abri o navegador.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o conserto do bloqueio (último quadro
+virando cópia da guarda) foi desfeito quando ele disse que o Codex cuida das
+animações. Sheets do Cartola, Cachorro e Galo reconstruídas pela mesma conta
+do `skins_urubu.py`, idênticas nos quadros conferíveis.
+**Aprovado explicitamente:** nada.
+**Atrito:** o repositório tem trabalho do Codex não commitado nos mesmos
+arquivos (`fighter.ts`, `moveMechanics.ts`, JSONs, Galo). Não commitei para
+não levar trabalho alheio pela metade.
+**Em aberto:** para o Codex, o bloqueio alto no modelo Urubu: o quadro 3
+baixa os braços e o motor congela nele. Golpe aéreo usa o soco e o chute de
+chão; sheet própria de pulo com golpe fica para depois. Testar no navegador.

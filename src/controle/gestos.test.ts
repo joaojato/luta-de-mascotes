@@ -136,7 +136,7 @@ describe('calibração', () => {
     expect(cena.leitor.estado).toBe('pronto');
     expect(cena.ultimo).toEqual({
       left: false, right: false, crouch: false, block: false,
-      jump: false, light: false, heavy: false, special: false
+      jump: false, light: false, heavy: false, lowKick: false, special: false
     });
     expect(cena.tirarDisparos()).toEqual([]);
   });

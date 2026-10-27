@@ -1,0 +1,253 @@
+import { describe, expect, it, vi } from 'vitest';
+import type * as Phaser from 'phaser';
+import type { AppContext } from './context';
+import { Fighter, NEUTRAL_FIGHTER_INPUT } from './fighter';
+import { createDefaultFighterPlaygroundState } from './fighterConfig';
+
+vi.mock('phaser', () => ({
+  Math: { Clamp: (v: number, min: number, max: number) => Math.max(min, Math.min(max, v)) },
+  Geom: { Rectangle: class { constructor(public x: number, public y: number, public width: number, public height: number) {} } }
+}));
+vi.mock('./vfx', () => ({ spawnChargeAura: vi.fn() }));
+
+function setup(characterId: string, facing: 1 | -1 = 1) {
+  const events = new Map<string, () => void>();
+  const delays: Array<() => void> = [];
+  const visual = { x: 0, setDepth() { return this; }, destroy: vi.fn() };
+  const effectVisual = { x:0, setDepth() {return this;}, setOrigin() {return this;},
+    setScale() {return this;}, setFlipX() {return this;}, play() {return this;}, destroy:vi.fn() };
+  const sprite = {
+    x: 200, y: 500, displayWidth: 358.4, displayHeight: 358.4, originX: .5, originY: 255/256,
+    flipX: false, frame: { name: 0 },
+    anims: { currentAnim: {key: ''}, pause: vi.fn(), resume: vi.fn() },
+    setOrigin(x: number, y: number) { this.originX=x; this.originY=y; return this; },
+    setScale() { return this; }, setFlipX(v: boolean) { this.flipX=v; return this; }, setDepth() { return this; },
+    setFrame(v: number) { this.frame.name=v; return this; },
+    setPosition(x: number, y: number) { this.x=x; this.y=y; return this; },
+    play(config: {key: string; startFrame?: number}) { this.anims.currentAnim.key=config.key; this.frame.name=config.startFrame ?? 0; return this; },
+    stop() { return this; },
+    once(event: string, callback: () => void) { events.set(event, callback); return this; },
+    removeAllListeners(event?: string) { if (event) events.delete(event); else events.clear(); return this; },
+    destroy() {}
+  };
+  const shadow = { x: 0, setAlpha() { return this; }, setDepth() { return this; }, setScale() { return this; }, destroy() {} };
+  let spriteCalls = 0;
+  const scene = { add: { sprite: (x: number) => {
+    if (spriteCalls++ === 0) return sprite;
+    effectVisual.x=x;
+    return effectVisual;
+  }, ellipse: () => shadow, rectangle: () => visual,
+    graphics: () => ({ setDepth() { return this; }, clear() {} }) },
+    time: { delayedCall: (_ms: number, fn: () => void) => delays.push(fn) } } as unknown as Phaser.Scene;
+  const state = { fighterPlayground: createDefaultFighterPlaygroundState(), characterGym: { boundsOverrides: {} } };
+  const app = { debugStore: { getState: () => state } } as unknown as AppContext;
+  const fighter = new Fighter({scene, app, characterId, x:200, groundY:500, facing, minX:40, maxX:960});
+  fighter.setFrozen(false);
+  function complete(action: string) {
+    const event = `animationcomplete-${characterId}-${action}`;
+    const callback = events.get(event);
+    events.delete(event);
+    callback?.();
+  }
+  function special() {
+    fighter.fillMeter();
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, special:true});
+    complete('special-charge');
+    delays.splice(0).forEach(fn => fn());
+  }
+  return {fighter, sprite, special, complete, visual, effectVisual, delays};
+}
+
+describe('fighter move integration', () => {
+  it('keeps Saci grounded during preparation, follows the flight arc and lands', () => {
+    const {fighter, sprite} = setup('saci');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, jump:true});
+    fighter.update(.03, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    fighter.update(.03, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBeLessThan(500);
+    expect(sprite.frame.name).toBeGreaterThanOrEqual(2);
+    for (let i=0; i<80; i++) {
+      fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+      if (sprite.y < 500) expect(sprite.frame.name).toBeLessThanOrEqual(4);
+    }
+    expect(sprite.y).toBe(500);
+    expect(sprite.anims.currentAnim.key).toBe('saci-idle');
+  });
+  it('squats only on the ground and never replays the wind-up in the air (Urubu model)', () => {
+    const {fighter, sprite} = setup('urubu');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, jump:true});
+    expect(sprite.anims.currentAnim.key).toBe('urubu-jump');
+    fighter.update(.06, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    expect(sprite.frame.name).toBe(2);
+    fighter.update(.05, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBeLessThan(500);
+    let previous = 3;
+    while (sprite.y < 500) {
+      expect(sprite.frame.name).toBeGreaterThanOrEqual(previous);
+      previous = sprite.frame.name;
+      fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    }
+    expect(previous).toBe(7);
+    expect(sprite.frame.name).toBe(2);
+    fighter.update(.12, NEUTRAL_FIGHTER_INPUT);
+    fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe('urubu-idle');
+  });
+  it('throws one strike per jump that reaches a crouching defender, then lands', () => {
+    const {fighter, sprite, complete} = setup('urubu');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, jump:true});
+    fighter.update(.11, NEUTRAL_FIGHTER_INPUT);
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
+    expect(sprite.anims.currentAnim.key).toBe('urubu-heavy-kick');
+    expect(sprite.frame.name).toBe(3);
+    const before = fighter.x;
+    const kick = fighter.getActiveAttack()!;
+    expect(kick.move).toBe('voadora');
+    expect(kick.profile.kind).toBe('low');
+    fighter.update(.05, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.x).toBeGreaterThan(before + 15);
+    complete('heavy-kick');
+    expect(sprite.anims.currentAnim.key).toBe('urubu-jump');
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, light:true});
+    expect(sprite.anims.currentAnim.key).toBe('urubu-jump');
+    for (let i=0; i<90; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    expect(sprite.anims.currentAnim.key).toBe('urubu-idle');
+  });
+  it('ducks while crouching or crouch-blocking, and stands up when released', () => {
+    const {fighter} = setup('urubu');
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, crouch:true});
+    expect(fighter.isDucking).toBe(true);
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, crouch:true, block:true});
+    expect(fighter.isDucking).toBe(true);
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, block:true});
+    expect(fighter.isDucking).toBe(false);
+    fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.isDucking).toBe(false);
+  });
+  it('chains quick punches after the hit frames, never during them', () => {
+    const {fighter, sprite} = setup('urubu');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true});
+    sprite.frame.name = 2;
+    const first = fighter.getActiveAttack()!;
+    expect(first.move).toBe('soco-rapido');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true});
+    expect(fighter.getActiveAttack()!.signature).toBe(first.signature);
+    sprite.frame.name = 4;
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true});
+    sprite.frame.name = 2;
+    expect(fighter.getActiveAttack()!.signature).toBeGreaterThan(first.signature);
+  });
+  it('keeps the heavy going under quick punches (armor) and reports the guard held', () => {
+    const {fighter, sprite} = setup('urubu');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
+    expect(fighter.isInHeavy).toBe(true);
+    const health = fighter.health01;
+    fighter.applyHit({kind:'high', height:'high', damage:5, knockback:100, hitstun:300}, -1, false, true);
+    expect(fighter.health01).toBeLessThan(health);
+    expect(sprite.anims.currentAnim.key).toBe('urubu-heavy-kick');
+    expect(fighter.isInHeavy).toBe(true);
+    const guard = setup('urubu').fighter;
+    guard.update(1/60, {...NEUTRAL_FIGHTER_INPUT, block:true});
+    expect(guard.guardStance).toBe('alta');
+    guard.update(1/60, {...NEUTRAL_FIGHTER_INPUT, block:true, crouch:true});
+    expect(guard.guardStance).toBe('baixa');
+  });
+  it('keeps a strike pressed during the jump wind-up and throws it on takeoff', () => {
+    const {fighter, sprite} = setup('urubu');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, jump:true});
+    fighter.update(.02, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
+    expect(sprite.anims.currentAnim.key).toBe('urubu-jump');
+    fighter.update(.1, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe('urubu-heavy-kick');
+  });
+  it('ignores the low kick button while the sheet is missing', () => {
+    const {fighter, sprite} = setup('urubu');
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, lowKick:true});
+    expect(sprite.anims.currentAnim.key).toBe('urubu-idle');
+  });
+  it('falls back to the ground when struck in the air', () => {
+    const {fighter, sprite} = setup('urubu');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, jump:true});
+    fighter.update(.11, NEUTRAL_FIGHTER_INPUT);
+    fighter.update(.1, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBeLessThan(500);
+    fighter.applyHit({kind:'high', height:'high', damage:5, knockback:0, hitstun:3000}, -1, false);
+    for (let i=0; i<60; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+  });
+  it('moves Saci continuously to either far boundary during the tornado', () => {
+    for (const facing of [1, -1] as const) {
+      const {fighter, special} = setup('saci', facing);
+      special();
+      fighter.update(.1, NEUTRAL_FIGHTER_INPUT);
+      expect(fighter.x).toBe(200);
+      fighter.update(.2, NEUTRAL_FIGHTER_INPUT);
+      expect(fighter.x).toBeGreaterThan(40);
+      expect(fighter.x).toBeLessThan(960);
+      fighter.update(.3, NEUTRAL_FIGHTER_INPUT);
+      expect(fighter.x).toBe(facing === 1 ? 960 : 40);
+    }
+  });
+  it('releases one traveling shot, retains it after recovery, keeps its direction and consumes it on impact', () => {
+    const {fighter, sprite, complete, visual} = setup('almirante');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
+    expect(sprite.anims.currentAnim.key).toBe('almirante-heavy-punch');
+    expect(fighter.meter01).toBe(0);
+    fighter.update(.2, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.getActiveAttack()).toBeNull();
+    fighter.update(.06, NEUTRAL_FIGHTER_INPUT);
+    const initial = fighter.getActiveAttack()!;
+    expect(initial.facing).toBe(1);
+    expect(initial.move).toBe('tiro');
+    complete('heavy-punch');
+    fighter.faceToward(40);
+    fighter.update(.1, NEUTRAL_FIGHTER_INPUT);
+    const moving = fighter.getActiveAttack()!;
+    expect(moving.rect.x+moving.rect.width).toBeGreaterThan(initial.rect.x+initial.rect.width);
+    expect(moving.facing).toBe(1);
+    fighter.markAttackConnected();
+    expect(fighter.getActiveAttack()).toBeNull();
+    expect(visual.destroy).toHaveBeenCalledOnce();
+  });
+  it('clears a shot on round reset and cancels a special interrupted during its freeze', () => {
+    const first = setup('almirante');
+    first.fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
+    first.fighter.update(.3, NEUTRAL_FIGHTER_INPUT);
+    first.fighter.resetForRound(200, 1);
+    expect(first.fighter.getActiveAttack()).toBeNull();
+    expect(first.visual.destroy).toHaveBeenCalledOnce();
+    const second = setup('saci');
+    second.fighter.fillMeter();
+    second.fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, special:true});
+    second.complete('special-charge');
+    second.fighter.applyHit({kind:'high', height:'high', damage:5, knockback:0, hitstun:100}, 1, false);
+    second.delays.forEach(fn => fn());
+    expect(second.sprite.anims.currentAnim.key).toBe('saci-hit-high');
+  });
+  it('launches an animated caravel wave, keeps crossing after a hit and removes it beyond the arena', () => {
+    const {fighter, special, complete, effectVisual} = setup('almirante');
+    fighter.setProjectileBounds(0, 2600);
+    special();
+    fighter.update(.11, NEUTRAL_FIGHTER_INPUT);
+    const wave = fighter.getActiveAttack()!;
+    expect(wave.profile.kind).toBe('special');
+    expect(wave.move).toBe('onda');
+    expect(wave.rect.height).toBe(220);
+    expect(fighter.meter01).toBe(0);
+    complete('special');
+    fighter.markAttackConnected(wave.signature);
+    expect(fighter.getActiveAttack()).toBeNull();
+    const before = effectVisual.x;
+    fighter.update(.1, NEUTRAL_FIGHTER_INPUT);
+    expect(effectVisual.x).toBeGreaterThan(before);
+    expect(effectVisual.destroy).not.toHaveBeenCalled();
+    fighter.update(2, NEUTRAL_FIGHTER_INPUT);
+    expect(effectVisual.x).toBeGreaterThan(960);
+    expect(effectVisual.destroy).not.toHaveBeenCalled();
+    fighter.update(4, NEUTRAL_FIGHTER_INPUT);
+    expect(effectVisual.destroy).toHaveBeenCalledOnce();
+  });
+});

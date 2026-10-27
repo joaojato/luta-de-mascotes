@@ -25,3 +25,7 @@ Attitude: confident and aggressive, like a football terrace, never cute.
 
 Escudo, brasão, número, nome de clube, patrocínio, texto de qualquer tipo,
 pássaro secundário, sombra no chão, aura, partículas, linhas de movimento.
+
+## Exceção explícita: especial térmico/meteoro
+
+O usuário pediu efeitos de ar quente e mergulho no especial do Urubu. Eles são camadas separadas, autorizadas apenas para este especial: `thermal-updraft-v1.png` e `meteor-trail-v1.png`. A figura do personagem continua sem efeitos embutidos. Artes e guia de integração em `docs/especial-urubu-meteoro.md`. Claude cuida da mecânica; os novos assets não foram ativados no JSON de runtime por esta entrega.

@@ -201,6 +201,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 
 ## Sobre o método
 
+- **Arte das animações fica com o Codex; o Claude fica na mecânica.** No
+  meio do pedido de agachar, pulo e bloqueio, o João avisou que o Codex vai
+  mudar as animações que incomodam. A troca do quadro final do bloqueio do
+  Urubu e das skins `urubu-v1` foi desfeita (sheets reconstruídas idênticas)
+  e só a mecânica ficou. Defeito de sheet vira relato, não edição. (2026-10-27)
+
 - **Guia para os amigos deve orientar o GPT a executar o trabalho.** João
   pediu uma sequência de conexões, produção e envio pelo Drive em que o
   integrante só autentica e concede permissões. Baixar, renomear, montar

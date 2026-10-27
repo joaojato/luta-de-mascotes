@@ -128,10 +128,10 @@ export interface FighterStats {
 export type AttackHeight = 'high' | 'low';
 
 /**
- * The attack source: the light button (`high`), the heavy button (`low`), or a
- * meter-fuelled `special` move (multi-hit).
+ * The attack source: the light button (`high`), the heavy button (`low`), the
+ * low kick button (`lowKick`), or a meter-fuelled `special` move (multi-hit).
  */
-export type AttackKind = 'high' | 'low' | 'special';
+export type AttackKind = 'high' | 'low' | 'lowKick' | 'special';
 
 /**
  * Per-character combat tuning. The light attack button is the "high" attack and
@@ -147,6 +147,10 @@ export interface FighterCombat {
   lowDamage: number;
   lowKnockback: number;
   lowHitstun: number;
+  /** Low kick (Chute baixo): quick, interrupts a heavy. */
+  lowKickDamage: number;
+  lowKickKnockback: number;
+  lowKickHitstun: number;
   /** Per-hit damage of the meter special (a special lands several of these). */
   specialDamage: number;
   /** Per-hit pushback of the meter special. */

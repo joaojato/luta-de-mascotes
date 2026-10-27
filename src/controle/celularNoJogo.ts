@@ -150,6 +150,7 @@ export function juntarInputs(a: FighterInput, b: FighterInput): FighterInput {
     jump: a.jump || b.jump,
     light: a.light || b.light,
     heavy: a.heavy || b.heavy,
+    lowKick: a.lowKick || b.lowKick,
     special: a.special || b.special
   };
 }

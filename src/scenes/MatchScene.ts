@@ -4,7 +4,9 @@ import { celular, juntarInputs } from '../controle/celularNoJogo';
 import { PainelCelular } from '../controle/painelCelular';
 import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fighter';
 import { getCharacterDefinition } from '../game/hero';
+import { carregarControles, COMANDOS_LUTA, type ComandoLuta, type Lado } from '../game/controles';
 import { MatchHud } from '../game/matchHud';
+import { armorAbsorbs, ducksUnder, guardHolds, jumpsOver } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
@@ -31,16 +33,7 @@ const OVERLAY_DEPTH = 300;
 /** The match's high-level state, driving input gating and the HUD. */
 type MatchPhase = 'intro' | 'fighting' | 'roundEnd' | 'matchOver';
 
-interface PlayerKeys {
-  left: Phaser.Input.Keyboard.Key;
-  right: Phaser.Input.Keyboard.Key;
-  crouch: Phaser.Input.Keyboard.Key;
-  block: Phaser.Input.Keyboard.Key;
-  jump: Phaser.Input.Keyboard.Key;
-  light: Phaser.Input.Keyboard.Key;
-  heavy: Phaser.Input.Keyboard.Key;
-  special: Phaser.Input.Keyboard.Key;
-}
+type PlayerKeys = Record<ComandoLuta, Phaser.Input.Keyboard.Key>;
 
 /**
  * The versus match: two fighters spawn facing each other and fight a best-of-3
@@ -168,12 +161,6 @@ export class MatchScene extends BaseScene {
       : { ...NEUTRAL_FIGHTER_INPUT };
     this.updatePaineisCelular();
 
-    // Crouching (and crouch-block) is disabled for now: defense is simply
-    // block-or-not. The geometric guard-box model still resolves blocks via the
-    // standing guard box; the crouch/low path stays in the code but unused.
-    p1Input.crouch = false;
-    p2Input.crouch = false;
-
     // CPU occasionally unleashes its special once the meter is charged.
     if (fighting && this.cpu && this.p2.isMeterReady && Phaser.Math.Between(0, 150) === 0) {
       p2Input.special = true;
@@ -243,8 +230,15 @@ export class MatchScene extends BaseScene {
       return;
     }
 
-    const guard = defender.getGuardRect();
-    const blocked = guard !== null && Phaser.Geom.Intersects.RectangleToRectangle(attack.rect, guard);
+    // Ducked or jumped over: the swing stays live and can still land later.
+    if (ducksUnder(attack.move, defender.isDucking) || jumpsOver(attack.move, defender.isAirborne)) {
+      return;
+    }
+
+    // Guard rules per move (GDD, "Golpes"): the heavy breaks the crouching
+    // guard; the low kick and the flying kick break the standing one.
+    const blocked = guardHolds(attack.move, defender.guardStance);
+    const armored = armorAbsorbs(attack.move, defender.isInHeavy);
     const isSpecial = attack.profile.kind === 'special';
     const finisher = attack.finisher && !blocked;
 
@@ -253,9 +247,9 @@ export class MatchScene extends BaseScene {
       ? { ...attack.profile, knockback: attack.profile.knockback * 1.9, hitstun: attack.profile.hitstun * 1.4 }
       : attack.profile;
 
-    defender.applyHit(profile, attacker.facingDirection, blocked);
+    defender.applyHit(profile, attack.facing ?? attacker.facingDirection, blocked, armored);
     defender.flashHit(blocked);
-    attacker.markAttackConnected();
+    attacker.markAttackConnected(attack.signature);
     attacker.registerOffense(blocked, isSpecial);
     defender.registerDefense(blocked);
 
@@ -430,6 +424,8 @@ export class MatchScene extends BaseScene {
     const rightWall = scrollX + viewWidth - EDGE_MARGIN;
     this.p1.setHorizontalBounds(leftWall, rightWall);
     this.p2.setHorizontalBounds(leftWall, rightWall);
+    this.p1.setProjectileBounds(0, this.stageWorldWidth);
+    this.p2.setProjectileBounds(0, this.stageWorldWidth);
   }
 
   /** Registers the two keyboard control schemes plus the menu shortcut. */
@@ -439,28 +435,15 @@ export class MatchScene extends BaseScene {
       throw new Error('MatchScene requires keyboard input');
     }
 
-    const codes = Phaser.Input.Keyboard.KeyCodes;
-    this.p1Keys = {
-      left: keyboard.addKey(codes.A),
-      right: keyboard.addKey(codes.D),
-      crouch: keyboard.addKey(codes.S),
-      block: keyboard.addKey(codes.C),
-      jump: keyboard.addKey(codes.W),
-      light: keyboard.addKey(codes.F),
-      heavy: keyboard.addKey(codes.G),
-      special: keyboard.addKey(codes.V)
-    };
-
-    this.p2Keys = {
-      left: keyboard.addKey(codes.LEFT),
-      right: keyboard.addKey(codes.RIGHT),
-      crouch: keyboard.addKey(codes.DOWN),
-      block: keyboard.addKey(codes.FORWARD_SLASH),
-      jump: keyboard.addKey(codes.UP),
-      light: keyboard.addKey(codes.COMMA),
-      heavy: keyboard.addKey(codes.PERIOD),
-      special: keyboard.addKey(codes.L)
-    };
+    // Botões remapeados na Academia (aba Botões); sem nada salvo, o padrão.
+    const codes = Phaser.Input.Keyboard.KeyCodes as Record<string, number>;
+    const controles = carregarControles(new Set(Object.keys(codes)));
+    const teclas = (lado: Lado): PlayerKeys =>
+      Object.fromEntries(
+        COMANDOS_LUTA.map(({ id }) => [id, keyboard.addKey(codes[controles[lado][id]])])
+      ) as PlayerKeys;
+    this.p1Keys = teclas('p1');
+    this.p2Keys = teclas('p2');
 
     keyboard.on('keydown-ESC', () => this.goToMenu());
     keyboard.on('keydown-BACKSPACE', () => this.goToMenu());
@@ -485,6 +468,7 @@ export class MatchScene extends BaseScene {
       jump: Phaser.Input.Keyboard.JustDown(keys.jump),
       light: Phaser.Input.Keyboard.JustDown(keys.light),
       heavy: Phaser.Input.Keyboard.JustDown(keys.heavy),
+      lowKick: Phaser.Input.Keyboard.JustDown(keys.lowKick),
       special: Phaser.Input.Keyboard.JustDown(keys.special)
     };
   }

@@ -42,3 +42,6 @@ Fight_Detection/
 # Python
 __pycache__/
 *.pyc
+
+# Rascunhos e conferências de arte do Codex (material bruto)
+output/

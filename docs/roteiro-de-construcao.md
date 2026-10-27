@@ -50,6 +50,11 @@ ele é quebrado em dois, não esticado.
   teste com celular e gente de verdade (`npm run dev:celular`, menu Celular).
 - [ ] Marco 3 = v1
 - [ ] Marco 4 (se sobrar tempo)
+- [ ] Tarefa futura, pedida pelo João em 27/10/2026: **redesenhar os
+  especiais do Urubu e de todos no mesmo molde** (Cartola, Cachorro, Galo).
+  Hoje são genéricos e não fazem nada de próprio; cada um precisa de uma
+  mecânica que diga quem é o mascote, como a caravela do Almirante e o
+  tornado do Saci.
 
 Atualizar esta lista ao fechar cada marco. É a primeira coisa que o agente lê
 na sessão.

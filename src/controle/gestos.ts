@@ -242,6 +242,7 @@ export class LeitorDeGestos {
       jump: this.pendentes.has('jump'),
       light: this.pendentes.has('light'),
       heavy: this.pendentes.has('heavy'),
+      lowKick: false,
       special: this.pendentes.has('special')
     };
     this.pendentes.clear();

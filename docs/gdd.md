@@ -65,23 +65,37 @@ Fala de vitória:
 Paleta (3 cores, sem o escudo):
 ```
 
-## Golpes da v1 (4 por mascote)
+## Golpes (catálogo, João, 27/10/2026)
 
-Mesmo esqueleto para todos, muda só a animação e os números.
+Mesmo esqueleto para todos, muda só a animação e os números. Passa dos 4
+golpes da Regra da v1 por pedido explícito do João. O catálogo vive em
+`src/game/golpes.ts` e aparece na Academia (aba Golpes) com o que cada mascote
+tem e o que falta. Golpe sem sheet própria aparece como "faltando"; quando há
+um quebra-galho, a Academia diz qual sheet está sendo usada no lugar.
 
-| Golpe | Tecla P1 / P2 | Animação (Spriterrific) | Dano | Alcance |
-|---|---|---|---|---|
-| Soco fraco | J / numpad 1 | `light_attack` | baixo | curto |
-| Soco forte | K / numpad 2 | `heavy_attack` | médio | curto |
-| Chute | L / numpad 3 | custom `chute` (baseline `attack`) | médio | médio |
-| Especial | frente + K | custom por mascote (baseline `attack` ou `jump`) | alto | depende |
+| Golpe | Botão | Sheet (`action`) | Regra |
+|---|---|---|---|
+| Soco rápido | Soco | `light-punch` | rápido; apertar de novo depois do quadro ativo emenda outro soco. Agachado passa por baixo. Bate na armadura do Golpe forte sem interromper. O do Almirante dá dois jabs por aperto. |
+| Golpe forte | Forte | `heavy-kick` ou `heavy-punch` | lento e potente; **quebra a defesa baixa** (só a guarda em pé segura). Aguenta Soco rápido sem parar (armadura). |
+| Chute baixo | Chute baixo | `low-kick` | rápido, rente ao chão; **interrompe o Golpe forte**. |
+| Soco no ar | Soco, no ar | `jump-punch` (quebra-galho: `light-punch`) | um golpe por pulo. Pega quem está agachado. |
+| Voadora | Forte, no ar | `jump-kick` (quebra-galho: chute forte) | mergulho em diagonal para a frente; **quebra a defesa alta** (só a guarda agachada segura). |
+| Especial | Especial, barra cheia | `special-charge` + `special` | próprio de cada mascote. |
 
-Movimento: A/D anda, W pula, S agacha (P1); setas (P2). Bloqueio: segurar
-para trás. Em v1 o bloqueio usa um quadro parado da animação de agachar ou de
-parado, sem animação própria, para economizar crédito.
+Projéteis:
 
-Números exatos (dano, frames de startup, active, recovery) ficam no JSON do
-mascote, não aqui. Aqui é a intenção.
+- **Tiro do Almirante** (o Forte dele): passa por cima de quem pula e por
+  cima de quem agacha.
+- **Caravela do Almirante** (especial): passa por baixo de quem pula;
+  agachar não salva.
+
+Defesa: guarda em pé (Defender) segura Soco rápido, Golpe forte e projétil;
+guarda agachada (Defender + Agachar) segura Soco rápido, Chute baixo e
+Voadora. Agachar sem guarda é esquiva do Soco rápido e do Tiro.
+
+Botões são remapeáveis por lado do teclado na Academia (aba Botões) e valem
+na luta. Números exatos (dano, vida, carga do especial) ficam no JSON do
+mascote e podem ser testados na aba Ajustes da Academia. Aqui é a intenção.
 
 ## Controle pelo corpo (João, 01/10/2026)
 

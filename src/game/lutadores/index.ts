@@ -1,11 +1,14 @@
 import type { CharacterDefinition } from '../hero';
 import { buildFighterCharacter, type FighterActionSpec } from '../fighterCharacter';
 import type { FighterCombat, FighterStats } from '../types';
+import type { FighterMoveConfig } from '../moveMechanics';
 
 import urubu from './urubu.json';
 import almirante from './almirante.json';
+import saci from './saci.json';
 import cartola from './cartola.json';
 import cachorro from './cachorro.json';
+import galo from './galo.json';
 import redBrawler from './red-brawler.json';
 import greenBoxer from './green-boxer.json';
 import jiujitsuFighter from './jiujitsu-fighter.json';
@@ -16,6 +19,7 @@ import jiujitsuFighter from './jiujitsu-fighter.json';
  * combate. O motor nunca conhece um mascote pelo nome.
  */
 export interface LutadorJson {
+  moves?: FighterMoveConfig;
   id: string;
   label: string;
   /** Pasta pública das sheets, ex. `/assets/lutadores/urubu`. */
@@ -102,7 +106,14 @@ function expandirSkins(lutador: LutadorJson): LutadorJson[] {
           // Ação própria traz os números dela e o arquivo na pasta da skin;
           // sem ela, herda tudo da base, inclusive o caminho.
           return propria
-            ? { ...acao, ...propria, file: propria.file ?? `${acao.action}.png` }
+            ? {
+                ...acao,
+                ...propria,
+                // Uma sequência própria de ataques substitui a janela única
+                // da base, cujos quadros podem nem existir nesta variante.
+                attack: propria.attackSpans ? propria.attack : (propria.attack ?? acao.attack),
+                file: propria.file ?? `${acao.action}.png`
+              }
             : { ...acao, file: `../${base.pasta}/${acao.file}` };
         }),
         // Ação que só esta skin tem: a sheet chegou para o modelo novo antes
@@ -123,7 +134,7 @@ function expandirSkins(lutador: LutadorJson): LutadorJson[] {
 }
 
 /** Ordem de registro = ordem na seleção. O primeiro é o padrão dos debugs. */
-export const LUTADORES: LutadorJson[] = [urubu, almirante, cartola, cachorro, redBrawler, greenBoxer, jiujitsuFighter].flatMap(
+export const LUTADORES: LutadorJson[] = [urubu, almirante, saci, cartola, cachorro, galo, redBrawler, greenBoxer, jiujitsuFighter].flatMap(
   expandirSkins
 );
 
@@ -145,6 +156,7 @@ export function buildLutador(lutador: LutadorJson): CharacterDefinition {
   const comArquivos = lutador as LutadorJson & { anchorFile?: string; portraitFile?: string };
 
   return buildFighterCharacter({
+    moves: lutador.moves,
     id: lutador.id,
     label: lutador.label,
     assetRoot: lutador.assetRoot,

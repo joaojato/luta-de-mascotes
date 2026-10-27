@@ -2,10 +2,10 @@
   "version": 1,
   "savedAt": "template-v3",
   "character": {
-    "id": "red-brawler",
+    "id": "almirante",
     "gym": {
-      "characterId": "red-brawler",
-      "animationKey": "red-brawler-idle",
+      "characterId": "almirante",
+      "animationKey": "almirante-special-charge",
       "frame": 0,
       "playbackSpeed": 1,
       "selectedBoundsKind": "visual",

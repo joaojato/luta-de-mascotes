@@ -114,7 +114,10 @@ export default defineConfig(({ mode }) => ({
   ],
   server: {
     host: '0.0.0.0',
-    port: 5173
+    port: 5173,
+    // Rascunhos de arte (output/ e scripts) não são o jogo: o Codex grava lá o
+    // tempo todo e cada arquivo recarregaria a página de quem está jogando.
+    watch: { ignored: ['**/output/**', '**/scripts/**', '**/spriterrific-runs/**', '**/referencia/**'] }
   },
   build: {
     rolldownOptions: {

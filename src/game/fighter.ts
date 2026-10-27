@@ -12,6 +12,16 @@ import {
   type HeroBoundsFrame
 } from './hero';
 import { spawnChargeAura } from './vfx';
+import {
+  dashPosition,
+  jumpFlightFrame,
+  jumpFrames,
+  sweptInterval,
+  type AttackMove,
+  type GuardStance,
+  type JumpFrames,
+  type ProjectileMoveConfig
+} from './moveMechanics';
 import type {
   AttackKind,
   AttackProfile,
@@ -40,6 +50,13 @@ const METER_GAIN_ON_BLOCK = 4;
  * cinematic land before the move launches.
  */
 const SUPER_FREEZE_MS = 360;
+/** Each wind-up frame of a jump, still on the ground, lasts this long. */
+const JUMP_WINDUP_FRAME_SECONDS = 0.05;
+/** Recovery squat held after touchdown before the fighter can act again. */
+const JUMP_LANDING_SECONDS = 0.1;
+/** Flying kick: the dive forward and down the moment the kick comes out. */
+const FLYING_KICK_SPEED_X = 380;
+const FLYING_KICK_DROP = 300;
 
 /**
  * A live attack from a fighter on its current animation frame: the world-space
@@ -47,11 +64,31 @@ const SUPER_FREEZE_MS = 360;
  * per-swing signature so a single swing only connects once.
  */
 export interface ActiveAttack {
+  facing?: 1 | -1;
+  /** Which move this is: decides guard, dodge and armor rules (moveMechanics). */
+  move: AttackMove;
   rect: Phaser.Geom.Rectangle;
   profile: AttackProfile;
   signature: number;
   /** True when this is the final hit window of a special (the combo finisher). */
   finisher: boolean;
+}
+
+interface TravelingProjectile {
+  x: number;
+  previousX: number;
+  y: number;
+  facing: 1 | -1;
+  life: number;
+  signature: number;
+  speed: number;
+  width: number;
+  height: number;
+  profile: AttackProfile;
+  move: AttackMove;
+  connected: boolean;
+  persistOnHit: boolean;
+  visual: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
 }
 
 const BOUNDS_ALPHA_ACTIVE = 0.95;
@@ -79,6 +116,7 @@ export interface FighterInput {
   jump: boolean;
   light: boolean;
   heavy: boolean;
+  lowKick: boolean;
   special: boolean;
 }
 
@@ -91,6 +129,7 @@ export const NEUTRAL_FIGHTER_INPUT: FighterInput = {
   jump: false,
   light: false,
   heavy: false,
+  lowKick: false,
   special: false
 };
 
@@ -105,6 +144,12 @@ interface FighterActionKeys {
   hitHigh: string;
   lightPunch: string;
   heavy: string;
+  /** Low kick button; null while the sheet is missing (the button does nothing). */
+  lowKick: string | null;
+  /** Light button in the air (`jump-punch`, or the light punch meanwhile). */
+  airLight: string;
+  /** Heavy button in the air: the flying kick (`jump-kick`, or a heavy kick meanwhile). */
+  airHeavy: string;
   specialCharge: string;
   special: string;
   knockdown: string;
@@ -145,6 +190,8 @@ export class Fighter {
   private facing: 1 | -1;
   private minX: number;
   private maxX: number;
+  private projectileMinX: number;
+  private projectileMaxX: number;
   private readonly groundY: number;
 
   private sprite!: Phaser.GameObjects.Sprite;
@@ -153,6 +200,18 @@ export class Fighter {
   private depthBase = 5;
   private posX: number;
   private velocityY = 0;
+  private jumpPhase: 'prepare' | 'air' | 'attack' | 'land' | null = null;
+  private jumpClock = 0;
+  private airAttackUsed = false;
+  /** Strike pressed during the jump wind-up, thrown as soon as the feet leave the ground. */
+  private bufferedAirAttack: 'light' | 'heavy' | null = null;
+  private diveVelX = 0;
+  private specialClock = 0;
+  private dashFrom = 0;
+  private dashTo = 0;
+  private previousSpecialX = 0;
+  private shotReleased = false;
+  private projectiles: TravelingProjectile[] = [];
   private grounded = true;
   private locked = false;
   private frozen = true;
@@ -175,6 +234,8 @@ export class Fighter {
   private meter = 0;
   private appliedScale = 0;
   private readonly hasSpecial: boolean;
+  /** Crouch poses that duck under high strikes (only actions the sheet really has). */
+  private readonly duckKeys: Set<string>;
   private readonly onSpecialStart?: (fighter: Fighter) => void;
 
   constructor(options: FighterOptions) {
@@ -185,10 +246,17 @@ export class Fighter {
     this.facing = options.facing;
     this.minX = options.minX;
     this.maxX = options.maxX;
+    this.projectileMinX = options.minX;
+    this.projectileMaxX = options.maxX;
     this.groundY = options.groundY;
     this.posX = Phaser.Math.Clamp(options.x, options.minX, options.maxX);
     this.actionKeys = this.resolveActionKeys();
     this.hasSpecial = findCharacterAnimationKeyByAction(this.character.id, 'special') !== null;
+    this.duckKeys = new Set(
+      ['crouch', 'block-low']
+        .map((action) => findCharacterAnimationKeyByAction(this.character.id, action))
+        .filter((key): key is string => key !== null)
+    );
     this.maxHealth = this.combat().maxHealth;
     this.health = this.maxHealth;
     this.build(options.depth ?? 5);
@@ -222,6 +290,32 @@ export class Fighter {
   /** Whether the fighter has been knocked out this round. */
   get isDefeated(): boolean {
     return this.defeated;
+  }
+
+  /** Whether the fighter is off the ground (projectiles pass under). */
+  get isAirborne(): boolean {
+    return !this.grounded;
+  }
+
+  /** The guard being held: standing (`alta`), crouching (`baixa`) or none. */
+  get guardStance(): GuardStance | null {
+    if (this.defeated) {
+      return null;
+    }
+    if (this.currentAnimKey === this.actionKeys.blockLow && this.duckKeys.has(this.actionKeys.blockLow)) {
+      return 'baixa';
+    }
+    return this.currentAnimKey === this.actionKeys.blockHigh ? 'alta' : null;
+  }
+
+  /** Mid heavy on the ground: the quick punch bounces off (armor). */
+  get isInHeavy(): boolean {
+    return this.grounded && this.locked && this.currentAnimKey === this.actionKeys.heavy;
+  }
+
+  /** Whether the fighter is crouching on the ground (with or without guard). */
+  get isDucking(): boolean {
+    return this.grounded && !this.defeated && this.duckKeys.has(this.currentAnimKey);
   }
 
   /** The fighter's special meter charge (0..1). */
@@ -345,6 +439,7 @@ export class Fighter {
    * @param frozen - Whether the fighter should be frozen.
    */
   setFrozen(frozen: boolean): void {
+    if (frozen) this.clearProjectile();
     this.frozen = frozen;
   }
 
@@ -363,11 +458,28 @@ export class Fighter {
     this.shadow.x = this.posX;
   }
 
+  /** Projectiles traverse the stage, independently of the camera's fighter walls. */
+  setProjectileBounds(minX: number, maxX: number): void {
+    this.projectileMinX = minX;
+    this.projectileMaxX = Math.max(minX, maxX);
+  }
+
   /**
    * The fighter's currently active attack (if any): present only while a strike
    * animation is on an attack-active frame and the swing hasn't connected yet.
    */
   getActiveAttack(): ActiveAttack | null {
+    const shot = this.projectiles.find(projectile => !projectile.connected);
+    if (shot && !this.defeated) {
+      const sweep = sweptInterval(shot.previousX, shot.x, shot.width/2);
+      return { rect: new Phaser.Geom.Rectangle(sweep.x, shot.y-shot.height/2, sweep.width, shot.height),
+        profile: shot.profile, signature: shot.signature, move: shot.move,
+        finisher: shot.profile.kind === 'special', facing: shot.facing };
+    }
+    if (this.currentAnimKey === this.actionKeys.special && this.character.moves?.special?.kind === 'projectile') {
+      return null;
+    }
+    if (this.currentAnimKey === this.actionKeys.heavy && this.character.moves?.heavy?.kind === 'projectile') return null;
     if (this.attackConnected || this.defeated) {
       return null;
     }
@@ -390,16 +502,32 @@ export class Fighter {
     const frameIndex = this.currentFrameIndex(animation);
     const finisher = kind === 'special' && !this.hasAttackFrameAfter(animation, frameIndex);
 
+    const attackRect = this.frameRectToWorld(animation, frame.attack);
+    if (kind === 'special' && this.character.moves?.special?.kind === 'dash') {
+      const sweep = sweptInterval(this.previousSpecialX, this.posX, attackRect.width/2);
+      attackRect.x = sweep.x;
+      attackRect.width = sweep.width;
+    }
     return {
-      rect: this.frameRectToWorld(animation, frame.attack),
+      rect: attackRect,
       profile: getAttackProfile(this.combat(), kind),
       signature: this.attackId,
-      finisher
+      finisher,
+      move: this.currentMove()
     };
   }
 
   /** Marks the current swing as having connected so it can't hit again. */
-  markAttackConnected(): void {
+  markAttackConnected(signature?: number): void {
+    const shot = this.projectiles.find(projectile => !projectile.connected && (signature === undefined || projectile.signature === signature));
+    if (shot) {
+      shot.connected = true;
+      if (!shot.persistOnHit) {
+        shot.visual.destroy();
+        this.projectiles = this.projectiles.filter(projectile => projectile !== shot);
+      }
+      return;
+    }
     this.attackConnected = true;
   }
 
@@ -457,10 +585,28 @@ export class Fighter {
    * @param profile - The attack profile that landed.
    * @param attackerFacing - The attacker's facing (push direction).
    * @param blocked - Whether the defender guarded the attack.
+   * @param armored - The defender's heavy absorbs it: damage only, no interruption.
    */
-  applyHit(profile: AttackProfile, attackerFacing: 1 | -1, blocked: boolean): void {
+  applyHit(profile: AttackProfile, attackerFacing: 1 | -1, blocked: boolean, armored = false): void {
     if (this.defeated) {
       return;
+    }
+    if (armored && !blocked && this.health > profile.damage) {
+      this.health -= profile.damage;
+      return;
+    }
+    this.diveVelX = 0;
+    this.jumpPhase = null;
+    this.sprite.anims.resume();
+    // Cancel pending action completion callbacks when a move is interrupted.
+    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.specialCharge}`);
+    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.special}`);
+    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.lightPunch}`);
+    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.heavy}`);
+    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.airHeavy}`);
+    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.airLight}`);
+    if (this.actionKeys.lowKick) {
+      this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.lowKick}`);
     }
 
     if (blocked) {
@@ -499,6 +645,10 @@ export class Fighter {
    * @param facing - The spawn facing direction.
    */
   resetForRound(x: number, facing: 1 | -1): void {
+    this.clearProjectile();
+    this.jumpPhase = null;
+    this.diveVelX = 0;
+    this.sprite.anims.resume();
     this.posX = Phaser.Math.Clamp(x, this.minX, this.maxX);
     this.facing = facing;
     this.maxHealth = this.combat().maxHealth;
@@ -529,9 +679,11 @@ export class Fighter {
    * @param input - The intent snapshot for this frame.
    */
   update(seconds: number, input: FighterInput): void {
+    if (!this.frozen) this.updateProjectile(seconds);
     if (this.defeated) {
       this.playState(this.actionKeys.knockdown, false);
       this.applyKnockback(seconds);
+      this.dropToGround(seconds);
       this.updateShadow();
       this.drawBoundsOverlay();
       return;
@@ -546,6 +698,7 @@ export class Fighter {
     if (this.hitstunTimer > 0) {
       this.hitstunTimer = Math.max(0, this.hitstunTimer - seconds);
       this.applyKnockback(seconds);
+      this.dropToGround(seconds);
       this.playState(
         this.stunIsBlock
           ? this.stunBlockLow
@@ -564,6 +717,17 @@ export class Fighter {
       return;
     }
 
+    if (this.jumpPhase === 'prepare' && (input.light || input.heavy)) {
+      this.bufferedAirAttack = input.light ? 'light' : 'heavy';
+    }
+    this.updateCustomJump(seconds);
+    this.updateSpecialMotion(seconds);
+    if (input.light && this.canChainJab()) {
+      // Quick punch: pressing again after the hit frames throws the next one.
+      this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.lightPunch}`);
+      this.sprite.stop();
+      this.startOneShot(this.actionKeys.lightPunch);
+    }
     if (!this.grounded) {
       this.updateAirborne(seconds, input);
     } else if (!this.locked) {
@@ -576,6 +740,7 @@ export class Fighter {
 
   /** Destroys the fighter's display objects. */
   destroy(): void {
+    this.clearProjectile();
     this.sprite?.removeAllListeners();
     this.sprite?.destroy();
     this.shadow?.destroy();
@@ -601,6 +766,14 @@ export class Fighter {
       hitHigh: key('hit-high'),
       lightPunch: key('light-punch'),
       heavy:
+        (this.character.moves?.heavy?.action ? key(this.character.moves.heavy.action) : undefined) ??
+        findCharacterAnimationKeyByAction(this.character.id, 'heavy-kick') ??
+        findCharacterAnimationKeyByAction(this.character.id, 'heavy-punch') ??
+        key('light-punch'),
+      lowKick: findCharacterAnimationKeyByAction(this.character.id, 'low-kick'),
+      airLight: findCharacterAnimationKeyByAction(this.character.id, 'jump-punch') ?? key('light-punch'),
+      airHeavy:
+        findCharacterAnimationKeyByAction(this.character.id, 'jump-kick') ??
         findCharacterAnimationKeyByAction(this.character.id, 'heavy-kick') ??
         findCharacterAnimationKeyByAction(this.character.id, 'heavy-punch') ??
         key('light-punch'),
@@ -628,10 +801,13 @@ export class Fighter {
     if (!this.locked) {
       return null;
     }
-    if (this.currentAnimKey === this.actionKeys.lightPunch) {
+    if (this.currentAnimKey === this.actionKeys.lightPunch || this.currentAnimKey === this.actionKeys.airLight) {
       return 'high';
     }
-    if (this.currentAnimKey === this.actionKeys.heavy) {
+    if (this.actionKeys.lowKick !== null && this.currentAnimKey === this.actionKeys.lowKick) {
+      return 'lowKick';
+    }
+    if (this.currentAnimKey === this.actionKeys.heavy || this.currentAnimKey === this.actionKeys.airHeavy) {
       return 'low';
     }
     if (this.currentAnimKey === this.actionKeys.special) {
@@ -639,6 +815,31 @@ export class Fighter {
     }
 
     return null;
+  }
+
+  /** Which catalog move the current strike is (air and ground share sheets). */
+  private currentMove(): AttackMove {
+    const key = this.currentAnimKey;
+    if (key === this.actionKeys.special) {
+      return 'especial';
+    }
+    if (key === this.actionKeys.lowKick) {
+      return 'chute-baixo';
+    }
+    if (!this.grounded) {
+      return key === this.actionKeys.airHeavy ? 'voadora' : 'soco-no-ar';
+    }
+    return key === this.actionKeys.heavy ? 'golpe-forte' : 'soco-rapido';
+  }
+
+  /** A quick punch past its last hit frame can be chained into the next one. */
+  private canChainJab(): boolean {
+    if (!this.grounded || !this.locked || this.currentAnimKey !== this.actionKeys.lightPunch) {
+      return false;
+    }
+    const animation = getCharacterAnimationDefinition(this.character.id, this.actionKeys.lightPunch);
+    const lastHit = animation.bounds.reduce((last, frame) => (frame.attack ? frame.frame : last), -1);
+    return lastHit >= 0 && this.currentFrameIndex(animation) > lastHit;
   }
 
   /** The fighter's active animation definition, or null when none is playing. */
@@ -719,10 +920,24 @@ export class Fighter {
   private updateAirborne(seconds: number, input: FighterInput): void {
     const stats = this.stats();
     this.velocityY += stats.gravity * seconds;
+    const airStrike = input.light ? 'light' : input.heavy ? 'heavy' : this.bufferedAirAttack;
+    if (this.jumpPhase === 'air' && airStrike && !this.airAttackUsed) {
+      this.bufferedAirAttack = null;
+      this.startAirAttack(airStrike === 'light' ? this.actionKeys.airLight : this.actionKeys.airHeavy);
+    }
+    if (this.jumpPhase === 'air' || this.jumpPhase === 'attack') {
+      this.jumpClock += seconds;
+    }
+    if (this.jumpPhase === 'air') {
+      this.sprite.setFrame(this.jumpAirFrame());
+    }
     let nextY = this.sprite.y + this.velocityY * seconds;
 
     const drift = this.horizontalDirection(input);
-    if (drift !== 0) {
+    if (this.diveVelX !== 0) {
+      this.posX = Phaser.Math.Clamp(this.posX + this.diveVelX * seconds, this.minX, this.maxX);
+      this.sprite.x = this.posX;
+    } else if (drift !== 0) {
       this.posX = Phaser.Math.Clamp(this.posX + drift * stats.airDrift * seconds, this.minX, this.maxX);
       this.sprite.x = this.posX;
     }
@@ -731,6 +946,9 @@ export class Fighter {
       nextY = this.groundY;
       this.velocityY = 0;
       this.grounded = true;
+      if (this.jumpPhase === 'air' || this.jumpPhase === 'attack') {
+        this.startLanding();
+      }
       this.currentAnimKey = '';
       this.currentReverse = false;
     }
@@ -760,6 +978,10 @@ export class Fighter {
     }
     if (input.heavy) {
       this.startOneShot(this.actionKeys.heavy);
+      return;
+    }
+    if (input.lowKick && this.actionKeys.lowKick) {
+      this.startOneShot(this.actionKeys.lowKick);
       return;
     }
     if (input.block) {
@@ -844,6 +1066,8 @@ export class Fighter {
    * @param animKey - The action animation key to play.
    */
   private startOneShot(animKey: string): void {
+    this.specialClock = 0;
+    this.shotReleased = false;
     this.locked = true;
     this.currentAnimKey = animKey;
     this.currentReverse = false;
@@ -886,7 +1110,7 @@ export class Fighter {
       // Super freeze: hold the charged pose so the cut-in cinematic peaks before
       // the move launches.
       this.scene.time.delayedCall(SUPER_FREEZE_MS, () => {
-        if (!this.defeated) {
+        if (!this.defeated && this.locked && this.currentAnimKey === this.actionKeys.specialCharge) {
           this.executeSpecial();
         }
       });
@@ -899,6 +1123,11 @@ export class Fighter {
    * window so the move lands a combo.
    */
   private executeSpecial(): void {
+    this.specialClock = 0;
+    this.shotReleased = false;
+    this.dashFrom = this.posX;
+    this.previousSpecialX = this.posX;
+    this.dashTo = this.facing === 1 ? this.maxX : this.minX;
     this.currentAnimKey = this.actionKeys.special;
     this.attackId += 1;
     this.attackConnected = false;
@@ -956,13 +1185,185 @@ export class Fighter {
     return animation.bounds.some((frame) => frame.frame > frameIndex && frame.attack !== null);
   }
 
-  /** Launches a jump, playing the jump animation while physics drives the arc. */
+  /**
+   * Starts a jump in three phases: a short wind-up squat on the ground, the
+   * flight (sheet frames follow the physical arc, so the drawing never "jumps"
+   * a second time), and a recovery squat on touchdown.
+   */
   private startJump(): void {
-    this.grounded = false;
-    this.velocityY = -Math.abs(this.stats().jump);
+    const frames = this.jumpFrames();
+    this.jumpPhase = 'prepare';
+    this.jumpClock = 0;
+    this.airAttackUsed = false;
+    this.bufferedAirAttack = null;
+    this.locked = true;
     this.currentAnimKey = this.actionKeys.jump;
     this.currentReverse = false;
-    this.sprite.play({ key: this.actionKeys.jump, repeat: 0 }, true);
+    this.showJumpFrame(Math.min(1, frames.takeoff));
+    if (frames.takeoff <= 1) {
+      this.launchJump();
+    }
+  }
+
+  /** Advances the grounded jump phases: the wind-up and the landing recovery. */
+  private updateCustomJump(seconds: number): void {
+    if (this.jumpPhase === 'prepare') {
+      this.jumpClock += seconds;
+      const frame = 1 + Math.floor(this.jumpClock / JUMP_WINDUP_FRAME_SECONDS);
+      if (frame >= this.jumpFrames().takeoff) {
+        this.launchJump();
+      } else {
+        this.sprite.setFrame(frame);
+      }
+      return;
+    }
+    if (this.jumpPhase !== 'land') return;
+    this.jumpClock -= seconds;
+    if (this.jumpClock > 0) return;
+    this.jumpPhase = null;
+    this.locked = false;
+    this.currentAnimKey = '';
+    this.sprite.anims.resume();
+  }
+
+  /** Leaves the ground: physics takes over and the flight frames begin. */
+  private launchJump(): void {
+    this.jumpPhase = 'air';
+    this.jumpClock = 0;
+    this.grounded = false;
+    this.velocityY = -Math.abs(this.stats().jump);
+    this.sprite.setFrame(this.jumpFrames().takeoff);
+  }
+
+  /** One strike per jump: plays the attack mid-air, then returns to the flight pose. */
+  private startAirAttack(animKey: string): void {
+    this.jumpPhase = 'attack';
+    this.airAttackUsed = true;
+    this.currentAnimKey = animKey;
+    this.attackId += 1;
+    this.attackConnected = false;
+    this.attackActiveLast = false;
+    let startFrame = 0;
+    if (animKey === this.actionKeys.airHeavy) {
+      // Flying kick: dives forward-down and comes out already on the kick frame.
+      this.diveVelX = this.facing * FLYING_KICK_SPEED_X;
+      // On the way up the jump keeps rising; past the apex the kick dives.
+      if (this.velocityY > 0) {
+        this.velocityY = Math.max(this.velocityY, FLYING_KICK_DROP);
+      }
+      const animation = getCharacterAnimationDefinition(this.character.id, animKey);
+      startFrame = Math.max(0, animation.bounds.findIndex((frame) => frame.attack !== null));
+    }
+    this.sprite.play({ key: animKey, repeat: 0, startFrame }, true);
+    this.sprite.once(`animationcomplete-${animKey}`, () => {
+      if (this.jumpPhase !== 'attack') return;
+      this.diveVelX = 0;
+      this.jumpPhase = 'air';
+      this.currentAnimKey = this.actionKeys.jump;
+      this.showJumpFrame(this.jumpAirFrame());
+    });
+  }
+
+  /** Touchdown: cancels an unfinished air strike and holds the landing squat. */
+  private startLanding(): void {
+    this.diveVelX = 0;
+    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.airLight}`);
+    this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.airHeavy}`);
+    this.showJumpFrame(this.jumpFrames().land);
+    this.jumpPhase = 'land';
+    this.jumpClock = JUMP_LANDING_SECONDS;
+    this.locked = true;
+  }
+
+  /** Gravity for a fighter who lost control in the air (hitstun or KO). */
+  private dropToGround(seconds: number): void {
+    if (this.sprite.y >= this.groundY) return;
+    this.velocityY += this.stats().gravity * seconds;
+    this.sprite.y = Math.min(this.groundY, this.sprite.y + this.velocityY * seconds);
+    if (this.sprite.y >= this.groundY) {
+      this.velocityY = 0;
+      this.grounded = true;
+    }
+    this.updateShadow();
+  }
+
+  /** Freezes the jump sheet on one frame (the jump is driven by hand, not by the clock). */
+  private showJumpFrame(frame: number): void {
+    if (this.sprite.anims.currentAnim?.key !== this.actionKeys.jump) {
+      this.sprite.play({ key: this.actionKeys.jump, repeat: 0 }, true);
+    }
+    this.sprite.anims.pause();
+    this.sprite.setFrame(frame);
+  }
+
+  /** The flight frame matching the current point of the jump arc. */
+  private jumpAirFrame(): number {
+    const stats = this.stats();
+    const frames = this.jumpFrames();
+    return jumpFlightFrame(this.jumpClock, (2 * Math.abs(stats.jump)) / stats.gravity, frames.takeoff, frames.airEnd);
+  }
+
+  private jumpFrames(): JumpFrames {
+    const animation = getCharacterAnimationDefinition(this.character.id, this.actionKeys.jump);
+    return jumpFrames(animation.bounds.length, this.character.moves?.jump);
+  }
+
+  private updateSpecialMotion(seconds: number): void {
+    const isSpecial = this.currentAnimKey === this.actionKeys.special;
+    const move = isSpecial ? this.character.moves?.special
+      : this.currentAnimKey === this.actionKeys.heavy ? this.character.moves?.heavy : undefined;
+    if (!move || !this.locked) return;
+    this.specialClock += seconds;
+    const animation = this.currentAnimation();
+    if (!animation) return;
+    if (move.kind === 'dash') {
+      this.previousSpecialX = this.posX;
+      this.posX = Phaser.Math.Clamp(dashPosition(this.dashFrom, this.dashTo, this.specialClock,
+        (move.startFrame ?? 2)/animation.frameRate, (move.endFrame ?? 6)/animation.frameRate), this.minX, this.maxX);
+      this.sprite.x = this.posX;
+      this.updateShadow();
+    } else if (move.kind === 'projectile' && !this.shotReleased && this.specialClock >= (move.releaseFrame ?? 3)/animation.frameRate) {
+      this.shotReleased = true;
+      this.spawnProjectile(move, isSpecial ? 'special' : 'low');
+    }
+  }
+
+  private spawnProjectile(move: ProjectileMoveConfig, kind: AttackKind): void {
+    const width = move.hitWidth ?? 12;
+    const height = move.hitHeight ?? 12;
+    const x = this.posX+this.facing*(move.visualFile ? width/2+20 : 90*this.appliedScale);
+    const baseline = this.groundY-24*this.appliedScale;
+    const y = move.visualFile ? baseline-height/2 : this.groundY-175*this.appliedScale;
+    const visual = move.visualFile
+      ? this.scene.add.sprite(x, baseline, `${this.character.id}-special-effect`, 0)
+        .setOrigin(.5, 1).setScale(move.visualScale ?? 2).setFlipX(this.facing === 1)
+        .setDepth(this.depthBase+2).play(`${this.character.id}-special-effect`)
+      : this.scene.add.rectangle(x, y, 14, 5, 0xffdf8a).setDepth(this.depthBase+1);
+    const life = move.visualFile ? (this.projectileMaxX-this.projectileMinX+width)/(move.speed ?? 900)+1 : 2;
+    this.projectiles.push({x, previousX:x, y, facing:this.facing, life,
+      signature:this.attackId, visual, width, height, speed:move.speed ?? 900,
+      profile:{...getAttackProfile(this.combat(), kind), height:'high'}, connected:false,
+      move: kind === 'special' ? 'onda' : 'tiro',
+      persistOnHit:move.persistOnHit ?? false});
+  }
+
+  private updateProjectile(seconds: number): void {
+    this.projectiles = this.projectiles.filter(shot => {
+    shot.previousX = shot.x;
+    shot.x += shot.facing*shot.speed*seconds;
+    shot.life -= seconds;
+    shot.visual.x = shot.x;
+    if (shot.life <= 0 || shot.x+shot.width/2 < this.projectileMinX-100 || shot.x-shot.width/2 > this.projectileMaxX+100 || this.defeated) {
+      shot.visual.destroy();
+      return false;
+    }
+    return true;
+    });
+  }
+
+  private clearProjectile(): void {
+    this.projectiles.forEach(shot => shot.visual.destroy());
+    this.projectiles = [];
   }
 
   /**

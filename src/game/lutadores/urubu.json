@@ -206,7 +206,7 @@
       "action": "crouch",
       "file": "crouch.png",
       "frames": 5,
-      "frameRate": 10,
+      "frameRate": 20,
       "repeat": 0,
       "defaultVisual": {
         "x": 52,

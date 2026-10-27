@@ -8,6 +8,7 @@ import {
   type HeroAnimationDefinition
 } from '../game/hero';
 import { SCENE_KEYS, type FighterBoundsVisibility, type Rect } from '../game/types';
+import { PainelAcademia } from './academiaPainel';
 import { BaseScene } from './BaseScene';
 
 /**
@@ -16,7 +17,8 @@ import { BaseScene } from './BaseScene';
  *
  * Versão magra, de propósito: escolhe lutador e ação, toca ou avança quadro a
  * quadro, e desenha visual / collision / hit / attack / guard nas cores do
- * motor. Não edita nada. O JSON do lutador é editado na mão e o Vite recarrega.
+ * motor. O painel ao lado mostra o catálogo de golpes de cada mascote e
+ * remapeia os botões da luta. O JSON do lutador é editado na mão.
  */
 
 const FRAME_SIZE = 256;
@@ -40,6 +42,7 @@ export class AcademiaScene extends BaseScene {
   private infoText!: Phaser.GameObjects.Text;
   private actionListText!: Phaser.GameObjects.Text;
   private legendTexts: Phaser.GameObjects.Text[] = [];
+  private painel!: PainelAcademia;
 
   constructor() {
     super(SCENE_KEYS.Academia);
@@ -54,7 +57,7 @@ export class AcademiaScene extends BaseScene {
 
     const character = this.character();
     this.sprite = this.add
-      .sprite(this.cameras.main.centerX + 120, FLOOR_Y, character.animations[0].sheet.key, 0)
+      .sprite(this.cameras.main.centerX - 40, FLOOR_Y, character.animations[0].sheet.key, 0)
       .setOrigin(character.anchor.x, character.anchor.y)
       .setScale(SPRITE_SCALE);
 
@@ -85,11 +88,15 @@ export class AcademiaScene extends BaseScene {
         .setOrigin(1, 0)
     );
 
+    this.painel = new PainelAcademia({ onEscolher: (characterId, acao) => this.showMove(characterId, acao) });
+    this.painel.mostrarLutador(character.id);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.painel.destroy());
+
     this.registerKeys();
     this.playAction();
 
     this.createFooterHint(
-      'A/D lutador • W/S ação • Espaço toca/pausa • , . quadro • R quadro 1 • 1-5 boxes • Esc menu'
+      'A/D lutador • W/S ação • Espaço toca/pausa • , . quadro • R quadro 1 • 1-5 boxes • Tab painel • Esc menu'
     );
   }
 
@@ -140,14 +147,33 @@ export class AcademiaScene extends BaseScene {
       });
     });
 
+    keyboard.on('keydown-TAB', (event: KeyboardEvent) => {
+      event.preventDefault();
+      this.painel.alternar();
+    });
+
     keyboard.on('keydown-ESC', () => this.goToMenu());
     keyboard.on('keydown-BACKSPACE', () => this.goToMenu());
+  }
+
+  /** Clique na tabela de golpes: pula para o lutador e a sheet do golpe. */
+  private showMove(characterId: string, action: string): void {
+    const characterIndex = CHARACTER_DEFINITIONS.findIndex((candidate) => candidate.id === characterId);
+    if (characterIndex < 0) {
+      return;
+    }
+    this.characterIndex = characterIndex;
+    this.actionIndex = Math.max(0, this.character().animations.findIndex((candidate) => candidate.action === action));
+    this.sprite.setOrigin(this.character().anchor.x, this.character().anchor.y);
+    this.painel.mostrarLutador(characterId);
+    this.playAction();
   }
 
   private changeCharacter(direction: number): void {
     this.characterIndex = Phaser.Math.Wrap(this.characterIndex + direction, 0, CHARACTER_DEFINITIONS.length);
     this.actionIndex = 0;
     this.sprite.setOrigin(this.character().anchor.x, this.character().anchor.y);
+    this.painel.mostrarLutador(this.character().id);
     this.playAction();
   }
 

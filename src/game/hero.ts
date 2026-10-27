@@ -1,6 +1,7 @@
 import type { CharacterBoundsKind, CharacterGymBoundsOverrides, Rect } from './types';
 import type { ImageAsset, SpritesheetAsset } from './assets';
 import { LUTADOR_CHARACTERS } from './lutadores';
+import type { FighterMoveConfig } from './moveMechanics';
 
 export interface HeroBoundsFrame {
   frame: number;
@@ -30,6 +31,7 @@ export interface HeroAnimationDefinition {
 }
 
 export interface CharacterDefinition {
+  moves?: FighterMoveConfig;
   id: string;
   label: string;
   role: 'player' | 'enemy';

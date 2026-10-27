@@ -1,0 +1,282 @@
+{
+  "id": "saci",
+  "label": "Saci",
+  "assetRoot": "/assets/lutadores/saci",
+  "anchorUsage": "Saci, uma única perna, guarda voltada para esquerda",
+  "stats": {},
+  "combat": {
+    "specialDamage": 16,
+    "specialKnockback": 210,
+    "specialHitstun": 300
+  },
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Guarda",
+      "file": "idle.png",
+      "frames": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 50,
+        "y": 27,
+        "width": 156,
+        "height": 203
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Avançar saltando",
+      "file": "walk-backward.png",
+      "frames": 8,
+      "frameRate": 10,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 60,
+        "y": 12,
+        "width": 141,
+        "height": 218
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Recuar saltando",
+      "file": "walk-forward.png",
+      "frames": 8,
+      "frameRate": 10,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 60,
+        "y": 20,
+        "width": 143,
+        "height": 210
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Agachar",
+      "file": "crouch.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 48,
+        "y": 33,
+        "width": 154,
+        "height": 197
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Pular",
+      "file": "jump.png",
+      "frames": 6,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 34,
+        "y": 24,
+        "width": 175,
+        "height": 206
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Bloqueio alto",
+      "file": "block-high.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 38,
+        "y": 33,
+        "width": 169,
+        "height": 197
+      },
+      "guard": {
+        "x": 75,
+        "y": 55,
+        "width": 105,
+        "height": 110
+      }
+    },
+    {
+      "action": "block-low",
+      "label": "Bloqueio baixo",
+      "file": "block-low.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 62,
+        "y": 33,
+        "width": 141,
+        "height": 197
+      },
+      "guard": {
+        "x": 75,
+        "y": 130,
+        "width": 105,
+        "height": 95
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Receber golpe",
+      "file": "hit-high.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 47,
+        "y": 32,
+        "width": 204,
+        "height": 198
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Soco leve",
+      "file": "light-punch.png",
+      "frames": 6,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 8,
+        "y": 33,
+        "width": 199,
+        "height": 197
+      },
+      "attack": {
+        "frames": [
+          3
+        ],
+        "bounds": {
+          "x": 5,
+          "y": 70,
+          "width": 100,
+          "height": 50
+        }
+      }
+    },
+    {
+      "action": "knockdown",
+      "label": "Queda",
+      "file": "knockdown.png",
+      "frames": 6,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 52,
+        "y": 33,
+        "width": 201,
+        "height": 197
+      }
+    },
+    {
+      "action": "heavy-kick",
+      "label": "Chute",
+      "file": "heavy-kick.png",
+      "frames": 14,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 0,
+        "y": 30,
+        "width": 242,
+        "height": 200
+      },
+      "attack": {
+        "frames": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "bounds": {
+          "x": 0,
+          "y": 85,
+          "width": 115,
+          "height": 50
+        }
+      }
+    },
+    {
+      "action": "heavy-punch",
+      "label": "Soco forte",
+      "file": "heavy-punch.png",
+      "frames": 6,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 8,
+        "y": 33,
+        "width": 186,
+        "height": 197
+      },
+      "attack": {
+        "frames": [
+          3
+        ],
+        "bounds": {
+          "x": 5,
+          "y": 70,
+          "width": 100,
+          "height": 50
+        }
+      }
+    },
+    {
+      "action": "special-charge",
+      "label": "Preparar especial",
+      "file": "special-charge.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 47,
+        "y": 33,
+        "width": 159,
+        "height": 197
+      }
+    },
+    {
+      "action": "special",
+      "label": "Travessia do furacão",
+      "file": "special-tornado.png",
+      "frames": 8,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 50,
+        "y": 29,
+        "width": 178,
+        "height": 201
+      },
+      "attack": {
+        "frames": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "bounds": {
+          "x": 65,
+          "y": 120,
+          "width": 130,
+          "height": 105
+        }
+      }
+    }
+  ],
+  "moves": {
+    "jump": { "takeoff": 2, "airEnd": 4, "land": 5 },
+    "special": {
+      "kind": "dash",
+      "startFrame": 2,
+      "endFrame": 6
+    }
+  }
+}

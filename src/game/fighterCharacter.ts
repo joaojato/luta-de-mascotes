@@ -1,6 +1,7 @@
 import type { ImageAsset, SpritesheetAsset } from './assets';
 import type { CharacterDefinition, HeroAnimationDefinition, HeroBoundsFrame } from './hero';
 import type { Rect } from './types';
+import type { FighterMoveConfig } from './moveMechanics';
 
 const FRAME_WIDTH = 256;
 const FRAME_HEIGHT = 256;
@@ -43,6 +44,7 @@ export interface FighterActionSpec {
  * spritesheets live, and the ordered action set to register.
  */
 export interface FighterCharacterConfig {
+  moves?: FighterMoveConfig;
   id: string;
   label: string;
   role?: CharacterDefinition['role'];
@@ -85,7 +87,19 @@ export function buildFighterCharacter(config: FighterCharacterConfig): Character
     makeAnimation(config.id, spec, requireSheet(spritesheets, animationKey(config.id, spec.action)))
   );
 
+  const effect = config.moves?.special;
+  if (effect?.visualFile) {
+    const effectSheet = sheet(`${config.id}-special-effect`, `${config.assetRoot}/${effect.visualFile}`, effect.visualFrames ?? 4);
+    spritesheets.push(effectSheet);
+    animations.push(makeAnimation(config.id, {
+      action: 'special-effect', label: 'Efeito do especial', file: effect.visualFile,
+      frames: effectSheet.frames, frameRate: effect.visualFrameRate ?? 10, repeat: -1,
+      defaultVisual: rect(0, 0, 256, 256)
+    }, effectSheet));
+  }
+
   return {
+    moves: config.moves,
     id: config.id,
     label: config.label,
     role: config.role ?? 'player',

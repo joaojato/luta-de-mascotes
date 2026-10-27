@@ -12,7 +12,10 @@
     "highDamage": 9,
     "highKnockback": 220,
     "lowDamage": 10,
-    "lowKnockback": 300
+    "lowKnockback": 300,
+    "specialDamage": 20,
+    "specialKnockback": 250,
+    "specialHitstun": 350
   },
   "actions": [
     {
@@ -167,94 +170,67 @@
     },
     {
       "action": "heavy-punch",
-      "label": "Soco forte",
-      "file": "heavy-punch.png",
-      "frames": 8,
+      "label": "Tiro de garrucha",
+      "file": "special-shot.png",
+      "frames": 6,
       "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 6,
-        "y": 26,
-        "width": 211,
-        "height": 202
+        "x": 4,
+        "y": 30,
+        "width": 206,
+        "height": 200
       },
       "attack": {
         "frames": [
-          2,
-          4,
-          5,
-          6
+          3
         ],
         "bounds": {
-          "x": 3,
-          "y": 58,
-          "width": 78,
-          "height": 40
+          "x": 10,
+          "y": 65,
+          "width": 90,
+          "height": 25
         }
       }
     },
     {
       "action": "special-charge",
-      "label": "Preparar especial",
-      "file": "special-charge.png",
-      "frames": 5,
-      "frameRate": 14,
+      "label": "Comandar a caravela",
+      "file": "special-point-charge.png",
+      "frames": 4,
+      "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 61,
-        "y": 26,
-        "width": 146,
-        "height": 202
+        "x": 9,
+        "y": 30,
+        "width": 199,
+        "height": 200
       }
     },
     {
       "action": "special",
-      "label": "Sequência de socos",
-      "file": "special.png",
-      "frames": 8,
-      "frameRate": 16,
+      "label": "Onda da caravela",
+      "file": "special-command.png",
+      "frames": 4,
+      "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 0,
-        "y": 25,
-        "width": 218,
-        "height": 203
+        "x": 9,
+        "y": 30,
+        "width": 211,
+        "height": 200
       },
-      "attackSpans": [
-        {
-          "frames": [
-            2
-          ],
-          "bounds": {
-            "x": 0,
-            "y": 57,
-            "width": 92,
-            "height": 43
-          }
-        },
-        {
-          "frames": [
-            4
-          ],
-          "bounds": {
-            "x": 0,
-            "y": 57,
-            "width": 92,
-            "height": 43
-          }
-        },
-        {
-          "frames": [
-            6
-          ],
-          "bounds": {
-            "x": 0,
-            "y": 57,
-            "width": 92,
-            "height": 43
-          }
+      "attack": {
+        "frames": [
+          1
+        ],
+        "bounds": {
+          "x": 10,
+          "y": 60,
+          "width": 90,
+          "height": 50
         }
-      ]
+      }
     },
     {
       "action": "knockdown",
@@ -305,5 +281,25 @@
       "label": "Casaco naval",
       "pasta": "base"
     }
-  ]
+  ],
+  "moves": {
+    "heavy": {
+      "kind": "projectile",
+      "action": "heavy-punch",
+      "releaseFrame": 3,
+      "speed": 900
+    },
+    "special": {
+      "kind": "projectile",
+      "releaseFrame": 1,
+      "speed": 520,
+      "visualFile": "wave-caravel.png",
+      "visualFrames": 4,
+      "visualFrameRate": 10,
+      "visualScale": 2.2,
+      "hitWidth": 440,
+      "hitHeight": 220,
+      "persistOnHit": true
+    }
+  }
 }
