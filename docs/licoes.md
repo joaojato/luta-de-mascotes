@@ -186,6 +186,15 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   4 quadros e o do outro 10. Compartilhar a contagem entre skins faz uma
   delas tocar errado e a base apontar para arquivo que não existe na pasta
   dela. (2026-09-22)
+- **Pacote de arte de fora não é garantia de grade.** O LEIA-ME do Cartola
+  dizia 13 sheets de 256 de altura, e duas chegaram como tira bruta de
+  2172x724 com poses encostadas. Medir todo PNG antes de copiar para
+  `public/`, nunca confiar só na descrição. Tira com poses coladas se separa
+  por ilha de pixel, não por fatia de largura igual: o espaçamento não é
+  regular. (2026-10-27)
+- **Agachar que termina em pé fica em pé na luta.** O `crouch` segura o
+  último quadro; o do Cachorro voltava à guarda no fim. Conferir o último
+  quadro de toda ação com `repeat: 0`, não só o do meio. (2026-10-27)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)

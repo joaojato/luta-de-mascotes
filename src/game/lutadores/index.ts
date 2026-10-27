@@ -4,6 +4,8 @@ import type { FighterCombat, FighterStats } from '../types';
 
 import urubu from './urubu.json';
 import almirante from './almirante.json';
+import cartola from './cartola.json';
+import cachorro from './cachorro.json';
 import redBrawler from './red-brawler.json';
 import greenBoxer from './green-boxer.json';
 import jiujitsuFighter from './jiujitsu-fighter.json';
@@ -121,7 +123,7 @@ function expandirSkins(lutador: LutadorJson): LutadorJson[] {
 }
 
 /** Ordem de registro = ordem na seleção. O primeiro é o padrão dos debugs. */
-export const LUTADORES: LutadorJson[] = [urubu, almirante, redBrawler, greenBoxer, jiujitsuFighter].flatMap(
+export const LUTADORES: LutadorJson[] = [urubu, almirante, cartola, cachorro, redBrawler, greenBoxer, jiujitsuFighter].flatMap(
   expandirSkins
 );
 

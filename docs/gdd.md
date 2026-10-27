@@ -191,3 +191,27 @@ Sem corvo, cruzes, escudos, armas ou texto.
   que só possui soco forte. Especial: sequência de socos, como o modelo base.
 - Conferência: células de 256×256, cinco colunas, régua do idle, chão comum,
   ausência de fragmentos vizinhos e inspeção na Academia antes da seleção.
+
+## Cartola e Cachorro: pacotes de arte (27/10/2026)
+
+Os dois chegaram como pacote de arte pronto (só PNG, sem JSON), com o mesmo
+conjunto de ações do Green Boxer. Entram jogáveis, com números de partida
+medidos na própria arte; a ficha completa (arquétipo, falas, stats próprios)
+continua em aberto com o João.
+
+- **Cartola.** Slug `cartola`, skin base "Fraque bordô". Cartola preta,
+  cabelo alaranjado, fraque bordô, gravata verde lisa, calça verde listrada,
+  sapato preto. Silhueta: magro, cartola alta e cauda do fraque. Arquétipo do
+  GDD: contra-golpe elegante (ainda não refletido nos números).
+- **Cachorro.** Slug `cachorro`, skin base "Listrado". Cão de focinho longo e
+  orelha em pé, camisa listrada preta e branca, short preto, meião, luva de
+  luta. Silhueta: tronco e braços grandes, pernas curtas. Clube de origem,
+  arquétipo e falas: a definir com o João (não está na tabela de candidatos).
+- **Ações** (as 11 do pacote): guarda, andar para frente e para trás,
+  agachar, saltar, defesa alta e baixa, reação ao golpe, soco leve, soco
+  forte, queda. Especial provisório no molde do Green Boxer: `special-charge`
+  usa o agachar e `special` usa o soco forte em três golpes. Sem chute.
+- **Stats e combate:** os do Green Boxer, como o Almirante, para comparar.
+- **Provisórios declarados pelo próprio pacote do Cartola:** soco forte,
+  reação ao golpe e queda. A queda foi substituída na v02 por uma desenhada
+  de verdade; soco forte e reação continuam pedindo redesenho.

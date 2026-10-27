@@ -39,6 +39,10 @@ ele é quebrado em dois, não esticado.
   Brawler. JSON registrado na Academia, prévia animada e prancha de poses.
   Check com 80 testes aprovado. Almirante liberado na seleção por pedido
   do João. Revisão visual continua possível na Academia; Marco 2 permanece aberto.
+- [ ] Cartola e Cachorro (27/10/2026): pacotes de arte dos amigos entram
+  jogáveis na seleção, 11 ações cada, especial provisório no molde do Green
+  Boxer. Testado em luta no navegador. Falta: conferir na Academia, ficha
+  completa no GDD, redesenho do soco forte e da reação do Cartola.
 - [x] Fora de ordem, por ordem do João (01/10/2026): **controle pelo
   corpo**. O celular vira câmera por QR code, lê o corpo com MediaPipe e
   manda para o jogo no PC; teclado continua valendo. Testado com celular

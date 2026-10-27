@@ -1187,3 +1187,33 @@ baixar, renomear, gerar em outro chat e fazer upload para o integrante.
 **Em aberto:** fluxo depende de sessão com geração, processamento e escrita
 no Drive; consentimento não fornece ferramentas inexistentes. Pasta do
 grupo ou conta Google confirmada do destinatário ainda deve ser identificada.
+
+## 2026-10-27: Cartola e Cachorro entram na seleção
+
+**Marco:** 2, produção de arte.
+**Pedido:** incluir nos lutadores os pacotes de arte do Cartola (v02) e do
+Cachorro, enviados como ZIP.
+**Feito:** sheets em `public/assets/lutadores/<slug>/base/`, JSON novo para
+cada um, registro na seleção depois do Almirante. Quadros e caixa medidos
+pelo `sprite registrar`; hitbox dos socos medida pelo braço que passa da
+borda do idle; guard box pela silhueta da defesa. Especial provisório no
+molde do Green Boxer (agachar carrega, soco forte em três golpes).
+Ajustes de arte: no Cartola, `walk-backward` e `knockdown` vieram como tira
+bruta de 8 quadros fora da grade (2172x724) e foram postos em células de 256
+na escala do idle; o `hit-high` provisório afundava 11 px e foi firmado no
+chão. No Cachorro, `crouch` e `block-low` vieram menores que o idle e foram
+reescalados (fator 1,379); os dois terminavam em pé, então a animação para
+no quadro mais baixo (4 de 5).
+**Verificado:** `npm run check` com 6 arquivos e 92 testes aprovados, build
+ok. Jogo aberto no navegador: os dois na grade da seleção, Cartola contra
+Almirante e Cachorro contra Almirante andando, socando e tirando vida, sem
+erro de jogo no console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** o LEIA-ME do Cartola descreve 13 sheets de 256 de altura, mas
+duas vieram em outro formato; o pacote do Cachorro não tem descrição de
+cada ação.
+**Em aberto:** Academia quadro a quadro dos dois; ficha completa no GDD
+(clube, arquétipo e falas do Cachorro); redesenho do soco forte e da reação
+do Cartola; especial e chute próprios.
