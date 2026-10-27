@@ -140,11 +140,61 @@
     },
     {
       "action": "light-punch",
-      "file": "light-punch.png",
+      "label": "Soco rápido (dois jabs)",
+      "file": "light-double-jab-v2.png",
       "frames": 6,
       "frameRate": 14,
       "repeat": 0,
-      "label": "Light Punch",
+      "defaultVisual": {
+        "x": 28,
+        "y": 28,
+        "width": 199,
+        "height": 200
+      },
+      "attack": {
+        "frames": [
+          1,
+          3
+        ],
+        "bounds": {
+          "x": 15,
+          "y": 70,
+          "width": 85,
+          "height": 45
+        }
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            1
+          ],
+          "bounds": {
+            "x": 15,
+            "y": 70,
+            "width": 85,
+            "height": 45
+          }
+        },
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 15,
+            "y": 70,
+            "width": 85,
+            "height": 45
+          }
+        }
+      ]
+    },
+    {
+      "action": "heavy-punch",
+      "label": "Soco forte (cruzado)",
+      "file": "heavy-cross-v2.png",
+      "frames": 6,
+      "frameRate": 12,
+      "repeat": 0,
       "defaultVisual": {
         "x": 14,
         "y": 26,
@@ -157,10 +207,10 @@
           3
         ],
         "bounds": {
-          "x": 8,
-          "y": 74,
-          "width": 92,
-          "height": 38
+          "x": 5,
+          "y": 65,
+          "width": 100,
+          "height": 55
         }
       }
     },

@@ -142,29 +142,53 @@
     },
     {
       "action": "light-punch",
-      "file": "light-punch.png",
+      "label": "Soco rápido (dois jabs)",
+      "file": "light-double-jab-v2.png",
       "frames": 6,
       "frameRate": 14,
       "repeat": 0,
-      "label": "Light Punch",
       "defaultVisual": {
-        "x": 11,
-        "y": 26,
+        "x": 30,
+        "y": 28,
         "width": 196,
-        "height": 202
+        "height": 200
       },
       "attack": {
         "frames": [
-          2,
+          1,
           3
         ],
         "bounds": {
-          "x": 8,
-          "y": 74,
-          "width": 92,
-          "height": 38
+          "x": 15,
+          "y": 70,
+          "width": 85,
+          "height": 45
         }
-      }
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            1
+          ],
+          "bounds": {
+            "x": 15,
+            "y": 70,
+            "width": 85,
+            "height": 45
+          }
+        },
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 15,
+            "y": 70,
+            "width": 85,
+            "height": 45
+          }
+        }
+      ]
     },
     {
       "action": "heavy-kick",
@@ -235,27 +259,41 @@
       "label": "Mordida (preparação)"
     },
     {
+      "action": "special-run",
+      "label": "Galope (aproximação)",
+      "file": "special-bounding-run-v2.png",
+      "frames": 8,
+      "frameRate": 16,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 14,
+        "y": 86,
+        "width": 228,
+        "height": 142
+      }
+    },
+    {
       "action": "special",
-      "file": "special-quadruped-bite-v1.png",
+      "label": "Bote e mordida",
+      "file": "special-pounce-bite-v2.png",
       "frames": 12,
       "frameRate": 16,
       "repeat": 0,
       "defaultVisual": {
-        "x": 36,
+        "x": 16,
         "y": 28,
-        "width": 183,
+        "width": 223,
         "height": 200
       },
-      "label": "Avanço e mordida",
       "attack": {
         "frames": [
-          6,
-          7
+          4,
+          5
         ],
         "bounds": {
-          "x": 25,
-          "y": 140,
-          "width": 95,
+          "x": 15,
+          "y": 120,
+          "width": 100,
           "height": 80
         }
       }
@@ -285,14 +323,21 @@
     "special": {
       "kind": "run",
       "dodge": "pulo",
-      "reach": 140,
-      "speed": 520,
+      "approachAction": "special-run",
       "loopFrames": [
-        1,
-        3
+        0,
+        7
       ],
-      "strikeFrame": 4,
-      "maxSeconds": 1.4,
+      "speed": 560,
+      "reach": 230,
+      "maxSeconds": 1.6,
+      "strikeFrame": 0,
+      "pounceFrames": [
+        1,
+        8
+      ],
+      "pounceHeight": 55,
+      "pounceReach": 90,
       "hitEffect": "bite"
     },
     "effects": {

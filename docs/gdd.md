@@ -84,17 +84,17 @@ Dois botões de ataque, Soco e Chute; segurar Baixo muda o golpe (João,
 
 | Golpe | Sheet (`action`) | Regra |
 |---|---|---|
-| Soco rápido | `light-punch` | rápido; apertar de novo depois do quadro ativo emenda outro soco. Agachado passa por baixo. Bate na armadura do Soco forte sem interromper. O do Almirante dá dois jabs por aperto. |
-| Soco forte | `heavy-punch` (quebra-galho: `heavy-kick`) | lento e potente; **quebra a defesa baixa**. Aguenta Soco rápido sem parar (armadura). O do Almirante é o tiro; o do Bira é a patada. |
-| Chute básico | `heavy-kick` | dano médio; qualquer guarda segura. |
-| Chute baixo | `low-kick` (quebra-galho: `heavy-kick`) | rente ao chão; **interrompe o Soco forte**; só a guarda agachada segura. |
+| Soco rápido | `light-punch` | dois jabs por aperto (picos nos quadros 1 e 3, dois acertos), no modelo do Almirante; apertar de novo depois do segundo emenda outro par. Agachado passa por baixo. Bate na armadura do Soco forte sem interromper. |
+| Soco forte | `heavy-punch` (quebra-galho: `heavy-kick`) | cruzado com giro, lento e potente; **quebra a defesa baixa**. Aguenta Soco rápido sem parar (armadura). O do Bira é a patada. |
+| Chute básico | `heavy-kick` | dano médio; qualquer guarda segura. O do Almirante é o tiro de garrucha (`moves.kick`). |
+| Chute baixo | `low-kick` (quebra-galho: `heavy-kick`) | rente ao chão; **interrompe o Soco forte**; só a guarda agachada segura. O do Almirante é o chute normal, por escolha do João. |
 | Soco no ar | `jump-punch` (quebra-galho: `light-punch`) | um golpe por pulo. Pega quem está agachado. |
 | Voadora | `jump-kick` (quebra-galho: `heavy-kick`) | mergulho em diagonal para a frente; **quebra a defesa alta**. |
 | Especial | `special-charge` + `special` | próprio de cada mascote. |
 
 Projéteis:
 
-- **Tiro do Almirante** (o Soco forte dele): passa por cima de quem pula e por
+- **Tiro do Almirante** (o Chute dele): passa por cima de quem pula e por
   cima de quem agacha.
 - **Caravela do Almirante** (especial): passa por baixo de quem pula;
   agachar não salva.
@@ -116,7 +116,7 @@ do JSON (Regra do JSON: o motor não conhece mascote).
 |---|---|---|---|
 | Urubu: meteoro | `meteor` | Térmica sobe, ele sai pelo alto da tela, o ponto de impacto segue o oponente até o mergulho começar e então trava; mergulho a 45 graus. Nenhuma guarda segura. | Só pulando enquanto recua (`pulo-recuando`). |
 | Galo: bicada | `hop` | Voo baixo até 110 px do oponente, bicada na altura da cabeça, pouso. | Agachar (`agachar`). |
-| Bira: mordida | `run` | Corre em quatro patas até 140 px do oponente (no máximo 1,4 s) e morde uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
+| Bira: bote | `run` | Galope aos saltos (sheet própria, `approachAction`) até 230 px do oponente; bote com salto real até 90 px dele, mordida no ar uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
 
 O soco forte do Bira é a patada, com o efeito de garras no quadro 3.
 Especiais de avanço acertam uma vez: dano 18 por padrão.

@@ -2,7 +2,10 @@ import type { GolpeId } from './golpes';
 
 export interface FighterMoveConfig {
   jump?: JumpFramesConfig;
+  /** Down + punch (soco forte): sheet and, optionally, a projectile. */
   heavy?: ProjectileMoveConfig;
+  /** Kick button (chute básico): sheet and, optionally, a projectile (the Almirante's shot). */
+  kick?: ProjectileMoveConfig;
   special?: ProjectileMoveConfig;
   /** Effect sheets (no hitbox) the moves reference by name, e.g. `"thermal"`. */
   effects?: Record<string, EffectSheetConfig>;
@@ -57,6 +60,12 @@ export interface ProjectileMoveConfig {
   reach?: number;
   /** `run`: sheet frames repeated while closing in, and the first strike frame. */
   loopFrames?: number[];
+  /** `run`: separate sheet (action name) for the approach loop; without it the loop uses the special sheet. */
+  approachAction?: string;
+  /** `run`: the strike is a pounce: travels and lifts over these frames, landing `pounceReach` short of the target. */
+  pounceFrames?: number[];
+  pounceHeight?: number;
+  pounceReach?: number;
   strikeFrame?: number;
   maxSeconds?: number;
   /** `hop`: frames during which it travels, lift height and the touchdown frame. */

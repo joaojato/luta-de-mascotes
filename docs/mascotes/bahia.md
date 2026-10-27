@@ -1,6 +1,6 @@
 # Bahia — super-herói no padrão Urubu
 
-Sprite-base atual: `referencia/bahia/referencia-estilo-urubu-v2.png`, com os pés mais juntos conforme ajuste solicitado. Primeira versão preservada em `referencia/bahia/referencia-estilo-urubu-v1.png`. Edição feita com a ferramenta integrada de imagens; prompt em `referencia/bahia/prompt-estilo-urubu-v2.txt`.
+Sprite-base escolhido pelo usuário: `referencia/bahia/referencia-estilo-urubu-v1.png` (primeira versão). O usuário decidiu deixar as animações do Bahia para depois. A variante com pés juntos fica preservada em `referencia/bahia/referencia-estilo-urubu-v2.png`, sem ser a referência atual. Edição feita com a ferramenta integrada de imagens; prompt da variante em `referencia/bahia/prompt-estilo-urubu-v2.txt`.
 
 Identidade baseada na referência enviada pelo usuário: humano de pele clara, cabelo preto com topete, traje azul, capa/luvas/botas vermelhas, cinto branco e faixas brancas nas botas. Sem escudo ou texto. Pixel art arcade no padrão do Urubu, contorno escuro, sombras em blocos e anatomia heroica compacta; corpo inteiro e guarda voltada para a esquerda.
 

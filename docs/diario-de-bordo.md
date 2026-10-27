@@ -1343,3 +1343,25 @@ idênticos e só a Arte anterior foi guardada. Lição registrada.
 **Aprovado explicitamente:** nada.
 **Atrito:** "cartola, bira e urubu v1" lido como mascotes inteiros.
 **Em aberto:** cenário de amostra do Chong-U ainda em uso.
+
+## 2026-10-27: Jab duplo, cruzado, tiro no chute e bote do Bira
+
+**Marco:** 2, segue em andamento.
+**Pedido:** ligar a revisão de golpes v2 do Codex; no meio, o João decidiu
+o Almirante: tiro no Chute, chute normal no Baixo + Chute, cruzado no
+Baixo + Soco.
+**Feito:** soco rápido vira dois jabs (dois acertos, quadros 1 e 3) para
+Urubu, Galo, Cartola, Bira e Saci; Almirante mantém o dele. Cruzado
+`heavy-cross-v2` no soco forte de todos menos o Bira (patada). Motor:
+projétil sai de qualquer golpe que o JSON indicar (`moves.kick` no
+Almirante, ação `shot`). Especial `run` ganhou sheet de aproximação
+(`approachAction`: galope) e bote com salto real (`pounceFrames`).
+**Verificado:** `npm run check` com 113 testes, build ok. Chrome: jab duplo
+tira 14 em dois acertos; tiro sai no quadro 3 e tira 10; Bira galopa, dá o
+bote e tira 18; sem erro de página.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** tiro do Almirante: primeiro "chute
+baixo", depois "chute"; ficou no Chute.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** `low-kick`, `jump-kick`, `jump-punch` para os outros cinco.

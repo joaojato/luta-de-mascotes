@@ -528,7 +528,7 @@ export class Fighter {
     if (this.currentAnimKey === this.actionKeys.special && this.character.moves?.special?.kind === 'projectile') {
       return null;
     }
-    if (this.strike === 'soco-forte' && this.character.moves?.heavy?.kind === 'projectile') return null;
+    if (this.strikeMove()?.kind === 'projectile') return null;
     if (this.attackConnected || this.defeated) {
       return null;
     }
@@ -836,7 +836,7 @@ export class Fighter {
       hitHigh: key('hit-high'),
       lightPunch: key('light-punch'),
       heavyPunch: find(this.character.moves?.heavy?.action, 'heavy-punch', 'heavy-kick') ?? key('light-punch'),
-      kick: find('heavy-kick', 'heavy-punch') ?? key('light-punch'),
+      kick: find(this.character.moves?.kick?.action, 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
       lowKick: find('low-kick', 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
       airLight: find('jump-punch') ?? key('light-punch'),
       airKick: find('jump-kick', 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
@@ -1152,6 +1152,13 @@ export class Fighter {
       this.chargeFx?.destroy();
       this.chargeFx = null;
     }
+    const approach = phase === 'run' && move.approachAction
+      ? findCharacterAnimationKeyByAction(this.character.id, move.approachAction)
+      : null;
+    if (approach) {
+      this.sprite.play({ key: approach, repeat: 0 }, true);
+      this.sprite.anims.pause();
+    }
     this.sprite.setFrame(phase === 'run' ? (move.loopFrames?.[0] ?? 0) : 0);
   }
 
@@ -1161,10 +1168,13 @@ export class Fighter {
     if (!a) {
       return;
     }
-    const animation = getCharacterAnimationDefinition(this.character.id, this.actionKeys.special);
+    const move = a.move;
+    const approach = a.phase === 'run' && move.approachAction
+      ? findCharacterAnimationKeyByAction(this.character.id, move.approachAction)
+      : null;
+    const animation = getCharacterAnimationDefinition(this.character.id, approach ?? this.actionKeys.special);
     const fps = animation.frameRate;
     const last = animation.bounds.length - 1;
-    const move = a.move;
     a.clock += seconds;
 
     if (a.phase === 'run') {
@@ -1178,6 +1188,14 @@ export class Fighter {
       if (blocked || next === stop || a.clock >= (move.maxSeconds ?? 1.2)) {
         a.phase = 'strike';
         a.clock = 0;
+        // The pounce aims where the opponent is now; it doesn't follow a jump.
+        a.fromX = this.posX;
+        a.toX = this.opponent ? advanceStop(this.posX, this.opponent.x, move.pounceReach ?? 0) : this.posX;
+        if (approach) {
+          this.sprite.play({ key: this.actionKeys.special, repeat: 0 }, true);
+          this.sprite.anims.pause();
+        }
+        this.sprite.setFrame(move.strikeFrame ?? 0);
       }
     } else if (a.phase === 'strike' || a.phase === 'recover') {
       const first = a.phase === 'strike' ? (move.strikeFrame ?? 0) : (move.diveFrames?.[1] ?? last - 3) + 1;
@@ -1187,6 +1205,12 @@ export class Fighter {
         return;
       }
       this.sprite.setFrame(frame);
+      if (a.phase === 'strike' && move.pounceFrames) {
+        const [from, to] = move.pounceFrames;
+        const leap = Phaser.Math.Clamp((a.clock - (from - first) / fps) / ((to - from) / fps), 0, 1);
+        this.posX = Phaser.Math.Clamp(a.fromX + (a.toX - a.fromX) * leap, this.minX, this.maxX);
+        this.sprite.y = this.groundY - (move.pounceHeight ?? 40) * Math.sin(Math.PI * leap);
+      }
     } else if (a.phase === 'hop') {
       const frame = Math.floor(a.clock * fps);
       if (frame > last) {
@@ -1318,6 +1342,12 @@ export class Fighter {
         this.playState(this.actionKeys.idle, true);
       }
     });
+  }
+
+  /** JSON extras of the strike in progress (projectile, effect), when it has any. */
+  private strikeMove(): ProjectileMoveConfig | undefined {
+    const moves = this.character.moves;
+    return this.strike === 'soco-forte' ? moves?.heavy : this.strike === 'chute-basico' ? moves?.kick : undefined;
   }
 
   /** Drops pending "back to idle" callbacks of an interrupted strike. */
@@ -1574,7 +1604,7 @@ export class Fighter {
   private updateSpecialMotion(seconds: number): void {
     const isSpecial = this.currentAnimKey === this.actionKeys.special;
     const move = isSpecial ? this.character.moves?.special
-      : this.strike === 'soco-forte' ? this.character.moves?.heavy : undefined;
+      : this.strikeMove();
     if (!move || !this.locked) return;
     this.specialClock += seconds;
     const animation = this.currentAnimation();
@@ -1587,7 +1617,7 @@ export class Fighter {
       this.updateShadow();
     } else if (move.kind === 'projectile' && !this.shotReleased && this.specialClock >= (move.releaseFrame ?? 3)/animation.frameRate) {
       this.shotReleased = true;
-      this.spawnProjectile(move, isSpecial ? 'special' : 'low');
+      this.spawnProjectile(move, isSpecial ? 'special' : ATTACK_KIND_OF[this.strike ?? 'soco-forte']);
     }
   }
 

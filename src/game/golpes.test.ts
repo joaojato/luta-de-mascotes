@@ -10,7 +10,7 @@ describe('catálogo de golpes', () => {
   it('mostra o que o Urubu tem, o que usa de quebra-galho e o que falta', () => {
     const urubu = situacoes('urubu');
     expect(urubu['soco-rapido']).toEqual(['tem', 'light-punch']);
-    expect(urubu['soco-forte']).toEqual(['quebra-galho', 'heavy-kick']);
+    expect(urubu['soco-forte']).toEqual(['tem', 'heavy-punch']);
     expect(urubu['chute-basico']).toEqual(['tem', 'heavy-kick']);
     expect(urubu['chute-baixo']).toEqual(['quebra-galho', 'heavy-kick']);
     expect(urubu['voadora']).toEqual(['quebra-galho', 'heavy-kick']);
@@ -19,5 +19,7 @@ describe('catálogo de golpes', () => {
   });
   it('usa a sheet do Forte que o JSON escolhe (tiro do Almirante)', () => {
     expect(situacoes('almirante')['soco-forte']).toEqual(['tem', 'heavy-punch']);
+    expect(situacoes('almirante')['chute-basico']).toEqual(['tem', 'shot']);
+    expect(situacoes('almirante')['chute-baixo']).toEqual(['quebra-galho', 'heavy-kick']);
   });
 });

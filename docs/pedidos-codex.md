@@ -17,13 +17,14 @@ que está na seleção (`urubu/frente`, `almirante/base`, `saci`,
 
 | Arquivo | Golpe | Quadros | O que o motor faz |
 |---|---|---|---|
-| `heavy-punch.png` | Soco forte (Baixo + Soco) | 6 a 8 | Só Urubu, Cartola e Galo (Almirante e Saci já têm; o do Bira é a patada). Lento e pesado: carrega o braço para trás e solta um soco de corpo inteiro. O motor não move o personagem. |
 | `low-kick.png` | Chute baixo (Baixo + Chute) | 6 a 8 | Rápido. Corpo baixo, perna varre rente ao chão; o pé de ataque estica no 3º ou 4º quadro e volta à guarda. O motor não move o personagem. |
 | `jump-kick.png` | Voadora (Chute no ar) | 6 | Desenhada **no ar**, sem pé no chão. Corpo em diagonal para baixo e para a frente, uma perna esticada liderando, a outra dobrada. O motor começa no primeiro quadro de chute e faz o mergulho; não desenhar a trajetória dentro da célula. |
 | `jump-punch.png` | Soco no ar (Soco no ar) | 5 | No ar, joelhos recolhidos, soco para a frente e um pouco para baixo. |
 
-Enquanto não chegam, o jogo usa o chute básico (`heavy-kick`) no lugar do soco
-forte, do chute baixo e da voadora, e o soco rápido no lugar do soco no ar.
+Enquanto não chegam, o jogo usa o chute básico (`heavy-kick`) no lugar do chute
+baixo e da voadora, e o soco rápido no lugar do soco no ar. O soco forte
+(cruzado `heavy-cross-v2.png`) chegou em 27/10 e já está ligado. O chute baixo
+do Almirante é o chute normal por escolha do João: ele não precisa de `low-kick`.
 
 ## Ajustes feitos pelo Claude na integração (27/10/2026)
 

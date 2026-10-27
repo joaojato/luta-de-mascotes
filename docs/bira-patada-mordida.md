@@ -1,5 +1,7 @@
 # Bira — patada pesada e especial de mordida
 
+Revisão posterior do usuário: a patada foi mantida como exceção; o especial passa a usar corrida em galope com suspensão e **pulo para morder**. Direção e assets atualizados em [revisao-golpes-v2.md](revisao-golpes-v2.md). A descrição de corrida rasteira e mordida plantada abaixo registra a versão anterior e foi substituída.
+
 ## Pedido e responsabilidades
 
 O usuário pediu dois movimentos próprios: soco pesado vira uma patada com garras e efeito cortante; especial vira avanço em quatro patas, com mordida ao alcançar o oponente e efeito de mandíbula. O adversário precisa pular para desviar do especial.

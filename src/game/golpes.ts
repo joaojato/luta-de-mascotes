@@ -103,8 +103,11 @@ export function golpesDoLutador(character: CharacterDefinition): GolpeDoLutador[
   const existe = (acao: string) => character.animations.some((animation) => animation.action === acao);
 
   return GOLPES.map((golpe) => {
-    // O JSON pode trocar a sheet do soco forte (o tiro do Almirante sai dele).
-    const doJson = golpe.id === 'soco-forte' ? character.moves?.heavy?.action : undefined;
+    // O JSON pode trocar a sheet do soco forte ou do chute (o tiro do Almirante sai do chute).
+    const doJson =
+      golpe.id === 'soco-forte' ? character.moves?.heavy?.action
+        : golpe.id === 'chute-basico' ? character.moves?.kick?.action
+          : undefined;
     const propria = [doJson, ...golpe.acoes].find((acao): acao is string => acao !== undefined && existe(acao));
     if (propria) {
       return { golpe, situacao: 'tem', acao: propria };

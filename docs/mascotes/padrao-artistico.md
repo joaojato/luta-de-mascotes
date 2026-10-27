@@ -28,6 +28,10 @@ Geradas com a ferramenta integrada de imagens, com fundo transparente. Prompts c
 
 ## Movimentos como skins do Urubu
 
+Exceções próprias mais recentes: [golpes-personalizados-v3.md](../golpes-personalizados-v3.md). Só os comandos explicitamente pedidos ganham novas coreografias; o Cartola preserva a aparência aprovada ao adicionar a bengala da referência. Essa revisão prevalece sobre o pesado padrão do Cartola e os chutes principais de Urubu, Saci e Galo. As outras regras continuam valendo.
+
+Atualização posterior explícita: [revisao-golpes-v2.md](../revisao-golpes-v2.md). Leve passa a seguir os dois rápidos do Almirante; pesado usa o antigo leve do Urubu/Galo, com patada do Bira como exceção confirmada. Todos mantêm ao menos um chute real. Bira usa galope com suspensão e bote com salto para morder. Essa atualização prevalece sobre a cópia integral das ações descrita abaixo. Bahia permanece na primeira versão e suas animações foram adiadas pelo usuário.
+
 As novas bases do Bira e do Cartola usam as 13 ações da variante principal (`frente`) do Urubu: guarda, andar para frente, andar para trás, agachar, saltar, defesa alta, defesa baixa, reação ao golpe, soco leve, chute forte, preparar especial, especial e queda. São 90 quadros por personagem. As folhas de referência usam os arquivos apontados pelo JSON do Urubu, incluindo as versões v2 de defesa alta, reação e soco.
 
 Os quadros foram redesenhados pela ferramenta integrada de imagens usando a base aprovada como identidade e cada sequência do Urubu como guia de poses. Quantidade de quadros, ordem, fps, repetição, janelas de ataque, caixas de ataque/guarda e parâmetros de movimento/combate são herdados do Urubu. O redesenho é generativo: os contornos e detalhes não são uma transformação geométrica idêntica do original. A montagem usa uma escala uniforme dentro de cada ação, acompanha o deslocamento vertical da referência e calcula as caixas visuais das novas figuras.
