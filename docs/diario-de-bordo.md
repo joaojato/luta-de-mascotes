@@ -1217,3 +1217,20 @@ cada ação.
 **Em aberto:** Academia quadro a quadro dos dois; ficha completa no GDD
 (clube, arquétipo e falas do Cachorro); redesenho do soco forte e da reação
 do Cartola; especial e chute próprios.
+
+## 2026-10-27: Pull do Cartola e do Cachorro
+
+**Marco:** 2, segue em andamento.
+**Pedido:** puxar os personagens novos que ele subiu e saber se o jogo está
+na Vercel e como jogar.
+**Feito:** pull de `f1f42bf`. O `index.ts` tinha mudança local (Saci e
+mecânica de golpes, ainda não commitados) e remota (Cartola e Cachorro);
+juntei as duas listas. Trabalho local preservado.
+**Verificado:** `npm run check` aprovado (typecheck, 106 testes, build).
+Vercel: nenhum projeto do jogo na conta; nunca foi publicado.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** publicar na Vercel esbarra no NUNCA do contrato enquanto
+Red Brawler e Jiu-Jitsu Fighter (`_amostra`) estiverem na seleção.
