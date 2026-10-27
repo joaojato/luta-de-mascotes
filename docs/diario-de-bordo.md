@@ -1387,3 +1387,24 @@ bengalada (12) acertam; sem erro de página.
 de golpe curtas; conferir quadro a quadro antes de concluir que errou.
 **Em aberto:** `low-kick` do Bira; `jump-kick` e `jump-punch` dos seis;
 animação de atordoado.
+
+## 2026-10-27: Um soco com cada mão e Saci original
+
+**Marco:** 2, segue em andamento.
+**Pedido:** continuar o que o Codex deixou nos socos (`docs/socos-alternados-v4.md`).
+**Feito:** leve de Urubu, Bira, Cartola e Galo aponta para
+`light-alternating-v4.png` (um soco com cada mão, giro de tronco no
+segundo). Saci volta a `light-punch.png` e `heavy-punch.png` com as entradas
+de antes da v2 (12 FPS, acerto no quadro 3, caixas originais). Aliases
+`light-double-jab-v2.png` e `saci/heavy-cross-v2.png` saíram. Caixas
+conferidas pela ponta do punho: os dois braços dos quatro cabem na caixa
+atual. GDD atualizado.
+**Verificado:** `npm run check` com 115 testes (inclui existência dos
+arquivos apontados), build ok. Não abri no navegador.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** jab duplo v2 repetia o mesmo braço;
+Saci não devia ter sido padronizado.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** conferir os leves na Academia; `low-kick` do Bira;
+`jump-kick` e `jump-punch` dos seis; animação de atordoado.

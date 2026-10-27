@@ -28,6 +28,8 @@ Geradas com a ferramenta integrada de imagens, com fundo transparente. Prompts c
 
 ## Movimentos como skins do Urubu
 
+Correção mais recente: [socos-alternados-v4.md](../socos-alternados-v4.md). Leves de Urubu/Bira/Cartola/Galo precisam mostrar um braço em cada soco, com mudança evidente de ombro e tronco, sem duplicar o mesmo jab. Saci preserva seus socos fraco e forte originais; Almirante mantém seu leve. Essa exceção prevalece sobre a padronização v2.
+
 Exceções próprias mais recentes: [golpes-personalizados-v3.md](../golpes-personalizados-v3.md). Só os comandos explicitamente pedidos ganham novas coreografias; o Cartola preserva a aparência aprovada ao adicionar a bengala da referência. Essa revisão prevalece sobre o pesado padrão do Cartola e os chutes principais de Urubu, Saci e Galo. As outras regras continuam valendo.
 
 Atualização posterior explícita: [revisao-golpes-v2.md](../revisao-golpes-v2.md). Leve passa a seguir os dois rápidos do Almirante; pesado usa o antigo leve do Urubu/Galo, com patada do Bira como exceção confirmada. Todos mantêm ao menos um chute real. Bira usa galope com suspensão e bote com salto para morder. Essa atualização prevalece sobre a cópia integral das ações descrita abaixo. Bahia permanece na primeira versão e suas animações foram adiadas pelo usuário.

@@ -136,53 +136,28 @@
     },
     {
       "action": "light-punch",
-      "label": "Soco rápido (dois jabs)",
-      "file": "light-double-jab-v2.png",
+      "label": "Soco leve",
+      "file": "light-punch.png",
       "frames": 6,
-      "frameRate": 14,
+      "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 22,
-        "y": 28,
-        "width": 212,
-        "height": 200
+        "x": 8,
+        "y": 33,
+        "width": 199,
+        "height": 197
       },
       "attack": {
         "frames": [
-          1,
           3
         ],
         "bounds": {
-          "x": 15,
+          "x": 5,
           "y": 70,
-          "width": 85,
-          "height": 45
+          "width": 100,
+          "height": 50
         }
-      },
-      "attackSpans": [
-        {
-          "frames": [
-            1
-          ],
-          "bounds": {
-            "x": 15,
-            "y": 70,
-            "width": 85,
-            "height": 45
-          }
-        },
-        {
-          "frames": [
-            3
-          ],
-          "bounds": {
-            "x": 15,
-            "y": 70,
-            "width": 85,
-            "height": 45
-          }
-        }
-      ]
+      }
     },
     {
       "action": "knockdown",
@@ -272,27 +247,26 @@
     },
     {
       "action": "heavy-punch",
-      "label": "Soco forte (cruzado)",
-      "file": "heavy-cross-v2.png",
+      "label": "Soco forte",
+      "file": "heavy-punch.png",
       "frames": 6,
       "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 17,
-        "y": 28,
-        "width": 222,
-        "height": 200
+        "x": 8,
+        "y": 33,
+        "width": 186,
+        "height": 197
       },
       "attack": {
         "frames": [
-          2,
           3
         ],
         "bounds": {
           "x": 5,
-          "y": 65,
+          "y": 70,
           "width": 100,
-          "height": 55
+          "height": 50
         }
       }
     },

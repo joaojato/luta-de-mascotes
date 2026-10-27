@@ -1,5 +1,7 @@
 # Soco leve duplo, pesado separado e Bira em galope
 
+Correção posterior obrigatória: [socos-alternados-v4.md](socos-alternados-v4.md). Os leves v2 repetiam o mesmo braço e foram rejeitados. Urubu/Bira/Cartola/Galo ganham alternância real; Saci volta aos socos fraco e forte originais. Não usar esta entrega histórica para sobrescrever essas correções.
+
 Atualização posterior: [golpes-personalizados-v3.md](golpes-personalizados-v3.md) define exceções próprias para pesado/baixo/especial do Cartola e os chutes de Urubu, Saci e Galo. Os leves e a patada do Bira desta revisão permanecem. A tabela abaixo registra a entrega anterior.
 
 ## Decisões confirmadas

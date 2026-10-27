@@ -1,5 +1,7 @@
 # Golpes próprios — Cartola, Urubu, Saci e Galo
 
+Correção posterior dos socos: [socos-alternados-v4.md](socos-alternados-v4.md). Os leves de Urubu/Bira/Cartola/Galo alternam de fato as mãos, e o Saci mantém os socos fraco e forte originais. Os golpes próprios desta revisão v3 permanecem preservados.
+
 ## Direção solicitada e responsabilidades
 
 Esta atualização substitui apenas os movimentos explicitamente indicados. Preservar as aparências aprovadas e os leves de dois socos rápidos da revisão anterior. Cartola ganha bengalada pesada, varredura de bengala e especial Pó de Arroz. Urubu ganha bicada que fecha e puxa no comando de chute. Saci arremessa o cachimbo em parábola enquanto coloca outro na boca. Galo ganha chute giratório com o efeito de garras do Bira.

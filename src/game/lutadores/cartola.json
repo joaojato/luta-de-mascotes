@@ -142,8 +142,8 @@
     },
     {
       "action": "light-punch",
-      "label": "Soco rápido (dois jabs)",
-      "file": "light-double-jab-v2.png",
+      "label": "Soco rápido (um com cada mão)",
+      "file": "light-alternating-v4.png",
       "frames": 6,
       "frameRate": 14,
       "repeat": 0,

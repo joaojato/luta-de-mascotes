@@ -65,6 +65,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 
 ## Sobre a arte
 
+- **"Dois socos" é um com cada mão, e padronizar não vale para todos.** Os
+  jabs duplos v2 repetiam o mesmo braço e o João rejeitou: o segundo soco
+  precisa trocar de ombro e girar o tronco, como no Almirante. E o Saci não
+  devia ter entrado na padronização; voltou aos socos fraco e forte
+  originais. Conferir a origem do braço no ombro, não só o punho, e
+  perguntar antes de estender um padrão a quem já tinha golpe próprio.
+  (2026-10-27)
 - **O João não quer fluidez de vídeo, quer key pose de SF2.** Ele mostrou a
   sheet do Ryu (3 a 5 quadros por golpe) e perguntou por que não gerar a
   sheet no modelo de imagem. A ADR 0002 tinha descartado isso como "plano
