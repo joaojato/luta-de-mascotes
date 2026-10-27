@@ -24,3 +24,15 @@ que está na seleção (`urubu/frente`, `almirante/base`, `saci`,
 
 Enquanto não chegam, o jogo usa o chute básico (`heavy-kick`) no lugar do soco
 forte, do chute baixo e da voadora, e o soco rápido no lugar do soco no ar.
+
+## Ajustes feitos pelo Claude na integração (27/10/2026)
+
+Alinhamento, sem redesenho; conferir se ficou bom aos olhos:
+
+- `urubu/frente/special-thermal-charge-v1.png`, quadro 3: subiu 3 px (a bota
+  passava 3 px da linha do chão do idle).
+- `urubu/frente/special-meteor-v1.png`, quadro 0: subiu 13 px (as pernas
+  pendiam abaixo do chão). Só aparece no primeiro instante da subida.
+
+Próximas entregas: manter as pernas na linha do idle em todo quadro que
+começa ou termina no chão (Regra da Régua do Idle, cobrada por teste).

@@ -6,7 +6,7 @@ import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fight
 import { getCharacterDefinition } from '../game/hero';
 import { carregarControles, COMANDOS_LUTA, type ComandoLuta, type Lado } from '../game/controles';
 import { MatchHud } from '../game/matchHud';
-import { armorAbsorbs, ducksUnder, guardHolds, jumpsOver } from '../game/moveMechanics';
+import { armorAbsorbs, ducksUnder, guardHolds, jumpsOver, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
@@ -234,10 +234,14 @@ export class MatchScene extends BaseScene {
     if (ducksUnder(attack.move, defender.isDucking) || jumpsOver(attack.move, defender.isAirborne)) {
       return;
     }
+    const escape = { airborne: defender.isAirborne, ducking: defender.isDucking, movingAway: defender.isMovingAwayFrom(attacker.x) };
+    if (specialDodged(attack.dodge, escape)) {
+      return;
+    }
 
     // Guard rules per move (GDD, "Golpes"): the heavy breaks the crouching
     // guard; the low kick and the flying kick break the standing one.
-    const blocked = guardHolds(attack.move, defender.guardStance);
+    const blocked = !attack.unblockable && guardHolds(attack.move, defender.guardStance);
     const armored = armorAbsorbs(attack.move, defender.isInHeavy);
     const isSpecial = attack.profile.kind === 'special';
     const finisher = attack.finisher && !blocked;
@@ -399,6 +403,8 @@ export class MatchScene extends BaseScene {
       depth: DEPTH_BACK,
       onSpecialStart: (fighter) => playSuperCutIn(this, { characterId: fighter.characterId, side: 'right' })
     });
+    this.p1.setOpponent(this.p2);
+    this.p2.setOpponent(this.p1);
   }
 
   /**

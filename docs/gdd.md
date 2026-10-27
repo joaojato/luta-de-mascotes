@@ -107,6 +107,20 @@ Botões são remapeáveis por lado do teclado na Academia (aba Botões) e valem
 na luta. Números exatos (dano, vida, carga do especial) ficam no JSON do
 mascote e podem ser testados na aba Ajustes da Academia. Aqui é a intenção.
 
+## Especiais de avanço (27/10/2026)
+
+Arte do Codex, mecânica no motor por tipo, configurada em `moves.special`
+do JSON (Regra do JSON: o motor não conhece mascote).
+
+| Mascote | Tipo (`kind`) | O que faz | Como escapar (`dodge`) |
+|---|---|---|---|
+| Urubu: meteoro | `meteor` | Térmica sobe, ele sai pelo alto da tela, o ponto de impacto segue o oponente até o mergulho começar e então trava; mergulho a 45 graus. Nenhuma guarda segura. | Só pulando enquanto recua (`pulo-recuando`). |
+| Galo: bicada | `hop` | Voo baixo até 110 px do oponente, bicada na altura da cabeça, pouso. | Agachar (`agachar`). |
+| Bira: mordida | `run` | Corre em quatro patas até 140 px do oponente (no máximo 1,4 s) e morde uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
+
+O soco forte do Bira é a patada, com o efeito de garras no quadro 3.
+Especiais de avanço acertam uma vez: dano 18 por padrão.
+
 Especial: a barra enche batendo, apanhando e também sozinha com o tempo de
 luta (`meterSeconds`, padrão 45 s; 0 desliga). Decisão do Claude para dar
 sentido ao "tempo para carregar a habilidade" pedido pelo João.

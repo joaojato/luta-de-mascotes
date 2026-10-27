@@ -158,7 +158,9 @@
     }
   ],
   "stats": {},
-  "combat": {},
+  "combat": {
+    "specialDamage": 18
+  },
   "actions": [
     {
       "action": "idle",
@@ -339,42 +341,45 @@
     },
     {
       "action": "special-charge",
-      "file": "special-charge.png",
+      "file": "special-thermal-charge-v1.png",
       "frames": 5,
       "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 37,
-        "y": 37,
-        "width": 165,
-        "height": 191
+        "x": 28,
+        "y": 23,
+        "width": 200,
+        "height": 205
       },
-      "label": "Special Charge"
+      "label": "Térmica (preparação)"
     },
     {
       "action": "special",
-      "file": "special.png",
+      "file": "special-meteor-v1.png",
       "frames": 12,
       "frameRate": 16,
       "repeat": 0,
       "defaultVisual": {
-        "x": 50,
-        "y": 30,
-        "width": 178,
-        "height": 198
+        "x": 22,
+        "y": 2,
+        "width": 212,
+        "height": 226
       },
-      "label": "Special",
+      "label": "Meteoro",
       "attack": {
         "frames": [
           4,
           5,
-          6
+          6,
+          7,
+          8,
+          9
         ],
         "bounds": {
-          "x": 55,
-          "y": 34,
-          "width": 71,
-          "height": 103
+          "x": 10,
+          "y": 50,
+          "width": 236,
+          "height": 180
         }
       }
     },
@@ -392,5 +397,40 @@
       },
       "label": "Knockdown"
     }
-  ]
+  ],
+  "moves": {
+    "special": {
+      "kind": "meteor",
+      "dodge": "pulo-recuando",
+      "unblockable": true,
+      "riseFrames": [
+        0,
+        2
+      ],
+      "riseSpeed": 1600,
+      "holdFrame": 3,
+      "holdSeconds": 0.4,
+      "diveFrames": [
+        4,
+        8
+      ],
+      "diveSeconds": 0.4,
+      "chargeEffect": "thermal",
+      "trailEffect": "trail"
+    },
+    "effects": {
+      "thermal": {
+        "file": "thermal-updraft-v1.png",
+        "frames": 6,
+        "frameRate": 12,
+        "repeat": -1
+      },
+      "trail": {
+        "file": "meteor-trail-v1.png",
+        "frames": 6,
+        "frameRate": 16,
+        "repeat": -1
+      }
+    }
+  }
 }

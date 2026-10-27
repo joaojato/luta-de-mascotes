@@ -98,6 +98,18 @@ export function buildFighterCharacter(config: FighterCharacterConfig): Character
     }, effectSheet));
   }
 
+  // Effect sheets named in `moves.effects` (thermal column, trail, slash...):
+  // registered as `fx-<name>` actions so the Academia shows them too.
+  Object.entries(config.moves?.effects ?? {}).forEach(([name, fx]) => {
+    const fxSheet = sheet(animationKey(config.id, `fx-${name}`), `${config.assetRoot}/${fx.file}`, fx.frames);
+    spritesheets.push(fxSheet);
+    animations.push(makeAnimation(config.id, {
+      action: `fx-${name}`, label: `Efeito ${name}`, file: fx.file,
+      frames: fx.frames, frameRate: fx.frameRate, repeat: fx.repeat ?? 0,
+      defaultVisual: rect(0, 0, 256, 256)
+    }, fxSheet));
+  });
+
   return {
     moves: config.moves,
     id: config.id,

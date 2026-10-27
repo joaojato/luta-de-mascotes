@@ -5,7 +5,9 @@
   "anchorUsage": "Bira, padrão Urubu, guarda voltada para a esquerda",
   "selecionavel": true,
   "stats": {},
-  "combat": {},
+  "combat": {
+    "specialDamage": 18
+  },
   "skins": [
     {
       "id": "urubu-v1",
@@ -485,43 +487,69 @@
       }
     },
     {
+      "action": "heavy-punch",
+      "file": "heavy-claw-v1.png",
+      "frames": 10,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 19,
+        "y": 24,
+        "width": 217,
+        "height": 204
+      },
+      "label": "Patada",
+      "attack": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 15,
+          "y": 60,
+          "width": 100,
+          "height": 110
+        }
+      }
+    },
+    {
       "action": "special-charge",
-      "file": "special-charge.png",
+      "file": "special-bite-charge-v1.png",
       "frames": 5,
       "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 45,
-        "y": 38,
-        "width": 154,
-        "height": 190
+        "x": 26,
+        "y": 28,
+        "width": 203,
+        "height": 200
       },
-      "label": "Special Charge"
+      "label": "Mordida (preparação)"
     },
     {
       "action": "special",
-      "file": "special.png",
+      "file": "special-quadruped-bite-v1.png",
       "frames": 12,
       "frameRate": 16,
       "repeat": 0,
       "defaultVisual": {
-        "x": 48,
-        "y": 32,
-        "width": 176,
-        "height": 196
+        "x": 36,
+        "y": 28,
+        "width": 183,
+        "height": 200
       },
-      "label": "Special",
+      "label": "Avanço e mordida",
       "attack": {
         "frames": [
-          4,
-          5,
-          6
+          6,
+          7
         ],
         "bounds": {
-          "x": 55,
-          "y": 34,
-          "width": 71,
-          "height": 103
+          "x": 25,
+          "y": 140,
+          "width": 95,
+          "height": 80
         }
       }
     },
@@ -539,5 +567,38 @@
       },
       "label": "Knockdown"
     }
-  ]
+  ],
+  "moves": {
+    "heavy": {
+      "kind": "strike",
+      "action": "heavy-punch",
+      "effect": "claw",
+      "effectFrame": 3
+    },
+    "special": {
+      "kind": "run",
+      "dodge": "pulo",
+      "reach": 140,
+      "speed": 520,
+      "loopFrames": [
+        1,
+        3
+      ],
+      "strikeFrame": 4,
+      "maxSeconds": 1.4,
+      "hitEffect": "bite"
+    },
+    "effects": {
+      "claw": {
+        "file": "claw-slash-fx-v1.png",
+        "frames": 6,
+        "frameRate": 18
+      },
+      "bite": {
+        "file": "bite-snap-fx-v1.png",
+        "frames": 6,
+        "frameRate": 18
+      }
+    }
+  }
 }

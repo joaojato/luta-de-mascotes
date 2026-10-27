@@ -4,7 +4,20 @@ export interface FighterMoveConfig {
   jump?: JumpFramesConfig;
   heavy?: ProjectileMoveConfig;
   special?: ProjectileMoveConfig;
+  /** Effect sheets (no hitbox) the moves reference by name, e.g. `"thermal"`. */
+  effects?: Record<string, EffectSheetConfig>;
 }
+
+export interface EffectSheetConfig {
+  file: string;
+  frames: number;
+  frameRate: number;
+  /** -1 loops while the move needs it. */
+  repeat?: number;
+}
+
+/** Ways out of a special (GDD): jump, duck, or jump while backing away. */
+export type SpecialDodge = 'pulo' | 'agachar' | 'pulo-recuando';
 
 /** Jump sheet layout; omitted fields follow the Urubu model (see {@link jumpFrames}). */
 export interface JumpFramesConfig {
@@ -36,6 +49,65 @@ export interface ProjectileMoveConfig {
   hitWidth?: number;
   hitHeight?: number;
   persistOnHit?: boolean;
+  /** How the defender escapes (advance specials). */
+  dodge?: SpecialDodge | string;
+  /** No guard holds it. */
+  unblockable?: boolean;
+  /** Advance (`run`, `hop`, `meteor`): distance from the opponent where it stops and strikes. */
+  reach?: number;
+  /** `run`: sheet frames repeated while closing in, and the first strike frame. */
+  loopFrames?: number[];
+  strikeFrame?: number;
+  maxSeconds?: number;
+  /** `hop`: frames during which it travels, lift height and the touchdown frame. */
+  travelFrames?: number[];
+  hopHeight?: number;
+  landFrame?: number;
+  /** `meteor`: rise, off-screen hold, diagonal dive and ground recovery. */
+  riseFrames?: number[];
+  riseSpeed?: number;
+  holdFrame?: number;
+  holdSeconds?: number;
+  diveFrames?: number[];
+  diveSeconds?: number;
+  /** Effects (names from `effects`): during the charge, behind the dive, on contact, with the strike. */
+  chargeEffect?: string;
+  trailEffect?: string;
+  hitEffect?: string;
+  effect?: string;
+  effectFrame?: number;
+}
+
+/** Specials that travel toward the opponent instead of playing in place. */
+export const ADVANCE_KINDS = ['run', 'hop', 'meteor'];
+
+/** Whether the defender escapes a special the way its JSON says (GDD, "Especiais"). */
+export function specialDodged(
+  dodge: SpecialDodge | undefined,
+  defender: { airborne: boolean; ducking: boolean; movingAway: boolean }
+): boolean {
+  if (dodge === 'pulo') {
+    return defender.airborne;
+  }
+  if (dodge === 'agachar') {
+    return defender.ducking;
+  }
+  if (dodge === 'pulo-recuando') {
+    return defender.airborne && defender.movingAway;
+  }
+  return false;
+}
+
+/** Where an advance stops: `reach` short of the target, never stepping backwards. */
+export function advanceStop(from: number, target: number, reach: number): number {
+  const dir = Math.sign(target - from) || 1;
+  const stop = target - dir * reach;
+  return dir > 0 ? Math.max(from, stop) : Math.min(from, stop);
+}
+
+/** Meteor dive start: above the screen, back along a 45 degree line that ends on the target. */
+export function meteorDiveStart(targetX: number, groundY: number, topY: number, dir: 1 | -1): { x: number; y: number } {
+  return { x: targetX - dir * (groundY - topY), y: topY };
 }
 
 /** Continuous traversal, including recovery frames after reaching the far edge. */

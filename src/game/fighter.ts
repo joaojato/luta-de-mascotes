@@ -17,7 +17,11 @@ import {
   jumpFlightFrame,
   jumpFrames,
   sweptInterval,
+  ADVANCE_KINDS,
+  advanceStop,
+  meteorDiveStart,
   type AttackMove,
+  type SpecialDodge,
   type GuardStance,
   type JumpFrames,
   type ProjectileMoveConfig
@@ -79,6 +83,9 @@ export interface ActiveAttack {
   facing?: 1 | -1;
   /** Which move this is: decides guard, dodge and armor rules (moveMechanics). */
   move: AttackMove;
+  /** Special only: how the defender escapes it, and whether guard is useless. */
+  dodge?: SpecialDodge;
+  unblockable?: boolean;
   rect: Phaser.Geom.Rectangle;
   profile: AttackProfile;
   signature: number;
@@ -216,6 +223,23 @@ export class Fighter {
   private jumpPhase: 'prepare' | 'air' | 'attack' | 'land' | null = null;
   private jumpClock = 0;
   private airAttackUsed = false;
+  /** Advance special in progress (run / hop / meteor): phase and path. */
+  private advance: {
+    move: ProjectileMoveConfig;
+    phase: 'run' | 'strike' | 'hop' | 'rise' | 'hold' | 'dive' | 'recover';
+    clock: number;
+    fromX: number;
+    toX: number;
+    fromY: number;
+    dir: 1 | -1;
+  } | null = null;
+  private opponent: Fighter | null = null;
+  private previousX = 0;
+  private lastDx = 0;
+  /** Effect sprites that live while a phase lasts (thermal column, dive trail). */
+  private chargeFx: Phaser.GameObjects.Sprite | null = null;
+  private trailFx: Phaser.GameObjects.Sprite | null = null;
+  private lastAttackRect: Phaser.Geom.Rectangle | null = null;
   /** The catalog move being thrown (several moves may share one sheet). */
   private strike: AttackMove | null = null;
   /** Strike pressed during the jump wind-up, thrown as soon as the feet leave the ground. */
@@ -305,6 +329,16 @@ export class Fighter {
   /** Whether the fighter has been knocked out this round. */
   get isDefeated(): boolean {
     return this.defeated;
+  }
+
+  /** The other fighter: advance specials run toward it. */
+  setOpponent(opponent: Fighter): void {
+    this.opponent = opponent;
+  }
+
+  /** Whether the last step moved this fighter away from `x`. */
+  isMovingAwayFrom(x: number): boolean {
+    return this.lastDx !== 0 && Math.sign(this.lastDx) === Math.sign(this.posX - x);
   }
 
   /** Whether the fighter is off the ground (projectiles pass under). */
@@ -518,6 +552,7 @@ export class Fighter {
     const finisher = kind === 'special' && !this.hasAttackFrameAfter(animation, frameIndex);
 
     const attackRect = this.frameRectToWorld(animation, frame.attack);
+    this.lastAttackRect = attackRect;
     if (kind === 'special' && this.character.moves?.special?.kind === 'dash') {
       const sweep = sweptInterval(this.previousSpecialX, this.posX, attackRect.width/2);
       attackRect.x = sweep.x;
@@ -528,7 +563,9 @@ export class Fighter {
       profile: getAttackProfile(this.combat(), kind),
       signature: this.attackId,
       finisher,
-      move: this.currentMove()
+      move: this.currentMove(),
+      dodge: kind === 'special' ? (this.character.moves?.special?.dodge as SpecialDodge | undefined) : undefined,
+      unblockable: kind === 'special' && Boolean(this.character.moves?.special?.unblockable)
     };
   }
 
@@ -544,6 +581,11 @@ export class Fighter {
       return;
     }
     this.attackConnected = true;
+    const hitEffect = this.character.moves?.special?.hitEffect;
+    if (hitEffect && this.currentAnimKey === this.actionKeys.special && this.lastAttackRect) {
+      const center = Phaser.Geom.Rectangle.GetCenter(this.lastAttackRect);
+      this.spawnEffect(hitEffect, center.x, center.y + this.lastAttackRect.height / 2);
+    }
   }
 
   /**
@@ -618,6 +660,8 @@ export class Fighter {
     this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.special}`);
     this.removeStrikeListeners();
     this.strike = null;
+    this.endAdvanceEffects();
+    this.advance = null;
 
     if (blocked) {
       this.knockbackVel = attackerFacing * profile.knockback * 0.35;
@@ -659,6 +703,8 @@ export class Fighter {
     this.jumpPhase = null;
     this.diveVelX = 0;
     this.strike = null;
+    this.endAdvanceEffects();
+    this.advance = null;
     this.sprite.anims.resume();
     this.posX = Phaser.Math.Clamp(x, this.minX, this.maxX);
     this.facing = facing;
@@ -690,6 +736,8 @@ export class Fighter {
    * @param input - The intent snapshot for this frame.
    */
   update(seconds: number, input: FighterInput): void {
+    this.lastDx = this.posX - this.previousX;
+    this.previousX = this.posX;
     if (!this.frozen) this.updateProjectile(seconds);
     if (this.defeated) {
       this.playState(this.actionKeys.knockdown, false);
@@ -737,6 +785,7 @@ export class Fighter {
     }
     this.updateCustomJump(seconds);
     this.updateSpecialMotion(seconds);
+    this.updateAdvance(seconds);
     if (input.light && this.canChainJab()) {
       // Quick punch: pressing again after the hit frames throws the next one.
       this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.lightPunch}`);
@@ -756,6 +805,7 @@ export class Fighter {
   /** Destroys the fighter's display objects. */
   destroy(): void {
     this.clearProjectile();
+    this.endAdvanceEffects();
     this.sprite?.removeAllListeners();
     this.sprite?.destroy();
     this.shadow?.destroy();
@@ -1065,6 +1115,188 @@ export class Fighter {
     };
     this.startOneShot(sheet[move] ?? this.actionKeys.lightPunch);
     this.strike = move;
+    const heavy = this.character.moves?.heavy;
+    if (move === 'soco-forte' && heavy?.effect) {
+      const animation = getCharacterAnimationDefinition(this.character.id, this.actionKeys.heavyPunch);
+      const attackId = this.attackId;
+      this.scene.time.delayedCall(((heavy.effectFrame ?? 0) / animation.frameRate) * 1000, () => {
+        if (this.attackId === attackId && this.strike === 'soco-forte' && heavy.effect) {
+          this.spawnEffect(heavy.effect, this.posX + this.facing * 40 * this.appliedScale, this.groundY - 20 * this.appliedScale);
+        }
+      });
+    }
+  }
+
+  /**
+   * Starts an advance special (run / hop / meteor): the sheet is driven frame by
+   * frame while the fighter travels toward the opponent, like the jump.
+   */
+  private startAdvance(move: ProjectileMoveConfig): void {
+    const target = this.opponent?.x ?? this.posX + this.facing * 300;
+    const dir: 1 | -1 = Math.sign(target - this.posX) < 0 ? -1 : 1;
+    this.facing = dir;
+    this.sprite.setFlipX(dir === 1);
+    this.sprite.play({ key: this.actionKeys.special, repeat: 0 }, true);
+    this.sprite.anims.pause();
+    const phase = move.kind === 'run' ? 'run' : move.kind === 'hop' ? 'hop' : 'rise';
+    this.advance = {
+      move,
+      phase,
+      clock: 0,
+      fromX: this.posX,
+      toX: advanceStop(this.posX, target, move.reach ?? 120),
+      fromY: this.groundY,
+      dir
+    };
+    if (phase !== 'rise') {
+      this.chargeFx?.destroy();
+      this.chargeFx = null;
+    }
+    this.sprite.setFrame(phase === 'run' ? (move.loopFrames?.[0] ?? 0) : 0);
+  }
+
+  /** Advances the travelling special one step; frames follow the path, not the clock. */
+  private updateAdvance(seconds: number): void {
+    const a = this.advance;
+    if (!a) {
+      return;
+    }
+    const animation = getCharacterAnimationDefinition(this.character.id, this.actionKeys.special);
+    const fps = animation.frameRate;
+    const last = animation.bounds.length - 1;
+    const move = a.move;
+    a.clock += seconds;
+
+    if (a.phase === 'run') {
+      const [from, to] = move.loopFrames ?? [0, 0];
+      this.sprite.setFrame(from + (Math.floor(a.clock * fps) % (to - from + 1)));
+      const stop = this.opponent ? advanceStop(this.posX, this.opponent.x, move.reach ?? 120) : a.toX;
+      const step = (move.speed ?? 500) * seconds;
+      const next = Phaser.Math.Clamp(a.dir > 0 ? Math.min(stop, this.posX + step) : Math.max(stop, this.posX - step), this.minX, this.maxX);
+      const blocked = next === this.posX;
+      this.posX = next;
+      if (blocked || next === stop || a.clock >= (move.maxSeconds ?? 1.2)) {
+        a.phase = 'strike';
+        a.clock = 0;
+      }
+    } else if (a.phase === 'strike' || a.phase === 'recover') {
+      const first = a.phase === 'strike' ? (move.strikeFrame ?? 0) : (move.diveFrames?.[1] ?? last - 3) + 1;
+      const frame = first + Math.floor(a.clock * fps);
+      if (frame > last) {
+        this.finishAdvance();
+        return;
+      }
+      this.sprite.setFrame(frame);
+    } else if (a.phase === 'hop') {
+      const frame = Math.floor(a.clock * fps);
+      if (frame > last) {
+        this.finishAdvance();
+        return;
+      }
+      this.sprite.setFrame(frame);
+      const [from, to] = move.travelFrames ?? [0, last];
+      const travel = Phaser.Math.Clamp((a.clock - from / fps) / ((to - from + 1) / fps), 0, 1);
+      this.posX = Phaser.Math.Clamp(a.fromX + (a.toX - a.fromX) * travel, this.minX, this.maxX);
+      const lift = Phaser.Math.Clamp(a.clock / ((move.landFrame ?? last) / fps), 0, 1);
+      this.sprite.y = this.groundY - (move.hopHeight ?? 40) * Math.sin(Math.PI * lift);
+    } else if (a.phase === 'rise') {
+      const [from, to] = move.riseFrames ?? [0, 0];
+      this.sprite.setFrame(from + (Math.floor(a.clock * fps) % (to - from + 1)));
+      this.sprite.y -= (move.riseSpeed ?? 1600) * seconds;
+      if (this.sprite.y < this.cameraTop() - 20) {
+        this.chargeFx?.destroy();
+        this.chargeFx = null;
+        a.phase = 'hold';
+        a.clock = 0;
+      }
+    } else if (a.phase === 'hold') {
+      this.sprite.setFrame(move.holdFrame ?? 0);
+      // The impact point follows the opponent until the dive starts, then it is fixed.
+      a.toX = Phaser.Math.Clamp(this.opponent?.x ?? a.toX, this.minX, this.maxX);
+      if (a.clock >= (move.holdSeconds ?? 0.35)) {
+        const dir: 1 | -1 = Math.sign(a.toX - a.fromX) < 0 ? -1 : 1;
+        const start = meteorDiveStart(a.toX, this.groundY, this.cameraTop() - 20, dir);
+        a.dir = dir;
+        a.fromX = start.x;
+        a.fromY = start.y;
+        a.phase = 'dive';
+        a.clock = 0;
+        this.facing = dir;
+        this.sprite.setFlipX(dir === 1);
+        if (move.trailEffect) {
+          // The trail streams behind the body, not over it.
+          this.trailFx = this.spawnEffect(move.trailEffect, start.x, start.y)?.setDepth(this.depthBase - 0.5) ?? null;
+        }
+      }
+    } else if (a.phase === 'dive') {
+      const progress = Phaser.Math.Clamp(a.clock / (move.diveSeconds ?? 0.35), 0, 1);
+      const [from, to] = move.diveFrames ?? [0, 0];
+      this.sprite.setFrame(Math.min(to, from + Math.floor(progress * (to - from + 1))));
+      // The drawing (and its hitbox) follows the 45 degree path from off-screen;
+      // the position the camera reads stays inside the arena, so it doesn't jerk.
+      const pathX = a.fromX + (a.toX - a.fromX) * progress;
+      this.posX = Phaser.Math.Clamp(pathX, this.minX, this.maxX);
+      this.sprite.y = a.fromY + (this.groundY - a.fromY) * progress;
+      this.trailFx?.setPosition(pathX, this.sprite.y);
+      if (progress < 1) {
+        this.sprite.x = pathX;
+        this.updateShadow();
+        return;
+      }
+      {
+        this.posX = Phaser.Math.Clamp(a.toX, this.minX, this.maxX);
+        this.sprite.y = this.groundY;
+        this.trailFx?.destroy();
+        this.trailFx = null;
+        a.phase = 'recover';
+        a.clock = 0;
+      }
+    }
+
+    this.sprite.x = this.posX;
+    this.updateShadow();
+  }
+
+  private finishAdvance(): void {
+    this.endAdvanceEffects();
+    this.advance = null;
+    this.sprite.y = this.groundY;
+    this.locked = false;
+    this.currentAnimKey = '';
+    this.sprite.anims.resume();
+    this.playState(this.actionKeys.idle, true);
+  }
+
+  private endAdvanceEffects(): void {
+    this.chargeFx?.destroy();
+    this.trailFx?.destroy();
+    this.chargeFx = null;
+    this.trailFx = null;
+  }
+
+  /** Top edge of what the camera shows, in world space (meteor leaves above it). */
+  private cameraTop(): number {
+    return this.scene.cameras?.main?.worldView?.y ?? 0;
+  }
+
+  /**
+   * Plays a named effect sheet from the JSON (`moves.effects`) at a world point,
+   * feet-anchored and mirrored like the fighter. One-shot effects remove themselves.
+   */
+  private spawnEffect(name: string, x: number, y: number, mirror = true): Phaser.GameObjects.Sprite | null {
+    const key = findCharacterAnimationKeyByAction(this.character.id, `fx-${name}`);
+    if (!key) {
+      return null;
+    }
+    const effect = this.scene.add
+      .sprite(x, y, key, 0)
+      .setOrigin(0.5, 1)
+      .setScale(this.appliedScale)
+      .setFlipX(mirror && this.facing === 1)
+      .setDepth(this.depthBase + 2);
+    effect.play(key);
+    effect.once('animationcomplete', () => effect.destroy());
+    return effect;
   }
 
   private startOneShot(animKey: string): void {
@@ -1116,6 +1348,10 @@ export class Fighter {
 
     this.onSpecialStart?.(this);
     spawnChargeAura(this.scene, this.sprite.x, this.sprite.y - this.sprite.displayHeight * 0.45);
+    const chargeEffect = this.character.moves?.special?.chargeEffect;
+    if (chargeEffect) {
+      this.chargeFx = this.spawnEffect(chargeEffect, this.posX, this.groundY, false);
+    }
 
     this.currentAnimKey = this.actionKeys.specialCharge;
     this.sprite.play({ key: this.actionKeys.specialCharge, repeat: 0 }, true);
@@ -1149,6 +1385,13 @@ export class Fighter {
     this.attackId += 1;
     this.attackConnected = false;
     this.attackActiveLast = false;
+    const move = this.character.moves?.special;
+    if (move && ADVANCE_KINDS.includes(move.kind)) {
+      this.startAdvance(move);
+      return;
+    }
+    this.chargeFx?.destroy();
+    this.chargeFx = null;
     this.sprite.play({ key: this.actionKeys.special, repeat: 0 }, true);
     this.sprite.once(`animationcomplete-${this.actionKeys.special}`, () => {
       this.locked = false;

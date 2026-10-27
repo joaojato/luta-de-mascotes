@@ -94,8 +94,18 @@ function expandirSkins(lutador: LutadorJson): LutadorJson[] {
     const daBase = (arquivo: string): string =>
       tem.has(arquivo) ? arquivo : `../${base.pasta}/${arquivo}`;
 
+    const efeitos = lutador.moves?.effects;
     return {
       ...lutador,
+      // Efeitos moram na pasta da base, como as sheets herdadas.
+      moves: efeitos
+        ? {
+            ...lutador.moves,
+            effects: Object.fromEntries(
+              Object.entries(efeitos).map(([nome, fx]) => [nome, { ...fx, file: daBase(fx.file) }])
+            )
+          }
+        : lutador.moves,
       id: `${lutador.id}-${skin.id}`,
       label: `${lutador.label} (${skin.label})`,
       assetRoot: `${lutador.assetRoot}/${skin.pasta}`,

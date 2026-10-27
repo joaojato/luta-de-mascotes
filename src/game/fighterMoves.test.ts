@@ -14,8 +14,9 @@ function setup(characterId: string, facing: 1 | -1 = 1) {
   const events = new Map<string, () => void>();
   const delays: Array<() => void> = [];
   const visual = { x: 0, setDepth() { return this; }, destroy: vi.fn() };
-  const effectVisual = { x:0, setDepth() {return this;}, setOrigin() {return this;},
-    setScale() {return this;}, setFlipX() {return this;}, play() {return this;}, destroy:vi.fn() };
+  const effectVisual = { x:0, y:0, setDepth() {return this;}, setOrigin() {return this;},
+    setScale() {return this;}, setFlipX() {return this;}, play() {return this;}, once() {return this;},
+    setPosition(x: number, y: number) { this.x=x; this.y=y; return this; }, destroy:vi.fn() };
   const sprite = {
     x: 200, y: 500, displayWidth: 358.4, displayHeight: 358.4, originX: .5, originY: 255/256,
     flipX: false, frame: { name: 0 },
@@ -272,5 +273,69 @@ describe('special meter', () => {
     expect(fighter.isMeterReady).toBe(false);
     fighter.update(1.5, NEUTRAL_FIGHTER_INPUT);
     expect(fighter.isMeterReady).toBe(true);
+  });
+});
+
+describe('advance specials', () => {
+  function opponent(x: number) {
+    return { x, isAirborne: false } as unknown as Fighter;
+  }
+  function charged(characterId: string, foe: Fighter) {
+    const ctx = setup(characterId);
+    ctx.fighter.setOpponent(foe);
+    ctx.special();
+    return ctx;
+  }
+
+  it('Bira runs on four legs until in reach, then bites once (jump escapes)', () => {
+    const foe = opponent(700);
+    const {fighter, sprite} = charged('cachorro', foe);
+    expect(sprite.anims.currentAnim.key).toBe('cachorro-special');
+    for (let i = 0; i < 30; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.x).toBeGreaterThan(300);
+    expect(sprite.frame.name).toBeGreaterThanOrEqual(1);
+    for (let i = 0; i < 60 && sprite.frame.name < 6; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.x).toBe(700 - 140);
+    const bite = fighter.getActiveAttack()!;
+    expect(bite.dodge).toBe('pulo');
+    for (let i = 0; i < 60; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe('cachorro-idle');
+  });
+
+  it('Galo hops low toward the head, lands, and the peck is ducked', () => {
+    const {fighter, sprite} = charged('galo', opponent(600));
+    let highest = 500;
+    let peck = null as ReturnType<Fighter['getActiveAttack']>;
+    for (let i = 0; i < 60; i++) {
+      fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+      highest = Math.min(highest, sprite.y);
+      peck = peck ?? fighter.getActiveAttack();
+    }
+    expect(highest).toBeLessThan(470);
+    expect(highest).toBeGreaterThan(440);
+    expect(fighter.x).toBe(600 - 110);
+    expect(peck?.dodge).toBe('agachar');
+    expect(sprite.y).toBe(500);
+  });
+
+  it('Urubu leaves the screen, locks the target when the dive starts and hits there', () => {
+    const foe = opponent(650);
+    const {fighter, sprite} = charged('urubu', foe);
+    for (let i = 0; i < 40 && sprite.y > -20; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBeLessThan(-20);
+    (foe as unknown as {x: number}).x = 800;
+    for (let i = 0; i < 26; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    (foe as unknown as {x: number}).x = 400;
+    let meteor = null as ReturnType<Fighter['getActiveAttack']>;
+    for (let i = 0; i < 30 && sprite.y < 500; i++) {
+      fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+      meteor = meteor ?? fighter.getActiveAttack();
+    }
+    expect(sprite.y).toBe(500);
+    expect(fighter.x).toBe(800);
+    expect(meteor?.unblockable).toBe(true);
+    expect(meteor?.dodge).toBe('pulo-recuando');
+    for (let i = 0; i < 20; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe('urubu-idle');
   });
 });

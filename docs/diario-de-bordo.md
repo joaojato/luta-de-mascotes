@@ -1300,3 +1300,27 @@ Almirante; para os outros virou soco que emenda. Conferir com o João.
 **Em aberto:** mecânica dos especiais que o Codex já desenhou (meteoro do
 Urubu, bicada do Galo, patada e mordida do Bira); sheets `low-kick`,
 `jump-kick` e `jump-punch` para pedir ao Codex.
+
+## 2026-10-27: Comandos de dois botões e especiais do Codex no jogo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** Chute no botão do Forte; Baixo+Soco = soco forte; chute no ar
+= voadora, soco no ar = soco no ar; incluir as animações novas do Codex.
+**Feito:** motor guarda qual golpe foi pedido (vários dividem a mesma
+sheet). Baixo+Chute virou o chute baixo e o botão separado saiu. Perfil de
+dano novo do chute básico (também a voadora). Especiais de avanço por tipo
+no JSON: `run` (Bira), `hop` (Galo), `meteor` (Urubu), com esquiva por
+dado (`pulo`, `agachar`, `pulo-recuando`) e efeitos (`moves.effects`):
+térmica, rastro, garras, mandíbula. Patada do Bira no soco forte. Dano dos
+três especiais 18.
+**Verificado:** `npm run check` com 11 arquivos e 149 testes, build ok.
+Chrome: meteoro sobe, mergulha e acerta o Bira; Bira corre e morde o Galo;
+Galo voa baixo e bica o Urubu; sem erro de página.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** a divisão Codex arte, Claude mecânica.
+**Atrito:** Régua do Idle barrou dois quadros do meteoro abaixo do chão;
+alinhados (3 e 13 px) e registrados em `docs/pedidos-codex.md`.
+**Em aberto:** conferir a esquiva de cada especial jogando de verdade;
+sheets `heavy-punch` (Urubu, Cartola, Galo), `low-kick`, `jump-kick`,
+`jump-punch`.

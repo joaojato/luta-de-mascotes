@@ -184,42 +184,42 @@
     },
     {
       "action": "special-charge",
-      "file": "special-charge.png",
+      "file": "special-peck-charge-v1.png",
       "frames": 5,
       "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 35,
+        "x": 24,
         "y": 28,
-        "width": 174,
+        "width": 208,
         "height": 200
       },
-      "label": "Special Charge"
+      "label": "Bicada (preparação)"
     },
     {
       "action": "special",
-      "file": "special.png",
+      "file": "special-flying-peck-v1.png",
       "frames": 12,
       "frameRate": 16,
       "repeat": 0,
       "defaultVisual": {
-        "x": 44,
-        "y": 31,
-        "width": 189,
-        "height": 197
+        "x": 26,
+        "y": 28,
+        "width": 204,
+        "height": 200
       },
-      "label": "Special",
+      "label": "Bicada em voo",
       "attack": {
         "frames": [
-          4,
           5,
-          6
+          6,
+          7
         ],
         "bounds": {
-          "x": 55,
-          "y": 34,
-          "width": 71,
-          "height": 103
+          "x": 15,
+          "y": 40,
+          "width": 90,
+          "height": 60
         }
       }
     },
@@ -239,12 +239,27 @@
     }
   ],
   "stats": {},
-  "combat": {},
+  "combat": {
+    "specialDamage": 18
+  },
   "skins": [
     {
       "id": "urubu-v1",
       "label": "Padrão Urubu",
       "pasta": "urubu-v1"
     }
-  ]
+  ],
+  "moves": {
+    "special": {
+      "kind": "hop",
+      "dodge": "agachar",
+      "reach": 110,
+      "travelFrames": [
+        0,
+        6
+      ],
+      "hopHeight": 45,
+      "landFrame": 9
+    }
+  }
 }
