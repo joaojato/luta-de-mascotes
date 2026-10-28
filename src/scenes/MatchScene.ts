@@ -6,7 +6,7 @@ import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fight
 import { getCharacterDefinition } from '../game/hero';
 import { carregarControles, COMANDOS_LUTA, type ComandoLuta, type Lado } from '../game/controles';
 import { MatchHud } from '../game/matchHud';
-import { armorAbsorbs, ducksUnder, guardHolds, jumpsOver, specialDodged } from '../game/moveMechanics';
+import { armorAbsorbs, ducksUnder, guardBreakStunMs, guardHolds, jumpsOver, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
@@ -25,7 +25,7 @@ const CAMERA_LERP = 0.14;
 const ROUNDS_TO_WIN = 2;
 // Seconds on the round clock. When it expires the fighter with more health wins
 // (a tie is a draw and replays the round).
-const ROUND_SECONDS = 60;
+const ROUND_SECONDS = 99;
 const HUD_DEPTH = 100;
 const BANNER_DEPTH = 200;
 const OVERLAY_DEPTH = 300;
@@ -239,17 +239,20 @@ export class MatchScene extends BaseScene {
       return;
     }
 
-    // Guard rules per move (GDD, "Golpes"): the heavy breaks the crouching
-    // guard; the low kick and the flying kick break the standing one.
+    // Guard rules per move (GDD, "Golpes"): the low kick and the heavy break
+    // the standing guard; only the flying kick breaks the crouching one.
     const blocked = !attack.unblockable && guardHolds(attack.move, defender.guardStance);
+    const breakStunMs = attack.unblockable ? null : guardBreakStunMs(attack.move, defender.guardStance);
     const armored = armorAbsorbs(attack.move, defender.isInHeavy);
     const isSpecial = attack.profile.kind === 'special';
     const finisher = attack.finisher && !blocked;
 
     // The combo finisher launches harder and stuns longer than a regular hit.
-    const profile = finisher
+    const struck = finisher
       ? { ...attack.profile, knockback: attack.profile.knockback * 1.9, hitstun: attack.profile.hitstun * 1.4 }
       : attack.profile;
+    // A broken guard stuns for a fixed time (0.3 s standing, 0.6 s crouching).
+    const profile = breakStunMs === null ? struck : { ...struck, hitstun: breakStunMs, stunMs: undefined };
 
     defender.applyHit(profile, attack.facing ?? attacker.facingDirection, blocked, armored);
     defender.flashHit(blocked);

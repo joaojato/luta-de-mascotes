@@ -1473,3 +1473,29 @@ ele terminar.
 **Em aberto:** relatar ao Codex, sem editar: no Cartola baixo, o quadro 5
 aparece de costas entre dois de frente; nas duas bengaladas a bengala some
 de uma vez no fim (pesado 12 para 13, baixo 14 para 15). Conferir na luta.
+
+## 2026-10-28: Vida 230, round de 99 s, quebra de guarda e cachimbo do Saci
+
+**Marco:** 2, segue em andamento.
+**Pedido:** 230 de vida para todos; guarda em pé quebrada só por chute baixo
+e soco forte, guarda baixa só pela voadora; quebra em pé atordoa 0,3 s e
+baixa 0,6 s; round de 99 s; cachimbo do Saci alto o bastante para desviar
+agachando.
+**Feito:** `maxHealth` padrão 230 (nenhum JSON sobrescrevia); `ROUND_SECONDS`
+99. Tabela `GUARDS` refeita: guarda baixa agora segura também soco forte,
+tiro e caravela. `guardBreakStunMs` troca o atordoamento do golpe por 0,3 s
+ou 0,6 s quando a guarda quebra; especial imbloqueável fica de fora. Cachimbo:
+agachar desvia (regra, como o Tiro, porque a caixa de quem agacha não encolhe)
+e o arco ficou longo (`launchVy` 320, `gravity` 600): fica acima da cabeça
+agachada até 546 px do Saci, antes 410, e cai a 714 px, antes 516. Textos
+da Academia e GDD atualizados.
+**Verificado:** `npm run check` com 117 testes (regras de guarda, atordoamento
+da quebra e esquiva do cachimbo), build ok. Não vi rodando no navegador.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** regras antigas de guarda (soco forte
+quebrava a baixa; chute baixo e voadora quebravam a alta).
+**Aprovado explicitamente:** nada.
+**Atrito:** o Codex gravou na pasta durante a sessão; commit só com os
+arquivos desta mudança.
+**Em aberto:** testar numa luta o tempo da quebra e o cachimbo; ajuste de
+Vida salvo na aba Ajustes da Academia ainda vence o padrão de 230.

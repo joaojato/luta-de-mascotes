@@ -58,7 +58,7 @@ export const FIGHTER_STAT_FIELDS: FighterStatField[] = [
  * harder, pushes further, and stuns longer.
  */
 export const DEFAULT_FIGHTER_COMBAT: FighterCombat = {
-  maxHealth: 100,
+  maxHealth: 230,
   highDamage: 7,
   highKnockback: 180,
   highHitstun: 280,

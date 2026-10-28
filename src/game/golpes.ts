@@ -42,7 +42,7 @@ export const GOLPES: Golpe[] = [
     comando: 'Baixo + Soco',
     acoes: ['heavy-punch'],
     quebraGalho: ['heavy-kick'],
-    regra: 'lento; quebra a defesa baixa; aguenta soco rápido'
+    regra: 'lento; quebra a defesa alta (atordoa 0,3 s); aguenta soco rápido'
   },
   {
     id: 'chute-basico',
@@ -58,7 +58,7 @@ export const GOLPES: Golpe[] = [
     comando: 'Baixo + Chute',
     acoes: ['low-kick'],
     quebraGalho: ['heavy-kick', 'heavy-punch'],
-    regra: 'interrompe o soco forte; só a guarda baixa segura'
+    regra: 'interrompe o soco forte; quebra a defesa alta (atordoa 0,3 s)'
   },
   {
     id: 'soco-no-ar',
@@ -74,7 +74,7 @@ export const GOLPES: Golpe[] = [
     comando: 'Chute, no ar',
     acoes: ['jump-kick'],
     quebraGalho: ['heavy-kick', 'heavy-punch'],
-    regra: 'mergulho em diagonal; quebra a defesa alta'
+    regra: 'mergulho em diagonal; único que quebra a defesa baixa (atordoa 0,6 s)'
   },
   {
     id: 'especial',

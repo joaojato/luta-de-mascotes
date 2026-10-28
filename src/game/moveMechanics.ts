@@ -185,28 +185,36 @@ export type AttackMove = GolpeId | 'tiro' | 'onda' | 'nuvem' | 'cachimbo';
 /** Standing guard (`alta`) or crouching guard (`baixa`). */
 export type GuardStance = 'alta' | 'baixa';
 
-/** Which guard stops each move: heavy punch breaks the low guard, low kick and flying kick break the high one. */
+/** Which guard stops each move (João, 28/10): low kick and heavy punch break the high guard, only the flying kick breaks the low one. */
 const GUARDS: Record<AttackMove, GuardStance[]> = {
   'soco-rapido': ['alta', 'baixa'],
-  'soco-forte': ['alta'],
+  'soco-forte': ['baixa'],
   'chute-basico': ['alta', 'baixa'],
   'chute-baixo': ['baixa'],
   'soco-no-ar': ['alta', 'baixa'],
-  voadora: ['baixa'],
+  voadora: ['alta'],
   especial: ['alta', 'baixa'],
-  tiro: ['alta'],
-  onda: ['alta'],
+  tiro: ['alta', 'baixa'],
+  onda: ['alta', 'baixa'],
   nuvem: ['alta', 'baixa'],
   cachimbo: ['alta', 'baixa']
 };
+
+/** Stun on a broken guard, replacing the move's own hitstun. */
+const GUARD_BREAK_STUN_MS: Record<GuardStance, number> = { alta: 300, baixa: 600 };
 
 export function guardHolds(move: AttackMove, stance: GuardStance | null): boolean {
   return stance !== null && GUARDS[move].includes(stance);
 }
 
-/** Dodge by ducking: the quick punch and the shot pass over a crouching defender. */
+/** Stun (ms) when `move` breaks the guard being held; null when there's no guard or it holds. */
+export function guardBreakStunMs(move: AttackMove, stance: GuardStance | null): number | null {
+  return stance !== null && !guardHolds(move, stance) ? GUARD_BREAK_STUN_MS[stance] : null;
+}
+
+/** Dodge by ducking: the quick punch, the shot and the pipe pass over a crouching defender. */
 export function ducksUnder(move: AttackMove, ducking: boolean): boolean {
-  return ducking && (move === 'soco-rapido' || move === 'tiro');
+  return ducking && (move === 'soco-rapido' || move === 'tiro' || move === 'cachimbo');
 }
 
 /** Projectiles travel under an airborne defender. */

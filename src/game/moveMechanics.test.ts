@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { advanceStop, armorAbsorbs, dashPosition, ducksUnder, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
+import { advanceStop, armorAbsorbs, dashPosition, ducksUnder, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
 
 describe('special traversal and flight timing', () => {
   it('holds the charge position, traverses continuously and stays at the destination during recovery', () => {
@@ -19,22 +19,27 @@ describe('special traversal and flight timing', () => {
     expect(jumpFrames(6, {takeoff:2, airEnd:4, land:5})).toEqual({takeoff:2, airEnd:4, land:5});
     expect(jumpFrames(2)).toEqual({takeoff:1, airEnd:1, land:0});
   });
-  it('guards: heavy breaks the crouching guard, low kick and flying kick break the standing one', () => {
-    expect(guardHolds('soco-rapido', 'alta')).toBe(true);
-    expect(guardHolds('soco-rapido', 'baixa')).toBe(true);
-    expect(guardHolds('soco-forte', 'alta')).toBe(true);
-    expect(guardHolds('soco-forte', 'baixa')).toBe(false);
-    expect(guardHolds('chute-basico', 'alta')).toBe(true);
-    expect(guardHolds('chute-basico', 'baixa')).toBe(true);
-    expect(guardHolds('chute-baixo', 'baixa')).toBe(true);
-    expect(guardHolds('chute-baixo', 'alta')).toBe(false);
-    expect(guardHolds('voadora', 'alta')).toBe(false);
-    expect(guardHolds('voadora', 'baixa')).toBe(true);
+  it('guards: low kick and heavy punch break the standing guard, only the flying kick breaks the crouching one', () => {
+    const moves = ['soco-rapido', 'soco-forte', 'chute-basico', 'chute-baixo', 'soco-no-ar', 'voadora', 'especial', 'tiro', 'onda', 'nuvem', 'cachimbo'] as const;
+    for (const move of moves) {
+      expect(guardHolds(move, 'alta')).toBe(move !== 'chute-baixo' && move !== 'soco-forte');
+      expect(guardHolds(move, 'baixa')).toBe(move !== 'voadora');
+    }
     expect(guardHolds('especial', null)).toBe(false);
   });
-  it('ducks the quick punch and the shot; jumps over both projectiles', () => {
+  it('stuns a broken standing guard for 0.3 s and a broken crouching guard for 0.6 s', () => {
+    expect(guardBreakStunMs('chute-baixo', 'alta')).toBe(300);
+    expect(guardBreakStunMs('soco-forte', 'alta')).toBe(300);
+    expect(guardBreakStunMs('voadora', 'baixa')).toBe(600);
+    expect(guardBreakStunMs('voadora', 'alta')).toBeNull();
+    expect(guardBreakStunMs('soco-forte', 'baixa')).toBeNull();
+    expect(guardBreakStunMs('chute-baixo', null)).toBeNull();
+  });
+  it('ducks the quick punch, the shot and the pipe; jumps over both projectiles', () => {
     expect(ducksUnder('soco-rapido', true)).toBe(true);
     expect(ducksUnder('tiro', true)).toBe(true);
+    expect(ducksUnder('cachimbo', true)).toBe(true);
+    expect(ducksUnder('cachimbo', false)).toBe(false);
     expect(ducksUnder('onda', true)).toBe(false);
     expect(ducksUnder('soco-no-ar', true)).toBe(false);
     expect(ducksUnder('soco-rapido', false)).toBe(false);
