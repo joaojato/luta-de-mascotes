@@ -1429,3 +1429,27 @@ a tela de cenário rodando.
 **Atrito:** nenhum.
 **Em aberto:** licença do código do Chong-U antes do link público (pedir
 autorização); trocar HUD, cartões, som e favicon; podar o starter de RPG.
+
+## 2026-10-28: Animações legíveis v5 ligadas
+
+**Marco:** 2, segue em andamento.
+**Pedido:** ligar as artes novas do Codex (`docs/animacoes-legiveis-v5.md`).
+**Feito:** Cartola com bengalada e varredura de 16 quadros (janelas 9-10 e
+9-11); Galo com giro completo de 20 quadros (janela 10-13, garras no quadro
+10, no pé); Bira ganha o carrinho no chute baixo (14 quadros, janela 4-8);
+cortes de Bira e Galo menores e translúcidos; Saci com jab rápido a 24 FPS
+(janela 2-3); Urubu com contorno limpo. Motor: `travel` na ação (o lutador
+desliza nos quadros indicados e para antes do adversário) e `effectAt` no
+golpe (onde o efeito nasce), ambos como dado no JSON. `saci/light-punch.png`
+restaurado ao original; aliases antigos removidos.
+**Verificado:** `npm run check` com 116 testes (novo: deslizar só nos
+quadros indicados), Régua do Idle passa nas sheets novas, build ok.
+Extensão do Chrome desconectada: não vi os golpes rodando.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** jab do Saci trocado, depois de ter
+sido preservado na véspera.
+**Aprovado explicitamente:** nada.
+**Atrito:** o Codex sobrescreveu a sheet original do Saci.
+**Em aberto:** conferir na Academia e numa luta: alcance das bengaladas,
+garras no pé do Galo, distância do carrinho; `jump-kick` e `jump-punch` dos
+seis; animação de atordoado.

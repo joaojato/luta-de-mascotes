@@ -1,5 +1,7 @@
 # Correção: um soco com cada mão e Saci original
 
+Pedido posterior: [animacoes-legiveis-v5.md](animacoes-legiveis-v5.md) autoriza novo jab mais rápido para o Saci no lugar do fraco original, mantendo seu forte; também limpa o contorno grosso do Urubu preservando os braços alternados.
+
 ## Correção pedida
 
 O usuário apontou que os leves desenhados na revisão v2 repetiam o mesmo braço, ao contrário da referência do Almirante. Foram refeitos **Urubu, Bira, Cartola e Galo**, com alternância clara de braços. O Saci não precisava dessa padronização: seus socos fraco e forte originais devem ser preservados. Almirante permanece inalterado.

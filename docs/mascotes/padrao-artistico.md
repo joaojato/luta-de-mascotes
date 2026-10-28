@@ -28,6 +28,8 @@ Geradas com a ferramenta integrada de imagens, com fundo transparente. Prompts c
 
 ## Movimentos como skins do Urubu
 
+Atualização de legibilidade: [animacoes-legiveis-v5.md](../animacoes-legiveis-v5.md). Cartola usa bengaladas de 16 quadros, Galo giro com múltiplas vistas em 20, Bira carrinho baixo em 14, cortes pequenos/translúcidos. Novo pedido do Saci autoriza um jab mais rápido no lugar do fraco original, preservando o forte. Urubu mantém mãos alternadas com contorno fino.
+
 Correção mais recente: [socos-alternados-v4.md](../socos-alternados-v4.md). Leves de Urubu/Bira/Cartola/Galo precisam mostrar um braço em cada soco, com mudança evidente de ombro e tronco, sem duplicar o mesmo jab. Saci preserva seus socos fraco e forte originais; Almirante mantém seu leve. Essa exceção prevalece sobre a padronização v2.
 
 Exceções próprias mais recentes: [golpes-personalizados-v3.md](../golpes-personalizados-v3.md). Só os comandos explicitamente pedidos ganham novas coreografias; o Cartola preserva a aparência aprovada ao adicionar a bengala da referência. Essa revisão prevalece sobre o pesado padrão do Cartola e os chutes principais de Urubu, Saci e Galo. As outras regras continuam valendo.

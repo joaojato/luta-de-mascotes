@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { advanceStop, armorAbsorbs, dashPosition, ducksUnder, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, sweptInterval } from './moveMechanics';
+import { advanceStop, armorAbsorbs, dashPosition, ducksUnder, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
 
 describe('special traversal and flight timing', () => {
   it('holds the charge position, traverses continuously and stays at the destination during recovery', () => {
@@ -63,6 +63,15 @@ describe('special traversal and flight timing', () => {
     expect(advanceStop(100, 600, 120)).toBe(480);
     expect(advanceStop(600, 100, 120)).toBe(220);
     expect(advanceStop(500, 560, 120)).toBe(500);
+  });
+
+  it('spreads a strike slide over its frames only', () => {
+    const slide = { frames: [4, 8], distance: 100 };
+    expect(strikeTravelStep(slide, 3, 14, 1 / 14)).toBe(0);
+    expect(strikeTravelStep(slide, 9, 14, 1 / 14)).toBe(0);
+    // Five moving frames at 14 FPS: one frame's time moves a fifth of the distance.
+    expect(strikeTravelStep(slide, 4, 14, 1 / 14)).toBeCloseTo(20);
+    expect(strikeTravelStep(slide, 8, 14, 1 / 14)).toBeCloseTo(20);
     expect(meteorDiveStart(700, 600, 0, 1)).toEqual({ x: 100, y: 0 });
     expect(meteorDiveStart(700, 600, 0, -1)).toEqual({ x: 1300, y: 0 });
   });

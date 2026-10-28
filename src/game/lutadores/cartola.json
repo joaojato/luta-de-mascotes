@@ -193,26 +193,26 @@
     {
       "action": "heavy-punch",
       "label": "Bengalada",
-      "file": "heavy-cane-v3.png",
-      "frames": 8,
-      "frameRate": 14,
+      "file": "heavy-cane-extended-v5.png",
+      "frames": 16,
+      "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 24,
-        "y": 27,
-        "width": 208,
-        "height": 201
+        "x": 6,
+        "y": 18,
+        "width": 244,
+        "height": 210
       },
       "attack": {
         "frames": [
-          3,
-          4
+          9,
+          10
         ],
         "bounds": {
-          "x": 18,
-          "y": 80,
-          "width": 90,
-          "height": 34
+          "x": 2,
+          "y": 92,
+          "width": 96,
+          "height": 30
         }
       }
     },
@@ -246,27 +246,27 @@
     {
       "action": "low-kick",
       "label": "Varredura de bengala",
-      "file": "low-cane-sweep-v3.png",
-      "frames": 8,
-      "frameRate": 14,
+      "file": "low-cane-extended-v5.png",
+      "frames": 16,
+      "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 6,
-        "y": 61,
-        "width": 244,
-        "height": 167
+        "x": 14,
+        "y": 28,
+        "width": 227,
+        "height": 200
       },
       "attack": {
         "frames": [
-          3,
-          4,
-          5
+          9,
+          10,
+          11
         ],
         "bounds": {
-          "x": 22,
-          "y": 191,
-          "width": 90,
-          "height": 37
+          "x": 10,
+          "y": 192,
+          "width": 96,
+          "height": 36
         }
       }
     },

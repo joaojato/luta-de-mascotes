@@ -262,26 +262,28 @@
     {
       "action": "spin-kick",
       "label": "Chute giratório",
-      "file": "kick-spinning-talon-v3.png",
-      "frames": 10,
-      "frameRate": 16,
+      "file": "spin-full-turn-v5.png",
+      "frames": 20,
+      "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 27,
-        "y": 23,
-        "width": 202,
-        "height": 205
+        "x": 6,
+        "y": 33,
+        "width": 244,
+        "height": 195
       },
       "attack": {
         "frames": [
-          4,
-          5
+          10,
+          11,
+          12,
+          13
         ],
         "bounds": {
-          "x": 21,
-          "y": 72,
+          "x": 4,
+          "y": 104,
           "width": 90,
-          "height": 66
+          "height": 60
         }
       }
     },
@@ -368,11 +370,15 @@
       "kind": "strike",
       "action": "spin-kick",
       "effect": "talon",
-      "effectFrame": 4
+      "effectFrame": 10,
+      "effectAt": {
+        "x": 88,
+        "y": 92
+      }
     },
     "effects": {
       "talon": {
-        "file": "talon-slash-fx-v3.png",
+        "file": "talon-slash-small-v5.png",
         "frames": 6,
         "frameRate": 18
       }

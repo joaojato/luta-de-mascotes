@@ -1,7 +1,7 @@
 import type { ImageAsset, SpritesheetAsset } from './assets';
 import type { CharacterDefinition, HeroAnimationDefinition, HeroBoundsFrame } from './hero';
 import type { Rect } from './types';
-import type { FighterMoveConfig } from './moveMechanics';
+import type { FighterMoveConfig, StrikeTravel } from './moveMechanics';
 
 const FRAME_WIDTH = 256;
 const FRAME_HEIGHT = 256;
@@ -37,6 +37,8 @@ export interface FighterActionSpec {
    */
   attackSpans?: { frames: number[]; bounds: Rect }[];
   guard?: Rect;
+  /** The fighter slides forward during these frames (e.g. a sliding tackle). */
+  travel?: StrikeTravel;
 }
 
 /**
@@ -188,7 +190,8 @@ function makeAnimation(
     sheet: animationSheet,
     frameRate: spec.frameRate,
     repeat: spec.repeat,
-    bounds
+    bounds,
+    ...(spec.travel ? { travel: spec.travel } : {})
   };
 }
 

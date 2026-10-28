@@ -99,6 +99,25 @@ export interface ProjectileMoveConfig {
   hitEffect?: string;
   effect?: string;
   effectFrame?: number;
+  /** Centre of `effect`, in sheet px forward of and above the feet; without it, the old spot near the ground. */
+  effectAt?: { x: number; y: number };
+}
+
+/** Ground travel inside a normal strike (a slide): frames that move, distance in sheet px, closest it gets to the opponent. */
+export interface StrikeTravel {
+  /** First and last moving frame. */
+  frames: number[];
+  distance: number;
+  reach?: number;
+}
+
+/** Sheet px a strike travels this step: `distance` spread evenly over its frames, nothing outside them. */
+export function strikeTravelStep(travel: StrikeTravel, frame: number, frameRate: number, seconds: number): number {
+  const [from, to] = travel.frames;
+  if (frame < from || frame > to) {
+    return 0;
+  }
+  return (travel.distance * frameRate * seconds) / (to - from + 1);
 }
 
 /** Specials that travel toward the opponent instead of playing in place. */

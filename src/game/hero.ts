@@ -1,7 +1,7 @@
 import type { CharacterBoundsKind, CharacterGymBoundsOverrides, Rect } from './types';
 import type { ImageAsset, SpritesheetAsset } from './assets';
 import { LUTADOR_CHARACTERS } from './lutadores';
-import type { FighterMoveConfig } from './moveMechanics';
+import type { FighterMoveConfig, StrikeTravel } from './moveMechanics';
 
 export interface HeroBoundsFrame {
   frame: number;
@@ -28,6 +28,7 @@ export interface HeroAnimationDefinition {
   frameRate: number;
   repeat: number;
   bounds: HeroBoundsFrame[];
+  travel?: StrikeTravel;
 }
 
 export interface CharacterDefinition {

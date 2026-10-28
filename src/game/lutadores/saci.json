@@ -136,26 +136,27 @@
     },
     {
       "action": "light-punch",
-      "label": "Soco leve",
-      "file": "light-punch.png",
+      "label": "Soco leve (jab rápido)",
+      "file": "light-snap-v5.png",
       "frames": 6,
-      "frameRate": 12,
+      "frameRate": 24,
       "repeat": 0,
       "defaultVisual": {
-        "x": 8,
-        "y": 33,
-        "width": 199,
-        "height": 197
+        "x": 44,
+        "y": 28,
+        "width": 168,
+        "height": 200
       },
       "attack": {
         "frames": [
+          2,
           3
         ],
         "bounds": {
-          "x": 5,
+          "x": 26,
           "y": 70,
-          "width": 100,
-          "height": 50
+          "width": 80,
+          "height": 40
         }
       }
     },

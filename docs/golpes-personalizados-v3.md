@@ -1,5 +1,7 @@
 # Golpes próprios — Cartola, Urubu, Saci e Galo
 
+Revisão de legibilidade posterior: [animacoes-legiveis-v5.md](animacoes-legiveis-v5.md) substitui as bengaladas curtas e o giro por sequências mais longas, reduz tamanho/alpha dos cortes e acrescenta carrinho baixo ao Bira. Não reutilizar as contagens/janelas antigas desta página nesses golpes novos.
+
 Correção posterior dos socos: [socos-alternados-v4.md](socos-alternados-v4.md). Os leves de Urubu/Bira/Cartola/Galo alternam de fato as mãos, e o Saci mantém os socos fraco e forte originais. Os golpes próprios desta revisão v3 permanecem preservados.
 
 ## Direção solicitada e responsabilidades

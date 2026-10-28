@@ -142,15 +142,15 @@
     {
       "action": "light-punch",
       "label": "Soco rápido (um com cada mão)",
-      "file": "light-alternating-v4.png",
+      "file": "light-clean-outline-v5.png",
       "frames": 6,
       "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 29,
-        "y": 27,
-        "width": 197,
-        "height": 201
+        "x": 32,
+        "y": 28,
+        "width": 191,
+        "height": 200
       },
       "attack": {
         "frames": [

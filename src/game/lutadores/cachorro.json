@@ -218,6 +218,43 @@
       }
     },
     {
+      "action": "low-kick",
+      "label": "Chute baixo (carrinho)",
+      "file": "low-slide-tackle-v5.png",
+      "frames": 14,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 32,
+        "y": 28,
+        "width": 192,
+        "height": 200
+      },
+      "attack": {
+        "frames": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "bounds": {
+          "x": 20,
+          "y": 180,
+          "width": 90,
+          "height": 48
+        }
+      },
+      "travel": {
+        "frames": [
+          4,
+          8
+        ],
+        "distance": 110,
+        "reach": 60
+      }
+    },
+    {
       "action": "heavy-punch",
       "file": "heavy-claw-v1.png",
       "frames": 10,
@@ -318,7 +355,11 @@
       "kind": "strike",
       "action": "heavy-punch",
       "effect": "claw",
-      "effectFrame": 3
+      "effectFrame": 3,
+      "effectAt": {
+        "x": 95,
+        "y": 85
+      }
     },
     "special": {
       "kind": "run",
@@ -342,7 +383,7 @@
     },
     "effects": {
       "claw": {
-        "file": "claw-slash-fx-v1.png",
+        "file": "claw-slash-small-v5.png",
         "frames": 6,
         "frameRate": 18
       },

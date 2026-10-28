@@ -84,7 +84,7 @@ Dois botões de ataque, Soco e Chute; segurar Baixo muda o golpe (João,
 
 | Golpe | Sheet (`action`) | Regra |
 |---|---|---|
-| Soco rápido | `light-punch` | dois socos por aperto, **um com cada mão** e giro de tronco no segundo (picos nos quadros 1 e 3, dois acertos), no modelo do Almirante; o Saci mantém o soco leve original, de um acerto; apertar de novo depois do segundo emenda outro par. Agachado passa por baixo. Bate na armadura do Soco forte sem interromper. |
+| Soco rápido | `light-punch` | dois socos por aperto, **um com cada mão** e giro de tronco no segundo (picos nos quadros 1 e 3, dois acertos), no modelo do Almirante; o Saci tem um jab rápido próprio, de um acerto; apertar de novo depois do segundo emenda outro par. Agachado passa por baixo. Bate na armadura do Soco forte sem interromper. |
 | Soco forte | `heavy-punch` (quebra-galho: `heavy-kick`) | cruzado com giro, lento e potente; **quebra a defesa baixa**. Aguenta Soco rápido sem parar (armadura). O do Bira é a patada. |
 | Chute básico | `heavy-kick` | dano médio; qualquer guarda segura. O do Almirante é o tiro de garrucha (`moves.kick`). |
 | Chute baixo | `low-kick` (quebra-galho: `heavy-kick`) | rente ao chão; **interrompe o Soco forte**; só a guarda agachada segura. O do Almirante é o chute normal, por escolha do João. |
@@ -117,7 +117,7 @@ Onde o mascote foge do esqueleto (arte do Codex em `docs/golpes-personalizados-v
 | Almirante | tiro de garrucha (projétil reto) | cruzado | chute normal | caravela |
 | Saci | troca e arremessa o cachimbo: projétil em parábola, cai no chão; qualquer guarda segura | soco forte original | chute de mãos | tornado |
 | Cartola | chute normal | bengalada | varredura de bengala (só a guarda baixa segura) | Pó de Arroz: nuvem curta que atordoa 1,5 s; qualquer guarda evita; sem animação de preparação |
-| Bira | chute normal | patada com garras | (quebra-galho: chute normal) | galope e bote |
+| Bira | chute normal | patada com garras | carrinho: desliza até perto do adversário, só a guarda baixa segura | galope e bote |
 | Galo | chute giratório com rastro de garras | cruzado | chute frontal | bicada em voo |
 
 ## Especiais de avanço (27/10/2026)

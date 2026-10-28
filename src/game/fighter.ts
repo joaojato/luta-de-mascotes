@@ -20,6 +20,7 @@ import {
   ADVANCE_KINDS,
   advanceStop,
   meteorDiveStart,
+  strikeTravelStep,
   type AttackMove,
   type SpecialDodge,
   type GuardStance,
@@ -797,6 +798,7 @@ export class Fighter {
     this.updateCustomJump(seconds);
     this.updateSpecialMotion(seconds);
     this.updateAdvance(seconds);
+    this.updateStrikeTravel(seconds);
     if (input.light && this.canChainJab()) {
       // Quick punch: pressing again after the hit frames throws the next one.
       this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.lightPunch}`);
@@ -1131,12 +1133,39 @@ export class Fighter {
     if (effect) {
       const animation = getCharacterAnimationDefinition(this.character.id, sheet[move] ?? this.actionKeys.lightPunch);
       const attackId = this.attackId;
+      const at = extra.effectAt;
       this.scene.time.delayedCall(((extra.effectFrame ?? 0) / animation.frameRate) * 1000, () => {
         if (this.attackId === attackId && this.strike === move) {
-          this.spawnEffect(effect, this.posX + this.facing * 40 * this.appliedScale, this.groundY - 20 * this.appliedScale);
+          // Effect sheets draw centred in a 256 cell and spawn from the bottom,
+          // so the centre sits half a cell above the spawn point.
+          const lift = at ? at.y - 128 : 20;
+          this.spawnEffect(
+            effect,
+            this.posX + this.facing * (at?.x ?? 40) * this.appliedScale,
+            this.groundY - lift * this.appliedScale
+          );
         }
       });
     }
+  }
+
+  /** Slides the fighter during a strike's `travel` frames, stopping `reach` short of the opponent. */
+  private updateStrikeTravel(seconds: number): void {
+    const animation = this.strike ? this.currentAnimation() : null;
+    const travel = animation?.travel;
+    if (!animation || !travel) {
+      return;
+    }
+    const step = strikeTravelStep(travel, this.currentFrameIndex(animation), animation.frameRate, seconds);
+    if (step <= 0) {
+      return;
+    }
+    let next = this.posX + this.facing * step * this.appliedScale;
+    if (this.opponent && Math.sign(this.opponent.x - this.posX) === this.facing) {
+      const stop = advanceStop(this.posX, this.opponent.x, (travel.reach ?? 70) * this.appliedScale);
+      next = this.facing > 0 ? Math.min(next, stop) : Math.max(next, stop);
+    }
+    this.posX = Phaser.Math.Clamp(next, this.minX, this.maxX);
   }
 
   /**

@@ -65,6 +65,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 
 ## Sobre a arte
 
+- **Golpe preservado pode ser trocado depois, mas o arquivo antigo fica.**
+  Um dia após pedir os socos originais do Saci, o João pediu um jab rápido
+  no lugar do fraco. O Codex gravou o jab por cima de `light-punch.png`; na
+  integração o original voltou e o JSON aponta para `light-snap-v5.png`.
+  Arte nova entra com nome próprio, nunca sobrescrevendo a sheet em uso.
+  (2026-10-28)
 - **"Dois socos" é um com cada mão, e padronizar não vale para todos.** Os
   jabs duplos v2 repetiam o mesmo braço e o João rejeitou: o segundo soco
   precisa trocar de ombro e girar o tronco, como no Almirante. E o Saci não
