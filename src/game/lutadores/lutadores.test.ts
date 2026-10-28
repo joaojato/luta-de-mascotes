@@ -75,7 +75,7 @@ describe('registro de lutadores (Regra do JSON)', () => {
       it('toda ação pisa na linha do idle (Regra da Régua)', () => {
         const idle = lutador.actions.find((spec) => spec.action === 'idle');
         const chao = (idle?.defaultVisual.y ?? 0) + (idle?.defaultVisual.height ?? 0);
-        const aereas = ['jump', 'special', 'knockdown'];
+        const aereas = ['jump', 'jump-kick', 'special', 'knockdown'];
 
         lutador.actions.forEach((spec) => {
           const linha = spec.defaultVisual.y + spec.defaultVisual.height;
@@ -111,7 +111,7 @@ describe('registro de lutadores (Regra do JSON)', () => {
     expect(almirante).toBeTruthy();
     expect(almirante!.selecionavel).toBe(true);
     const completas = [
-      ...ACOES_OBRIGATORIAS, 'block-low', 'heavy-punch', 'heavy-kick', 'shot',
+      ...ACOES_OBRIGATORIAS, 'block-low', 'heavy-punch', 'heavy-kick', 'jump-kick', 'shot',
       'special-charge', 'special'
     ];
     expect(almirante!.actions.map((acao) => acao.action).sort()).toEqual(completas.sort());

@@ -101,15 +101,15 @@ describe('fighter move integration', () => {
     fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, jump:true});
     fighter.update(.11, NEUTRAL_FIGHTER_INPUT);
     fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
-    expect(sprite.anims.currentAnim.key).toBe('urubu-heavy-kick');
-    expect(sprite.frame.name).toBe(3);
+    expect(sprite.anims.currentAnim.key).toBe('urubu-jump-kick');
+    expect(sprite.frame.name).toBe(0);
     const before = fighter.x;
     const kick = fighter.getActiveAttack()!;
     expect(kick.move).toBe('voadora');
     expect(kick.profile.kind).toBe('kick');
     fighter.update(.05, NEUTRAL_FIGHTER_INPUT);
     expect(fighter.x).toBeGreaterThan(before + 15);
-    complete('heavy-kick');
+    complete('jump-kick');
     expect(sprite.anims.currentAnim.key).toBe('urubu-jump');
     fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, light:true});
     expect(sprite.anims.currentAnim.key).toBe('urubu-jump');
@@ -191,7 +191,7 @@ describe('fighter move integration', () => {
     fighter.update(.02, {...NEUTRAL_FIGHTER_INPUT, heavy:true});
     expect(sprite.anims.currentAnim.key).toBe('urubu-jump');
     fighter.update(.1, NEUTRAL_FIGHTER_INPUT);
-    expect(sprite.anims.currentAnim.key).toBe('urubu-heavy-kick');
+    expect(sprite.anims.currentAnim.key).toBe('urubu-jump-kick');
   });
   it('turns the two attack buttons into four moves with down held', () => {
     const cases: [Partial<typeof NEUTRAL_FIGHTER_INPUT>, string, string][] = [

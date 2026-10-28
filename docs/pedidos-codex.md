@@ -44,3 +44,11 @@ Já ligados: cruzado (v2), jab duplo (v2), golpes próprios v3 (bengala e Pó de
 Arroz, bicada do Urubu, cachimbo do Saci, giro do Galo) e os chutes baixos
 clássicos. Ainda faltam: `low-kick.png` do Bira, e `jump-kick.png` e
 `jump-punch.png` dos seis. Animação de vítima atordoada segue adiada.
+
+## Entrega de artes: voadoras v7
+
+Entregues e conferidas: `jump-kick.png`, seis quadros, nas pastas principais de Urubu, Almirante, Saci, Cartola, Bira e Galo. Falta o Claude registrar a ação `jump-kick` e suas caixas no JSON para substituir o fallback terrestre. Sugestão: 14 FPS, contato 0–3, recuperação aérea 4–5. Nenhuma decolagem/aterrissagem ou deslocamento foi desenhado dentro da folha.
+
+Guia: `docs/voadoras-e-iluminacao-v7.md`; entrega com caminhos, caixas visuais e hashes: `output/voadoras-v7/claude-integration.json`; revisão: `output/voadoras-v7/revisao.html`. Também corrigido no caminho ativo o leve do Urubu para combinar paleta e iluminação com o idle. Bahia permanece pendente por recusa da ferramenta; não foi registrado. Socos no ar não fazem parte desta entrega.
+
+Ligadas pelo Claude em 28/10/2026: `jump-kick` nos seis JSONs, 14 FPS, acerto nos quadros 0 a 3 só no pé de ataque. Ainda faltam: `low-kick.png` do Bira, `jump-punch.png` dos seis e a voadora do Bahia.

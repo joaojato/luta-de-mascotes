@@ -90,6 +90,34 @@
       }
     },
     {
+      "action": "jump-kick",
+      "label": "Voadora",
+      "file": "jump-kick.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 16,
+        "y": 32,
+        "width": 226,
+        "height": 185
+      },
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 16,
+          "y": 153,
+          "width": 102,
+          "height": 64
+        }
+      }
+    },
+    {
       "action": "block-high",
       "label": "Defesa alta",
       "file": "block-high.png",

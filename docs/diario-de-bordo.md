@@ -1499,3 +1499,28 @@ quebrava a baixa; chute baixo e voadora quebravam a alta).
 arquivos desta mudança.
 **Em aberto:** testar numa luta o tempo da quebra e o cachimbo; ajuste de
 Vida salvo na aba Ajustes da Academia ainda vence o padrão de 230.
+
+## 2026-10-28: Voadoras v7 ligadas
+
+**Marco:** 2, segue em andamento.
+**Pedido:** aplicar as artes novas do Codex (`docs/voadoras-e-iluminacao-v7.md`).
+**Feito:** ação `jump-kick` registrada nos seis lutadores (Urubu, Almirante,
+Saci, Cartola, Bira, Galo): 6 quadros, 14 FPS, sem loop; caixa visual pela
+união dos quadros; ataque nos quadros 0 a 3, só na região do pé de ataque
+(medida na sheet, 84 a 104 px de largura), não na silhueta inteira. A voadora
+deixa de usar o chute terrestre como quebra-galho e começa no quadro 0. Leve
+do Urubu corrigido pelo Codex (paleta do idle) entra no commit. Testes que
+esperavam o quebra-galho atualizados; `jump-kick` entra na lista de ações
+aéreas da Régua do Idle. Acentos gravados como `?` nos docs do Codex,
+restaurados.
+**Verificado:** `npm run check` com 117 testes, build ok. No navegador (dev,
+Chromium automatizado): as seis animações carregam com 6 quadros a 14 FPS,
+sem erro de console nem 404; quadros desenhados lado a lado conferem.
+Não joguei uma luta com a voadora.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** testar a voadora numa luta (alcance do pé, quebra da guarda
+baixa com 0,6 s); voadora do Bahia (Codex não entregou); `jump-punch` dos
+seis; `low-kick` do Bira.

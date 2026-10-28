@@ -1,5 +1,7 @@
 # Direção de arte e animação
 
+- Continuidade anatômica obrigatória: ler `docs/continuidade-anatomica.md`. Identificar pernas anatômicas A/B e segui-las do quadril ao pé em cada quadro; nunca trocar a perna do fundo pela próxima da câmera para acomodar uma pose. Giros mudam a profundidade progressivamente, mantendo a identidade dos membros e a perna que golpeia/recolhe. Cruzamentos ambíguos exigem guia técnico ou redesenho antes de aprovação. Vale também para braços.
+
 Regra explícita do usuário: todo personagem novo ou refeito deve seguir SEMPRE o estilo artístico e as animações do Urubu. Só mudar esse padrão quando o usuário pedir explicitamente. Uma imagem enviada como referência define a identidade do personagem, não substitui o padrão de traço, proporções ou animação.
 
 - Ler `docs/mascotes/padrao-artistico.md` antes de criar ou refazer personagens.
@@ -17,3 +19,5 @@ Regra explícita do usuário: todo personagem novo ou refeito deve seguir SEMPRE
 - Ajustes posteriores em `docs/animacoes-legiveis-v5.md`: bengaladas do Cartola precisam de mais tempo e extensão visível (16 quadros); giro do Galo deve mostrar costas, perfil oposto e frente (20); cortes de Bira/Galo são pequenos e translúcidos; Bira ganha carrinho como chute baixo (14). Novo pedido substitui só o fraco original do Saci por jab rápido (6 quadros/24 FPS sugeridos), mantendo seu forte. Urubu preserva alternância das mãos com contorno fino, sem halo preto grosso. Contagens/FPS novas precisam ser integrados pelo responsável pela lógica antes de trocar folhas antigas por folhas maiores.
 
 - Revisão de coerência em `docs/coerencia-animacoes-v6.md`: conferir cada quadro da fonte e da folha montada antes de aplicar; manter direção ofensiva, braço, apoio, escala e pegada dos acessórios. Redesenhar quadros contraditórios; não esconder erro repetindo outra pose. Sustentação intencional de contato é permitida. Não reaplicar fontes antigas sobre correções novas.
+
+- Voadoras e luz em `docs/voadoras-e-iluminacao-v7.md`: a guarda aprovada define paleta, iluminação, proporções e pixels; uma folha de movimento define só poses. Não clarear/azular penas para corrigir contorno. Comparar com idle em escala real e conferir fonte sem cortes antes de montar. Voadora é diagonal descendente, inteiramente aérea, sem trajetória desenhada; Saci mantém uma única perna.

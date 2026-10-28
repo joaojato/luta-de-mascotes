@@ -87,6 +87,34 @@
       }
     },
     {
+      "action": "jump-kick",
+      "label": "Voadora",
+      "file": "jump-kick.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 26,
+        "y": 32,
+        "width": 203,
+        "height": 185
+      },
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 26,
+          "y": 148,
+          "width": 104,
+          "height": 69
+        }
+      }
+    },
+    {
       "action": "block-high",
       "file": "block-high.png",
       "frames": 4,

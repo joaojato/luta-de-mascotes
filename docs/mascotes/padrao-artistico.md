@@ -1,5 +1,7 @@
 # Padrão artístico — Urubu como referência
 
+Continuidade obrigatória dos membros: [continuidade-anatomica.md](../continuidade-anatomica.md). Cada perna mantém sua identidade anatômica durante giros, cruzamentos, ataque e recolhimento. A posição próxima/distante da câmera pode mudar numa rotação, mas a conexão quadril–joelho–pé e a transição de profundidade precisam ser contínuas. Preparar guia A/B quando houver ambiguidade; não copiar uma inversão para outras skins.
+
 Referência principal: `referencia/urubu/modelo-oficial.png`. Saci como referência complementar de linguagem arcade.
 
 ## Regra permanente definida pelo usuário
@@ -45,3 +47,7 @@ Assets finais: `public/assets/lutadores/cachorro/urubu-v1/` (Bira; id interno pr
 Fontes e prompts completos por personagem/ação: `output/skins-urubu/<id>/<acao>-source.png` e `<acao>-prompt.txt`. O manifesto `output/skins-urubu/manifest.json` registra as referências e os prompts usados. A comparação sincronizada está em `output/skins-urubu/revisao.html`, acompanhada de GIFs de cada ação. Abrir o HTML localmente ou pelo servidor Vite.
 
 Pipeline de preparação, importação e verificação: `python scripts/skins_urubu.py prepare|import|verify`. `prepare` monta apenas referências; a arte deve ser gerada pela ferramenta de imagens antes de `import`. A importação preserva um backup das definições anteriores em `output/skins-urubu/<id>/previous-definition.json`.
+
+## Consistência de luz e voadoras
+
+Revisão em [voadoras-e-iluminacao-v7.md](../voadoras-e-iluminacao-v7.md). A guarda aprovada é referência obrigatória de paleta, iluminação, material, anatomia e densidade dos pixels; folhas de ação definem só coreografia. Reduzir contorno não autoriza clarear ou azular o corpo. Comparar cada nova folha com idle em escala real e revisar fontes sem cortes, antes de aplicar. Voadora comum: chute diagonal descendente inteiramente aéreo, sem desenhar trajetória ou aterrissagem.

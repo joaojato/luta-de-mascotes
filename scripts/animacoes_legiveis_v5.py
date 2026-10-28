@@ -27,6 +27,9 @@ def previews(id,frames,fps):
     gif[0].save(OUT/(id+'-preview.gif'),save_all=True,append_images=gif[1:],duration=round(1000/fps),loop=0)
 
 def main():
+    newer=ROOT/'output/voadoras-v7/report.json'
+    if newer.exists() and any(r.get('applied') and r.get('id')=='urubu-light' for r in json.loads(newer.read_text(encoding='utf-8'))):
+        raise SystemExit('Pipeline v5 desatualizado: o leve do Urubu foi corrigido na v7. Use scripts/voadoras_v7.py; nao sobrescreva artes atuais com fontes historicas.')
     m=json.loads((OUT/'manifest.json').read_text());extra=json.loads((OUT/'extra-jobs.json').read_text())
     jobs={j['id']:j for j in m['jobs']+extra};actions=m['actions']+[
         dict(id='saci-snap',frames=6,fps=24,parts=['saci-snap'],dest=str(ASSETS/'saci/light-snap-v5.png')),
