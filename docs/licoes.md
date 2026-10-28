@@ -9,6 +9,15 @@ Sem a citação, a afirmação não pode ser conferida depois e vira folclore.
 Quando uma lição se mostrar errada, **corrija a linha**, não acrescente outra
 embaixo contradizendo.
 
+## Sobre a mecânica
+
+- **Caixa de apanhar herdada era a soma de todos os quadros da ação.** A
+  bengalada do Cartola deixava ele vulnerável na ponta da bengala durante
+  1,33 s, e o soco rápido alcançava mais que o punho desenhado; com emenda
+  livre e atordoamento maior que o intervalo entre socos, o soco virou
+  combo infinito e o meta era spam. Medir saída, janela, recuperação e
+  alcance contra o desenho antes de culpar a arte. (2026-10-28)
+
 ## Preferências confirmadas
 
 Coisas que ele aprovou de forma explícita, ou que repetiu como regra.

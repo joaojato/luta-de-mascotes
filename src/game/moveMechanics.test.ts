@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { advanceStop, armorAbsorbs, dashPosition, ducksUnder, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
+import { advanceStop, armorAbsorbs, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
 
 describe('special traversal and flight timing', () => {
   it('holds the charge position, traverses continuously and stays at the destination during recovery', () => {
@@ -26,6 +26,10 @@ describe('special traversal and flight timing', () => {
       expect(guardHolds(move, 'baixa')).toBe(move !== 'voadora');
     }
     expect(guardHolds('especial', null)).toBe(false);
+  });
+  it('times each frame: listed ranges get their own ms, the rest follow the frame rate', () => {
+    expect(frameDurations(6, 10, undefined)).toEqual([100, 100, 100, 100, 100, 100]);
+    expect(frameDurations(6, 10, [{ frames: [0, 2], ms: 40 }, { frames: [3, 3], ms: 150 }])).toEqual([40, 40, 40, 150, 100, 100]);
   });
   it('stuns a broken standing guard for 0.3 s and a broken crouching guard for 0.6 s', () => {
     expect(guardBreakStunMs('chute-baixo', 'alta')).toBe(300);

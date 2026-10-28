@@ -6,7 +6,7 @@ import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fight
 import { getCharacterDefinition } from '../game/hero';
 import { carregarControles, COMANDOS_LUTA, type ComandoLuta, type Lado } from '../game/controles';
 import { MatchHud } from '../game/matchHud';
-import { armorAbsorbs, ducksUnder, guardBreakStunMs, guardHolds, jumpsOver, specialDodged } from '../game/moveMechanics';
+import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, jumpsOver, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
@@ -202,41 +202,46 @@ export class MatchScene extends BaseScene {
   /**
    * Checks both directions for a connecting hit and applies damage/block this
    * frame. A swing only lands once thanks to the attacker's connect flag.
+   * Both sides are judged before either hit lands: two strikes that meet on
+   * the same frame trade, instead of player 1 always winning.
    */
   private resolveCombat(): void {
-    this.tryHit(this.p1, this.p2);
-    this.tryHit(this.p2, this.p1);
+    const first = this.prepareHit(this.p1, this.p2);
+    const second = this.prepareHit(this.p2, this.p1);
+    first?.();
+    second?.();
   }
 
   /**
-   * Resolves a single attacker -> defender interaction for the current frame.
+   * Judges a single attacker -> defender interaction for the current frame and
+   * returns how to apply it, or null when nothing connects.
    * Blocking is purely geometric: the hit is guarded when the attack box
    * overlaps the defender's active guard box (from its block pose).
    * @param attacker - The fighter whose attack box is tested.
    * @param defender - The fighter whose hurtbox is tested.
    */
-  private tryHit(attacker: Fighter, defender: Fighter): void {
+  private prepareHit(attacker: Fighter, defender: Fighter): (() => void) | null {
     if (defender.isDefeated) {
-      return;
+      return null;
     }
 
     const attack = attacker.getActiveAttack();
     if (!attack) {
-      return;
+      return null;
     }
 
     const hurt = defender.getHurtRect();
     if (!hurt || !Phaser.Geom.Intersects.RectangleToRectangle(attack.rect, hurt)) {
-      return;
+      return null;
     }
 
     // Ducked or jumped over: the swing stays live and can still land later.
     if (ducksUnder(attack.move, defender.isDucking) || jumpsOver(attack.move, defender.isAirborne)) {
-      return;
+      return null;
     }
     const escape = { airborne: defender.isAirborne, ducking: defender.isDucking, movingAway: defender.isMovingAwayFrom(attacker.x) };
     if (specialDodged(attack.dodge, escape)) {
-      return;
+      return null;
     }
 
     // Guard rules per move (GDD, "Golpes"): the low kick and the heavy break
@@ -253,14 +258,22 @@ export class MatchScene extends BaseScene {
       : attack.profile;
     // A broken guard stuns for a fixed time (0.3 s standing, 0.6 s crouching).
     const profile = breakStunMs === null ? struck : { ...struck, hitstun: breakStunMs, stunMs: undefined };
+    const facing = attack.facing ?? attacker.facingDirection;
+    const cornered = attack.facing === undefined && defender.atWall;
 
-    defender.applyHit(profile, attack.facing ?? attacker.facingDirection, blocked, armored);
-    defender.flashHit(blocked);
-    attacker.markAttackConnected(attack.signature);
-    attacker.registerOffense(blocked, isSpecial);
-    defender.registerDefense(blocked);
+    return () => {
+      defender.applyHit(profile, facing, blocked, armored);
+      defender.flashHit(blocked);
+      attacker.markAttackConnected(attack.signature);
+      attacker.registerOffense(blocked, isSpecial);
+      defender.registerDefense(blocked);
+      // A cornered defender can't slide back, so the attacker gets the push.
+      if (cornered && !armored) {
+        attacker.recoil(-facing * profile.knockback * (blocked ? BLOCK_PUSHBACK : 1));
+      }
 
-    this.spawnHitFx(attack.rect, hurt, blocked, isSpecial, finisher);
+      this.spawnHitFx(attack.rect, hurt, blocked, isSpecial, finisher);
+    };
   }
 
   /**

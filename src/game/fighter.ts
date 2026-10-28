@@ -18,6 +18,7 @@ import {
   jumpFrames,
   sweptInterval,
   ADVANCE_KINDS,
+  BLOCK_PUSHBACK,
   advanceStop,
   meteorDiveStart,
   strikeTravelStep,
@@ -270,6 +271,8 @@ export class Fighter {
   private stunIsBlock = false;
   private stunBlockLow = false;
   private knockbackVel = 0;
+  /** The strike in progress touched the opponent (hit or guard): only then a quick punch chains. */
+  private strikeLanded = false;
   private defeated = false;
   private attackId = 0;
   private attackConnected = true;
@@ -372,6 +375,20 @@ export class Fighter {
   /** Mid heavy on the ground: the quick punch bounces off (armor). */
   get isInHeavy(): boolean {
     return this.grounded && this.locked && this.strike === 'soco-forte';
+  }
+
+  /** Pinned against a stage edge: the attacker is the one pushed back. */
+  get atWall(): boolean {
+    return this.posX <= this.minX + 1 || this.posX >= this.maxX - 1;
+  }
+
+  /**
+   * Pushes the fighter without stunning it (the attacker recoiling off a
+   * cornered defender).
+   * @param velocity - Horizontal push in px/s; friction brings it to rest.
+   */
+  recoil(velocity: number): void {
+    if (!this.defeated) this.knockbackVel = velocity;
   }
 
   /** Whether the fighter is crouching on the ground (with or without guard). */
@@ -593,6 +610,7 @@ export class Fighter {
       return;
     }
     this.attackConnected = true;
+    this.strikeLanded = true;
     const hitEffect = this.character.moves?.special?.hitEffect;
     if (hitEffect && this.currentAnimKey === this.actionKeys.special && this.lastAttackRect) {
       const center = Phaser.Geom.Rectangle.GetCenter(this.lastAttackRect);
@@ -676,7 +694,7 @@ export class Fighter {
     this.advance = null;
 
     if (blocked) {
-      this.knockbackVel = attackerFacing * profile.knockback * 0.35;
+      this.knockbackVel = attackerFacing * profile.knockback * BLOCK_PUSHBACK;
       this.hitstunTimer = Math.max(this.hitstunTimer, BLOCKSTUN_SECONDS);
       this.stunIsBlock = true;
       this.stunBlockLow = this.currentAnimKey === this.actionKeys.blockLow;
@@ -799,6 +817,7 @@ export class Fighter {
     this.updateSpecialMotion(seconds);
     this.updateAdvance(seconds);
     this.updateStrikeTravel(seconds);
+    if (this.grounded) this.applyKnockback(seconds);
     if (input.light && this.canChainJab()) {
       // Quick punch: pressing again after the hit frames throws the next one.
       this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.lightPunch}`);
@@ -889,9 +908,9 @@ export class Fighter {
     return this.currentAnimKey === this.actionKeys.special ? 'especial' : (this.strike ?? 'soco-rapido');
   }
 
-  /** A quick punch past its last hit frame can be chained into the next one. */
+  /** A quick punch that touched the opponent, past its last hit frame, chains into the next one; a whiff plays to the end. */
   private canChainJab(): boolean {
-    if (!this.grounded || !this.locked || this.strike !== 'soco-rapido') {
+    if (!this.grounded || !this.locked || this.strike !== 'soco-rapido' || !this.strikeLanded) {
       return false;
     }
     const animation = getCharacterAnimationDefinition(this.character.id, this.actionKeys.lightPunch);
@@ -1373,6 +1392,7 @@ export class Fighter {
     this.currentReverse = false;
     this.attackId += 1;
     this.attackConnected = false;
+    this.strikeLanded = false;
     this.sprite.play({ key: animKey, repeat: 0 }, true);
     this.sprite.once(`animationcomplete-${animKey}`, () => {
       this.locked = false;

@@ -52,3 +52,5 @@ Entregues e conferidas: `jump-kick.png`, seis quadros, nas pastas principais de 
 Guia: `docs/voadoras-e-iluminacao-v7.md`; entrega com caminhos, caixas visuais e hashes: `output/voadoras-v7/claude-integration.json`; revisão: `output/voadoras-v7/revisao.html`. Também corrigido no caminho ativo o leve do Urubu para combinar paleta e iluminação com o idle. Bahia permanece pendente por recusa da ferramenta; não foi registrado. Socos no ar não fazem parte desta entrega.
 
 Ligadas pelo Claude em 28/10/2026: `jump-kick` nos seis JSONs, 14 FPS, acerto nos quadros 0 a 3 só no pé de ataque. Ainda faltam: `low-kick.png` do Bira, `jump-punch.png` dos seis e a voadora do Bahia.
+
+Chutes curtos no desenho (28/10/2026): a ponta do pé fica a só 16 a 29 px da frente do corpo no chute básico do Bira (22), no chute básico do Cartola (29), no chute baixo do Galo (16) e no do Urubu (29), contra 31 a 45 px do soco rápido. Para o chute valer pelo alcance, a perna precisa esticar mais à frente no quadro de contato.

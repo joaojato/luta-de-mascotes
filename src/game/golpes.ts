@@ -34,7 +34,7 @@ export const GOLPES: Golpe[] = [
     comando: 'Soco',
     acoes: ['light-punch'],
     quebraGalho: [],
-    regra: 'emenda outro soco; agachado passa por baixo'
+    regra: 'emenda outro soco só se encostou; agachado passa por baixo'
   },
   {
     id: 'soco-forte',

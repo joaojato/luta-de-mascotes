@@ -120,6 +120,21 @@ export function strikeTravelStep(travel: StrikeTravel, frame: number, frameRate:
   return (travel.distance * frameRate * seconds) / (to - from + 1);
 }
 
+/** A run of frames (first and last) shown for `ms` each, instead of the frame rate. */
+export interface FrameTiming {
+  frames: number[];
+  ms: number;
+}
+
+/** Display time of each frame: fast wind-up, held contact, and the frame rate everywhere else. */
+export function frameDurations(frameCount: number, frameRate: number, timing: FrameTiming[] | undefined): number[] {
+  const durations = Array.from({ length: frameCount }, () => 1000 / frameRate);
+  (timing ?? []).forEach(({ frames: [from, to], ms }) => {
+    for (let frame = from; frame <= to && frame < frameCount; frame++) durations[frame] = ms;
+  });
+  return durations;
+}
+
 /** Specials that travel toward the opponent instead of playing in place. */
 export const ADVANCE_KINDS = ['run', 'hop', 'meteor'];
 
@@ -199,6 +214,9 @@ const GUARDS: Record<AttackMove, GuardStance[]> = {
   nuvem: ['alta', 'baixa'],
   cachimbo: ['alta', 'baixa']
 };
+
+/** Share of the knockback a guarded hit still pushes: blocking a string moves you out of it. */
+export const BLOCK_PUSHBACK = 0.6;
 
 /** Stun on a broken guard, replacing the move's own hitstun. */
 const GUARD_BREAK_STUN_MS: Record<GuardStance, number> = { alta: 300, baixa: 600 };

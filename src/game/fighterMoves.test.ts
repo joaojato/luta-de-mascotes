@@ -128,19 +128,45 @@ describe('fighter move integration', () => {
     fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
     expect(fighter.isDucking).toBe(false);
   });
-  it('chains quick punches after the hit frames, never during them', () => {
+  it('chains quick punches after the hit frames, never during them, and only after contact', () => {
     const {fighter, sprite} = setup('urubu');
     fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true});
     sprite.frame.name = 1;
     const first = fighter.getActiveAttack()!;
     expect(first.move).toBe('soco-rapido');
+    fighter.markAttackConnected(first.signature);
     sprite.frame.name = 3;
     fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true});
-    expect(fighter.getActiveAttack()!.signature).toBe(first.signature);
+    expect(sprite.frame.name).toBe(3);
     sprite.frame.name = 4;
     fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true});
     sprite.frame.name = 1;
     expect(fighter.getActiveAttack()!.signature).toBeGreaterThan(first.signature);
+  });
+  it('a whiffed quick punch plays to the end before the next one', () => {
+    const {fighter, sprite, complete} = setup('urubu');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true});
+    sprite.frame.name = 1;
+    const first = fighter.getActiveAttack()!;
+    sprite.frame.name = 4;
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true});
+    sprite.frame.name = 1;
+    expect(fighter.getActiveAttack()!.signature).toBe(first.signature);
+    complete('light-punch');
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, light:true});
+    sprite.frame.name = 1;
+    expect(fighter.getActiveAttack()!.signature).toBeGreaterThan(first.signature);
+  });
+  it('recoils the attacker off a cornered defender, even outside hitstun', () => {
+    const {fighter} = setup('urubu');
+    const before = fighter.x;
+    fighter.recoil(-300);
+    fighter.update(.1, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.x).toBeLessThan(before - 10);
+    const cornered = setup('urubu').fighter;
+    cornered.update(0, {...NEUTRAL_FIGHTER_INPUT, left:true});
+    for (let i = 0; i < 120 && !cornered.atWall; i++) cornered.update(1/60, {...NEUTRAL_FIGHTER_INPUT, left:true});
+    expect(cornered.atWall).toBe(true);
   });
   it('keeps the heavy punch going under quick punches (armor) and reports the guard held', () => {
     const {fighter, sprite} = setup('urubu');

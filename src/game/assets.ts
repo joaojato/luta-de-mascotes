@@ -190,10 +190,11 @@ export function registerStarterAnimations(scene: Phaser.Scene): void {
 
     scene.anims.create({
       key: animation.key,
-      frames: scene.anims.generateFrameNumbers(animation.sheet.key, {
-        start: 0,
-        end: animation.sheet.frames - 1
-      }),
+      frames: scene.anims
+        .generateFrameNumbers(animation.sheet.key, { start: 0, end: animation.sheet.frames - 1 })
+        .map((frame, index) =>
+          animation.frameDurations ? { ...frame, duration: animation.frameDurations[index] } : frame
+        ),
       frameRate: animation.frameRate,
       repeat: animation.repeat
     });

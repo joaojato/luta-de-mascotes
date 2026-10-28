@@ -9,14 +9,14 @@
     "jump": 1000
   },
   "combat": {
-    "highDamage": 9,
+    "highDamage": 5,
     "highKnockback": 220,
-    "lowDamage": 10,
+    "lowDamage": 16,
     "lowKnockback": 300,
     "specialDamage": 20,
     "specialKnockback": 250,
     "specialHitstun": 350,
-    "kickDamage": 10
+    "kickDamage": 15
   },
   "actions": [
     {
@@ -190,9 +190,9 @@
           3
         ],
         "bounds": {
-          "x": 10,
+          "x": 15,
           "y": 60,
-          "width": 65,
+          "width": 60,
           "height": 35
         }
       }
@@ -322,9 +322,9 @@
           3
         ],
         "bounds": {
-          "x": 10,
+          "x": 4,
           "y": 65,
-          "width": 90,
+          "width": 96,
           "height": 25
         }
       }

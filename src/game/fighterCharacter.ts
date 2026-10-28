@@ -1,7 +1,7 @@
 import type { ImageAsset, SpritesheetAsset } from './assets';
 import type { CharacterDefinition, HeroAnimationDefinition, HeroBoundsFrame } from './hero';
 import type { Rect } from './types';
-import type { FighterMoveConfig, StrikeTravel } from './moveMechanics';
+import { frameDurations, type FighterMoveConfig, type FrameTiming, type StrikeTravel } from './moveMechanics';
 
 const FRAME_WIDTH = 256;
 const FRAME_HEIGHT = 256;
@@ -39,6 +39,8 @@ export interface FighterActionSpec {
   guard?: Rect;
   /** The fighter slides forward during these frames (e.g. a sliding tackle). */
   travel?: StrikeTravel;
+  /** Frames shown for their own time: fast wind-up, held contact (the rest follow `frameRate`). */
+  timing?: FrameTiming[];
 }
 
 /**
@@ -85,8 +87,11 @@ export function buildFighterCharacter(config: FighterCharacterConfig): Character
     sheet(animationKey(config.id, spec.action), `${config.assetRoot}/${spec.file}`, spec.frames)
   );
 
+  // Regra do Corpo: on the ground only the body (the idle box) gets hit, so a
+  // stretched arm, leg or cane is reach, not a target.
+  const body = config.actions.find((spec) => spec.action === 'idle')?.defaultVisual;
   const animations: HeroAnimationDefinition[] = config.actions.map((spec) =>
-    makeAnimation(config.id, spec, requireSheet(spritesheets, animationKey(config.id, spec.action)))
+    makeAnimation(config.id, spec, requireSheet(spritesheets, animationKey(config.id, spec.action)), body)
   );
 
   const effect = config.moves?.special;
@@ -167,16 +172,18 @@ function sheet(key: string, url: string, frames: number): SpritesheetAsset {
 function makeAnimation(
   characterId: string,
   spec: FighterActionSpec,
-  animationSheet: SpritesheetAsset
+  animationSheet: SpritesheetAsset,
+  body?: Rect
 ): HeroAnimationDefinition {
   const key = animationKey(characterId, spec.action);
   const attackByFrame = buildAttackByFrame(spec);
+  const hurt = body && !OWN_HURTBOX.test(spec.action) ? body : spec.defaultVisual;
 
   const bounds: HeroBoundsFrame[] = Array.from({ length: spec.frames }, (_, frame) => ({
     frame,
     visual: { ...spec.defaultVisual },
     collision: collisionBounds(spec.defaultVisual),
-    hit: hitBounds(spec.defaultVisual),
+    hit: hitBounds(hurt),
     attack: attackByFrame.get(frame) ?? null,
     guard: spec.guard ? { ...spec.guard } : null
   }));
@@ -191,9 +198,13 @@ function makeAnimation(
     frameRate: spec.frameRate,
     repeat: spec.repeat,
     bounds,
-    ...(spec.travel ? { travel: spec.travel } : {})
+    ...(spec.travel ? { travel: spec.travel } : {}),
+    ...(spec.timing ? { frameDurations: frameDurations(spec.frames, spec.frameRate, spec.timing) } : {})
   };
 }
+
+/** Airborne, special and fallen poses keep their own hurtbox (the body moves inside the sheet). */
+const OWN_HURTBOX = /^(jump|special|knockdown|fx-)/;
 
 /**
  * Build a frame -> attack-rect map from an action's single attack window and/or

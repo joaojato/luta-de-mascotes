@@ -106,6 +106,20 @@ describe('registro de lutadores (Regra do JSON)', () => {
     });
   });
 
+  // Regra do Corpo: no chão, só o corpo apanha. Braço, perna e bengala
+  // esticados não são alvo; quem alcança mais longe ganha o alcance de fato.
+  it('golpe e andar no chão apanham só no corpo do idle (Regra do Corpo)', () => {
+    LUTADOR_CHARACTERS.forEach((personagem) => {
+      const hit = (acao: string) => personagem.animations.find((a) => a.action === acao)?.bounds[0].hit;
+      const corpo = hit('idle');
+      ['light-punch', 'heavy-punch', 'heavy-kick', 'low-kick', 'walk-forward'].forEach((acao) => {
+        if (hit(acao)) expect(hit(acao), `${personagem.id} ${acao}`).toEqual(corpo);
+      });
+      const voadora = personagem.animations.find((a) => a.action === 'jump-kick');
+      if (voadora) expect(voadora.bounds[0].hit, `${personagem.id} voadora`).not.toEqual(corpo);
+    });
+  });
+
   it('Almirante registra todos os movimentos em sheets próprias', () => {
     const almirante = LUTADORES.find((lutador) => lutador.id === 'almirante');
     expect(almirante).toBeTruthy();

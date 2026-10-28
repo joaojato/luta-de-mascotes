@@ -29,6 +29,8 @@ export interface HeroAnimationDefinition {
   repeat: number;
   bounds: HeroBoundsFrame[];
   travel?: StrikeTravel;
+  /** Per-frame display time (ms) when the JSON sets a `timing`. */
+  frameDurations?: number[];
 }
 
 export interface CharacterDefinition {

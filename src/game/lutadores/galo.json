@@ -176,9 +176,9 @@
           3
         ],
         "bounds": {
-          "x": 15,
+          "x": 26,
           "y": 70,
-          "width": 85,
+          "width": 74,
           "height": 45
         }
       },
@@ -226,9 +226,9 @@
           3
         ],
         "bounds": {
-          "x": 5,
+          "x": 4,
           "y": 65,
-          "width": 100,
+          "width": 101,
           "height": 55
         }
       }
@@ -280,9 +280,9 @@
           5
         ],
         "bounds": {
-          "x": 39,
+          "x": 31,
           "y": 89,
-          "width": 75,
+          "width": 83,
           "height": 73
         }
       }
@@ -313,7 +313,16 @@
           "width": 90,
           "height": 60
         }
-      }
+      },
+      "timing": [
+        {
+          "frames": [
+            0,
+            9
+          ],
+          "ms": 40
+        }
+      ]
     },
     {
       "action": "special-charge",

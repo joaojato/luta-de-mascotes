@@ -108,6 +108,22 @@ Agachar sem guarda é esquiva do Soco rápido, do Tiro e do cachimbo do Saci.
 
 Luta: 230 de vida para todos os lutadores, round de 99 segundos.
 
+Ritmo (João, 28/10/2026, contra o spam de soco rápido):
+
+- Soco rápido só emenda outro se encostou (acerto ou guarda); no vazio, a
+  animação vai até o fim. Atordoa 200 ms, menos que o intervalo entre socos
+  sem emenda (cerca de 286 ms): quem apanha tem brecha para defender ou
+  responder.
+- Dano padrão: soco rápido 4 por acerto, soco forte 18, chute básico 14,
+  chute baixo 10. Golpe lento rende mais que o rápido.
+- Guarda empurra 60% do golpe. Contra a parede, quem recua é o atacante.
+- Golpes que se encontram no mesmo quadro trocam: os dois levam.
+- Regra do Corpo (CLAUDE.md): só o corpo apanha; o alcance do desenho é
+  vantagem real.
+- Golpe longo pode ter `timing` no JSON: preparação rápida e quadro de
+  contato segurado. Bengalada do Cartola sai aos ~370 ms e acerta por
+  ~250 ms; varredura acerta nos quadros 8 a 11; giro do Galo sai aos ~400 ms.
+
 Botões são remapeáveis por lado do teclado na Academia (aba Botões) e valem
 na luta. Números exatos (dano, vida, carga do especial) ficam no JSON do
 mascote e podem ser testados na aba Ajustes da Academia. Aqui é a intenção.

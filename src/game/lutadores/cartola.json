@@ -187,9 +187,9 @@
           3
         ],
         "bounds": {
-          "x": 15,
+          "x": 31,
           "y": 70,
-          "width": 85,
+          "width": 69,
           "height": 45
         }
       },
@@ -242,7 +242,23 @@
           "width": 96,
           "height": 30
         }
-      }
+      },
+      "timing": [
+        {
+          "frames": [
+            0,
+            8
+          ],
+          "ms": 40
+        },
+        {
+          "frames": [
+            9,
+            10
+          ],
+          "ms": 120
+        }
+      ]
     },
     {
       "action": "heavy-kick",
@@ -264,9 +280,9 @@
           5
         ],
         "bounds": {
-          "x": 39,
+          "x": 33,
           "y": 89,
-          "width": 75,
+          "width": 81,
           "height": 73
         }
       }
@@ -286,17 +302,34 @@
       },
       "attack": {
         "frames": [
+          8,
           9,
           10,
           11
         ],
         "bounds": {
-          "x": 10,
+          "x": 4,
           "y": 192,
-          "width": 96,
+          "width": 102,
           "height": 36
         }
-      }
+      },
+      "timing": [
+        {
+          "frames": [
+            0,
+            7
+          ],
+          "ms": 40
+        },
+        {
+          "frames": [
+            8,
+            11
+          ],
+          "ms": 90
+        }
+      ]
     },
     {
       "action": "special-charge",

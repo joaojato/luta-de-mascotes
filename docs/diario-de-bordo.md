@@ -1524,3 +1524,30 @@ Não joguei uma luta com a voadora.
 **Em aberto:** testar a voadora numa luta (alcance do pé, quebra da guarda
 baixa com 0,6 s); voadora do Bahia (Codex não entregou); `jump-punch` dos
 seis; `low-kick` do Bira.
+
+## 2026-10-28: Fim do spam de soco rápido
+
+**Marco:** 2, segue em andamento.
+**Pedido:** o meta era spamar soco rápido; golpes longos (bengala, chutes)
+não davam vantagem nenhuma. Implementar as correções propostas e fazer o
+alcance valer.
+**Feito:** diagnóstico medido: soco emendava sem limite com intervalo de
+143 ms e atordoamento de 280 ms (combo infinito, 3 ms de brecha na guarda);
+P1 sempre vencia golpes simultâneos; caixa de apanhar era a soma dos quadros
+(Cartola apanhava na ponta da bengala o tempo todo); caixa do soco passava
+10 a 16 px do punho. Mudanças: emenda só com contato; atordoamento do soco
+200 ms; dano 4/18/14/10 (Almirante 5/16/15); guarda empurra 60%; atacante
+recua na parede; troca em golpe simultâneo; Regra do Corpo; caixas de
+acerto até a ponta do desenho; `timing` por quadro no JSON (bengalada,
+varredura, giro do Galo).
+**Verificado:** `npm run check` com 121 testes (tempo por quadro, emenda só
+com contato, recuo, Regra do Corpo), build ok. No navegador: bengalada
+acerta aos 369 ms (antes 750) e dura 1,05 s; giro do Galo acerta aos 406 ms.
+Não joguei uma luta.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** emenda livre do soco rápido e caixas
+de apanhar pela soma dos quadros.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** jogar e ajustar números; ajustes salvos na aba Ajustes da
+Academia vencem os padrões novos; chutes curtos no desenho (pedido ao Codex).

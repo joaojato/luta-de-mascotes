@@ -96,6 +96,12 @@ Cada uma tem nome para poder ser cobrada depois.
   nome oficial de clube ou patrocínio nos assets. Protege o trabalho se ele
   for publicado, e é decisão de design antes de ser jurídica: o mascote
   precisa se sustentar como personagem.
+- **Regra do Corpo.** No chão, só o corpo apanha: a caixa de apanhar de
+  golpe, andar e guarda é a do `idle`. Braço, perna e bengala esticados são
+  alcance, não alvo. A caixa de acerto vai até onde o desenho vai, nem um
+  pixel além (o soco rápido não pode alcançar mais que o punho). Pulo,
+  especial e queda guardam a caixa própria. Cobrada por teste em
+  `lutadores.test.ts`.
 - **Regra da v1.** A v1 é: 2 mascotes, 1 cenário, 4 golpes por mascote, 2
   jogadores no mesmo teclado. A CPU veio de brinde no motor herdado e pode
   ficar. Nada além disso é construído antes de a v1 rodar de ponta a ponta.
