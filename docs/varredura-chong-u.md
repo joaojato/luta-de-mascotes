@@ -24,8 +24,17 @@ critério de publicação. O critério é esta lista zerada.
 | `public/assets/audio/sfx/ui-confirm.mp3` | Confirmação em todos os menus | `core/audio.ts` |
 | `public/favicon.svg` | Ícone da aba (`index.html`, `controle.html`) | |
 
-Textos do template em inglês, que são dele mas não são arte: "Select Stage",
-"Two players, one keyboard", "You pick, the CPU answers".
+Textos do template em inglês, que são dele mas não são arte (conferido em
+28/10/2026):
+
+- Menu: "Play", "Settings" (`MainMenuScene.ts`).
+- Splash: "Press any key to begin" / "Tap screen to begin" (`SplashScene.ts`).
+- Modo: "Two players, one keyboard", "You pick, the CPU answers" (`ModeSelectScene.ts`).
+- Cenário: "Select Stage" (`LevelSelectScene.ts`).
+- Ajustes: "Music -", "Music +", "Toggle mute", "Reset defaults", "Back to menu" (`SettingsScene.ts`).
+
+"FIGHT!", "K.O.", "TIME UP" e "DRAW" na Luta são vocabulário do gênero, não
+dele; ficam se o João quiser.
 
 Menor caminho: o HUD é o único item com trabalho de arte de verdade (um atlas
 com os mesmos nomes de quadro substitui sem tocar no código). Cartões de modo

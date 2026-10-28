@@ -1551,3 +1551,20 @@ de apanhar pela soma dos quadros.
 **Atrito:** nenhum.
 **Em aberto:** jogar e ajustar números; ajustes salvos na aba Ajustes da
 Academia vencem os padrões novos; chutes curtos no desenho (pedido ao Codex).
+
+## 2026-10-28: Conferência da varredura do Chong-U
+
+**Marco:** 2, segue em andamento.
+**Pedido:** mapear tudo o que ainda é do criador original e impede publicar
+na Vercel.
+**Feito:** conferi `docs/varredura-chong-u.md` (27/10) contra o código de
+hoje: assets e pastas batem; comparação arquivo a arquivo com `6f3a57c`
+confirma 37 arquivos de `src/` idênticos ao original. Completei a lista de
+textos herdados em inglês (menu, splash, ajustes).
+**Verificado:** `npm run check` (só documentação mudou).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** mensagem ao Chong-U pedindo autorização; poda da seção 2;
+troca da seção 1 (HUD é o item grande).
