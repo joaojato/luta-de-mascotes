@@ -52,7 +52,8 @@ src/controle/         controle pelo corpo: celular (controle.html), relay
 src/shell/            shell HTML de debug (só em dev, localhost)
 arquivo/lutadores/    lutadores e variantes guardados, fora do jogo (LEIA-ME)
 public/assets/lutadores/<slug>/<skin>/     sprites, uma pasta por skin
-public/assets/backgrounds/, stages/, ui/   cenário e HUD de amostra
+public/assets/cenarios/estadio/          o nosso cenário (rooftops em arquivo/)
+public/assets/ui/, mode-cards/            HUD e cartões herdados (docs/varredura-chong-u.md)
 ```
 
 Mapa de nomes: `Match` é a Luta, `CharacterSelect` é a Seleção. A `Academia`

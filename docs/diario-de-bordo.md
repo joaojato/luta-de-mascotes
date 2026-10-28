@@ -1408,3 +1408,24 @@ Saci não devia ter sido padronizado.
 **Atrito:** nenhum.
 **Em aberto:** conferir os leves na Academia; `low-kick` do Bira;
 `jump-kick` e `jump-punch` dos seis; animação de atordoado.
+
+## 2026-10-27: Varredura do Chong-U e rooftop desativado
+
+**Marco:** 2, segue em andamento.
+**Pedido:** varrer tudo o que ainda é do Chong-U para adaptar e publicar na
+Vercel; desativar o rooftop, porque já temos o Estádio.
+**Feito:** `docs/varredura-chong-u.md`: arte e som dele visíveis (HUD,
+cartões de modo, som de menu, favicon), assets que vão no build sem uso
+(atlas quest, tiles, levels, index.json), código herdado (37 arquivos
+idênticos) e o que a Vercel precisa. Rooftops fora de `STAGE_DEFINITIONS`,
+Estádio vira padrão da Luta e do painel de fundo; PNGs em
+`arquivo/cenarios/rooftop/` com LEIA-ME.
+**Verificado:** `npm run check` com 115 testes, build ok e sem rooftop em
+`dist` (só no `index.json` morto). Extensão do Chrome desconectada: não vi
+a tela de cenário rodando.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** rooftop desativado.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** licença do código do Chong-U antes do link público (pedir
+autorização); trocar HUD, cartões, som e favicon; podar o starter de RPG.

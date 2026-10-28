@@ -4,7 +4,7 @@ export const BACKGROUND_GYM_CONFIG_FILE = '/configs/background-gym.json';
 export const BACKGROUND_GYM_CONFIG_SAVE_TARGET = 'configs/background-gym.json';
 export const BACKGROUND_BASE_SCROLL_SPEED = 24;
 
-export const BACKGROUND_LAYER_KEYS = ['rooftop-twilight-stage'] as const;
+export const BACKGROUND_LAYER_KEYS = ['estadio-stage'] as const;
 
 export type BackgroundLayerKey = (typeof BACKGROUND_LAYER_KEYS)[number];
 
@@ -12,7 +12,7 @@ export interface BackgroundGymConfigExport {
   version: number;
   savedAt: string;
   background: {
-    id: 'rooftop-parallax';
+    id: 'estadio';
     selectedLayerKey: BackgroundLayerKey;
     layers: BackgroundLayerConfig[];
   };
@@ -20,9 +20,9 @@ export interface BackgroundGymConfigExport {
 
 export const DEFAULT_BACKGROUND_LAYERS: BackgroundLayerConfig[] = [
   {
-    key: 'rooftop-twilight-stage',
-    label: 'Rooftop',
-    url: '/assets/backgrounds/rooftop-twilight-stage.png',
+    key: 'estadio-stage',
+    label: 'Estádio',
+    url: '/assets/cenarios/estadio/cenario.png',
     depth: 0,
     visible: true,
     speedFactor: 0.5,
@@ -34,7 +34,7 @@ export const DEFAULT_BACKGROUND_LAYERS: BackgroundLayerConfig[] = [
 ];
 
 export const DEFAULT_BACKGROUND_GYM_STATE: BackgroundGymDebugState = {
-  selectedLayerKey: 'rooftop-twilight-stage',
+  selectedLayerKey: 'estadio-stage',
   layers: DEFAULT_BACKGROUND_LAYERS.map((layer) => ({ ...layer }))
 };
 
@@ -47,10 +47,10 @@ export function buildBackgroundGymConfigExport(
     version: 1,
     savedAt: new Date().toISOString(),
     background: {
-      id: 'rooftop-parallax',
+      id: 'estadio',
       selectedLayerKey: isBackgroundLayerKey(normalized.selectedLayerKey)
         ? normalized.selectedLayerKey
-        : 'rooftop-twilight-stage',
+        : 'estadio-stage',
       layers: normalized.layers
     }
   };

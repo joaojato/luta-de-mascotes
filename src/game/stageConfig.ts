@@ -48,25 +48,9 @@ export const STAGE_PREVIEW_DEFAULT_PAN_SPEED = 140;
 export const STAGE_PREVIEW_MIN_PAN_SPEED = 20;
 export const STAGE_PREVIEW_MAX_PAN_SPEED = 600;
 
-const STAGE_ASSET_ROOT = '/assets/backgrounds';
-
+// Os dois rooftops do Chong-U foram desativados em 27/10/2026 e estão em
+// `arquivo/cenarios/`. O Estádio é o primeiro e, portanto, o padrão.
 export const STAGE_DEFINITIONS: StageDefinition[] = [
-  {
-    id: 'rooftop-twilight',
-    label: 'Rooftop Twilight',
-    key: 'rooftop-twilight-stage',
-    url: `${STAGE_ASSET_ROOT}/rooftop-twilight-stage.png`,
-    width: 1774,
-    height: 887
-  },
-  {
-    id: 'rooftop-sunset',
-    label: 'Rooftop Sunset',
-    key: 'rooftop-sunset-stage',
-    url: `${STAGE_ASSET_ROOT}/rooftop-sunset-stage.png`,
-    width: 2048,
-    height: 768
-  },
   {
     id: 'estadio',
     label: 'Estádio',

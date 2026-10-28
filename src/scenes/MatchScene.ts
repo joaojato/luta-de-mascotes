@@ -46,7 +46,7 @@ type PlayerKeys = Record<ComandoLuta, Phaser.Input.Keyboard.Key>;
 export class MatchScene extends BaseScene {
   private config: MatchConfig = {
     mode: '1v1',
-    stageId: 'rooftop-twilight',
+    stageId: 'estadio',
     p1CharacterId: '',
     p2CharacterId: ''
   };
