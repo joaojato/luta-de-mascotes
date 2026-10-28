@@ -208,6 +208,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **Agachar que termina em pé fica em pé na luta.** O `crouch` segura o
   último quadro; o do Cachorro voltava à guarda no fim. Conferir o último
   quadro de toda ação com `repeat: 0`, não só o do meio. (2026-10-27)
+- **Quadro errado escondido por repetição continua errado.** O jab v5 do
+  Saci tinha um soco para trás na fonte; a montagem repetia o quadro
+  vizinho no lugar e o João viu o tranco mesmo assim. Quadro contraditório
+  se redesenha. Ao receber sheet nova, olhar a folha de contato inteira
+  procurando inversão de lado, troca de mão e acessório que some.
+  (2026-10-28)
 - O Spriterrific não faz o estilo 16-bit arcade do SF2. O melhor é o mixels.
   Dizer isso antes de gastar crédito, não depois. (2026-09-17, lido na
   própria skill)

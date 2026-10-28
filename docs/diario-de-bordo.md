@@ -1453,3 +1453,23 @@ sido preservado na véspera.
 **Em aberto:** conferir na Academia e numa luta: alcance das bengaladas,
 garras no pé do Galo, distância do carrinho; `jump-kick` e `jump-punch` dos
 seis; animação de atordoado.
+
+## 2026-10-28: Revisão de coerência v6 do Codex
+
+**Marco:** 2, segue em andamento.
+**Pedido:** implementar as artes novas do Codex.
+**Feito:** o Codex aplicou a v6 direto em `public/` (`docs/coerencia-animacoes-v6.md`):
+jab do Saci redesenhado sempre para a frente; Cartola pesado com os quadros 8,
+12 e 13 trocados; Cartola baixo com a mão no pomo nos quadros 7 a 13. Mesmas
+contagens, FPS e janelas, então nenhum JSON mudou. Acentos que o Codex gravou
+como `?` no AGENTS.md e no guia, restaurados.
+**Verificado:** `npm run check` com 116 testes, Régua do Idle passa nas três
+sheets, build ok. Folhas de contato conferidas. Não vi rodando no navegador.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** jab do Saci v5 (soco para trás).
+**Aprovado explicitamente:** nada.
+**Atrito:** o Codex ainda estava gravando quando o pedido chegou; esperei
+ele terminar.
+**Em aberto:** relatar ao Codex, sem editar: no Cartola baixo, o quadro 5
+aparece de costas entre dois de frente; nas duas bengaladas a bengala some
+de uma vez no fim (pesado 12 para 13, baixo 14 para 15). Conferir na luta.
