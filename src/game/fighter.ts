@@ -1808,12 +1808,19 @@ export class Fighter {
         .setDepth(move.move === 'nuvem' ? CLOUD_DEPTH : this.depthBase+2).play(effectKey);
     } else {
       x = this.posX+this.facing*(move.visualFile ? width/2+20 : 90*this.appliedScale);
+      const fromBehind = move.spawnFrom === 'behind';
+      if (fromBehind) {
+        // Enters from off-screen behind the fighter and sails past them: it comes out of him.
+        const view = this.scene.cameras?.main?.worldView;
+        const edge = this.facing === 1 ? (view?.x ?? this.projectileMinX) : (view?.right ?? this.projectileMaxX);
+        x = edge - this.facing * width / 2;
+      }
       const baseline = this.groundY-24*this.appliedScale;
       y = move.visualFile ? baseline-height/2 : this.groundY-175*this.appliedScale;
       visual = move.visualFile
         ? this.scene.add.sprite(x, baseline, `${this.character.id}-special-effect`, 0)
           .setOrigin(.5, 1).setScale(move.visualScale ?? 2).setFlipX(this.facing === 1)
-          .setDepth(this.depthBase+2).play(`${this.character.id}-special-effect`)
+          .setDepth(fromBehind ? this.depthBase - 0.5 : this.depthBase+2).play(`${this.character.id}-special-effect`)
         : this.scene.add.rectangle(x, y, 14, 5, 0xffdf8a).setDepth(this.depthBase+1);
     }
     const life = move.range !== undefined ? move.range / speed

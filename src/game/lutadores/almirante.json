@@ -302,7 +302,16 @@
           "width": 90,
           "height": 50
         }
-      }
+      },
+      "timing": [
+        {
+          "frames": [
+            2,
+            2
+          ],
+          "ms": 700
+        }
+      ]
     },
     {
       "action": "knockdown",
@@ -383,14 +392,15 @@
     "special": {
       "kind": "projectile",
       "releaseFrame": 1,
-      "speed": 520,
+      "speed": 1000,
       "visualFile": "wave-caravel.png",
       "visualFrames": 4,
       "visualFrameRate": 10,
       "visualScale": 2.2,
       "hitWidth": 440,
       "hitHeight": 220,
-      "persistOnHit": true
+      "persistOnHit": true,
+      "spawnFrom": "behind"
     },
     "kick": {
       "kind": "projectile",

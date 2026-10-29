@@ -97,7 +97,9 @@ Projéteis:
 - **Tiro do Almirante** (o Chute dele): passa por cima de quem pula e por
   cima de quem agacha.
 - **Caravela do Almirante** (especial): passa por baixo de quem pula;
-  agachar não salva.
+  agachar não salva. Entra pela borda da tela atrás dele e passa por trás do
+  corpo dele, como se saísse dele (`spawnFrom: "behind"`, velocidade 1000);
+  ele segura a pose apontando por 0,7 s (João, 29/10/2026).
 
 Defesa (João, 28/10/2026): a guarda em pé (Defender) só é quebrada pelo
 Chute baixo e pelo Soco forte; a guarda agachada (Defender + Baixo) só pela

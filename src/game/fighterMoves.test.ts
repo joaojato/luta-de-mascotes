@@ -391,6 +391,18 @@ describe('fighter move integration', () => {
     second.delays.forEach(fn => fn());
     expect(second.sprite.anims.currentAnim.key).toBe('saci-hit-high');
   });
+  it('the Almirante caravel sails in from off-screen behind him, under him, and on past him', () => {
+    const {fighter, special, effectVisual} = setup('almirante');
+    fighter.setProjectileBounds(0, 2600);
+    special();
+    fighter.update(.11, NEUTRAL_FIGHTER_INPUT);
+    const wave = fighter.getActiveAttack()!;
+    // Facing right at x 200: behind is the left edge, and the whole ship starts beyond it.
+    expect(wave.rect.x + wave.rect.width).toBeLessThanOrEqual(0);
+    expect(effectVisual.depth).toBeLessThan(5);
+    fighter.update(.8, NEUTRAL_FIGHTER_INPUT);
+    expect(effectVisual.x).toBeGreaterThan(fighter.x);
+  });
   it('launches an animated caravel wave, keeps crossing after a hit and removes it beyond the arena', () => {
     const {fighter, special, complete, effectVisual} = setup('almirante');
     fighter.setProjectileBounds(0, 2600);

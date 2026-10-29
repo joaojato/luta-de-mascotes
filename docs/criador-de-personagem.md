@@ -90,6 +90,9 @@ do Galo `spin-kick`): ele tem algum? No lugar de qual botão?
    é a sheet `special`. Especial que corre pode ter uma sheet só para a
    aproximação (`special-run`, o galope do Bira).
 7. Efeitos separados do corpo (nuvem, rastro, coluna de ar, mandíbula)?
+8. Se solta algo: sai da mão dele, ou entra pela borda da tela atrás dele e
+   passa por ele (`spawnFrom`, como a caravela do Almirante)? Ele segura
+   alguma pose enquanto isso (`timing` por quadro)?
 
 ## 6. Movimento e reações
 

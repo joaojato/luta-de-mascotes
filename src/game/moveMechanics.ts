@@ -61,6 +61,8 @@ export interface ProjectileMoveConfig {
   /** Projectile arc: initial upward speed and gravity (px/s, px/s²); it ends when it falls to the ground. */
   launchVy?: number;
   gravity?: number;
+  /** `behind`: the projectile enters from off-screen behind the fighter and sails past them. */
+  spawnFrom?: 'behind' | string;
   /** Projectile stops after this many px (a cloud that dissipates). */
   range?: number;
   /** With `persistOnHit`: px it still drifts after the hit, over the target, its sheet stretched to fade there. */
