@@ -213,15 +213,15 @@
     {
       "action": "eye-laser",
       "label": "Laser dos olhos",
-      "file": "heavy-kick.png",
+      "file": "eye-laser.png",
       "frames": 6,
       "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 60,
-        "y": 18,
-        "width": 154,
-        "height": 210
+        "x": 57,
+        "y": 15,
+        "width": 149,
+        "height": 213
       }
     },
     {
@@ -233,9 +233,9 @@
       "repeat": 0,
       "defaultVisual": {
         "x": 63,
-        "y": 16,
-        "width": 153,
-        "height": 212
+        "y": 13,
+        "width": 151,
+        "height": 215
       }
     },
     {
@@ -246,10 +246,10 @@
       "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 57,
-        "y": 10,
-        "width": 165,
-        "height": 218
+        "x": 62,
+        "y": 15,
+        "width": 148,
+        "height": 205
       },
       "timing": [
         {
@@ -294,6 +294,80 @@
         "width": 123,
         "height": 208
       }
+    },
+    {
+      "action": "jump-kick",
+      "label": "Voadora",
+      "file": "jump-kick.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 25,
+        "y": 9,
+        "width": 175,
+        "height": 159
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            0
+          ],
+          "bounds": {
+            "x": 39,
+            "y": 142,
+            "width": 29,
+            "height": 27
+          }
+        },
+        {
+          "frames": [
+            1
+          ],
+          "bounds": {
+            "x": 38,
+            "y": 137,
+            "width": 29,
+            "height": 26
+          }
+        },
+        {
+          "frames": [
+            2
+          ],
+          "bounds": {
+            "x": 25,
+            "y": 139,
+            "width": 32,
+            "height": 27
+          }
+        },
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 45,
+            "y": 138,
+            "width": 29,
+            "height": 26
+          }
+        }
+      ]
+    },
+    {
+      "action": "dash-back",
+      "label": "Arrancada para trás",
+      "file": "dash-back.png",
+      "frames": 4,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 15,
+        "y": 17,
+        "width": 201,
+        "height": 211
+      }
     }
   ],
   "skins": [
@@ -310,9 +384,10 @@
       "releaseFrame": 2,
       "speed": 1100,
       "visualEffect": "laser",
-      "launchHeight": 177,
+      "launchHeight": 213,
       "hitWidth": 60,
-      "hitHeight": 24
+      "hitHeight": 24,
+      "visualScale": 0.4
     },
     "special": {
       "kind": "projectile",

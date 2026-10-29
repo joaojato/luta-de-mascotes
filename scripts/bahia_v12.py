@@ -57,7 +57,7 @@ LABELS = dict(zip(
      'Corte descendente','Laser dos olhos','Preparar grito','Bora Bahêa']))
 
 
-def pack(action, count, fps, mode='belt', calibration=0, source_count=None, scale_override=None):
+def pack(action, count, fps, mode='belt', calibration=0, source_count=None, scale_override=None, source_offset=0):
     source = OUT / f'{action}-source.png'
     im = Image.open(source).convert('RGBA')
     crops = extract(im, source_count or count)
@@ -67,7 +67,7 @@ def pack(action, count, fps, mode='belt', calibration=0, source_count=None, scal
     scale = scale_override if scale_override is not None else (gb[3]-gb[1])/(reference[3]-reference[1])
     belt = belt_center(guard)
     frames, boxes, placements, hover_offsets = [], [], [], []
-    for i, crop in enumerate(crops[:count]):
+    for i, crop in enumerate(crops[source_offset:source_offset+count]):
         crop.save(OUT / f'{action}-extracted-{i}.png')
         cut = crop.crop(bounds(crop))
         cut = cut.resize((round(cut.width*scale), round(cut.height*scale)), Image.Resampling.NEAREST)
@@ -97,7 +97,7 @@ def pack(action, count, fps, mode='belt', calibration=0, source_count=None, scal
         y = max(3, min(253-cut.height, y))
         frame = Image.new('RGBA', (256, 256))
         frame.alpha_composite(cut, (x, y))
-        if (i == 0 and calibration == 0) or (i == count-1 and action in
+        if (i == 0 and calibration == 0 and source_offset == 0) or (i == count-1 and action in
                 ['hit-high','light-punch','heavy-punch','eye-laser','special','low-kick','dash-forward','dash-back']):
             frame = guard.copy()
         hover = 8 if action != 'knockdown' else max(0, 8-round(i*8/5))
@@ -125,10 +125,14 @@ def pack(action, count, fps, mode='belt', calibration=0, source_count=None, scal
     contact.save(OUT/f'{action}-contact.png')
     gifs[0].save(OUT/f'{action}-preview.gif',save_all=True,append_images=gifs[1:],duration=round(1000/fps),loop=0)
     report={'action':action,'frames':count,'fps':fps,'scale':scale,'frameBoxes':boxes,'placements':placements,
-            'calibration':calibration,'scaleBasis':'anatomical landmarks' if scale_override is not None else 'canonical guard height',
+            'calibration':calibration,'packing':{'mode':mode,'sourceCount':source_count or count,
+            'sharedScaleOverride':scale_override,'sourceOffset':source_offset},
+            'scaleBasis':'anatomical landmarks' if scale_override is not None else 'canonical guard height',
             'hoverOffsets':hover_offsets,'logicalBaseline':228,
             'sourceSha256':hashlib.sha256(source.read_bytes()).hexdigest(),
             'sha256':hashlib.sha256((OUT/f'{action}-packed.png').read_bytes()).hexdigest(),'status':'packed, awaiting visual inspection'}
+    target=DEST/f'{action}.png'
+    report['expectedTargetSha256']=hashlib.sha256(target.read_bytes()).hexdigest() if target.exists() else None
     (OUT/f'{action}-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     print(json.dumps(report))
 
@@ -139,6 +143,11 @@ def accept(action, notes):
     r=json.loads(report_path.read_text(encoding='utf-8'))
     packed=OUT/f'{action}-packed.png'
     target=DEST/f'{action}.png'
+    assert not r['status'].startswith('rejected'),'Rejected artwork must be redrawn and repacked first'
+    assert hashlib.sha256(packed.read_bytes()).hexdigest()==r['sha256'],'Packed asset changed after report'
+    if 'expectedTargetSha256' in r:
+        current=hashlib.sha256(target.read_bytes()).hexdigest() if target.exists() else None
+        assert current in (r['expectedTargetSha256'],r['sha256']),('Target changed during visual review',action)
     if target.exists() and not (OUT/f'{action}-before.png').exists():
         shutil.copy2(target,OUT/f'{action}-before.png')
     target.write_bytes(packed.read_bytes())
@@ -173,6 +182,8 @@ def accept(action, notes):
 def rebuild_review():
     reports=[json.loads(p.read_text(encoding='utf-8')) for p in OUT.glob('*-report.json')]
     cards=[];pending=[]
+    expected=json.loads((OUT/'action-specs.json').read_text(encoding='utf-8'))
+    installed=[r['action'] for r in reports if r['status'].startswith('installed')]
     for r in reports:
         a=r['action']
         if not r['status'].startswith('installed'):
@@ -183,16 +194,22 @@ def rebuild_review():
                      f'<p>{r["frames"]} quadros · {r["fps"]} FPS</p><p>{r["status"]}</p>'
                      f'<a href="{a}-contact.png">Quadros e base</a> · <a href="{a}-source.png">Fonte</a> · '
                      f'<a href="{prompt}">Prompt</a></article>')
+    for a in expected:
+        if not any(r['action']==a for r in reports):
+            pending.append(f'<li>{a}: pendente de geração</li>')
     (OUT/'revisao.html').write_text('<!doctype html><html lang="pt-BR"><meta charset="utf-8">'
         '<title>Bahia — revisão individual v12</title><style>'
         'body{background:#202934;color:#eef5fc;font:16px system-ui;padding:24px}'
         'main{display:flex;flex-wrap:wrap;gap:18px}article{background:#303d4b;padding:16px;border-radius:8px;width:280px}'
         'img{image-rendering:pixelated;width:256px;height:256px;object-fit:contain}a{color:#a8d5ff}'
         '</style><h1>Bahia — revisão individual v12</h1>'
+        f'<p>{len(installed)} de {len(expected)} animações instaladas após revisão.</p>'
         '<p>Uma ação por geração. Guarda própria como régua de identidade. Pairando, sem passos. '
         'GIFs e contatos são revisão de arte, não testes de combate.</p><main>'+''.join(cards)+
         '</main><h2>Em revisão, não instaladas</h2><ul>'+''.join(pending)+'</ul>',encoding='utf-8')
     (OUT/'report.json').write_text(json.dumps(reports,ensure_ascii=False,indent=2),encoding='utf-8')
+    (OUT/'progress.json').write_text(json.dumps({'installed':installed,
+        'pending':[a for a in expected if a not in installed]},ensure_ascii=False,indent=2),encoding='utf-8')
 
 
 def compose_individual(action, poses):
@@ -229,7 +246,8 @@ if __name__ == '__main__':
     p.add_argument('--mode',choices=['belt','feet','top','head','center'],default='belt')
     p.add_argument('--calibration',type=int,default=0);p.add_argument('--source-count',type=int)
     p.add_argument('--scale',type=float,help='One shared action scale from verified anatomical landmarks')
+    p.add_argument('--source-offset',type=int,default=0,help='Skip a source-only canonical guard calibrator')
     p.add_argument('--accept',metavar='REVIEW_NOTES')
     args=p.parse_args()
     if args.accept:accept(args.action,args.accept)
-    else:pack(args.action,args.count,args.fps,args.mode,args.calibration,args.source_count,args.scale)
+    else:pack(args.action,args.count,args.fps,args.mode,args.calibration,args.source_count,args.scale,args.source_offset)

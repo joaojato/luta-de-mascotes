@@ -1795,3 +1795,20 @@ deitado e a luta segue para o round 2; console sem erro.
 estavam sobrepostos (bloqueio é geométrico); refeito a 177 px, segurou.
 **Em aberto:** `hit-high` ainda volta 36 px num quadro só (tranco); dash,
 chute baixo, soco no ar, voadora e retrato.
+
+## 2026-10-29: Esquadrão, voadora, laser e especial refeitos
+
+**Marco:** 2, segue em andamento.
+**Pedido:** implementar as últimas imagens do Codex (extensão do Codex fica
+sem uso por enquanto).
+**Feito:** ligadas as quatro que ele marcou como revisadas: voadora
+(`jump-kick`, acerto só na bota), sheet própria do laser (`eye-laser.png`,
+raio saindo na altura dos olhos da sheet nova e mais fino) e preparação e
+grito do especial refeitos. Dash para trás ficou de fora (sem revisão).
+**Verificado:** `npm run check` com 146 testes, build ok. No navegador: laser
+de 513 px acerta (8%), voadora acerta (8%), console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** dash, chute baixo, soco no ar, retrato, tranco do `hit-high`.
