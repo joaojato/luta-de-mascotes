@@ -18,6 +18,9 @@ export interface EffectSheetConfig {
   frameRate: number;
   /** -1 loops while the move needs it. */
   repeat?: number;
+  /** Cell size when it is not the fighter's 256×256 (a text banner, 768×256). */
+  frameWidth?: number;
+  frameHeight?: number;
 }
 
 /** Ways out of a special (GDD): jump, duck, or jump while backing away. */
@@ -63,6 +66,8 @@ export interface ProjectileMoveConfig {
   gravity?: number;
   /** `behind`: the projectile enters from off-screen behind the fighter and sails past them. */
   spawnFrom?: 'behind' | string;
+  /** Projectile: `false` keeps the effect unmirrored when facing right (readable text). */
+  mirror?: boolean;
   /** Projectile stops after this many px (a cloud that dissipates). */
   range?: number;
   /** With `persistOnHit`: px it still drifts after the hit, over the target, its sheet stretched to fade there. */

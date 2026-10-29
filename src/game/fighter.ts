@@ -1804,7 +1804,7 @@ export class Fighter {
       x = this.posX + this.facing * 70 * this.appliedScale;
       y = this.groundY - (move.launchHeight ?? 110) * this.appliedScale;
       visual = this.scene.add.sprite(x, y, effectKey, 0)
-        .setOrigin(.5, .5).setScale(move.visualScale ?? this.appliedScale).setFlipX(this.facing === 1)
+        .setOrigin(.5, .5).setScale(move.visualScale ?? this.appliedScale).setFlipX(move.mirror !== false && this.facing === 1)
         .setDepth(move.move === 'nuvem' ? CLOUD_DEPTH : this.depthBase+2).play(effectKey);
     } else {
       x = this.posX+this.facing*(move.visualFile ? width/2+20 : 90*this.appliedScale);

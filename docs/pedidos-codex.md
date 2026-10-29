@@ -1,5 +1,9 @@
 # Pedidos de arte para o Codex
 
+## Entrega 29/10/2026: Bahia — golpes próprios e expressões
+
+Artes produzidas separadamente a partir da primeira base aprovada: mão aberta descendente, laser dos olhos, preparação e emissão do Bora Bahêa; projétil de laser e texto separados. Caminho: public/assets/lutadores/bahia/base/. Expressões muito bravas nos ataques e fofas na guarda. Guia, contagens e integração: [bahia-golpes-v11.md](bahia-golpes-v11.md). Fontes, prompts, hashes e prévias: output/bahia-v11/. Não registrar o personagem incompleto; demais animações e mecânicas seguem pendentes.
+
 Antes de produzir: ler [produção de personagens](producao-personagens.md). Uma geração por personagem e por ação, guarda aprovada da própria skin anexada e comparação de cada quadro com a base antes de aplicar. Este pedido define a tarefa; o guia define o controle de identidade, cor, estilo, anatomia e entrega.
 
 ## Aberto em 29/10/2026: dash (avanço rápido)
@@ -103,3 +107,23 @@ Guia: `docs/voadoras-e-iluminacao-v7.md`; entrega com caminhos, caixas visuais e
 Ligadas pelo Claude em 28/10/2026: `jump-kick` nos seis JSONs, 14 FPS, acerto nos quadros 0 a 3 só no pé de ataque. Ainda faltam: `low-kick.png` do Bira, `jump-punch.png` dos seis e a voadora do Bahia.
 
 Chutes curtos no desenho (28/10/2026): a ponta do pé fica a só 16 a 29 px da frente do corpo no chute básico do Bira (22), no chute básico do Cartola (29), no chute baixo do Galo (16) e no do Urubu (29), contra 31 a 45 px do soco rápido. Para o chute valer pelo alcance, a perna precisa esticar mais à frente no quadro de contato.
+
+## Aberto em 29/10/2026: Esquadrão (Bahia), o resto do corpo
+
+Ele já está na seleção com o que chegou na v11; o resto roda parado na
+guarda. Ler [produção de personagens](producao-personagens.md) e
+[padrão artístico](mascotes/padrao-artistico.md). Partir sempre de
+`referencia/bahia/referencia-estilo-urubu-v1.png`; expressão fofa no
+movimento, muito brava no ataque (ver `docs/mascotes/bahia.md`). Células
+256×256, 5 colunas, virado para a esquerda, fundo transparente, mesma escala
+e mesma linha de bota do `guard-reference.png` (pairando, botas penduradas).
+
+Ordem, para ele parar de parecer estátua:
+
+1. `idle` (4 a 6 quadros): pairando, capa ondulando, sobe e desce pouco.
+2. `walk-forward` e `walk-backward` (6 a 8): flutua, sem passos.
+3. `hit-high` (4 a 6) e `knockdown` (8 a 10): na queda ele cai no chão de verdade.
+4. `light-punch` (6): soco rápido próprio.
+5. `block-high`, `block-low`, `crouch`, `jump`, `stunned`, `dash-forward`, `dash-back`.
+6. `low-kick`, `jump-punch`, `jump-kick`: golpes reais com as pernas.
+7. `portrait.png` (busto) no lugar do recorte provisório.

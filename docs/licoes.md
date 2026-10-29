@@ -329,3 +329,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   João, a batalha pelo corpo não parece funcionar; o próximo passo para
   jogar fora do teclado é botão na tela, e multiplayer vira estudo à parte.
   (2026-10-29)
+- **Duas sessões no mesmo arquivo: commit só com os próprios trechos.** Ao
+  ligar o Esquadrão, outra sessão implementava o crescimento do projétil em
+  `fighter.ts` e `moveMechanics.ts` ao mesmo tempo. Separei meus trechos por
+  patch no índice em vez de commitar o arquivo inteiro. Conferir `git diff`
+  antes de todo commit. (2026-10-29)

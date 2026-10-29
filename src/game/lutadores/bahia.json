@@ -1,0 +1,323 @@
+{
+  "id": "bahia",
+  "label": "Esquadrão",
+  "assetRoot": "/assets/lutadores/bahia",
+  "anchorUsage": "Esquadrão pairando em guarda, voltado para a esquerda",
+  "selecionavel": true,
+  "stats": {},
+  "combat": {
+    "specialDamage": 25
+  },
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Guarda pairando (quebra-galho: guarda)",
+      "file": "guard-reference.png",
+      "frames": 1,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 63,
+        "y": 28,
+        "width": 130,
+        "height": 200
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Flutuar para frente (quebra-galho: guarda)",
+      "file": "guard-reference.png",
+      "frames": 1,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 63,
+        "y": 28,
+        "width": 130,
+        "height": 200
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Flutuar para trás (quebra-galho: guarda)",
+      "file": "guard-reference.png",
+      "frames": 1,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 63,
+        "y": 28,
+        "width": 130,
+        "height": 200
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Agachar (quebra-galho: guarda)",
+      "file": "guard-reference.png",
+      "frames": 1,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 63,
+        "y": 28,
+        "width": 130,
+        "height": 200
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Saltar (quebra-galho: guarda)",
+      "file": "guard-reference.png",
+      "frames": 1,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 63,
+        "y": 28,
+        "width": 130,
+        "height": 200
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Defesa alta (quebra-galho: guarda)",
+      "file": "guard-reference.png",
+      "frames": 1,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 63,
+        "y": 28,
+        "width": 130,
+        "height": 200
+      },
+      "guard": {
+        "x": 63,
+        "y": 40,
+        "width": 90,
+        "height": 100
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Receber golpe (quebra-galho: guarda)",
+      "file": "guard-reference.png",
+      "frames": 1,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 63,
+        "y": 28,
+        "width": 130,
+        "height": 200
+      }
+    },
+    {
+      "action": "knockdown",
+      "label": "Queda (quebra-galho: guarda)",
+      "file": "guard-reference.png",
+      "frames": 1,
+      "frameRate": 6,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 63,
+        "y": 28,
+        "width": 130,
+        "height": 200
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Soco leve (quebra-galho: corte rápido)",
+      "file": "heavy-punch.png",
+      "frames": 6,
+      "frameRate": 20,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 37,
+        "y": 13,
+        "width": 156,
+        "height": 215
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            2
+          ],
+          "bounds": {
+            "x": 50,
+            "y": 115,
+            "width": 48,
+            "height": 36
+          }
+        },
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 37,
+            "y": 125,
+            "width": 50,
+            "height": 32
+          }
+        }
+      ]
+    },
+    {
+      "action": "heavy-punch",
+      "label": "Corte de mão aberta",
+      "file": "heavy-punch.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 37,
+        "y": 13,
+        "width": 156,
+        "height": 215
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            2
+          ],
+          "bounds": {
+            "x": 50,
+            "y": 115,
+            "width": 48,
+            "height": 36
+          }
+        },
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 37,
+            "y": 125,
+            "width": 50,
+            "height": 32
+          }
+        }
+      ],
+      "travel": {
+        "frames": [
+          1,
+          2
+        ],
+        "distance": 20
+      }
+    },
+    {
+      "action": "eye-laser",
+      "label": "Laser dos olhos",
+      "file": "heavy-kick.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 60,
+        "y": 18,
+        "width": 154,
+        "height": 210
+      }
+    },
+    {
+      "action": "special-charge",
+      "label": "Enche o peito",
+      "file": "special-charge.png",
+      "frames": 4,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 63,
+        "y": 16,
+        "width": 153,
+        "height": 212
+      }
+    },
+    {
+      "action": "special",
+      "label": "Bora Bahêa",
+      "file": "special.png",
+      "frames": 5,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 57,
+        "y": 10,
+        "width": 165,
+        "height": 218
+      },
+      "timing": [
+        {
+          "frames": [
+            1,
+            1
+          ],
+          "ms": 400
+        }
+      ]
+    }
+  ],
+  "skins": [
+    {
+      "id": "base",
+      "label": "Herói",
+      "pasta": "base"
+    }
+  ],
+  "moves": {
+    "kick": {
+      "kind": "projectile",
+      "action": "eye-laser",
+      "releaseFrame": 2,
+      "speed": 1100,
+      "visualEffect": "laser",
+      "launchHeight": 177,
+      "hitWidth": 60,
+      "hitHeight": 24
+    },
+    "special": {
+      "kind": "projectile",
+      "releaseFrame": 0,
+      "speed": 520,
+      "visualEffect": "bora",
+      "visualScale": 0.5,
+      "mirror": false,
+      "launchHeight": 150,
+      "hitWidth": 300,
+      "hitHeight": 80,
+      "stunMs": 1000,
+      "growth": {
+        "distance": 700,
+        "sizeMultiplier": 1.8,
+        "damageMultiplier": 1.6,
+        "maxStunMs": 1800
+      }
+    },
+    "effects": {
+      "laser": {
+        "file": "eye-laser-projectile.png",
+        "frames": 1,
+        "frameRate": 1,
+        "repeat": -1
+      },
+      "bora": {
+        "file": "bora-bahea-projectile.png",
+        "frames": 1,
+        "frameRate": 1,
+        "repeat": -1,
+        "frameWidth": 768,
+        "frameHeight": 256
+      }
+    },
+    "jump": {
+      "takeoff": 0,
+      "airEnd": 0,
+      "land": 0
+    }
+  }
+}

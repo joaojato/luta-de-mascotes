@@ -315,3 +315,32 @@ continua em aberto com o João.
 - **Provisórios declarados pelo próprio pacote do Cartola:** soco forte,
   reação ao golpe e queda. A queda foi substituída na v02 por uma desenhada
   de verdade; soco forte e reação continuam pedindo redesenho.
+
+## Esquadrão (Bahia): ficha (29/10/2026)
+
+Entrou jogável por pedido do João ("só põe no jogo"), com quebra-galho onde
+ainda não há sheet. Decisões de arte e golpes em `docs/mascotes/bahia.md`.
+
+```
+Nome no jogo: Esquadrão (provisório; "Super-Homem" é personagem da DC, Regra do Escudo)
+Slug (pasta e JSON): bahia
+Silhueta em uma frase: herói de capa vermelha pairando, botas penduradas, topete
+Arquétipo: luta de longe (laser e grito), aberto para confirmar
+Vida / velocidade / peso: padrão / padrão / padrão (em aberto)
+Fala de entrada: em aberto
+Fala de vitória: em aberto
+Paleta (3 cores, sem o escudo): azul, vermelho, branco
+```
+
+| Botão | Golpe | Sheet hoje |
+|---|---|---|
+| Soco | corte rápido de mão aberta | `heavy-punch.png` a 20 FPS (quebra-galho até ter `light-punch`) |
+| Baixo + Soco | corte de mão aberta, de cima para baixo | `heavy-punch.png`, passo de 20 px |
+| Chute | laser dos olhos (`eye-laser`), projétil `tiro`, sai na altura dos olhos | `heavy-kick.png` + `eye-laser-projectile.png` |
+| Baixo + Chute, voadora, soco no ar | quebra-galho do catálogo (corte de mão aberta) | em aberto |
+| Especial | **Bora Bahêa**: grito vira projétil de texto (`onda`), some no acerto, pular escapa, defesa segura, tonto 1 s, dano 25 (11%) | `special-charge.png`, `special.png` (grito segurado 0,4 s) + `bora-bahea-projectile.png` sem espelhar |
+
+Ainda só na guarda parada (`guard-reference.png`): andar, agachar, pulo,
+defesa, apanhar e queda. Retrato e âncora são recortes provisórios da guarda.
+Crescimento do texto com a distância (dano e tontura junto): em
+implementação no motor por outra sessão em 29/10/2026, ainda não ligado.

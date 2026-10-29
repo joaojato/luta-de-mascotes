@@ -64,6 +64,9 @@ ele é quebrado em dois, não esticado.
   e Ajustes. Academia e Celular ficam no `npm run dev`
   (`FERRAMENTAS_DE_DEV` em `src/game/constants.ts`). Falta: decidir o
   deploy diante da autorização do Chong-U (`docs/varredura-chong-u.md`).
+- [ ] Esquadrão, o Bahia (29/10/2026): na seleção com corte de mão aberta,
+  laser dos olhos e Bora Bahêa; o resto parado na guarda. Falta: sheets do
+  corpo (pedido ao Codex), texto crescendo com a distância, nome final.
 - [ ] Tarefa futura, pedida pelo João em 29/10/2026: **versão jogável no
   celular**, com botões na tela no lugar das teclas. Vem depois do build
   de computador na Vercel.

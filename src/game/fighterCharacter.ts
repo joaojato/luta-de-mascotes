@@ -108,12 +108,12 @@ export function buildFighterCharacter(config: FighterCharacterConfig): Character
   // Effect sheets named in `moves.effects` (thermal column, trail, slash...):
   // registered as `fx-<name>` actions so the Academia shows them too.
   Object.entries(config.moves?.effects ?? {}).forEach(([name, fx]) => {
-    const fxSheet = sheet(animationKey(config.id, `fx-${name}`), `${config.assetRoot}/${fx.file}`, fx.frames);
+    const fxSheet = sheet(animationKey(config.id, `fx-${name}`), `${config.assetRoot}/${fx.file}`, fx.frames, fx.frameWidth, fx.frameHeight);
     spritesheets.push(fxSheet);
     animations.push(makeAnimation(config.id, {
       action: `fx-${name}`, label: `Efeito ${name}`, file: fx.file,
       frames: fx.frames, frameRate: fx.frameRate, repeat: fx.repeat ?? 0,
-      defaultVisual: rect(0, 0, 256, 256)
+      defaultVisual: rect(0, 0, fxSheet.frameWidth, fxSheet.frameHeight)
     }, fxSheet));
   });
 
@@ -156,9 +156,11 @@ export function rect(x: number, y: number, width: number, height: number): Rect 
  * @param key - Loader/animation key.
  * @param url - Public URL of the spritesheet.
  * @param frames - Frame count in the sheet.
+ * @param frameWidth - Cell width; effects can be wider than a fighter cell (a text banner).
+ * @param frameHeight - Cell height.
  */
-function sheet(key: string, url: string, frames: number): SpritesheetAsset {
-  return { ...SHEET_BASE, key, url, frames };
+function sheet(key: string, url: string, frames: number, frameWidth = FRAME_WIDTH, frameHeight = FRAME_HEIGHT): SpritesheetAsset {
+  return { ...SHEET_BASE, key, url, frames, frameWidth, frameHeight };
 }
 
 /**

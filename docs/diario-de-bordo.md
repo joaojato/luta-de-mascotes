@@ -1747,3 +1747,27 @@ rodando com golpes, nenhum WebSocket aberto, console sem erro.
 **Atrito:** nada.
 **Em aberto:** o deploy em si. A seção 3 da varredura (código do Chong-U
 sem licença) continua sem resposta dele.
+
+## 2026-10-29: Esquadrão (Bahia) entra na seleção
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "coloque o super man"; depois do questionário, "só põe no jogo".
+**Feito:** `bahia.json` com a arte da v11 do Codex: corte de mão aberta
+(soco forte e, a 20 FPS, soco rápido), laser dos olhos no chute (projétil
+`tiro` na altura dos olhos) e Bora Bahêa no especial (projétil `onda`, tonto
+1 s, dano 25). O resto usa o quadro da guarda. Motor, só por dado: efeito
+com célula própria (`frameWidth`, o texto tem 768 px) e projétil que não
+espelha (`mirror: false`). Retrato e âncora recortados da guarda. Nome
+provisório Esquadrão pela Regra do Escudo. Ficha no GDD, pedido ao Codex,
+criador atualizado.
+**Verificado:** `npm run check` com 145 testes, build ok. No navegador: o
+Esquadrão na segunda fileira da seleção; luta contra o Urubu com o corte
+(10% da vida), o laser (8%) e o especial (11%) acertando, texto legível
+virado para a direita, console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** outra sessão mexia em `fighter.ts` e `moveMechanics.ts` ao mesmo
+tempo (crescimento do projétil); commit levou só os meus trechos.
+**Em aberto:** sheets do corpo; ligar o crescimento quando a outra sessão
+fechar; nome final; falas.

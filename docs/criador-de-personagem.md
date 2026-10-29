@@ -67,7 +67,8 @@ como o carrinho do Bira, ou fica no lugar (golpe de longe, tiro)?
 
 Golpe próprio no lugar de um padrão (já existem: bicada do Urubu
 `beak-pull`, cachimbo do Saci `pipe-throw`, tiro do Almirante `shot`, giro
-do Galo `spin-kick`): ele tem algum? No lugar de qual botão?
+do Galo `spin-kick`, laser dos olhos do Esquadrão `eye-laser`): ele tem
+algum? No lugar de qual botão?
 
 ## 5. Especial
 
@@ -97,6 +98,9 @@ do Galo `spin-kick`): ele tem algum? No lugar de qual botão?
 8. Se solta algo: sai da mão dele, ou entra pela borda da tela atrás dele e
    passa por ele (`spawnFrom`, como a caravela do Almirante)? Ele segura
    alguma pose enquanto isso (`timing` por quadro)?
+9. O efeito tem texto (como o "Bora Bahêa" do Esquadrão)? Texto não pode
+   espelhar quando ele vira de lado (`mirror: false` no projétil), e efeito
+   mais largo que 256 px declara a célula (`frameWidth`, `frameHeight`).
 
 ## 6. Movimento e reações
 
@@ -139,3 +143,5 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 29/10/2026: criado. Inclui tontura (`stunned`), voadora, soco no ar, dash
   e guarda perfeita.
 - 29/10/2026: passo à frente no soco forte e nos chutes (Regra do Passo).
+- 29/10/2026: laser dos olhos (`eye-laser`) e efeito com texto que não
+  espelha, com célula própria (Esquadrão).
