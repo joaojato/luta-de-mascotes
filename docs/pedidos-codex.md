@@ -1,5 +1,38 @@
 # Pedidos de arte para o Codex
 
+## Aberto em 29/10/2026: dash (avanço rápido)
+
+Mecânica nova pedida pelo João: dois toques rápidos no direcional fazem o
+lutador dar um dash. É a porta de entrada da guarda perfeita (defender no
+tempo certo deixa o atacante tonto por pouco tempo). O motor move o
+personagem; **não desenhar deslocamento dentro da célula**: o corpo fica no
+eixo do `idle` (Regra do Eixo), quem anda é o motor.
+
+Para os seis, cada um na pasta da skin que está na seleção (`urubu/frente`,
+`almirante/base`, `saci`, `cartola/urubu-v1`, `cachorro/urubu-v1`,
+`galo/urubu-v1`). Partir da guarda aprovada de cada um, como na tontura v9:
+uma referência por lutador, nunca um atlas coletivo.
+
+| Prioridade | Arquivo | Ação | Quadros | Como desenhar |
+|---|---|---|---|---|
+| 1 | `dash-forward.png` | Dash para a frente | 5 | Quadro 0 é a guarda. 1 a 3: arrancada baixa, tronco inclinado para a frente, passada longa, braços ainda em guarda perto do rosto (dali ele precisa conseguir defender). Pés podem subir um pouco, nunca afundar no chão. Poeira pequena no pé de trás, dentro da célula. 4: freada de volta à guarda. Sugestão: 18 FPS. |
+| 2 | `dash-back.png` | Dash para trás | 4 | Saltinho curto para trás: tronco recuado, guarda alta protegendo o rosto, pés sobem pouco. Último quadro pousa na guarda. Sugestão: 16 FPS. |
+| 3 | `jump-punch.png` | Soco no ar (pendente desde 27/10) | 5 | No ar, joelhos recolhidos, soco para a frente e um pouco para baixo. |
+
+Somando: 12 sheets de dash (6 de cada) e 6 de soco no ar. Se der para fazer
+só uma leva agora, é a prioridade 1: o dash para trás pode começar com o
+andar para trás acelerado, e o soco no ar já tem quebra-galho.
+
+**Não desenhar** (o Claude resolve com o que já existe):
+
+- Guarda perfeita: pose `block-high` com brilho e a faísca azul do atlas do HUD.
+- Atacante pego pela guarda perfeita: a reação curta `hit-high`. A tontura
+  `stunned` fica só para os atordoamentos longos.
+
+Entrega como nas anteriores: arquivos finais em `public/`, guia em `docs/`
+e relatório com caixas visuais e hashes em `output/`. O Claude só integra o
+que estiver em `public/` com o guia escrito (lição de 29/10/2026).
+
 ## Entrega 29/10/2026: interface de rua
 
 HUD e faíscas refeitos no atlas ativo de 1254×1254, preservando os 22 recortes e sockets. Cartões 1 VS 1 / 1 VS CPU substituídos por Urubu contra Galo numa quadra de bairro. Logo transparente 1200×400 em public/assets/branding/luta-de-mascotes-logo.png, pronto para integrar na abertura/menu. Direção explícita do usuário: simples, de rua, sem metálico/medieval.
