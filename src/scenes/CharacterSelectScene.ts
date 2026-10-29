@@ -3,7 +3,7 @@ import * as Phaser from 'phaser';
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { FIGHTER_CHARACTER_DEFINITIONS, findCharacterAnimationKeyByAction, type CharacterDefinition } from '../game/hero';
 import { LUTADORES } from '../game/lutadores';
-import { getStageDefinition } from '../game/stageConfig';
+import { COR_OURO, COR_P1, COR_P2, FONTE_TITULO } from '../game/estilo';
 import { SCENE_KEYS, type MatchMode } from '../game/types';
 import { BaseScene } from './BaseScene';
 
@@ -12,9 +12,9 @@ interface CharacterSelectData {
   stageId: string;
 }
 
-const P1_COLOR = 0x38bdf8;
-const P2_COLOR = 0xf43f5e;
-const GOLD = 0xfacc15;
+const P1_COLOR = COR_P1;
+const P2_COLOR = COR_P2;
+const GOLD = COR_OURO;
 const TILE_SIZE = 116;
 const TILE_GAP = 10;
 const MAX_COLUMNS = 6;
@@ -74,10 +74,8 @@ export class CharacterSelectScene extends BaseScene {
     this.transitioning = false;
 
     this.markActiveScene(SCENE_KEYS.CharacterSelect);
-    this.cameras.main.setBackgroundColor(0x05030a);
-
-    this.buildBackdrop();
-    this.buildTitle();
+    this.createBackdrop(this.stageId);
+    this.createHeading('Escolha seu lutador', '');
     this.buildGrid();
     this.p1 = this.createCursor('P1', P1_COLOR, 0, -1);
     this.p2 = this.createCursor(this.mode === '1v1' ? 'P2' : 'CPU', P2_COLOR, this.mode === '1v1' ? Math.min(1, this.tiles.length - 1) : 0, 1);
@@ -95,38 +93,6 @@ export class CharacterSelectScene extends BaseScene {
         ? 'P1: WASD + Espaço   •   P2: Setas + Enter   •   Esc volta'
         : 'WASD ou Setas para escolher   •   Enter confirma   •   Esc volta'
     );
-  }
-
-  /** Fundo: o cenário escolhido, escurecido, com uma faixa de chão. */
-  private buildBackdrop(): void {
-    const { width, height } = this.cameras.main;
-    const stage = getStageDefinition(this.stageId);
-
-    if (this.textures.exists(stage.key)) {
-      const image = this.add.image(width / 2, height / 2, stage.key);
-      image.setScale(Math.max(width / image.width, height / image.height));
-      image.setTint(0x6b5a7a).setAlpha(0.45);
-    }
-
-    this.add.rectangle(width / 2, height / 2, width, height, 0x05030a, 0.55);
-    // Vinheta em cima e embaixo, para o título e o rodapé lerem.
-    this.add.rectangle(width / 2, 0, width, 220, 0x05030a, 0.85).setOrigin(0.5, 0);
-    this.add.rectangle(width / 2, height, width, 120, 0x05030a, 0.9).setOrigin(0.5, 1);
-  }
-
-  private buildTitle(): void {
-    const { centerX } = this.cameras.main;
-
-    this.add
-      .text(centerX, 54, 'ESCOLHA SEU LUTADOR', {
-        color: '#facc15',
-        fontFamily: 'Impact, "Arial Black", sans-serif',
-        fontSize: '52px',
-        stroke: '#7c2d12',
-        strokeThickness: 8
-      })
-      .setOrigin(0.5)
-      .setShadow(0, 4, '#000000', 0, true, true);
   }
 
   /** Grade centralizada de quadrados com o retrato recortado de cada lutador. */
@@ -189,7 +155,7 @@ export class CharacterSelectScene extends BaseScene {
     const name = this.add
       .text(previewX, floorY + 34, '', {
         color: colorToCss(color),
-        fontFamily: 'Impact, "Arial Black", sans-serif',
+        fontFamily: FONTE_TITULO,
         fontSize: '30px',
         stroke: '#000000',
         strokeThickness: 6

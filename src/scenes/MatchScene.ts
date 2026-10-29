@@ -4,7 +4,7 @@ import { celular, juntarInputs } from '../controle/celularNoJogo';
 import { PainelCelular } from '../controle/painelCelular';
 import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fighter';
 import { getCharacterDefinition } from '../game/hero';
-import { carregarControles, COMANDOS_LUTA, type ComandoLuta, type Lado } from '../game/controles';
+import { carregarControles, COMANDOS_LUTA, legendaDosBotoes, type ComandoLuta, type Controles, type Lado } from '../game/controles';
 import { MatchHud } from '../game/matchHud';
 import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, jumpsOver, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
@@ -55,6 +55,7 @@ export class MatchScene extends BaseScene {
   private p2!: Fighter;
   private p1Keys!: PlayerKeys;
   private p2Keys!: PlayerKeys;
+  private controles!: Controles;
   private cpu?: CpuController;
   private paineisCelular: { jogador: 1 | 2; painel: PainelCelular }[] = [];
 
@@ -460,6 +461,7 @@ export class MatchScene extends BaseScene {
     // Botões remapeados na Academia (aba Botões); sem nada salvo, o padrão.
     const codes = Phaser.Input.Keyboard.KeyCodes as Record<string, number>;
     const controles = carregarControles(new Set(Object.keys(codes)));
+    this.controles = controles;
     const teclas = (lado: Lado): PlayerKeys =>
       Object.fromEntries(
         COMANDOS_LUTA.map(({ id }) => [id, keyboard.addKey(codes[controles[lado][id]])])
@@ -525,11 +527,11 @@ export class MatchScene extends BaseScene {
   /** Draws the control legend at the bottom of the screen. */
   private createControlsLegend(): void {
     const { centerX, height } = this.cameras.main;
-    const p1 = 'P1: WASD • F light • G heavy • C block • V special';
-    const p2 = this.config.mode === '1vcpu' ? 'P2: CPU' : 'P2: Arrows • , light • . heavy • / block • L special';
+    const p1 = `P1: ${legendaDosBotoes(this.controles.p1)}`;
+    const p2 = this.config.mode === '1vcpu' ? 'P2: CPU' : `P2: ${legendaDosBotoes(this.controles.p2)}`;
 
     this.add
-      .text(centerX, height - 22, `${p1}      ${p2}      Esc Menu`, {
+      .text(centerX, height - 22, `${p1}      ${p2}      Esc menu`, {
         color: '#cbd5f5',
         fontFamily: 'monospace',
         fontSize: '12px',

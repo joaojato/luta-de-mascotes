@@ -31,7 +31,7 @@ export class MainMenuScene extends BaseScene {
     this.options = [];
 
     this.markActiveScene(SCENE_KEYS.MainMenu);
-    this.cameras.main.setBackgroundColor(0x020617);
+    this.createBackdrop();
     this.createHeading(GAME_TITLE, GAME_TAGLINE);
 
     this.renderMenu();
@@ -56,7 +56,7 @@ export class MainMenuScene extends BaseScene {
       this.options = [];
     });
 
-    this.createFooterHint('Arrow keys / WASD to navigate • Enter / Space to confirm');
+    this.createFooterHint('Setas ou W/S para escolher   •   Enter ou Espaço confirma');
   }
 
   private moveSelection(direction: number): void {
@@ -74,22 +74,22 @@ export class MainMenuScene extends BaseScene {
   private renderMenu(): void {
     this.clearButtons();
 
-    const playOption: MenuOption = { label: 'Play', action: () => this.scene.start(SCENE_KEYS.ModeSelect) };
+    const playOption: MenuOption = { label: 'Jogar', action: () => this.scene.start(SCENE_KEYS.ModeSelect) };
     const academiaOption: MenuOption = { label: 'Academia', action: () => this.scene.start(SCENE_KEYS.Academia) };
     const celularOption: MenuOption = { label: 'Celular', action: () => this.scene.start(SCENE_KEYS.Conectar) };
-    const settingsOption: MenuOption = { label: 'Settings', action: () => this.scene.start(SCENE_KEYS.Settings) };
+    const settingsOption: MenuOption = { label: 'Ajustes', action: () => this.scene.start(SCENE_KEYS.Settings) };
     this.options = [playOption, academiaOption, celularOption, settingsOption];
 
-    const startY = 164;
-    const spacing = 55;
+    const spacing = 72;
+    const startY = this.cameras.main.centerY - spacing * 1.5 + 20;
     let row = 0;
 
     const layoutButton = (option: MenuOption, optionIndex: number): void => {
       const button = createTextButton(this, {
         x: this.cameras.main.centerX,
         y: startY + row * spacing,
-        width: 360,
-        height: 56,
+        width: 380,
+        height: 58,
         label: option.label,
         onClick: () => this.confirmOption(option),
         onHover: () => this.setSelection(optionIndex)

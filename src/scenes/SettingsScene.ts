@@ -3,6 +3,7 @@ import * as Phaser from 'phaser';
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { createTextButton, type TextButton } from '../game/ui';
 import { DEFAULT_SETTINGS } from '../game/settings';
+import { COR_BORDA, COR_PAINEL, FONTE_TEXTO, TEXTO_CLARO } from '../game/estilo';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
 
@@ -35,65 +36,67 @@ export class SettingsScene extends BaseScene {
 
   create(): void {
     this.markActiveScene(SCENE_KEYS.Settings);
-    this.cameras.main.setBackgroundColor(0x020617);
-    this.createHeading('Settings', '');
+    this.createBackdrop();
+    this.createHeading('Ajustes', '');
 
     const centerX = this.cameras.main.centerX;
-    const camera = this.cameras.main;
-    const panel = this.add.image(centerX, camera.centerY, 'ui-panel');
-    panel.setDisplaySize(560, 460);
+    const centerY = this.cameras.main.centerY;
+    this.add
+      .rectangle(centerX, centerY + 30, 560, 440, COR_PAINEL, 0.85)
+      .setStrokeStyle(2, COR_BORDA, 1);
 
     const valueStyle = {
-      color: '#cbd5e1',
-      fontFamily: 'monospace',
-      fontSize: '24px'
+      color: TEXTO_CLARO,
+      fontFamily: FONTE_TEXTO,
+      fontSize: '22px',
+      fontStyle: 'bold'
     };
 
-    this.sfxValue = this.add.text(centerX, 210, '', valueStyle).setOrigin(0.5);
-    this.musicValue = this.add.text(centerX, 250, '', valueStyle).setOrigin(0.5);
-    this.muteValue = this.add.text(centerX, 290, '', valueStyle).setOrigin(0.5);
+    this.sfxValue = this.add.text(centerX, centerY - 155, '', valueStyle).setOrigin(0.5);
+    this.musicValue = this.add.text(centerX, centerY - 120, '', valueStyle).setOrigin(0.5);
+    this.muteValue = this.add.text(centerX, centerY - 85, '', valueStyle).setOrigin(0.5);
 
-    const buttonY = [305, 365, 425, 485, 545];
-    const wideButtonWidth = 320;
-    const halfButtonWidth = 150;
-    const buttonHeight = 58;
+    const buttonY = [0, 1, 2, 3, 4].map((row) => centerY - 35 + row * 60);
+    const wideButtonWidth = 340;
+    const halfButtonWidth = 165;
+    const buttonHeight = 52;
 
     this.sfxDownButton = createTextButton(this, {
-      x: centerX - 85,
+      x: centerX - 88,
       y: buttonY[0],
       width: halfButtonWidth,
       height: buttonHeight,
-      label: 'SFX -',
+      label: 'Efeitos −',
       onClick: () => this.changeVolume('sfx', -0.1),
       onHover: () => this.setSelection(0)
     });
 
     this.sfxUpButton = createTextButton(this, {
-      x: centerX + 85,
+      x: centerX + 88,
       y: buttonY[0],
       width: halfButtonWidth,
       height: buttonHeight,
-      label: 'SFX +',
+      label: 'Efeitos +',
       onClick: () => this.changeVolume('sfx', 0.1),
       onHover: () => this.setSelection(0)
     });
 
     this.musicDownButton = createTextButton(this, {
-      x: centerX - 85,
+      x: centerX - 88,
       y: buttonY[1],
       width: halfButtonWidth,
       height: buttonHeight,
-      label: 'Music -',
+      label: 'Música −',
       onClick: () => this.changeVolume('music', -0.1),
       onHover: () => this.setSelection(1)
     });
 
     this.musicUpButton = createTextButton(this, {
-      x: centerX + 85,
+      x: centerX + 88,
       y: buttonY[1],
       width: halfButtonWidth,
       height: buttonHeight,
-      label: 'Music +',
+      label: 'Música +',
       onClick: () => this.changeVolume('music', 0.1),
       onHover: () => this.setSelection(1)
     });
@@ -103,7 +106,7 @@ export class SettingsScene extends BaseScene {
       y: buttonY[2],
       width: wideButtonWidth,
       height: buttonHeight,
-      label: 'Toggle mute',
+      label: 'Ligar ou tirar o som',
       onClick: () => this.toggleMute(),
       onHover: () => this.setSelection(2)
     });
@@ -113,7 +116,7 @@ export class SettingsScene extends BaseScene {
       y: buttonY[3],
       width: wideButtonWidth,
       height: buttonHeight,
-      label: 'Reset defaults',
+      label: 'Restaurar padrão',
       onClick: () => this.app.settingsStore.setState(DEFAULT_SETTINGS),
       onHover: () => this.setSelection(3)
     });
@@ -123,7 +126,7 @@ export class SettingsScene extends BaseScene {
       y: buttonY[4],
       width: wideButtonWidth,
       height: buttonHeight,
-      label: 'Back to menu',
+      label: 'Voltar ao menu',
       onClick: () => this.goToMenu(),
       onHover: () => this.setSelection(4)
     });
@@ -141,14 +144,14 @@ export class SettingsScene extends BaseScene {
     this.input.keyboard?.on('keydown-SPACE', () => this.activateSelection());
 
     const unsubscribe = this.app.settingsStore.subscribe((settings) => {
-      this.sfxValue.setText(`SFX: ${Math.round(settings.sfxVolume * 100)}%`);
-      this.musicValue.setText(`Music: ${Math.round(settings.musicVolume * 100)}%`);
-      this.muteValue.setText(`Mute: ${settings.muted ? 'On' : 'Off'}`);
+      this.sfxValue.setText(`Efeitos: ${Math.round(settings.sfxVolume * 100)}%`);
+      this.musicValue.setText(`Música: ${Math.round(settings.musicVolume * 100)}%`);
+      this.muteValue.setText(`Som: ${settings.muted ? 'mudo' : 'ligado'}`);
     });
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubscribe);
 
-    this.createFooterHint('Up/Down select • Left/Right adjust • Enter/Space select • Esc back');
+    this.createFooterHint('↑ ↓ escolhe   •   ← → ajusta   •   Enter confirma   •   Esc volta');
   }
 
   private changeVolume(kind: 'sfx' | 'music', delta: number): void {

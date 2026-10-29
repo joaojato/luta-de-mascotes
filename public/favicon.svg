@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="8" fill="#070613" />
-  <rect x="10" y="10" width="44" height="44" fill="#1a1830" stroke="#39ff7a" stroke-width="4" />
-  <path d="M24 20h16v8H29v8h9v8H24z" fill="#f4e9d8" />
+  <!-- Luta de Mascotes: bola de futebol no meio de um impacto, nas cores da Seleção. -->
+  <rect width="64" height="64" rx="12" fill="#05030a" />
+  <polygon points="32,3 38,20 56,12 45,27 61,34 44,38 50,56 34,45 24,61 22,43 4,46 17,32 5,17 23,22" fill="#facc15" stroke="#7c2d12" stroke-width="2" stroke-linejoin="round" />
+  <circle cx="32" cy="33" r="14" fill="#f8fafc" stroke="#05030a" stroke-width="2.5" />
+  <polygon points="32,26 38.7,30.9 36.1,38.7 27.9,38.7 25.3,30.9" fill="#05030a" />
+  <path d="M32 26V19.5M38.7 30.9l6-2M36.1 38.7l3.8 5M27.9 38.7l-3.8 5M25.3 30.9l-6-2" stroke="#05030a" stroke-width="2.2" stroke-linecap="round" />
 </svg>

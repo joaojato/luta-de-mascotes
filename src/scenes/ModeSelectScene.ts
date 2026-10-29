@@ -13,8 +13,8 @@ interface ModeOption {
 }
 
 const MODE_OPTIONS: ModeOption[] = [
-  { mode: '1v1', title: '1 VS 1', subtitle: 'Two players, one keyboard', texture: 'mode-card-1v1' },
-  { mode: '1vcpu', title: '1 VS CPU', subtitle: 'You pick, the CPU answers', texture: 'mode-card-1vcpu' }
+  { mode: '1v1', title: '1 VS 1', subtitle: 'Dois jogadores, um teclado', texture: 'mode-card-1v1' },
+  { mode: '1vcpu', title: '1 VS CPU', subtitle: 'Você escolhe, a CPU responde', texture: 'mode-card-1vcpu' }
 ];
 
 const ACCENT = 0x38bdf8;
@@ -36,14 +36,14 @@ export class ModeSelectScene extends BaseScene {
     this.selectedIndex = 0;
 
     this.markActiveScene(SCENE_KEYS.ModeSelect);
-    this.cameras.main.setBackgroundColor(0x020617);
-    this.createHeading('Select Mode', 'How do you want to play?');
+    this.createBackdrop();
+    this.createHeading('Escolha o modo', 'Como você quer jogar?');
 
     this.buildCards();
     this.registerInput();
     this.setSelection(0);
 
-    this.createFooterHint('← → / A D to choose • Enter / Space to confirm • Esc to go back');
+    this.createFooterHint('← → ou A/D para escolher   •   Enter ou Espaço confirma   •   Esc volta');
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.cards.forEach((card) => card.destroy());

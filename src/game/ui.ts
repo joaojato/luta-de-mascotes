@@ -1,5 +1,7 @@
 import * as Phaser from 'phaser';
 
+import { COR_BORDA, COR_OURO, COR_PAINEL, FONTE_TEXTO, FONTE_TITULO, TEXTO_APAGADO, TEXTO_CLARO, TEXTO_OURO } from './estilo';
+
 export interface TextButton {
   group: Phaser.GameObjects.Container;
   setSelected(selected: boolean): void;
@@ -17,22 +19,24 @@ interface TextButtonConfig {
 }
 
 export function createTextButton(scene: Phaser.Scene, config: TextButtonConfig): TextButton {
-  const background = scene.add.image(config.x, config.y, 'ui-button');
-  const label = scene.add.text(config.x, config.y, config.label, {
-    color: '#e2e8f0',
-    fontFamily: 'monospace',
-    fontSize: '22px'
+  const background = scene.add.rectangle(config.x, config.y, config.width, config.height, COR_PAINEL, 0.82);
+  const label = scene.add.text(config.x, config.y, config.label.toUpperCase(), {
+    color: TEXTO_CLARO,
+    fontFamily: FONTE_TITULO,
+    fontSize: '26px',
+    stroke: '#000000',
+    strokeThickness: 4
   });
 
-  background.setDisplaySize(config.width, config.height);
   background.setInteractive({ useHandCursor: true });
   label.setOrigin(0.5);
 
   const group = scene.add.container(0, 0, [background, label]);
 
   const setSelected = (selected: boolean): void => {
-    background.setTexture(selected ? 'ui-button-active' : 'ui-button');
-    label.setColor(selected ? '#f8fafc' : '#e2e8f0');
+    background.setStrokeStyle(selected ? 3 : 2, selected ? COR_OURO : COR_BORDA, 1);
+    background.setFillStyle(selected ? 0x1c1405 : COR_PAINEL, selected ? 0.92 : 0.82);
+    label.setColor(selected ? TEXTO_OURO : TEXTO_CLARO);
   };
 
   background.on('pointerover', () => {
@@ -77,7 +81,7 @@ export interface SelectionCardConfig {
   onHover?: () => void;
 }
 
-const CARD_BASE_STROKE = 0x334155;
+const CARD_BASE_STROKE = COR_BORDA;
 
 /**
  * Create a selectable card: a framed panel with an optional image, a title and
@@ -89,7 +93,7 @@ const CARD_BASE_STROKE = 0x334155;
  */
 export function createSelectionCard(scene: Phaser.Scene, config: SelectionCardConfig): SelectionCard {
   const background = scene.add
-    .rectangle(0, 0, config.width, config.height, 0x0f172a, 0.92)
+    .rectangle(0, 0, config.width, config.height, COR_PAINEL, 0.88)
     .setStrokeStyle(2, CARD_BASE_STROKE, 1);
 
   const children: Phaser.GameObjects.GameObject[] = [background];
@@ -106,11 +110,13 @@ export function createSelectionCard(scene: Phaser.Scene, config: SelectionCardCo
   const titleY = config.subtitle ? subtitleY - 26 : subtitleY;
 
   const title = scene.add
-    .text(0, titleY, config.title, {
-      color: '#f8fafc',
-      fontFamily: 'monospace',
-      fontSize: '20px',
-      align: 'center'
+    .text(0, titleY, config.title.toUpperCase(), {
+      color: TEXTO_CLARO,
+      fontFamily: FONTE_TITULO,
+      fontSize: '26px',
+      align: 'center',
+      stroke: '#000000',
+      strokeThickness: 4
     })
     .setOrigin(0.5);
   children.push(title);
@@ -118,9 +124,10 @@ export function createSelectionCard(scene: Phaser.Scene, config: SelectionCardCo
   if (config.subtitle) {
     const subtitle = scene.add
       .text(0, subtitleY, config.subtitle, {
-        color: '#94a3b8',
-        fontFamily: 'monospace',
-        fontSize: '13px',
+        color: TEXTO_APAGADO,
+        fontFamily: FONTE_TEXTO,
+        fontSize: '15px',
+        fontStyle: 'bold',
         align: 'center'
       })
       .setOrigin(0.5);
@@ -141,7 +148,7 @@ export function createSelectionCard(scene: Phaser.Scene, config: SelectionCardCo
   const setSelected = (selected: boolean, accent: number = 0x38bdf8): void => {
     background.setStrokeStyle(selected ? 4 : 2, selected ? accent : CARD_BASE_STROKE, 1);
     container.setScale(selected ? 1.05 : 1);
-    title.setColor(selected ? '#ffffff' : '#f8fafc');
+    title.setColor(selected ? TEXTO_OURO : TEXTO_CLARO);
   };
 
   const setDimmed = (dimmed: boolean): void => {

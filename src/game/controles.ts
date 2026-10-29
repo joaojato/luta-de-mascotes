@@ -126,3 +126,9 @@ export function nomeDaTecla(tecla: string): string {
   }
   return tecla.length === 1 ? tecla : tecla.charAt(0) + tecla.slice(1).toLowerCase();
 }
+
+/** Legenda curta de um lado na luta, com as teclas que valem agora (remapeadas ou padrão). */
+export function legendaDosBotoes(botoes: MapaBotoes): string {
+  const acoes: [ComandoLuta, string][] = [['light', 'soco'], ['heavy', 'chute'], ['block', 'defende'], ['special', 'especial']];
+  return acoes.map(([id, verbo]) => `${nomeDaTecla(botoes[id])} ${verbo}`).join(' · ');
+}

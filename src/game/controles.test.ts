@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { atribuirTecla, CONTROLES_PADRAO, nomeDaTecla, sanitizarControles } from './controles';
+import { atribuirTecla, CONTROLES_PADRAO, legendaDosBotoes, nomeDaTecla, sanitizarControles } from './controles';
 
 const VALIDAS = new Set(['A', 'B', 'C', 'D', 'F', 'G', 'K', 'L', 'S', 'V', 'W', 'H', 'R', 'LEFT', 'RIGHT', 'UP', 'DOWN', 'COMMA', 'PERIOD', 'FORWARD_SLASH']);
 
@@ -26,5 +26,11 @@ describe('botões da luta', () => {
     expect(nomeDaTecla('LEFT')).toBe('←');
     expect(nomeDaTecla('A')).toBe('A');
     expect(nomeDaTecla('NUMPAD_ONE')).toBe('Num one');
+  });
+  it('legenda da luta mostra as teclas salvas, em português', () => {
+    expect(legendaDosBotoes(CONTROLES_PADRAO.p1)).toBe('F soco · G chute · C defende · V especial');
+    expect(legendaDosBotoes(CONTROLES_PADRAO.p2)).toBe(', soco · . chute · / defende · L especial');
+    const remapeado = atribuirTecla(CONTROLES_PADRAO, 'p1', 'light', 'H');
+    expect(legendaDosBotoes(remapeado.p1)).toContain('H soco');
   });
 });

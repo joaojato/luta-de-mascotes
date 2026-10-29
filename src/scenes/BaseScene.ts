@@ -2,6 +2,16 @@ import * as Phaser from 'phaser';
 
 import { getAppContext } from '../game/context';
 import type { AppContext } from '../game/context';
+import {
+  CONTORNO_TITULO,
+  COR_FUNDO,
+  FONTE_TEXTO,
+  FONTE_TITULO,
+  TEXTO_APAGADO,
+  TEXTO_CLARO,
+  TEXTO_OURO
+} from '../game/estilo';
+import { getStageDefinition } from '../game/stageConfig';
 import { SCENE_KEYS, type SceneKey } from '../game/types';
 
 export abstract class BaseScene extends Phaser.Scene {
@@ -13,23 +23,47 @@ export abstract class BaseScene extends Phaser.Scene {
     this.app.debugStore.patchState({ activeScene: sceneKey });
   }
 
+  /** Fundo das telas fora da luta: o estádio, escurecido, com vinheta em cima e embaixo. */
+  protected createBackdrop(stageId = ''): void {
+    const { width, height } = this.cameras.main;
+    const stage = getStageDefinition(stageId);
+
+    this.cameras.main.setBackgroundColor(COR_FUNDO);
+    if (this.textures.exists(stage.key)) {
+      const image = this.add.image(width / 2, height / 2, stage.key);
+      image.setScale(Math.max(width / image.width, height / image.height));
+      image.setTint(0x6b5a7a).setAlpha(0.45);
+    }
+
+    this.add.rectangle(width / 2, height / 2, width, height, COR_FUNDO, 0.55);
+    // Vinheta em cima e embaixo, para o título e o rodapé lerem.
+    this.add.rectangle(width / 2, 0, width, 220, COR_FUNDO, 0.85).setOrigin(0.5, 0);
+    this.add.rectangle(width / 2, height, width, 120, COR_FUNDO, 0.9).setOrigin(0.5, 1);
+  }
+
   protected createHeading(title: string, subtitle: string): void {
     const { centerX } = this.cameras.main;
 
     this.add
-      .text(centerX, 56, title, {
-        color: '#f8fafc',
-        fontFamily: 'monospace',
-        fontSize: '34px'
+      .text(centerX, 54, title.toUpperCase(), {
+        color: TEXTO_OURO,
+        fontFamily: FONTE_TITULO,
+        fontSize: '52px',
+        stroke: CONTORNO_TITULO,
+        strokeThickness: 8
       })
-      .setOrigin(0.5);
+      .setOrigin(0.5)
+      .setShadow(0, 4, '#000000', 0, true, true);
 
     if (subtitle) {
       this.add
-        .text(centerX, 92, subtitle, {
-          color: '#94a3b8',
-          fontFamily: 'monospace',
-          fontSize: '16px'
+        .text(centerX, 102, subtitle, {
+          color: TEXTO_CLARO,
+          fontFamily: FONTE_TEXTO,
+          fontSize: '18px',
+          fontStyle: 'bold',
+          stroke: '#000000',
+          strokeThickness: 4
         })
         .setOrigin(0.5);
     }
@@ -40,9 +74,10 @@ export abstract class BaseScene extends Phaser.Scene {
 
     this.add
       .text(centerX, height - 28, text, {
-        color: '#94a3b8',
-        fontFamily: 'monospace',
-        fontSize: '14px'
+        color: TEXTO_APAGADO,
+        fontFamily: FONTE_TEXTO,
+        fontSize: '14px',
+        fontStyle: 'bold'
       })
       .setOrigin(0.5)
       .setDepth(100);

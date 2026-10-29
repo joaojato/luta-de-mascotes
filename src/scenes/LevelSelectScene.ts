@@ -34,14 +34,14 @@ export class LevelSelectScene extends BaseScene {
     this.selectedIndex = 0;
 
     this.markActiveScene(SCENE_KEYS.LevelSelect);
-    this.cameras.main.setBackgroundColor(0x020617);
-    this.createHeading('Select Stage', this.mode === '1v1' ? '1 vs 1' : '1 vs CPU');
+    this.createBackdrop();
+    this.createHeading('Escolha o estádio', this.mode === '1v1' ? '1 contra 1' : '1 contra a CPU');
 
     this.buildCards();
     this.registerInput();
     this.setSelection(0);
 
-    this.createFooterHint('← → / A D to choose • Enter / Space to confirm • Esc to go back');
+    this.createFooterHint('← → ou A/D para escolher   •   Enter ou Espaço confirma   •   Esc volta');
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.cards.forEach((card) => card.destroy());

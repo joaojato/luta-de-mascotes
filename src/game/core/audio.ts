@@ -36,7 +36,7 @@ export const AUDIO_KEYS = {
 export type AudioKey = (typeof AUDIO_KEYS)[keyof typeof AUDIO_KEYS];
 
 export const STARTER_AUDIO_ASSETS: StarterAudioAsset[] = [
-  audio(AUDIO_KEYS.uiConfirm, 'sfx', '/assets/audio/sfx/ui-confirm.mp3', 0.38, false, 'menu confirmation cue')
+  audio(AUDIO_KEYS.uiConfirm, 'sfx', '/assets/audio/sfx/apito.wav', 0.3, false, 'apito de juiz que confirma nos menus')
 ];
 export const STARTER_AUDIO_CUES: GeneratedAudioCue[] = [
   cue('starter-jump', 'sfx', 380, 0.08, 0.34, 'generated jump cue'),

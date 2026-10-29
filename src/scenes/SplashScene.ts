@@ -1,5 +1,6 @@
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { GAME_TAGLINE, GAME_TITLE } from '../game/constants';
+import { CONTORNO_TITULO, FONTE_TEXTO, FONTE_TITULO, TEXTO_CLARO, TEXTO_OURO } from '../game/estilo';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
 
@@ -14,33 +15,45 @@ export class SplashScene extends BaseScene {
     this.markActiveScene(SCENE_KEYS.Splash);
 
     const camera = this.cameras.main;
-    camera.setBackgroundColor(0x020617);
+    this.createBackdrop();
 
     this.add
-      .text(camera.centerX, 88, GAME_TITLE.toUpperCase(), {
-        color: '#f8fafc',
-        fontFamily: 'monospace',
-        fontSize: '46px',
-        stroke: '#0f172a',
-        strokeThickness: 8
+      .text(camera.centerX, camera.centerY - 40, GAME_TITLE.toUpperCase(), {
+        color: TEXTO_OURO,
+        fontFamily: FONTE_TITULO,
+        fontSize: camera.width < camera.height ? '64px' : '96px',
+        stroke: CONTORNO_TITULO,
+        strokeThickness: 12
       })
       .setOrigin(0.5)
+      .setShadow(0, 6, '#000000', 0, true, true)
       .setDepth(2);
 
     if (GAME_TAGLINE) {
       this.add
-        .text(camera.centerX, 132, GAME_TAGLINE, {
-          color: '#f8fafc',
-          fontFamily: 'monospace',
-          fontSize: '18px',
-          stroke: '#0f172a',
+        .text(camera.centerX, camera.centerY + 40, GAME_TAGLINE, {
+          color: TEXTO_CLARO,
+          fontFamily: FONTE_TEXTO,
+          fontSize: '22px',
+          fontStyle: 'bold',
+          stroke: '#000000',
           strokeThickness: 5
         })
         .setOrigin(0.5)
         .setDepth(2);
     }
 
-    this.createFooterHint(this.app.isMobileShell ? 'Tap screen to begin' : 'Press any key to begin');
+    const chamada = this.add
+      .text(camera.centerX, camera.height - 110, this.app.isMobileShell ? 'TOQUE NA TELA PARA COMEÇAR' : 'APERTE QUALQUER TECLA', {
+        color: TEXTO_CLARO,
+        fontFamily: FONTE_TITULO,
+        fontSize: '28px',
+        stroke: '#000000',
+        strokeThickness: 5
+      })
+      .setOrigin(0.5)
+      .setDepth(2);
+    this.tweens.add({ targets: chamada, alpha: 0.25, duration: 650, yoyo: true, repeat: -1 });
 
     const advanceToMenu = (): void => {
       if (this.hasAdvanced) {
