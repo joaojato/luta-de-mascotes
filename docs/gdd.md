@@ -170,7 +170,7 @@ do JSON (Regra do JSON: o motor não conhece mascote).
 | Bira: bote | `run` | Galope aos saltos (sheet própria, `approachAction`) até 230 px do oponente; bote com salto real até 90 px dele, mordida no ar uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
 
 O soco forte do Bira é a patada, com o efeito de garras no quadro 3.
-Especiais de avanço acertam uma vez: dano 18 por padrão.
+Especiais de avanço acertam uma vez: dano 34 por padrão (escala de 29/10/2026).
 
 Especial: a barra enche batendo, apanhando e também sozinha com o tempo de
 luta (`meterSeconds`, padrão 45 s; 0 desliga). Decisão do Claude para dar

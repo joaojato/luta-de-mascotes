@@ -1,0 +1,133 @@
+# Criador de personagem
+
+Questionário para pôr um mascote novo no jogo. Quando o João disser "faz um
+personagem", "bota o Bahia" ou parecido, o agente **não começa desenhando
+nem escrevendo JSON**: devolve estas perguntas (skill `lutador-novo`,
+etapa 0), recebe as respostas e só então preenche a ficha do GDD e o pedido
+de arte ao Codex.
+
+Este arquivo acompanha o motor. **Regra do Criador:** toda ação, golpe, tipo
+de especial ou mecânica nova que mude o que um mascote precisa entra aqui no
+mesmo commit que entra no jogo. Um teste em
+`src/game/lutadores/lutadores.test.ts` falha se uma ação usada por algum
+lutador, uma sheet do catálogo de golpes ou um `kind` de especial não
+aparecer neste arquivo.
+
+## Como perguntar
+
+- Uma mensagem só, com os blocos numerados, para o João responder pelo
+  número ("3.2: bengalada").
+- Onde existe padrão, sugerir o padrão e perguntar se muda ("Chute básico:
+  chute frontal comum, ou tem algo dele?"). Resposta curta vale.
+- O que o João não souber agora fica marcado como aberto na ficha. Não
+  inventar golpe para preencher buraco.
+- Sem escudo, nome oficial de clube ou patrocínio em nada (Regra do Escudo).
+
+## 1. Quem é
+
+1. Qual clube e qual mascote real? Como ele aparece na torcida hoje?
+2. Nome no jogo e slug (minúsculo, sem acento: `urubu`, `bahia`).
+3. Em uma frase: qual a atitude dele? (Mascote aqui tem atitude de torcida,
+   nada de fofura corporativa.)
+4. Rival natural no elenco atual (Urubu, Almirante, Saci, Cartola, Bira, Galo)?
+5. Fala de entrada e fala de vitória.
+
+## 2. Como ele se parece
+
+1. Silhueta: o que distingue ele a 20 metros?
+2. Paleta: três cores, sem o escudo.
+3. Roupa e acessório (camisa sem escudo, bengala, cachimbo, capa...).
+4. Tem imagem de referência? Onde está? (vai para `referencia/<slug>/`)
+5. Algo que ele **não** pode parecer?
+
+## 3. Como ele luta
+
+1. Arquétipo: pressão de perto, distância (tiro), pesado e lento, rápido e
+   esquivo, ou outro?
+2. Velocidade de andar comparada ao Urubu: mais lento, igual ou mais rápido?
+3. A vida é 230 para todos; o dano segue a escala do GDD. Algum golpe dele
+   deveria fugir da escala, e por quê?
+
+## 4. Golpes (um por botão)
+
+Para cada linha: como ele faz esse golpe? Se for o padrão, basta dizer "padrão".
+
+| # | Golpe | Comando | Sheet | Padrão do jogo | Pergunta |
+|---|---|---|---|---|---|
+| 4.1 | Soco rápido | Soco | `light-punch` | jab, uma mão de cada vez | Mão, bico, bengala? |
+| 4.2 | Soco forte | Baixo + Soco | `heavy-punch` | cruzado; quebra a defesa alta | Qual o golpe pesado de perto dele? |
+| 4.3 | Chute básico | Chute | `heavy-kick` | chute frontal | Chute comum ou algo dele (giro, bicada)? |
+| 4.4 | Chute baixo | Baixo + Chute | `low-kick` | varre rente ao chão; quebra a defesa alta | Rasteira, carrinho, varredura? |
+| 4.5 | Soco no ar | Soco, no ar | `jump-punch` | soco para baixo no pulo | Algo diferente no ar? |
+| 4.6 | Voadora | Chute, no ar | `jump-kick` | mergulho em diagonal; quebra a defesa baixa | Pé, garra, bengala? |
+
+Golpe próprio no lugar de um padrão (já existem: bicada do Urubu
+`beak-pull`, cachimbo do Saci `pipe-throw`, tiro do Almirante `shot`, giro
+do Galo `spin-kick`): ele tem algum? No lugar de qual botão?
+
+## 5. Especial
+
+1. O que o especial faz, numa cena? (É a assinatura do mascote: tem que
+   dizer quem ele é, como a caravela do Almirante ou o meteoro do Urubu.)
+2. Qual destes tipos chega mais perto? O motor já sabe fazer:
+
+   | `kind` | Como funciona | Exemplo |
+   |---|---|---|
+   | `projectile` | solta algo que viaja (tiro, onda, nuvem, objeto em arco) | caravela, cachimbo, Pó de Arroz |
+   | `run` | corre até o oponente e ataca | bote do Bira |
+   | `hop` | voo ou salto baixo até o oponente | bicada do Galo |
+   | `meteor` | sai da tela e cai em diagonal | meteoro do Urubu |
+   | `dash` | avança em linha atravessando a tela | tornado do Saci |
+   | `strike` | golpe parado, no lugar | (padrão de golpe comum) |
+
+   Se nenhum serve, é mecânica nova no motor: vira conversa à parte antes
+   do mascote.
+3. Como o oponente escapa? Pular (`pulo`), agachar (`agachar`), pular
+   recuando (`pulo-recuando`) ou defender normalmente?
+4. Dá para defender, ou é imbloqueável?
+5. Atordoa quem leva? (Pó de Arroz e meteoro deixam tonto 1,5 s.)
+6. Tem preparação própria (`special-charge`) ou já sai direto? O golpe em si
+   é a sheet `special`. Especial que corre pode ter uma sheet só para a
+   aproximação (`special-run`, o galope do Bira).
+7. Efeitos separados do corpo (nuvem, rastro, coluna de ar, mandíbula)?
+
+## 6. Movimento e reações
+
+Todo mascote tem estas animações. Perguntar só se existe algo próprio:
+"anda de um jeito diferente?", "apanha de um jeito dele?" (o Saci pula numa
+perna só, por exemplo).
+
+| Sheet | O que é | Quadros sugeridos | Observação |
+|---|---|---|---|
+| `idle` | guarda parada | 4 a 6 | é a régua de escala e de chão de tudo |
+| `walk-forward` | anda para a frente | 6 a 8 | |
+| `walk-backward` | anda para trás | 6 a 8 | |
+| `crouch` | agacha | 2 a 4 | |
+| `jump` | pulo | 6 a 8 | sobe, topo e cai |
+| `block-high` | defesa em pé | 2 a 4 | também é a pose da guarda perfeita |
+| `block-low` | defesa agachada | 2 a 4 | |
+| `hit-high` | reação curta a golpe | 4 a 6 | também é quem leva a guarda perfeita |
+| `stunned` | tonto, em loop | 4 | atordoamento longo (Pó de Arroz, meteoro) |
+| `knockdown` | derrubado | 8 a 10 | |
+| `dash-forward` | dash para a frente | 5 | corpo parado no eixo; quem move é o motor |
+| `dash-back` | dash para trás | 4 | saltinho com guarda alta |
+
+E ainda: retrato (`portrait.png`, busto) e âncora (`anchor-w.png`).
+
+## 7. O que sai do questionário
+
+1. **Ficha** em `docs/gdd.md` (molde "Ficha de mascote"), com as respostas.
+2. **Pedido de arte** em `docs/pedidos-codex.md`, uma seção para o mascote,
+   seguindo `docs/producao-personagens.md`: uma geração por ação, partindo
+   da guarda aprovada; nunca um atlas com vários mascotes.
+3. Só depois da arte: o JSON em `src/game/lutadores/<slug>.json`, conferido
+   na Academia (Regra da Academia).
+
+Ordem de prioridade da arte, para o mascote jogar cedo: `idle`, andar,
+`hit-high`, `knockdown`, soco rápido e chute básico. O resto entra com
+quebra-galho (catálogo de golpes) até a sheet própria chegar.
+
+## Histórico deste arquivo
+
+- 29/10/2026: criado. Inclui tontura (`stunned`), voadora, soco no ar, dash
+  e guarda perfeita.

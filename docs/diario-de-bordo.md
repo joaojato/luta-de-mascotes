@@ -1652,3 +1652,35 @@ gravados por cima dos finais do Codex).
 **Aprovado explicitamente:** nada.
 **Atrito:** apliquei rascunho de `output/` enquanto o Codex terminava.
 **Em aberto:** shell de debug (código dele); autorização do Chong-U.
+
+## 2026-10-29: Dano, guarda perfeita, dash e criador de personagem
+
+**Marco:** 2, segue em andamento.
+**Pedido:** recompensar a defesa bem feita (dash por toque duplo e guarda
+perfeita que atordoa), dimensionar o dano, listar animações para o Codex, e
+um .md de criador de personagem que pergunta antes de criar e acompanha o
+jogo. Ideias para depois: carga diferente por especial e Bahia com o
+Super-Homem (roteiro, Marco 4).
+**Feito:** escala de dano em fração da vida (rápido 7, chute baixo 14,
+chute 18, forte 24, especial 34; meteoro 30, Pó de Arroz 18, Almirante e
+Saci proporcionais), cobrada por teste. Guarda perfeita: defesa até 0,15 s
+antes de golpe corpo a corpo, atacante tonto 0,4 s sem dano, defensor sem
+empurrão, faísca azul maior e clarão; projétil só bloqueia; CPU não faz.
+Dash: toque duplo em 0,3 s, 180 px para a frente ou 120 para trás, para no
+corpo do oponente, defesa ou golpe cancela; usa o andar até chegar a arte.
+Pedido ao Codex: `dash-forward`, `dash-back`, `jump-punch`.
+`docs/criador-de-personagem.md` com a Regra do Criador (teste exige que toda
+ação, golpe e tipo de especial esteja nele); skill `lutador-novo` começa
+pelo questionário e pede a arte ao Codex.
+**Verificado:** `npm run check` com 135 testes, build ok. No navegador:
+chute sem defesa tira 18; defesa 80 ms antes do acerto deixa o atacante
+tonto sem dano; defesa segurada antes é comum. Dash longe avança cerca de
+195 px; colado, para no oponente sem trocar de lado.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** desenho da guarda perfeita, dash e escala de dano.
+**Atrito:** janela de 0,25 s do toque duplo falhou em navegador lento; foi
+para 0,3 s.
+**Em aberto:** jogar e calibrar janela e tontura da guarda perfeita; ligar
+as sheets de dash quando o Codex entregar; ajustes salvos na aba Ajustes da
+Academia vencem os padrões novos de dano.

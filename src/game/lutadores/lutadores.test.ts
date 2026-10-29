@@ -1,9 +1,11 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
 import { createDefaultFighterPlaygroundState, getFighterCombat } from '../fighterConfig';
+import { GOLPES } from '../golpes';
+import { ADVANCE_KINDS } from '../moveMechanics';
 import { expandirSkins, LUTADORES, LUTADOR_CHARACTERS, type LutadorJson } from './index';
 import urubuJson from './urubu.json';
 
@@ -119,6 +121,24 @@ describe('registro de lutadores (Regra do JSON)', () => {
       const voadora = personagem.animations.find((a) => a.action === 'jump-kick');
       if (voadora) expect(voadora.bounds[0].hit, `${personagem.id} voadora`).not.toEqual(corpo);
     });
+  });
+
+  // Regra do Criador: o questionário de personagem novo acompanha o motor. Ação,
+  // golpe ou tipo de especial que entra no jogo entra em docs/criador-de-personagem.md.
+  it('o criador de personagem cita toda ação, golpe do catálogo e tipo de especial', () => {
+    const criador = readFileSync(resolve(PUBLIC_DIR, '../docs/criador-de-personagem.md'), 'utf8');
+    const nomes = new Set<string>([
+      ...LUTADORES.flatMap((lutador) => lutador.actions.map((spec) => spec.action)),
+      ...GOLPES.flatMap((golpe) => [...golpe.acoes, ...golpe.quebraGalho]),
+      ...ADVANCE_KINDS,
+      ...LUTADORES.flatMap((lutador) =>
+        Object.values(lutador.moves ?? {}).flatMap((move) =>
+          move && typeof move === 'object' && 'kind' in move ? [String(move.kind)] : []
+        )
+      )
+    ]);
+    const faltando = [...nomes].filter((nome) => !criador.includes(`\`${nome}\``));
+    expect(faltando, 'falta no docs/criador-de-personagem.md').toEqual([]);
   });
 
   // Escala de dano (GDD, 29/10/2026): golpe lento rende mais que o rápido, e o

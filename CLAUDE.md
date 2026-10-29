@@ -102,6 +102,11 @@ Cada uma tem nome para poder ser cobrada depois.
   pixel além (o soco rápido não pode alcançar mais que o punho). Pulo,
   especial e queda guardam a caixa própria. Cobrada por teste em
   `lutadores.test.ts`.
+- **Regra do Criador.** `docs/criador-de-personagem.md` é o questionário de
+  mascote novo e acompanha o motor: ação, golpe, tipo de especial ou mecânica
+  que muda o que um mascote precisa entra lá no mesmo commit. Pedido de
+  personagem novo começa devolvendo essas perguntas (skill `lutador-novo`).
+  Cobrada por teste em `lutadores.test.ts`.
 - **Regra da v1.** A v1 é: 2 mascotes, 1 cenário, 4 golpes por mascote, 2
   jogadores no mesmo teclado. A CPU veio de brinde no motor herdado e pode
   ficar. Nada além disso é construído antes de a v1 rodar de ponta a ponta.

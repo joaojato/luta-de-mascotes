@@ -1,111 +1,73 @@
 ---
 name: lutador-novo
-description: Pipeline completo para colocar um mascote novo no jogo, do briefing ao JSON validado na cena Academia. Usar sempre que o João pedir um mascote, lutador ou personagem novo, ou disser "bota o Urubu", "faz o Cartola", "próximo mascote".
+description: Pipeline completo para colocar um mascote novo no jogo, do questionário ao JSON validado na cena Academia. Usar sempre que o João pedir um mascote, lutador ou personagem novo, ou disser "bota o Bahia", "faz o Cartola", "próximo mascote", "cria um personagem".
 ---
 
 # Lutador novo
 
 Um mascote entra no jogo por **dados**, nunca por código no motor (Regra do
 JSON). Esta skill é a ordem fixa. Pular etapa gera sprite genérico ou hitbox
-errada, e as duas coisas custam crédito e fim de semana.
+errada, e as duas coisas custam fim de semana.
 
-Antes de começar, ler `docs/gdd.md` e `docs/pipeline-arte.md`. O porquê de
-cada passo está lá; aqui está só o como.
+## Etapa 0: questionário (antes de qualquer outra coisa)
+
+Ler `docs/criador-de-personagem.md` e devolver ao João as perguntas dele,
+numa mensagem só, em blocos numerados. Não desenhar, não escrever JSON e não
+pedir arte antes das respostas. Onde existe padrão, sugerir o padrão e
+perguntar se muda. O que ele não souber fica marcado como aberto.
+
+Se a resposta pedir algo que o motor não sabe fazer (tipo de especial novo,
+mecânica nova), parar e tratar isso como conversa à parte: é motor, não
+mascote.
 
 ## Etapa 1: ficha no GDD
 
-Se o mascote não tem ficha preenchida em `docs/gdd.md` (nome, slug, silhueta,
-arquétipo, stats relativos, falas, paleta), preencher **com o João**, não
-sozinho. Silhueta e paleta são as duas coisas que o prompt de arte mais
-precisa. Sem ficha, parar aqui.
+Preencher a ficha em `docs/gdd.md` (molde "Ficha de mascote") com as
+respostas, e a linha do mascote nas tabelas de golpes próprios e de
+especiais, quando houver. Slug: minúsculo, sem acento, com hífen.
 
-Slug: minúsculo, sem acento, com hífen (`urubu`, `cartola`, `vozao`).
+## Etapa 2: pedido de arte ao Codex
 
-## Etapa 2: referência
+Escrever uma seção nova em `docs/pedidos-codex.md` para o mascote, com as
+sheets da lista do questionário (bloco 6 e os golpes dos blocos 4 e 5), na
+ordem de prioridade dele: `idle`, andar, `hit-high`, `knockdown`, soco
+rápido, chute básico; o resto depois. Apontar `docs/producao-personagens.md`
+(uma geração por ação, partindo da guarda aprovada, nunca atlas com vários
+mascotes) e `docs/mascotes/padrao-artistico.md`.
 
-1. Montar o prompt da referência a partir da ficha, com o molde de
-   `docs/pipeline-arte.md` (corpo inteiro, perfil, virado para a esquerda,
-   guarda de luta, fundo verde chapado, sem texto, sem escudo).
-2. Entregar o prompt ao João para ele gerar no Nano Banana Pro ou GPT Image.
-   O agente não gera essa imagem.
-3. Ele salva em `referencia/<slug>/referencia.png` (fora do git). Conferir que
-   o arquivo existe antes de seguir.
-4. A skill `spriterrific-api` precisa de uma URL pública para
-   `sourceImageUrl`. Perguntar ao João como ele quer hospedar (o upload do
-   próprio app do Spriterrific serve). Nunca subir a imagem para um serviço
-   sem dizer qual.
+Formato de toda sheet: células 256×256, 5 colunas, virado para a esquerda,
+fundo transparente, mesma escala e mesmo pé no chão do `idle`.
 
-## Etapa 3: estimar créditos e pedir ok
+Alternativa: o Spriterrific (skill `spriterrific-api`). Só com o João
+pedindo, e sempre estimando os créditos e dizendo o número antes de
+enfileirar.
 
-Calcular com a tabela da skill `spriterrific-api` e dizer o número antes de
-enfileirar qualquer coisa:
+## Etapa 3: integrar o que chegou
 
-- Job de personagem a partir de imagem, só `idle`: 60 + 100 = 160.
-- Cada ação avulsa: 100.
-- Conjunto da v1: `idle`, `walk_forward`, `jump`, `crouch`, `light_attack`,
-  `heavy_attack`, custom `chute`, custom `especial-<slug>`, `hurt`,
-  `knockdown`. Total aproximado: **1.060 créditos**.
+Integrar só o que o Codex publicou em `public/` com guia em `docs/`; fonte
+em `output/` não é entrega (lição de 29/10/2026). Sheet fora de escala entra
+por `npm run sprite -- escalar` e `firmar`, nunca à mão (Regras da Régua e do
+Eixo).
 
-Se o saldo não cobre, propor o subconjunto (`idle`, `walk_forward`,
-`light_attack`, `hurt` primeiro) e esperar o João dizer sim. Registrar o
-gasto no diário ao final.
+Criar `src/game/lutadores/<slug>.json` copiando o mascote mais parecido e
+ajustando pela ficha: por ação, `action`, `file`, `frames`, `frameRate`,
+`repeat`, `defaultVisual`; nos golpes, `attack` ou `attackSpans`; nas
+defesas, `guard`; o especial em `moves.special`. Dano segue a escala do GDD
+(o teste cobra). Registrar em `src/game/lutadores/index.ts`. Ação que ainda
+não tem sheet usa o quebra-galho do catálogo de golpes.
 
-## Etapa 4: jobs no Spriterrific
+## Etapa 4: Academia, e só então a luta
 
-Seguir a skill `spriterrific-api`. Regras deste projeto por cima dela:
-
-- Preset `high-fidelity-v1`, `pixelSnap` desligado (decisão da ADR 0002).
-- `direction: "w"` no job de personagem (padrão do Spriterrific). Todo mundo
-  vira para a esquerda; o motor espelha com `flipX` quem olha para a direita.
-- **`idle` sozinho** no job de personagem, com a receita de congelamento da
-  skill. Cada ação de movimento em job separado, com `actionContext` curto
-  (até 130 caracteres) e específico do golpe.
-- Ação custom (`chute`, `especial-<slug>`) sempre com baseline (`attack` ou
-  `jump`) e `actionContext` descrevendo o golpe da ficha.
-- Mascote verde: `chroma: "#FF00FF"` no job de personagem.
-- Um job por vez, olhar o resultado, depois o próximo. Não enfileirar dez de
-  uma vez: o primeiro erro ensina os outros nove.
-
-## Etapa 5: curadoria
-
-Para cada ação, abrir o GIF de preview ampliado e conferir pés, tronco e mãos.
-Se um quadro saiu errado, usar o frame picker (0 crédito) antes de gerar de
-novo. Se a ação inteira saiu errada, anotar no diário o que saiu errado e por
-quê antes de repetir com contexto ajustado.
-
-## Etapa 6: assets no lugar
-
-- Sprite sheet e manifest de cada ação em
-  `public/assets/lutadores/<slug>/<acao>.png` e `<acao>.json`.
-- Retrato (busto) em `public/assets/lutadores/<slug>/retrato.png`, gerado
-  pelo João no mesmo modelo da referência, mesma identidade.
-- Rodada bruta continua em `spriterrific-runs/`. Nunca copiar a pasta inteira
-  para `public/`.
-
-## Etapa 7: JSON do mascote
-
-Criar `src/game/lutadores/<slug>.json` seguindo o formato dos lutadores de
-amostra já convertidos (Marco 1). A forma vem de `FighterActionSpec` em
-`src/game/fighterCharacter.ts`: por ação, `action`, `file`, `frames`,
-`frameRate`, `repeat`, `defaultVisual` (retângulo), e nos golpes `attack`
-(`frames` ativos e `bounds`) ou `attackSpans`; nos bloqueios, `guard`. Os
-nomes de ação são os que o motor entende (`idle`, `walk-forward`,
-`light-punch`, `heavy-kick`, `special`, `knockdown`...).
-
-Primeira passagem dos números: copiar do mascote anterior e ajustar pela
-ficha (mais pesado = mais dano, menos velocidade). Refinar na Academia.
-
-## Etapa 8: Academia, e só então a luta
-
-Abrir `npm run dev`, cena `Academia`, carregar o mascote, passar ação por
-ação quadro a quadro com hitbox desenhada. Ajustar o JSON até cada golpe
-acertar onde parece acertar. Só depois disso registrar o mascote na tela de
-seleção.
+`npm run dev`, cena Academia: passar ação por ação quadro a quadro com as
+caixas desenhadas, ajustar o JSON até cada golpe acertar onde parece
+acertar (Regra do Corpo: só o corpo apanha; a caixa de acerto vai até onde o
+desenho vai). Depois, uma luta contra outro mascote.
 
 ## Critério de pronto
 
 - `npm run check` passa, saída mostrada.
-- Mascote aparece na seleção e luta contra outro (mascote ou lutador de
-  amostra) sem erro no console.
-- Ficha do GDD completa, diário com créditos gastos e o que saiu errado.
+- Mascote na seleção, luta sem erro no console.
+- Ficha do GDD completa; diário com o que saiu errado.
+- Se o mascote trouxe ação, golpe ou tipo de especial novo, ele entrou em
+  `docs/criador-de-personagem.md` (Regra do Criador, cobrada por teste).
 - Commit e push feitos (skill `fechar-sessao`).
