@@ -127,3 +127,9 @@ Ordem, para ele parar de parecer estátua:
 5. `block-high`, `block-low`, `crouch`, `jump`, `stunned`, `dash-forward`, `dash-back`.
 6. `low-kick`, `jump-punch`, `jump-kick`: golpes reais com as pernas.
 7. `portrait.png` (busto) no lugar do recorte provisório.
+
+## Aberto em 29/10/2026: torcida dividida
+
+Arquibancada vazia, torcedores com camisa em cor chave, bandeira, fumaça,
+chama e as fileiras medidas. Contrato completo, com formatos e tamanhos, em
+[torcida-dividida.md](torcida-dividida.md), seção Arte.

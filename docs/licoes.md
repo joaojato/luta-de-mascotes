@@ -346,3 +346,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **P1 joga com a mão esquerda em volta do WASD.** O João trocou F, G e V
   por Q chute, E soco, C bloqueio e Espaço especial: tudo ao alcance sem
   tirar os dedos do WASD. Tecla nova de P1 segue essa lógica. (2026-10-29)
+- **Cor de torcida sai da sprite do lutador, não da camisa oficial.** Eu
+  tinha posto o Galo no mesmo preto do Botafogo; o João corrigiu: o preto
+  do Galo é o da camisa dele, mais claro, sem chegar a cinza (`#403B3F`).
+  Amostrar a sprite antes de propor cor. (2026-10-29)
+- **Aprovado: torcida dividida pelas cores dos lutadores**, P1 à esquerda e
+  P2 à direita, sem reagir à luta. "Só essa diferença das cores já resolve
+  grande parte das questões que eu tinha com o cenário." Contrato em
+  `docs/torcida-dividida.md`. (2026-10-29)
