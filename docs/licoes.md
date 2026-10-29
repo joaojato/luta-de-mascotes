@@ -279,3 +279,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   Almirante com todas as sprites aparecia só na Academia e pediu sua liberação.
   A Academia serve para conferir; não deve virar uma etapa de aprovação que
   impede entregar o personagem jogável solicitado. (2026-10-09)
+- **Nuvem envolve, não é projétil.** O Pó de Arroz sumia no acerto como um
+  tiro e parecia cortado. O João quer a nuvem passando por cima do oponente,
+  na frente dos dois lutadores. Efeito de área atravessa o alvo e se desfaz
+  nele; só projétil sólido some no impacto. (2026-10-29)

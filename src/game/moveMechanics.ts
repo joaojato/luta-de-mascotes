@@ -62,6 +62,8 @@ export interface ProjectileMoveConfig {
   gravity?: number;
   /** Projectile stops after this many px (a cloud that dissipates). */
   range?: number;
+  /** With `persistOnHit`: px it still drifts after the hit, over the target, its sheet stretched to fade there. */
+  rangeAfterHit?: number;
   /** Extra stun (ms) on a clean hit; a valid guard avoids it. */
   stunMs?: number;
   /** Special that skips the charge sheet (its own sheet already winds up). */

@@ -163,6 +163,20 @@
       }
     },
     {
+      "action": "stunned",
+      "label": "Atordoado",
+      "file": "stunned.png",
+      "frames": 4,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 61,
+        "y": 27,
+        "width": 133,
+        "height": 203
+      }
+    },
+    {
       "action": "light-punch",
       "label": "Soco leve (jab rápido)",
       "file": "light-snap-v5.png",

@@ -137,7 +137,7 @@ Onde o mascote foge do esqueleto (arte do Codex em `docs/golpes-personalizados-v
 | Urubu | bicada que fecha e puxa (`beak-pull`) | cruzado | chute clássico | meteoro |
 | Almirante | tiro de garrucha (projétil reto) | cruzado | chute normal | caravela |
 | Saci | troca e arremessa o cachimbo: projétil em parábola longa, na altura da cabeça, cai no chão; qualquer guarda segura; agachar desvia | soco forte original | chute de mãos | tornado |
-| Cartola | chute normal | bengalada | varredura de bengala (só a guarda baixa segura) | Pó de Arroz: nuvem curta que atordoa 1,5 s; qualquer guarda evita; sem animação de preparação |
+| Cartola | chute normal | bengalada | varredura de bengala (só a guarda baixa segura) | Pó de Arroz: nuvem curta que atordoa 1,5 s (vítima tonta, `stunned`); qualquer guarda evita; sem animação de preparação; ao acertar, a nuvem segue 220 px e se desfaz por cima do oponente, na frente dos dois |
 | Bira | chute normal | patada com garras | carrinho: desliza até perto do adversário, só a guarda baixa segura | galope e bote |
 | Galo | chute giratório com rastro de garras | cruzado | chute frontal | bicada em voo |
 
@@ -148,7 +148,7 @@ do JSON (Regra do JSON: o motor não conhece mascote).
 
 | Mascote | Tipo (`kind`) | O que faz | Como escapar (`dodge`) |
 |---|---|---|---|
-| Urubu: meteoro | `meteor` | Térmica sobe, ele sai pelo alto da tela, o ponto de impacto segue o oponente até o mergulho começar e então trava; mergulho a 45 graus. Nenhuma guarda segura. | Só pulando enquanto recua (`pulo-recuando`). |
+| Urubu: meteoro | `meteor` | Térmica sobe, ele sai pelo alto da tela, o ponto de impacto segue o oponente até o mergulho começar e então trava; mergulho a 45 graus. Nenhuma guarda segura. Acerto atordoa 1,5 s, como o Pó de Arroz (vítima tonta, `stunned`). | Só pulando enquanto recua (`pulo-recuando`). |
 | Galo: bicada | `hop` | Voo baixo até 110 px do oponente, bicada na altura da cabeça, pouso. | Agachar (`agachar`). |
 | Bira: bote | `run` | Galope aos saltos (sheet própria, `approachAction`) até 230 px do oponente; bote com salto real até 90 px dele, mordida no ar uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
 

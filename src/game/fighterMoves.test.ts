@@ -14,7 +14,7 @@ function setup(characterId: string, facing: 1 | -1 = 1) {
   const events = new Map<string, () => void>();
   const delays: Array<() => void> = [];
   const visual = { x: 0, setDepth() { return this; }, destroy: vi.fn() };
-  const effectVisual = { x:0, y:0, setDepth() {return this;}, setOrigin() {return this;},
+  const effectVisual = { x:0, y:0, depth:0, setDepth(d: number) {this.depth=d; return this;}, setOrigin() {return this;},
     setScale() {return this;}, setFlipX() {return this;}, play() {return this;}, once() {return this;},
     setPosition(x: number, y: number) { this.x=x; this.y=y; return this; }, destroy:vi.fn() };
   const sprite = {
@@ -204,12 +204,38 @@ describe('fighter move integration', () => {
     const cloud = fighter.getActiveAttack()!;
     expect(cloud.move).toBe('nuvem');
     expect(cloud.profile.stunMs).toBe(1500);
-    const victim = setup('urubu').fighter;
+    const {fighter: victim, sprite: victimSprite} = setup('urubu');
     victim.applyHit(cloud.profile, 1, false);
     victim.update(1.4, NEUTRAL_FIGHTER_INPUT);
     expect(victim.isStunned).toBe(true);
+    expect(victimSprite.anims.currentAnim.key).toBe('urubu-stunned');
     victim.update(.2, NEUTRAL_FIGHTER_INPUT);
     expect(victim.isStunned).toBe(false);
+  });
+  it('the rice powder keeps flying over the opponent after a hit, in front of both fighters', () => {
+    const {fighter, special, effectVisual} = setup('cartola');
+    special();
+    fighter.update(.3, NEUTRAL_FIGHTER_INPUT);
+    const cloud = fighter.getActiveAttack()!;
+    expect(effectVisual.depth).toBeGreaterThan(8);
+    fighter.markAttackConnected(cloud.signature);
+    expect(fighter.getActiveAttack()).toBeNull();
+    expect(effectVisual.destroy).not.toHaveBeenCalled();
+    // Without the hit its 160 px range would end within 0.4 s; it drifts 220 px more over the target.
+    const before = effectVisual.x;
+    fighter.update(.5, NEUTRAL_FIGHTER_INPUT);
+    expect(effectVisual.destroy).not.toHaveBeenCalled();
+    fighter.update(.3, NEUTRAL_FIGHTER_INPUT);
+    expect(effectVisual.destroy).not.toHaveBeenCalled();
+    expect(Math.abs(effectVisual.x - before)).toBeGreaterThanOrEqual(200);
+    fighter.update(.2, NEUTRAL_FIGHTER_INPUT);
+    expect(effectVisual.destroy).toHaveBeenCalledOnce();
+  });
+  it('a plain hit still shows the short hit reaction, not the dizzy loop', () => {
+    const {fighter: victim, sprite} = setup('urubu');
+    victim.applyHit({kind:'high', height:'high', damage:4, knockback:0, hitstun:200}, 1, false);
+    victim.update(.1, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe('urubu-hit-high');
   });
   it('keeps a strike pressed during the jump wind-up and throws it on takeoff', () => {
     const {fighter, sprite} = setup('urubu');
@@ -398,6 +424,7 @@ describe('advance specials', () => {
     expect(fighter.x).toBe(800);
     expect(meteor?.unblockable).toBe(true);
     expect(meteor?.dodge).toBe('pulo-recuando');
+    expect(meteor?.profile.stunMs).toBe(1500);
     for (let i = 0; i < 20; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
     expect(sprite.anims.currentAnim.key).toBe('urubu-idle');
   });

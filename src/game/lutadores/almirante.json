@@ -172,6 +172,20 @@
       }
     },
     {
+      "action": "stunned",
+      "label": "Atordoado",
+      "file": "stunned.png",
+      "frames": 4,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 47,
+        "y": 26,
+        "width": 161,
+        "height": 202
+      }
+    },
+    {
       "action": "light-punch",
       "label": "Soco leve",
       "file": "light-punch.png",

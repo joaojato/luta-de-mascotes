@@ -1,5 +1,9 @@
 # Pedidos de arte para o Codex
 
+## Entrega 29/10/2026: vítimas estunadas
+
+Entregues `stunned.png` nas seis pastas principais: Urubu, Almirante, Saci, Cartola, Bira e Galo. Quatro quadros de tontura com X, estrelas e espirais sobre a cabeça, 6 FPS sugeridos, loop. Este pedido retoma as artes antes adiadas. Falta registrar/ligar a ação ao atordoamento na lógica pelo Claude. Guia: `docs/estunados-v8.md`; manifesto: `output/stun-v8/claude-integration.json`; prévias: `output/stun-v8/revisao.html`.
+
 O Claude escreve aqui o que a mecânica já espera e ainda não tem arte. O Codex
 desenha seguindo o `AGENTS.md` e `docs/mascotes/padrao-artistico.md`, salva
 nos caminhos abaixo e avisa. O Claude registra no JSON e confere na Academia

@@ -126,7 +126,7 @@ describe('registro de lutadores (Regra do JSON)', () => {
     expect(almirante!.selecionavel).toBe(true);
     const completas = [
       ...ACOES_OBRIGATORIAS, 'block-low', 'heavy-punch', 'heavy-kick', 'jump-kick', 'shot',
-      'special-charge', 'special'
+      'special-charge', 'special', 'stunned'
     ];
     expect(almirante!.actions.map((acao) => acao.action).sort()).toEqual(completas.sort());
     expect(new Set(almirante!.actions.map((acao) => acao.file)).size).toBe(completas.length);

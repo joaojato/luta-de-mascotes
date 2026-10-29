@@ -50,6 +50,8 @@ const METER_GAIN_ON_HIT = 12;
 const METER_GAIN_ON_TAKE = 7;
 /** Meter gained by both sides on a blocked hit. */
 const METER_GAIN_ON_BLOCK = 4;
+/** A powder cloud is drawn above both fighters (they swap between depth 5 and 8), below the HUD. */
+const CLOUD_DEPTH = 20;
 /**
  * After the charge wind-up completes, the fighter holds the charged pose for this
  * long before the special executes — the "super freeze" that lets the cut-in
@@ -115,6 +117,7 @@ interface TravelingProjectile {
   move: AttackMove;
   connected: boolean;
   persistOnHit: boolean;
+  rangeAfterHit: number;
   visual: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
 }
 
@@ -167,6 +170,8 @@ interface FighterActionKeys {
   blockHigh: string;
   blockLow: string;
   hitHigh: string;
+  /** Dizzy loop for a long stun (`stunned`, or the hit reaction meanwhile). */
+  stunned: string;
   lightPunch: string;
   /** Down + punch (`heavy-punch`; the JSON may pick another sheet, e.g. a shot). */
   heavyPunch: string;
@@ -270,6 +275,8 @@ export class Fighter {
   private hitstunTimer = 0;
   private stunIsBlock = false;
   private stunBlockLow = false;
+  /** The current stun came from `stunMs` (powder, meteor): dizzy loop instead of the hit reaction. */
+  private stunIsDizzy = false;
   private knockbackVel = 0;
   /** The strike in progress touched the opponent (hit or guard): only then a quick punch chains. */
   private strikeLanded = false;
@@ -589,7 +596,10 @@ export class Fighter {
     }
     return {
       rect: attackRect,
-      profile: getAttackProfile(this.combat(), kind),
+      profile: {
+        ...getAttackProfile(this.combat(), kind),
+        stunMs: kind === 'special' ? this.character.moves?.special?.stunMs : undefined
+      },
       signature: this.attackId,
       finisher,
       move: this.currentMove(),
@@ -606,6 +616,15 @@ export class Fighter {
       if (!shot.persistOnHit) {
         shot.visual.destroy();
         this.projectiles = this.projectiles.filter(projectile => projectile !== shot);
+      } else if (shot.rangeAfterHit > 0) {
+        // The cloud wraps the target: it drifts on and its remaining frames fade over that stretch.
+        const drift = shot.rangeAfterHit / shot.speed;
+        const anims = 'anims' in shot.visual ? shot.visual.anims : null;
+        const left = anims?.currentAnim
+          ? (anims.currentAnim.frames.length - (anims.currentFrame?.index ?? 1) + 1) / anims.currentAnim.frameRate
+          : 0;
+        if (anims && left > 0) anims.timeScale = left / drift;
+        shot.life = Math.max(shot.life, drift);
       }
       return;
     }
@@ -716,10 +735,12 @@ export class Fighter {
     }
 
     this.stunIsBlock = false;
+    this.stunIsDizzy = (profile.stunMs ?? 0) > profile.hitstun;
     this.locked = false;
     this.hitstunTimer = Math.max(profile.hitstun, profile.stunMs ?? 0) / 1000;
     this.currentAnimKey = '';
-    this.playState(this.actionKeys.hitHigh, false);
+    if (this.stunIsDizzy) this.playState(this.actionKeys.stunned, true);
+    else this.playState(this.actionKeys.hitHigh, false);
   }
 
   /**
@@ -748,6 +769,7 @@ export class Fighter {
     this.hitstunTimer = 0;
     this.stunIsBlock = false;
     this.stunBlockLow = false;
+    this.stunIsDizzy = false;
     this.knockbackVel = 0;
     this.attackConnected = true;
     this.attackActiveLast = false;
@@ -793,8 +815,10 @@ export class Fighter {
           ? this.stunBlockLow
             ? this.actionKeys.blockLow
             : this.actionKeys.blockHigh
-          : this.actionKeys.hitHigh,
-        false
+          : this.stunIsDizzy
+            ? this.actionKeys.stunned
+            : this.actionKeys.hitHigh,
+        this.stunIsDizzy && !this.stunIsBlock
       );
       this.updateShadow();
 
@@ -866,6 +890,7 @@ export class Fighter {
       blockHigh: key('block-high'),
       blockLow: findCharacterAnimationKeyByAction(this.character.id, 'block-low') ?? key('block-high'),
       hitHigh: key('hit-high'),
+      stunned: find('stunned', 'hit-high') ?? key('hit-high'),
       lightPunch: key('light-punch'),
       heavyPunch: find(this.character.moves?.heavy?.action, 'heavy-punch', 'heavy-kick') ?? key('light-punch'),
       kick: find(this.character.moves?.kick?.action, 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
@@ -1707,7 +1732,7 @@ export class Fighter {
       y = this.groundY - (move.launchHeight ?? 110) * this.appliedScale;
       visual = this.scene.add.sprite(x, y, effectKey, 0)
         .setOrigin(.5, .5).setScale(move.visualScale ?? this.appliedScale).setFlipX(this.facing === 1)
-        .setDepth(this.depthBase+2).play(effectKey);
+        .setDepth(move.move === 'nuvem' ? CLOUD_DEPTH : this.depthBase+2).play(effectKey);
     } else {
       x = this.posX+this.facing*(move.visualFile ? width/2+20 : 90*this.appliedScale);
       const baseline = this.groundY-24*this.appliedScale;
@@ -1725,7 +1750,7 @@ export class Fighter {
       signature:this.attackId, visual, width, height, speed,
       profile:{...getAttackProfile(this.combat(), kind), height:'high', stunMs: move.stunMs}, connected:false,
       move: (move.move as AttackMove | undefined) ?? (kind === 'special' ? 'onda' : 'tiro'),
-      persistOnHit:move.persistOnHit ?? false});
+      persistOnHit:move.persistOnHit ?? false, rangeAfterHit: move.rangeAfterHit ?? 0});
   }
 
   private updateProjectile(seconds: number): void {

@@ -1568,3 +1568,27 @@ textos herdados em inglês (menu, splash, ajustes).
 **Atrito:** nenhum.
 **Em aberto:** mensagem ao Chong-U pedindo autorização; poda da seção 2;
 troca da seção 1 (HUD é o item grande).
+
+## 2026-10-29: Tontura do meteoro e nuvem que envolve
+
+**Marco:** 2, segue em andamento.
+**Pedido:** o meteoro do Urubu atordoa como o Pó de Arroz; a nuvem do Pó de
+Arroz passa pela frente do oponente em vez de sumir no acerto; ligar as
+animações de tontura que o Codex entregou (v8).
+**Feito:** ação `stunned` (4 quadros, 6 FPS, loop) nos seis JSONs, com a
+caixa só do corpo (símbolos fora); motor toca o loop de tontura quando o
+atordoamento vem de `stunMs` e mantém a reação curta no golpe comum; meteoro
+com `stunMs` 1500; nuvem com `persistOnHit`, desenhada acima dos dois
+lutadores, e `rangeAfterHit` 220 px (campo novo: depois do acerto a nuvem
+segue e os quadros que restam se esticam até ela se desfazer).
+**Verificado:** `npm run check` com 123 testes, build ok. No navegador
+(Playwright): Urubu tonto sob a nuvem, Cartola tonto depois do meteoro;
+atordoamento medido em tempo real, 1,55 s nos dois; nuvem cobre o Urubu
+pela frente e se desfaz no centro dele.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nuvem que sumia no acerto.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** meteoro com 1,5 s de tontura e imbloqueável pode ficar forte
+demais (testar em luta); o Urubu aterrissa em cima do alvo e o cobre
+durante a tontura; conferir os seis `stunned` na Academia.
