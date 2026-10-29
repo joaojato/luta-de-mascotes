@@ -287,3 +287,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   tontura v8 saiu de uma imagem só com os seis e perdeu identidade, estilo e
   cores; o João rejeitou. A v9, gerada lutador por lutador com a guarda
   aprovada como referência, ficou fiel. (2026-10-29)
+- **Aprovado: tontura e Pó de Arroz como estão.** "Está ótimo até o
+  momento" sobre a tontura v9, o meteoro que atordoa e a nuvem que envolve.
+  Próximo passo pedido por ele: trocar tudo que é estético do Chong-U.
+  (2026-10-29)
