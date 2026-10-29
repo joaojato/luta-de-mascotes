@@ -308,3 +308,10 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   curta (`hit-high`, 0,4 s) para o atacante pego; o João corrigiu: animação
   de tonto (`stunned`) e 0,8 s parado. A recompensa da defesa tem que ser
   visível e grande. (2026-10-29)
+- **Imagens do Codex primeiro, depois as correções, na ordem pedida.**
+  Quando chega entrega publicada no meio de outra tarefa, ligar a entrega
+  antes; as correções do João seguem na ordem em que ele falou. (2026-10-29)
+- **Escapar de golpe rápido por altura não funciona.** O tornado do Saci
+  anda a uns 1000 px/s e o pulo leva uns 0,1 s para sair do chão: baixar a
+  caixa deixava uma janela de um quadro. Especial que atravessa a tela
+  precisa de regra de esquiva (`dodge`), não só de caixa. (2026-10-29)

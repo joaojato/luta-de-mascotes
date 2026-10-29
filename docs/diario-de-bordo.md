@@ -1684,3 +1684,26 @@ para 0,3 s.
 **Em aberto:** jogar e calibrar janela e tontura da guarda perfeita; ligar
 as sheets de dash quando o Codex entregar; ajustes salvos na aba Ajustes da
 Academia vencem os padrões novos de dano.
+
+## 2026-10-29: Dash do Codex, tontura da guarda perfeita, caravela e tornado
+
+**Marco:** 2, segue em andamento.
+**Pedido:** guarda perfeita com a tontura (`stunned`) por 0,8 s e só na
+guarda que segura o golpe; museu dos mascotes nas ideias; caravela do
+Almirante vindo de trás dele e pose apontando mais longa; tornado do Saci
+impossível de pular. Ordem: imagens do Codex primeiro.
+**Feito:** tontura de 0,8 s na guarda perfeita, com teste da compatibilidade
+com a guarda; dash do Codex (v10) ligado nos seis, para a frente e para
+trás, a 18 FPS; caravela com `spawnFrom: "behind"` (borda da câmera atrás
+dele, desenhada atrás do corpo, velocidade 1000) e quadro apontando 0,7 s;
+tornado com caixa só no funil e `dodge: "pulo"`. Museu no Marco 4.
+**Verificado:** `npm run check` com 138 testes, build ok. No navegador:
+tontura de 0,8 s com a animação certa e sem dano; dash toca a sheet nova;
+caravela pausada em três momentos (entra atrás, passa por trás dele, segue);
+tornado: antes acertava em qualquer pulo, agora quem pula no começo escapa.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** reação curta de 0,4 s na guarda perfeita.
+**Aprovado explicitamente:** nada.
+**Atrito:** baixar só a caixa do tornado não bastou (janela de um quadro).
+**Em aberto:** ligar o soco no ar quando o Codex fechar os seis (precisa de
+caixa de acerto no punho por quadro).
