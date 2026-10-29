@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { advanceStop, armorAbsorbs, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
+import { advanceStop, armorAbsorbs, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
 
 describe('special traversal and flight timing', () => {
   it('holds the charge position, traverses continuously and stays at the destination during recovery', () => {
@@ -87,5 +87,18 @@ describe('special traversal and flight timing', () => {
   it('covers the complete path of a fast shot in either direction', () => {
     expect(sweptInterval(100, 300, 6)).toEqual({x:94, width:212});
     expect(sweptInterval(300, 100, 6)).toEqual({x:94, width:212});
+  });
+});
+
+describe('guarda perfeita (GDD, 29/10/2026)', () => {
+  it('vale só para golpe corpo a corpo defendido logo depois de apertar a defesa', () => {
+    expect(isPerfectGuard(true, false, 0)).toBe(true);
+    expect(isPerfectGuard(true, false, PERFECT_GUARD_SECONDS)).toBe(true);
+    expect(isPerfectGuard(true, false, PERFECT_GUARD_SECONDS + 0.01)).toBe(false);
+    expect(isPerfectGuard(true, false, null)).toBe(false);
+  });
+  it('projétil e guarda que não segurou nunca são perfeitos', () => {
+    expect(isPerfectGuard(true, true, 0)).toBe(false);
+    expect(isPerfectGuard(false, false, 0)).toBe(false);
   });
 });

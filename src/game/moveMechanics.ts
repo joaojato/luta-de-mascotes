@@ -232,6 +232,22 @@ export function guardBreakStunMs(move: AttackMove, stance: GuardStance | null): 
   return stance !== null && !guardHolds(move, stance) ? GUARD_BREAK_STUN_MS[stance] : null;
 }
 
+/** Perfect guard (GDD, 29/10/2026): the guard was pressed at most this long before the hit landed. */
+export const PERFECT_GUARD_SECONDS = 0.15;
+/** How long a perfect guard leaves the attacker reeling (the short hit reaction, no damage). */
+export const PERFECT_GUARD_STUN_MS = 400;
+
+/**
+ * A guard that holds a melee hit right after being pressed is perfect. Projectiles
+ * are only ever blocked: stunning a shooter across the screen would make shooting a trap.
+ * @param blocked - The guard held this hit.
+ * @param projectile - The hit is a projectile.
+ * @param guardHeldSeconds - How long the guard has been held; null when it isn't.
+ */
+export function isPerfectGuard(blocked: boolean, projectile: boolean, guardHeldSeconds: number | null): boolean {
+  return blocked && !projectile && guardHeldSeconds !== null && guardHeldSeconds <= PERFECT_GUARD_SECONDS;
+}
+
 /** Dodge by ducking: the quick punch, the shot and the pipe pass over a crouching defender. */
 export function ducksUnder(move: AttackMove, ducking: boolean): boolean {
   return ducking && (move === 'soco-rapido' || move === 'tiro' || move === 'cachimbo');

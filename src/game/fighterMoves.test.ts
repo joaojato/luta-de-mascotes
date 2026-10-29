@@ -231,6 +231,22 @@ describe('fighter move integration', () => {
     fighter.update(.2, NEUTRAL_FIGHTER_INPUT);
     expect(effectVisual.destroy).toHaveBeenCalledOnce();
   });
+  it('counts how long the guard has been held, for the perfect guard', () => {
+    const {fighter} = setup('urubu');
+    expect(fighter.guardHeldSeconds).toBeNull();
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, block:true});
+    expect(fighter.guardHeldSeconds).toBe(0);
+    fighter.update(.1, {...NEUTRAL_FIGHTER_INPUT, block:true});
+    expect(fighter.guardHeldSeconds).toBeCloseTo(.1);
+    fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.guardHeldSeconds).toBeNull();
+  });
+  it('projectiles say they are projectiles (no perfect guard against them)', () => {
+    const {fighter, special} = setup('cartola');
+    special();
+    fighter.update(.3, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.getActiveAttack()?.projectile).toBe(true);
+  });
   it('a plain hit still shows the short hit reaction, not the dizzy loop', () => {
     const {fighter: victim, sprite} = setup('urubu');
     victim.applyHit({kind:'high', height:'high', damage:4, knockback:0, hitstun:200}, 1, false);

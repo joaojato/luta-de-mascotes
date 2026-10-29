@@ -7,7 +7,7 @@ import { getCharacterDefinition } from '../game/hero';
 import { CONTORNO_TITULO, COR_FUNDO, FONTE_TITULO, SOMBRA_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from '../game/estilo';
 import { carregarControles, COMANDOS_LUTA, legendaDosBotoes, type ComandoLuta, type Controles, type Lado } from '../game/controles';
 import { MatchHud } from '../game/matchHud';
-import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, jumpsOver, specialDodged } from '../game/moveMechanics';
+import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STUN_MS, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
@@ -263,19 +263,29 @@ export class MatchScene extends BaseScene {
     const profile = breakStunMs === null ? struck : { ...struck, hitstun: breakStunMs, stunMs: undefined };
     const facing = attack.facing ?? attacker.facingDirection;
     const cornered = attack.facing === undefined && defender.atWall;
+    // Perfect guard (GDD): melee only, and the CPU never does it.
+    const isCpu = this.cpu !== undefined && defender === this.p2;
+    const perfect = !isCpu && isPerfectGuard(blocked, Boolean(attack.projectile), defender.guardHeldSeconds);
 
     return () => {
-      defender.applyHit(profile, facing, blocked, armored);
+      defender.applyHit(perfect ? { ...profile, knockback: 0 } : profile, facing, blocked, armored);
       defender.flashHit(blocked);
       attacker.markAttackConnected(attack.signature);
       attacker.registerOffense(blocked, isSpecial);
       defender.registerDefense(blocked);
-      // A cornered defender can't slide back, so the attacker gets the push.
-      if (cornered && !armored) {
+      if (perfect) {
+        // The attacker reels with the short hit reaction: no damage, no push.
+        attacker.applyHit(
+          { kind: 'high', height: 'high', damage: 0, knockback: 0, hitstun: PERFECT_GUARD_STUN_MS },
+          facing === 1 ? -1 : 1,
+          false
+        );
+      } else if (cornered && !armored) {
+        // A cornered defender can't slide back, so the attacker gets the push.
         attacker.recoil(-facing * profile.knockback * (blocked ? BLOCK_PUSHBACK : 1));
       }
 
-      this.spawnHitFx(attack.rect, hurt, blocked, isSpecial, finisher);
+      this.spawnHitFx(attack.rect, hurt, blocked, isSpecial, finisher, perfect);
     };
   }
 
@@ -287,22 +297,27 @@ export class MatchScene extends BaseScene {
    * @param blocked - Whether the hit was guarded.
    * @param isSpecial - Whether the attack was a special move.
    * @param finisher - Whether this is the special's finishing hit.
+   * @param perfect - Whether the guard was perfect: bigger blue spark and a flash.
    */
   private spawnHitFx(
     attackRect: Phaser.Geom.Rectangle,
     hurtRect: Phaser.Geom.Rectangle,
     blocked: boolean,
     isSpecial: boolean,
-    finisher: boolean
+    finisher: boolean,
+    perfect = false
   ): void {
     const sparkX = (Phaser.Geom.Rectangle.GetCenter(attackRect).x + Phaser.Geom.Rectangle.GetCenter(hurtRect).x) / 2;
     const sparkY = (Phaser.Geom.Rectangle.GetCenter(attackRect).y + Phaser.Geom.Rectangle.GetCenter(hurtRect).y) / 2;
 
     const color: VfxColor = blocked ? 'blue' : finisher ? 'gold' : 'red';
-    const sparkScale = finisher ? 1.7 : isSpecial ? 1.1 : 0.9;
+    const sparkScale = perfect ? 1.6 : finisher ? 1.7 : isSpecial ? 1.1 : 0.9;
     spawnHitSpark(this, sparkX, sparkY, color, sparkScale);
 
-    if (finisher) {
+    if (perfect) {
+      this.cameras.main.flash(90, 120, 190, 255);
+      this.cameras.main.shake(90, 0.004);
+    } else if (finisher) {
       this.cameras.main.shake(220, 0.012);
     } else if (isSpecial) {
       this.cameras.main.shake(blocked ? 60 : 90, blocked ? 0.003 : 0.005);

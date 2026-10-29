@@ -92,6 +92,8 @@ export interface ActiveAttack {
   /** Special only: how the defender escapes it, and whether guard is useless. */
   dodge?: SpecialDodge;
   unblockable?: boolean;
+  /** A traveling shot (pipe, wave, powder cloud): only ever blocked, never perfect-guarded. */
+  projectile?: boolean;
   rect: Phaser.Geom.Rectangle;
   profile: AttackProfile;
   signature: number;
@@ -277,6 +279,8 @@ export class Fighter {
   private stunBlockLow = false;
   /** The current stun came from `stunMs` (powder, meteor): dizzy loop instead of the hit reaction. */
   private stunIsDizzy = false;
+  /** Seconds the guard button has been held; null when released. */
+  private guardHeld: number | null = null;
   private knockbackVel = 0;
   /** The strike in progress touched the opponent (hit or guard): only then a quick punch chains. */
   private strikeLanded = false;
@@ -356,6 +360,11 @@ export class Fighter {
   /** Whether the last step moved this fighter away from `x`. */
   isMovingAwayFrom(x: number): boolean {
     return this.lastDx !== 0 && Math.sign(this.lastDx) === Math.sign(this.posX - x);
+  }
+
+  /** How long the guard button has been held (perfect guard window); null when released. */
+  get guardHeldSeconds(): number | null {
+    return this.guardHeld;
   }
 
   /** Still reeling from a hit (hitstun or a powder stun), unable to act. */
@@ -559,7 +568,7 @@ export class Fighter {
       const sweep = sweptInterval(shot.previousX, shot.x, shot.width/2);
       return { rect: new Phaser.Geom.Rectangle(sweep.x, shot.y-shot.height/2, sweep.width, shot.height),
         profile: shot.profile, signature: shot.signature, move: shot.move,
-        finisher: shot.profile.kind === 'special', facing: shot.facing };
+        finisher: shot.profile.kind === 'special', facing: shot.facing, projectile: true };
     }
     if (this.currentAnimKey === this.actionKeys.special && this.character.moves?.special?.kind === 'projectile') {
       return null;
@@ -770,6 +779,7 @@ export class Fighter {
     this.stunIsBlock = false;
     this.stunBlockLow = false;
     this.stunIsDizzy = false;
+    this.guardHeld = null;
     this.knockbackVel = 0;
     this.attackConnected = true;
     this.attackActiveLast = false;
@@ -788,6 +798,7 @@ export class Fighter {
    * @param input - The intent snapshot for this frame.
    */
   update(seconds: number, input: FighterInput): void {
+    this.guardHeld = input.block ? (this.guardHeld === null ? 0 : this.guardHeld + seconds) : null;
     this.lastDx = this.posX - this.previousX;
     this.previousX = this.posX;
     if (!this.frozen) this.updateProjectile(seconds);
