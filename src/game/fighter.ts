@@ -13,6 +13,7 @@ import {
 } from './hero';
 import { spawnChargeAura } from './vfx';
 import {
+  passedDropPoint,
   projectileGrowthProgress,
   dashPosition,
   jumpFlightFrame,
@@ -31,6 +32,8 @@ import {
   type SpecialDodge,
   type GuardStance,
   type JumpFrames,
+  type DropConfig,
+  type ParticleBurst,
   type ProjectileMoveConfig
 } from './moveMechanics';
 import type {
@@ -82,7 +85,8 @@ const ATTACK_KIND_OF: Record<AttackMove, AttackKind> = {
   tiro: 'low',
   onda: 'special',
   nuvem: 'special',
-  cachimbo: 'kick'
+  cachimbo: 'kick',
+  queda: 'kick'
 };
 
 /**
@@ -129,7 +133,19 @@ interface TravelingProjectile {
   travelled: number;
   initial: { width: number; height: number; scale: number; damage: number; stunMs: number };
   visual: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
+  /** Carrier (the Biriba on balloons): hits no one, drops `drop` over `targetX`. */
+  carrier?: { drop: DropConfig; targetX: number; dropped: boolean };
+  /** No guard holds it (what the carrier drops). */
+  unblockable?: boolean;
+  /** Effect where it lands or hits (splash). */
+  hitEffect?: string;
+  hitParticles?: ParticleBurst[];
+  /** Turns into a ground mine on landing; `armed` once it has. */
+  mine?: { seconds: number; damageFactor: number; armed: boolean };
 }
+
+/** Dizzy stars over the head: one effect for every fighter, not drawn in each sheet. */
+const TONTURA_KEY = 'fx-tontura';
 
 const BOUNDS_ALPHA_ACTIVE = 0.95;
 const BOUNDS_ALPHA_INACTIVE = 0.28;
@@ -290,6 +306,10 @@ export class Fighter {
   private stunBlockLow = false;
   /** The current stun came from `stunMs` (powder, meteor): dizzy loop instead of the hit reaction. */
   private stunIsDizzy = false;
+  /** Dizzy stars over the head (`fx-tontura`), created the first time it is needed. */
+  private tontura: Phaser.GameObjects.Sprite | null = null;
+  /** Where the opponent stood when a dropping move (the Biriba) was called. */
+  private dropTargetX: number | null = null;
   /** Seconds the guard button has been held; null when released. */
   private guardHeld: number | null = null;
   /** Fighter clock (s) and the double tap that starts a dash. */
@@ -582,12 +602,12 @@ export class Fighter {
    * animation is on an attack-active frame and the swing hasn't connected yet.
    */
   getActiveAttack(): ActiveAttack | null {
-    const shot = this.projectiles.find(projectile => !projectile.connected);
+    const shot = this.projectiles.find(projectile => !projectile.connected && !projectile.carrier);
     if (shot && !this.defeated) {
       const sweep = sweptInterval(shot.previousX, shot.x, shot.width/2);
       return { rect: new Phaser.Geom.Rectangle(sweep.x, shot.y-shot.height/2, sweep.width, shot.height),
         profile: shot.profile, signature: shot.signature, move: shot.move,
-        finisher: shot.profile.kind === 'special', facing: shot.facing, projectile: true };
+        finisher: shot.profile.kind === 'special', facing: shot.facing, projectile: true, unblockable: shot.unblockable };
     }
     if (this.currentAnimKey === this.actionKeys.special && this.character.moves?.special?.kind === 'projectile') {
       return null;
@@ -638,9 +658,11 @@ export class Fighter {
 
   /** Marks the current swing as having connected so it can't hit again. */
   markAttackConnected(signature?: number): void {
-    const shot = this.projectiles.find(projectile => !projectile.connected && (signature === undefined || projectile.signature === signature));
+    const shot = this.projectiles.find(projectile => !projectile.connected && !projectile.carrier && (signature === undefined || projectile.signature === signature));
     if (shot) {
       shot.connected = true;
+      if (shot.hitEffect) this.spawnEffect(shot.hitEffect, shot.x, shot.y + shot.height / 2);
+      if (shot.hitParticles) this.burstParticles(shot.x, shot.y + shot.height / 2, shot.hitParticles);
       if (!shot.persistOnHit) {
         shot.visual.destroy();
         this.projectiles = this.projectiles.filter(projectile => projectile !== shot);
@@ -825,6 +847,7 @@ export class Fighter {
     this.lastDx = this.posX - this.previousX;
     this.previousX = this.posX;
     if (!this.frozen) this.updateProjectile(seconds);
+    this.updateTontura();
     if (this.defeated) {
       this.playState(this.actionKeys.knockdown, false);
       this.applyKnockback(seconds);
@@ -900,6 +923,7 @@ export class Fighter {
     this.sprite?.destroy();
     this.shadow?.destroy();
     this.boundsGraphics?.destroy();
+    this.tontura?.destroy();
   }
 
   /**
@@ -1125,7 +1149,8 @@ export class Fighter {
       this.startStrike(input.crouch ? 'soco-forte' : 'soco-rapido');
       return;
     }
-    if (input.heavy) {
+    // A carrier (the Biriba) still crossing: the kick does not call another.
+    if (input.heavy && (input.crouch || !this.carrierInFlight())) {
       this.startStrike(input.crouch ? 'chute-baixo' : 'chute-basico');
       return;
     }
@@ -1250,6 +1275,8 @@ export class Fighter {
     this.startOneShot(sheet[move] ?? this.actionKeys.lightPunch);
     this.strike = move;
     const extra = this.strikeMove();
+    // Where the opponent stands the moment the move is called: the drop falls there.
+    if (extra?.drop) this.dropTargetX = this.opponent ? this.opponent.posX : (this.opponentX ?? this.posX);
     const effect = extra?.effect;
     if (effect) {
       const animation = getCharacterAnimationDefinition(this.character.id, sheet[move] ?? this.actionKeys.lightPunch);
@@ -1510,7 +1537,10 @@ export class Fighter {
   /** JSON extras of the strike in progress (projectile, effect), when it has any. */
   private strikeMove(): ProjectileMoveConfig | undefined {
     const moves = this.character.moves;
-    return this.strike === 'soco-forte' ? moves?.heavy : this.strike === 'chute-basico' ? moves?.kick : undefined;
+    return this.strike === 'soco-forte' ? moves?.heavy
+      : this.strike === 'chute-basico' ? moves?.kick
+      : this.strike === 'chute-baixo' ? moves?.lowKick
+      : undefined;
   }
 
   /** Drops pending "back to idle" callbacks of an interrupted strike. */
@@ -1803,21 +1833,20 @@ export class Fighter {
     let x: number;
     let y: number;
     let visual: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
+    const fromBehind = move.spawnFrom === 'behind';
     if (effectKey) {
-      // Effect-sheet projectile (pipe, powder cloud): centred at hand height.
-      x = this.posX + this.facing * 70 * this.appliedScale;
+      // Effect-sheet projectile (pipe, powder cloud): centred at hand height;
+      // from behind (the Biriba), it enters at the camera edge behind him.
+      x = fromBehind ? this.behindEdgeX(width / 2) : this.posX + this.facing * 70 * this.appliedScale;
       y = this.groundY - (move.launchHeight ?? 110) * this.appliedScale;
       visual = this.scene.add.sprite(x, y, effectKey, 0)
         .setOrigin(.5, .5).setScale(move.visualScale ?? this.appliedScale).setFlipX(move.mirror !== false && this.facing === 1)
         .setDepth(move.move === 'nuvem' ? CLOUD_DEPTH : this.depthBase+2).play(effectKey);
     } else {
       x = this.posX+this.facing*(move.visualFile ? width/2+20 : 90*this.appliedScale);
-      const fromBehind = move.spawnFrom === 'behind';
       if (fromBehind) {
         // Enters from off-screen behind the fighter and sails past them: it comes out of him.
-        const view = this.scene.cameras?.main?.worldView;
-        const edge = this.facing === 1 ? (view?.x ?? this.projectileMinX) : (view?.right ?? this.projectileMaxX);
-        x = edge - this.facing * width / 2;
+        x = this.behindEdgeX(width / 2);
       }
       const baseline = this.groundY-24*this.appliedScale;
       y = move.visualFile ? baseline-height/2 : this.groundY-175*this.appliedScale;
@@ -1828,7 +1857,7 @@ export class Fighter {
         : this.scene.add.rectangle(x, y, 14, 5, 0xffdf8a).setDepth(this.depthBase+1);
     }
     const life = move.range !== undefined ? move.range / speed
-      : move.visualFile ? (this.projectileMaxX-this.projectileMinX+width)/speed+1 : 2;
+      : move.visualFile || fromBehind ? (this.projectileMaxX-this.projectileMinX+width+512)/speed+1 : 2;
     this.projectiles.push({x, previousX:x, y, vy: -(move.launchVy ?? 0), gravity: move.gravity ?? 0,
       floorY: this.groundY - 24 * this.appliedScale, facing:this.facing, life,
       signature:this.attackId, visual, width, height, speed,
@@ -1837,13 +1866,106 @@ export class Fighter {
       persistOnHit:move.persistOnHit ?? false, rangeAfterHit: move.rangeAfterHit ?? 0,
       growth: move.growth, travelled: 0,
       initial: { width, height, scale: visual.scaleX,
-        damage: getAttackProfile(this.combat(), kind).damage, stunMs: move.stunMs ?? 0 }});
+        damage: getAttackProfile(this.combat(), kind).damage, stunMs: move.stunMs ?? 0 },
+      carrier: move.drop ? { drop: move.drop, targetX: this.dropTargetX ?? this.posX, dropped: false } : undefined,
+      hitEffect: move.hitEffect, hitParticles: move.hitParticles});
+  }
+
+  /** World x at the camera edge behind the fighter, `half` past it (off-screen). */
+  private behindEdgeX(half: number): number {
+    const view = this.scene.cameras?.main?.worldView;
+    const edge = this.facing === 1 ? (view?.x ?? this.projectileMinX) : (view?.right ?? this.projectileMaxX);
+    return edge - this.facing * half;
+  }
+
+  /** Who it called (the Biriba on balloons) is still crossing the stage. */
+  get carrierAloft(): boolean {
+    return this.carrierInFlight();
+  }
+
+  /** A carrier (the Biriba) is still crossing the stage. */
+  private carrierInFlight(): boolean {
+    return this.projectiles.some(shot => shot.carrier);
+  }
+
+  /** What the carrier lets go of: it falls straight down where the opponent stood. */
+  private dropFrom(carrier: TravelingProjectile & { carrier: NonNullable<TravelingProjectile['carrier']> }): TravelingProjectile {
+    const drop = carrier.carrier.drop;
+    const width = drop.hitWidth ?? 40;
+    const height = drop.hitHeight ?? 40;
+    const x = carrier.carrier.targetX;
+    const y = carrier.y + 40 * this.appliedScale;
+    const key = findCharacterAnimationKeyByAction(this.character.id, `fx-${drop.visualEffect}`);
+    const visual = key
+      ? this.scene.add.sprite(x, y, key, 0).setOrigin(.5, .5).setScale(this.appliedScale).setDepth(this.depthBase + 2).play(key)
+      : this.scene.add.rectangle(x, y, width, height, 0x6b4423).setDepth(this.depthBase + 2);
+    const profile = { ...getAttackProfile(this.combat(), 'kick'), height: 'high' as const };
+    // Lands on the drawn floor (where the shadows sit), so a mine is under the feet.
+    return { x, previousX: x, y, vy: 0, gravity: drop.gravity ?? 1600, floorY: this.groundY - SHADOW_FOOT_OFFSET * this.appliedScale - height / 2,
+      facing: carrier.facing, life: 5, signature: carrier.signature, visual, width, height, speed: 0,
+      profile, connected: false, move: 'queda', persistOnHit: false, rangeAfterHit: 0, travelled: 0,
+      initial: { width, height, scale: visual.scaleX, damage: profile.damage, stunMs: 0 },
+      unblockable: true, hitEffect: drop.hitEffect, hitParticles: drop.hitParticles,
+      mine: drop.mine ? { ...drop.mine, armed: false } : undefined };
+  }
+
+  /** Lands as a mine: sits on the ground, weaker, and goes away after `seconds` (blinking at the end). */
+  private armMine(shot: TravelingProjectile & { mine: NonNullable<TravelingProjectile['mine']> }): void {
+    shot.mine.armed = true;
+    shot.gravity = 0;
+    shot.vy = 0;
+    shot.y = shot.floorY;
+    shot.visual.y = shot.y;
+    shot.life = shot.mine.seconds;
+    shot.profile = { ...shot.profile, damage: shot.profile.damage * shot.mine.damageFactor };
+    if ('anims' in shot.visual) shot.visual.anims.pause();
+    this.scene.tweens?.add({ targets: shot.visual, alpha: 0.25, duration: 120, yoyo: true, repeat: 3,
+      delay: Math.max(0, shot.mine.seconds - 1) * 1000 });
+  }
+
+  /** Square pixels bursting from a hit (poop bits, stink), on top of the splash. */
+  private burstParticles(x: number, y: number, bursts: ParticleBurst[]): void {
+    const add = this.scene.add as Partial<Phaser.GameObjects.GameObjectFactory> | undefined;
+    if (!add?.particles || !this.scene.textures) return;
+    if (!this.scene.textures.exists('fx-pixel')) {
+      const pixel = this.scene.make.graphics({ x: 0, y: 0 }, false);
+      pixel.fillStyle(0xffffff, 1).fillRect(0, 0, 4, 4);
+      pixel.generateTexture('fx-pixel', 4, 4);
+      pixel.destroy();
+    }
+    bursts.forEach((burst) => {
+      const rises = (burst.gravity ?? 900) < 0;
+      const emitter = this.scene.add.particles(x, y, 'fx-pixel', {
+        speed: rises ? { min: 30, max: 110 } : { min: 160, max: 420 },
+        angle: rises ? { min: 240, max: 300 } : { min: 200, max: 340 },
+        gravityY: burst.gravity ?? 900,
+        lifespan: rises ? { min: 700, max: 1200 } : { min: 550, max: 900 },
+        scale: { start: (rises ? 3.2 : 2.6) * this.appliedScale, end: this.appliedScale },
+        alpha: { start: 1, end: rises ? 0 : 0.6 },
+        tint: burst.colors.map((cor) => parseInt(cor.replace('#', ''), 16)),
+        emitting: false
+      }).setDepth(this.depthBase + 3);
+      emitter.explode(burst.count ?? 16);
+      const seconds = burst.seconds ?? 0;
+      if (seconds > 0) {
+        // A lingering stink: a few more every 60 ms for `seconds`.
+        emitter.setFrequency(60, 2);
+        emitter.start();
+        this.scene.time.delayedCall(seconds * 1000, () => emitter.stop());
+      }
+      this.scene.time.delayedCall(seconds * 1000 + 1400, () => emitter.destroy());
+    });
   }
 
   private updateProjectile(seconds: number): void {
+    const dropped: TravelingProjectile[] = [];
     this.projectiles = this.projectiles.filter(shot => {
     shot.previousX = shot.x;
     shot.x += shot.facing*shot.speed*seconds;
+    if (shot.carrier && !shot.carrier.dropped && passedDropPoint(shot.previousX, shot.x, shot.carrier.targetX, shot.facing)) {
+      shot.carrier.dropped = true;
+      dropped.push(this.dropFrom(shot as TravelingProjectile & { carrier: NonNullable<TravelingProjectile['carrier']> }));
+    }
     shot.travelled += Math.abs(shot.x - shot.previousX);
     if (shot.growth) {
       const progress = projectileGrowthProgress(shot.travelled, shot.growth.distance);
@@ -1861,12 +1983,43 @@ export class Fighter {
     shot.visual.x = shot.x;
     shot.visual.y = shot.gravity > 0 ? shot.y : shot.visual.y;
     const landed = shot.gravity > 0 && shot.y >= shot.floorY;
+    if (landed && shot.hitEffect) this.spawnEffect(shot.hitEffect, shot.x, shot.y + shot.height / 2);
+    if (landed && shot.mine && !shot.mine.armed) {
+      this.armMine(shot as TravelingProjectile & { mine: NonNullable<TravelingProjectile['mine']> });
+      return true;
+    }
     if (landed || shot.life <= 0 || shot.x+shot.width/2 < this.projectileMinX-100 || shot.x-shot.width/2 > this.projectileMaxX+100 || this.defeated) {
       shot.visual.destroy();
       return false;
     }
     return true;
     });
+    this.projectiles.push(...dropped);
+  }
+
+  /** Stars over the head while dizzy, at the top of the `stunned` drawing. */
+  private updateTontura(): void {
+    const tonto = !this.defeated && this.hitstunTimer > 0 && this.stunIsDizzy && !this.stunIsBlock;
+    if (!tonto) {
+      this.tontura?.setVisible(false);
+      return;
+    }
+    if (!this.tontura) {
+      if (!this.scene.textures?.exists(TONTURA_KEY)) return;
+      if (!this.scene.anims.exists(TONTURA_KEY)) {
+        this.scene.anims.create({ key: TONTURA_KEY, frames: this.scene.anims.generateFrameNumbers(TONTURA_KEY, {}), frameRate: 10, repeat: -1 });
+      }
+      this.tontura = this.scene.add.sprite(0, 0, TONTURA_KEY, 0).setOrigin(.5, .5).play(TONTURA_KEY);
+    }
+    const animation = getCharacterAnimationDefinition(this.character.id, this.actionKeys.stunned);
+    const visual = animation.bounds[0]?.visual;
+    if (!visual) return;
+    const rect = this.frameRectToWorld(animation, visual);
+    this.tontura
+      .setPosition(rect.centerX, rect.y + 4 * this.appliedScale)
+      .setScale(this.appliedScale * 0.8)
+      .setDepth(this.depthBase + 1)
+      .setVisible(true);
   }
 
   private clearProjectile(): void {

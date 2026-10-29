@@ -105,8 +105,14 @@ export const LOGO_IMAGE_ASSET: ImageAsset = {
   usage: 'logo Luta de Mascotes na abertura e no menu'
 };
 
+/** Effects of the game itself, the same for every fighter (docs/biriba-ovo-tontura.md). */
+export const FX_ASSETS: SpritesheetAsset[] = [
+  { kind: 'spritesheet', key: 'fx-tontura', url: '/assets/fx/tontura.png', frameWidth: 128, frameHeight: 64, frames: 8 }
+];
+
 export const STARTER_ASSETS: StarterAsset[] = [
   ...CHARACTER_ASSETS,
+  ...FX_ASSETS,
   ...STAGE_IMAGE_ASSETS,
   ...MODE_CARD_IMAGE_ASSETS,
   LOGO_IMAGE_ASSET,

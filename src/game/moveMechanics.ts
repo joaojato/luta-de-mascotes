@@ -7,6 +7,8 @@ export interface FighterMoveConfig {
   heavy?: ProjectileMoveConfig;
   /** Kick button (chute básico): sheet and, optionally, a projectile (the Almirante's shot). */
   kick?: ProjectileMoveConfig;
+  /** Down + kick (chute baixo): sheet and, optionally, an effect (the Galo's talon). */
+  lowKick?: ProjectileMoveConfig;
   special?: ProjectileMoveConfig;
   /** Effect sheets (no hitbox) the moves reference by name, e.g. `"thermal"`. */
   effects?: Record<string, EffectSheetConfig>;
@@ -42,6 +44,31 @@ export interface JumpFrames {
   land: number;
 }
 
+/** What a carrier drops: an effect sheet that falls straight down and hits as a `queda`. */
+export interface DropConfig {
+  visualEffect: string;
+  /** px/s² (default 1600). */
+  gravity?: number;
+  hitWidth?: number;
+  hitHeight?: number;
+  /** Effect played where it lands or hits (splash). */
+  hitEffect?: string;
+  /** Particles bursting on a hit, to make it obvious. */
+  hitParticles?: ParticleBurst[];
+  /** Landing without hitting, it stays on the ground as a mine: whoever steps on it takes `damageFactor` of the damage. */
+  mine?: { seconds: number; damageFactor: number };
+}
+
+/** A burst of square pixels on a hit: falling bits (`gravity` > 0) or rising stink (< 0). */
+export interface ParticleBurst {
+  colors: string[];
+  count?: number;
+  /** px/s²; negative rises. Default 900. */
+  gravity?: number;
+  /** Keeps emitting for this long (a lingering stink) instead of one burst. */
+  seconds?: number;
+}
+
 export interface ProjectileMoveConfig {
   action?: string;
   kind: string;
@@ -70,6 +97,12 @@ export interface ProjectileMoveConfig {
   spawnFrom?: 'behind' | string;
   /** Projectile: `false` keeps the effect unmirrored when facing right (readable text). */
   mirror?: boolean;
+  /**
+   * Carrier (the Biriba on balloons): it hits no one; when it passes over
+   * where the opponent stood the moment the move was called, it drops this.
+   * While a carrier is on screen the move can't be called again.
+   */
+  drop?: DropConfig;
   /** Projectile stops after this many px (a cloud that dissipates). */
   range?: number;
   /** With `persistOnHit`: px it still drifts after the hit, over the target, its sheet stretched to fade there. */
@@ -109,6 +142,8 @@ export interface ProjectileMoveConfig {
   chargeEffect?: string;
   trailEffect?: string;
   hitEffect?: string;
+  /** Particles bursting where the projectile hits. */
+  hitParticles?: ParticleBurst[];
   effect?: string;
   effectFrame?: number;
   /** Centre of `effect`, in sheet px forward of and above the feet; without it, the old spot near the ground. */
@@ -207,7 +242,7 @@ export function jumpFlightFrame(elapsed: number, duration: number, first: number
 }
 
 /** Which move a live hitbox belongs to (GDD, "Golpes"): heavy projectile = `tiro`, special projectile = `onda` (the caravel). */
-export type AttackMove = GolpeId | 'tiro' | 'onda' | 'nuvem' | 'cachimbo';
+export type AttackMove = GolpeId | 'tiro' | 'onda' | 'nuvem' | 'cachimbo' | 'queda';
 
 /** Standing guard (`alta`) or crouching guard (`baixa`). */
 export type GuardStance = 'alta' | 'baixa';
@@ -224,7 +259,9 @@ const GUARDS: Record<AttackMove, GuardStance[]> = {
   tiro: ['alta', 'baixa'],
   onda: ['alta', 'baixa'],
   nuvem: ['alta', 'baixa'],
-  cachimbo: ['alta', 'baixa']
+  cachimbo: ['alta', 'baixa'],
+  // Falls from above (the Biriba's drop): no guard holds it, only leaving the spot.
+  queda: []
 };
 
 /** Share of the knockback a guarded hit still pushes: blocking a string moves you out of it. */
@@ -317,4 +354,15 @@ export function sweptInterval(previous: number, next: number, radius: number): {
 /** Bounded growth based on distance actually travelled, independent of facing. */
 export function projectileGrowthProgress(distance: number, maximum: number): number {
   return Math.max(0, Math.min(1, Math.abs(distance) / Math.max(1, maximum)));
+}
+
+/**
+ * A carrier crossing the stage reached the drop point this frame.
+ * @param previousX - Where it was last frame.
+ * @param x - Where it is now.
+ * @param targetX - Where the opponent stood when the move was called.
+ * @param facing - Direction it flies (1 right, -1 left).
+ */
+export function passedDropPoint(previousX: number, x: number, targetX: number, facing: 1 | -1): boolean {
+  return facing * (previousX - targetX) < 0 && facing * (x - targetX) >= 0;
 }

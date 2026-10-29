@@ -1949,3 +1949,34 @@ que ainda não existe (outra entrega).
 **Atrito:** a sessão anterior do Claude caiu no meio; o Codex de arte seguiu
 rodando sozinho.
 **Em aberto:** retrato do Esquadrão; corte de mão aberta redesenhado.
+
+## 2026-10-29: Biriba do Bira, ovo do Galo e tontura do motor
+
+**Marco:** 2, segue em andamento.
+**Pedido:** chute do Bira chama o Biriba em balões pretos e brancos, que
+solta um cocô onde o oponente estava (só sair do lugar escapa, defesa não
+segura, um Biriba por vez); depois o cocô vira mina de 2 s com metade do
+dano e o acerto precisa de partículas; tontura como partícula do jogo, não
+da sheet (o Esquadrão estava sem); Galo com o giro no chute baixo e um ovo
+arremessado no chute.
+**Feito:** contrato em `docs/biriba-ovo-tontura.md`. Arte do Codex pela
+linha de comando (8 peças, 48 quadros, e a limpeza das estrelas das seis
+sheets `stunned`, guia em `docs/biriba-ovo-tontura-arte.md`). No motor: golpe
+`queda` (nenhuma guarda segura), projétil que carrega outro (`drop`), mina
+(`mine`), partículas de acerto (`hitParticles`), respingo de projétil
+(`hitEffect`), `lowKick` com efeito próprio e a tontura `fx-tontura`
+desenhada acima da cabeça de qualquer lutador tonto. Caixas do `stunned`
+remedidas sem as estrelas. Biriba de cenário some enquanto o voador
+atravessa.
+**Verificado:** `npm run check` verde. No navegador: Urubu parado leva o
+cocô (7,8%), defendendo leva igual, saindo do lugar escapa, chamar de novo
+com o Biriba no ar não faz nada; pisar na mina dá 3,9% e ela some em 2 s;
+ovo acerta reto e a defesa segura; Esquadrão tonto com estrelas pela
+primeira vez; console sem erro.
+**Créditos gastos:** nada (Codex pela conta do ChatGPT).
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** a sessão do Claude caiu no meio, o Codex seguiu sozinho e o
+aviso de fim se perdeu; vigia novo pelo arquivo de resposta. Partículas da
+primeira versão pequenas demais contra a torcida escura.
+**Em aberto:** aceite visual do João.

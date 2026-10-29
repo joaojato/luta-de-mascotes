@@ -75,6 +75,10 @@ export class BiribaCena {
   }
 
   private render(): void {
+    // He is the one flying on the balloons (the kick): off the sideline meanwhile.
+    const voando = this.bira.carrierAloft;
+    this.sprite.setVisible(!voando);
+    this.shadow.setVisible(!voando);
     this.sprite.setX(Math.round(this.motion.x)).setFlipX(this.motion.facing === 1);
     if (this.renderedAction !== this.motion.action) {
       this.sprite.play(`biriba-${this.motion.action}`);

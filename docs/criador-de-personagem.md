@@ -74,8 +74,16 @@ como o carrinho do Bira, ou fica no lugar (golpe de longe, tiro)?
 
 Golpe próprio no lugar de um padrão (já existem: bicada do Urubu
 `beak-pull`, cachimbo do Saci `pipe-throw`, tiro do Almirante `shot`, giro
-do Galo `spin-kick`, laser dos olhos do Esquadrão `eye-laser`): ele tem
-algum? No lugar de qual botão?
+do Galo `spin-kick` (hoje no chute baixo), laser dos olhos do Esquadrão
+`eye-laser`, ovo do Galo `egg-throw`, chamado do Biriba do Bira
+`summon-biriba`): ele tem algum? No lugar de qual botão? Golpe próprio no
+chute baixo usa `lowKick` no JSON, como o `kick` usa no chute.
+
+Golpe que **chama alguém** (o Biriba): o chamado é a sheet do lutador; quem
+vem atravessa o campo como projétil que não acerta (`spawnFrom: "behind"`)
+e solta o que cai (`drop`) sobre onde o oponente estava no momento do
+chamado. O que cai é o golpe `queda`: nenhuma guarda segura, só sair do
+lugar. Enquanto quem veio está atravessando, o golpe não sai de novo.
 
 ## 5. Especial
 
@@ -108,6 +116,11 @@ algum? No lugar de qual botão?
 9. O efeito tem texto (como o "Bora Bahêa" do Esquadrão)? Texto não pode
    espelhar quando ele vira de lado (`mirror: false` no projétil), e efeito
    mais largo que 256 px declara a célula (`frameWidth`, `frameHeight`).
+10. O projétil quebra ou respinga no acerto e no chão (`hitEffect`, como o
+    ovo do Galo e o cocô do Biriba)? Solta partículas no acerto
+    (`hitParticles`: cores, quantidade, se caem ou sobem, se ficam saindo
+    por um tempo)? O que cai fica no chão como mina (`mine`: segundos e
+    fração do dano)?
 
 ## 6. Movimento e reações
 
@@ -125,7 +138,7 @@ perna só, por exemplo).
 | `block-high` | defesa em pé | 2 a 4 | também é a pose da guarda perfeita |
 | `block-low` | defesa agachada | 2 a 4 | |
 | `hit-high` | reação curta a golpe | 4 a 6 | |
-| `stunned` | tonto, em loop | 4 | atordoamento longo (Pó de Arroz, meteoro) e quem toma guarda perfeita |
+| `stunned` | tonto, em loop | 4 | atordoamento longo (Pó de Arroz, meteoro) e quem toma guarda perfeita. **Só o corpo**: estrelas e espirais são do jogo (`fx-tontura`), desenhadas pelo motor acima da cabeça |
 | `knockdown` | derrubado | 8 a 10 | |
 | `dash-forward` | dash para a frente | 5 | corpo parado no eixo; quem move é o motor |
 | `dash-back` | dash para trás | 4 | saltinho com guarda alta |
@@ -154,3 +167,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
   espelha, com célula própria (Esquadrão).
 - 29/10/2026: torcida dividida, cores e estampa por mascote.
 - 29/10/2026: torcida com todas as cores do clube (camisas lisas, bandeira, sinalizador).
+- 29/10/2026: golpe que chama alguém (`drop`, `queda`), `lowKick`, `hitEffect` de projétil e tontura como partícula do jogo.

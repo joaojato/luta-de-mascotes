@@ -1,7 +1,13 @@
 {
   "id": "galo",
   "assetRoot": "/assets/lutadores/galo",
-  "torcida": { "estampa": "listras-verticais", "cores": ["#403B3F", "#F0F0F0"] },
+  "torcida": {
+    "estampa": "listras-verticais",
+    "cores": [
+      "#403B3F",
+      "#F0F0F0"
+    ]
+  },
   "selecionavel": true,
   "label": "Galo",
   "anchorUsage": "Galo, padrão Urubu, guarda voltada para a esquerda",
@@ -232,10 +238,10 @@
       "frameRate": 6,
       "repeat": -1,
       "defaultVisual": {
-        "x": 48,
-        "y": 28,
-        "width": 159,
-        "height": 200
+        "x": 50,
+        "y": 19,
+        "width": 157,
+        "height": 209
       }
     },
     {
@@ -357,41 +363,7 @@
     },
     {
       "action": "low-kick",
-      "label": "Chute baixo (chute clássico)",
-      "file": "low-kick-classic-v3.png",
-      "frames": 10,
-      "frameRate": 12,
-      "repeat": 0,
-      "defaultVisual": {
-        "x": 31,
-        "y": 40,
-        "width": 204,
-        "height": 188
-      },
-      "attack": {
-        "frames": [
-          3,
-          4,
-          5
-        ],
-        "bounds": {
-          "x": 31,
-          "y": 89,
-          "width": 83,
-          "height": 73
-        }
-      },
-      "travel": {
-        "frames": [
-          1,
-          4
-        ],
-        "distance": 59
-      }
-    },
-    {
-      "action": "spin-kick",
-      "label": "Chute giratório",
+      "label": "Chute baixo (chute girando)",
       "file": "spin-full-turn-v5.png",
       "frames": 20,
       "frameRate": 14,
@@ -487,6 +459,20 @@
         "height": 163
       },
       "label": "Knockdown"
+    },
+    {
+      "action": "egg-throw",
+      "label": "Arremesso do ovo",
+      "file": "egg-throw.png",
+      "frames": 8,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 20,
+        "y": 28,
+        "width": 196,
+        "height": 200
+      }
     }
   ],
   "stats": {},
@@ -513,20 +499,48 @@
       "landFrame": 9
     },
     "kick": {
-      "kind": "strike",
-      "action": "spin-kick",
-      "effect": "talon",
-      "effectFrame": 10,
-      "effectAt": {
-        "x": 88,
-        "y": 92
-      }
+      "kind": "projectile",
+      "action": "egg-throw",
+      "releaseFrame": 4,
+      "speed": 780,
+      "launchVy": 120,
+      "gravity": 260,
+      "visualEffect": "ovo",
+      "launchHeight": 169,
+      "hitWidth": 30,
+      "hitHeight": 30,
+      "move": "cachimbo",
+      "hitEffect": "ovo-splash"
     },
     "effects": {
       "talon": {
         "file": "talon-slash-small-v5.png",
         "frames": 6,
         "frameRate": 18
+      },
+      "ovo": {
+        "file": "ovo.png",
+        "frames": 4,
+        "frameRate": 12,
+        "repeat": -1,
+        "frameWidth": 64,
+        "frameHeight": 64
+      },
+      "ovo-splash": {
+        "file": "ovo-splash.png",
+        "frames": 6,
+        "frameRate": 16,
+        "frameWidth": 128,
+        "frameHeight": 128
+      }
+    },
+    "lowKick": {
+      "kind": "strike",
+      "effect": "talon",
+      "effectFrame": 10,
+      "effectAt": {
+        "x": 88,
+        "y": 92
       }
     }
   }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { projectileGrowthProgress, advanceStop, armorAbsorbs, DoubleTapDetector, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
+import { passedDropPoint, projectileGrowthProgress, advanceStop, armorAbsorbs, DoubleTapDetector, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
 
 describe('special traversal and flight timing', () => {
   it('holds the charge position, traverses continuously and stays at the destination during recovery', () => {
@@ -141,5 +141,22 @@ describe('distance-based projectile growth', () => {
     expect(projectileGrowthProgress(-350, 700)).toBe(.5);
     expect(projectileGrowthProgress(700, 700)).toBe(1);
     expect(projectileGrowthProgress(1400, 700)).toBe(1);
+  });
+});
+
+describe('queda do alto (Biriba do Bira, 29/10/2026)', () => {
+  it('nenhuma guarda segura, e pular ou agachar no lugar não adianta', () => {
+    expect(guardHolds('queda', 'alta')).toBe(false);
+    expect(guardHolds('queda', 'baixa')).toBe(false);
+    expect(ducksUnder('queda', true)).toBe(false);
+    expect(jumpsOver('queda', true)).toBe(false);
+  });
+
+  it('solta uma vez, quando o carregador passa por cima do ponto guardado', () => {
+    expect(passedDropPoint(100, 140, 130, 1)).toBe(true);
+    expect(passedDropPoint(140, 180, 130, 1)).toBe(false);
+    expect(passedDropPoint(60, 90, 130, 1)).toBe(false);
+    expect(passedDropPoint(500, 460, 480, -1)).toBe(true);
+    expect(passedDropPoint(460, 420, 480, -1)).toBe(false);
   });
 });
