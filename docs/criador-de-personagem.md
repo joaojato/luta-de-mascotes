@@ -61,6 +61,10 @@ Para cada linha: como ele faz esse golpe? Se for o padrão, basta dizer "padrão
 | 4.5 | Soco no ar | Soco, no ar | `jump-punch` | soco para baixo no pulo | Algo diferente no ar? |
 | 4.6 | Voadora | Chute, no ar | `jump-kick` | mergulho em diagonal; quebra a defesa baixa | Pé, garra, bengala? |
 
+Soco forte, chute básico e chute baixo dão um passo para a frente (Regra do
+Passo, `travel` no JSON). Pergunta: o golpe dele avança mais que o normal,
+como o carrinho do Bira, ou fica no lugar (golpe de longe, tiro)?
+
 Golpe próprio no lugar de um padrão (já existem: bicada do Urubu
 `beak-pull`, cachimbo do Saci `pipe-throw`, tiro do Almirante `shot`, giro
 do Galo `spin-kick`): ele tem algum? No lugar de qual botão?
@@ -134,3 +138,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 
 - 29/10/2026: criado. Inclui tontura (`stunned`), voadora, soco no ar, dash
   e guarda perfeita.
+- 29/10/2026: passo à frente no soco forte e nos chutes (Regra do Passo).

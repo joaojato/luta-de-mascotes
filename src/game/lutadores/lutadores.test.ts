@@ -123,6 +123,19 @@ describe('registro de lutadores (Regra do JSON)', () => {
     });
   });
 
+  // Regra do Passo: chute e soco forte de chão dão um passo para a frente. O
+  // desenho do chute inclina o tronco para trás; parado, o lutador parecia recuar.
+  it('chute e soco forte de chão andam para a frente (Regra do Passo)', () => {
+    LUTADORES.forEach((lutador) => {
+      lutador.actions
+        .filter((spec) => ['heavy-punch', 'heavy-kick', 'low-kick'].includes(spec.action))
+        .forEach((spec) => {
+          expect(spec.travel?.distance ?? 0, `${lutador.id} ${spec.action}`).toBeGreaterThan(0);
+          expect(spec.travel!.frames[1], `${lutador.id} ${spec.action}`).toBeLessThan(spec.frames);
+        });
+    });
+  });
+
   // Regra do Criador: o questionário de personagem novo acompanha o motor. Ação,
   // golpe ou tipo de especial que entra no jogo entra em docs/criador-de-personagem.md.
   it('o criador de personagem cita toda ação, golpe do catálogo e tipo de especial', () => {

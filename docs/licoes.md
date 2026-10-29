@@ -315,3 +315,9 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   anda a uns 1000 px/s e o pulo leva uns 0,1 s para sair do chão: baixar a
   caixa deixava uma janela de um quadro. Especial que atravessa a tela
   precisa de regra de esquiva (`dodge`), não só de caixa. (2026-10-29)
+- **Chute recuava porque o desenho inclina e o lutador ficava parado.** O
+  João notou que a maioria dos chutes dava uma recuada; medindo o tronco
+  quadro a quadro, ele ia 25 a 49 px para trás nas sheets de chute. Golpe de
+  chão agora dá um passo para a frente (`travel`) que cobre a inclinação
+  (Regra do Passo). Sheet nova de chute: medir o tronco antes de ligar.
+  (2026-10-29)

@@ -338,7 +338,14 @@
           ],
           "ms": 120
         }
-      ]
+      ],
+      "travel": {
+        "frames": [
+          6,
+          9
+        ],
+        "distance": 40
+      }
     },
     {
       "action": "heavy-kick",
@@ -365,6 +372,13 @@
           "width": 81,
           "height": 73
         }
+      },
+      "travel": {
+        "frames": [
+          1,
+          4
+        ],
+        "distance": 64
       }
     },
     {
@@ -409,7 +423,14 @@
           ],
           "ms": 90
         }
-      ]
+      ],
+      "travel": {
+        "frames": [
+          6,
+          9
+        ],
+        "distance": 47
+      }
     },
     {
       "action": "special-charge",

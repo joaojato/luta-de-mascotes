@@ -309,6 +309,13 @@
           "width": 115,
           "height": 50
         }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 63
       }
     },
     {
@@ -338,6 +345,13 @@
           "width": 115,
           "height": 50
         }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 63
       }
     },
     {
@@ -377,6 +391,13 @@
           "width": 100,
           "height": 50
         }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 25
       }
     },
     {

@@ -1707,3 +1707,24 @@ tornado: antes acertava em qualquer pulo, agora quem pula no começo escapa.
 **Atrito:** baixar só a caixa do tornado não bastou (janela de um quadro).
 **Em aberto:** ligar o soco no ar quando o Codex fechar os seis (precisa de
 caixa de acerto no punho por quadro).
+
+## 2026-10-29: Passo à frente no chute e no soco forte
+
+**Marco:** 2, segue em andamento.
+**Pedido:** a maioria dos chutes dava uma recuada; chute e soco forte devem
+avançar um pouco.
+**Feito:** medi o tronco quadro a quadro: nas sheets de chute ele inclina 25
+a 49 px para trás e o lutador ficava parado. Fora do canto, o motor não
+empurra o atacante. `travel` no JSON (só dado, zero motor) no soco forte, no
+chute básico e no chute baixo dos seis, cobrindo a inclinação mais ~15 px;
+giro do Galo também. Bicada, cachimbo e tiro ficam no lugar (não recuam).
+Regra do Passo no contrato, no GDD e no criador, com teste.
+**Verificado:** `npm run check` com 139 testes, build ok. No navegador,
+longe do oponente: soco forte anda 35 a 50 px, chute 54 a 85, chute baixo
+30 a 94 (carrinho do Bira 151, como antes); nenhum recua.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** o passo soma ao alcance; jogar e ver se o chute baixo do
+Saci e do Galo (cerca de 90 px) ficou longo demais.

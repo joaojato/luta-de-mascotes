@@ -140,6 +140,9 @@ Ritmo (João, 28/10/2026, contra o spam de soco rápido):
 - Golpes que se encontram no mesmo quadro trocam: os dois levam.
 - Regra do Corpo (CLAUDE.md): só o corpo apanha; o alcance do desenho é
   vantagem real.
+- Regra do Passo (João, 29/10/2026): chute e soco forte de chão avançam um
+  pouco. Chute anda 47 a 64 px da sheet (a inclinação do tronco mais ~15),
+  soco forte 25 a 40. O passo para a 70 px do oponente e soma ao alcance.
 - Golpe longo pode ter `timing` no JSON: preparação rápida e quadro de
   contato segurado. Bengalada do Cartola sai aos ~370 ms e acerta por
   ~250 ms; varredura acerta nos quadros 8 a 11; giro do Galo sai aos ~400 ms.

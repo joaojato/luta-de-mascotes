@@ -102,6 +102,10 @@ Cada uma tem nome para poder ser cobrada depois.
   pixel além (o soco rápido não pode alcançar mais que o punho). Pulo,
   especial e queda guardam a caixa própria. Cobrada por teste em
   `lutadores.test.ts`.
+- **Regra do Passo.** Chute e soco forte de chão dão um passo para a frente
+  (`travel` no JSON), nunca recuam. O desenho do chute inclina o tronco para
+  trás; o passo cobre a inclinação e ainda avança uns 15 px. Cobrada por
+  teste em `lutadores.test.ts`.
 - **Regra do Criador.** `docs/criador-de-personagem.md` é o questionário de
   mascote novo e acompanha o motor: ação, golpe, tipo de especial ou mecânica
   que muda o que um mascote precisa entra lá no mesmo commit. Pedido de

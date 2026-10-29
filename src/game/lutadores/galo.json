@@ -311,6 +311,13 @@
           "width": 101,
           "height": 55
         }
+      },
+      "travel": {
+        "frames": [
+          1,
+          2
+        ],
+        "distance": 30
       }
     },
     {
@@ -338,6 +345,13 @@
           "width": 75,
           "height": 73
         }
+      },
+      "travel": {
+        "frames": [
+          1,
+          4
+        ],
+        "distance": 59
       }
     },
     {
@@ -365,6 +379,13 @@
           "width": 83,
           "height": 73
         }
+      },
+      "travel": {
+        "frames": [
+          1,
+          4
+        ],
+        "distance": 59
       }
     },
     {
@@ -402,7 +423,14 @@
           ],
           "ms": 40
         }
-      ]
+      ],
+      "travel": {
+        "frames": [
+          2,
+          11
+        ],
+        "distance": 57
+      }
     },
     {
       "action": "special-charge",
