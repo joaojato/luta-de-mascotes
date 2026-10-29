@@ -299,3 +299,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   Peguei rascunhos de `output/` enquanto ele terminava e gravei os cartões
   por cima dos finais dele um minuto depois. Restaurado pelos hashes do
   relatório. Fonte em `output/` não é entrega. (2026-10-29)
+- **Guarda perfeita é só corpo a corpo.** Aprovado pelo João: dash com dois
+  toques, guarda perfeita na janela de 0,15 s deixa o atacante tonto 0,4 s;
+  projétil é só bloqueado, senão o tiro viraria armadilha para quem atira.
+  Aprovou também a nova escala de dano (rápido 3%, forte 10%, especial 15%
+  da vida). (2026-10-29)

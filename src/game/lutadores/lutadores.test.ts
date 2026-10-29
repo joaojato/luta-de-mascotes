@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
+import { createDefaultFighterPlaygroundState, getFighterCombat } from '../fighterConfig';
 import { expandirSkins, LUTADORES, LUTADOR_CHARACTERS, type LutadorJson } from './index';
 import urubuJson from './urubu.json';
 
@@ -117,6 +118,25 @@ describe('registro de lutadores (Regra do JSON)', () => {
       });
       const voadora = personagem.animations.find((a) => a.action === 'jump-kick');
       if (voadora) expect(voadora.bounds[0].hit, `${personagem.id} voadora`).not.toEqual(corpo);
+    });
+  });
+
+  // Escala de dano (GDD, 29/10/2026): golpe lento rende mais que o rápido, e o
+  // especial, que leva a barra inteira, é o que mais tira. Especial que já
+  // atordoa (Pó de Arroz) pode tirar menos, porque abre combo.
+  it('dano segue a escala do GDD em fração da vida', () => {
+    const estado = createDefaultFighterPlaygroundState();
+    LUTADORES.forEach((lutador) => {
+      const c = getFighterCombat(estado, lutador.id);
+      const fracao = (dano: number) => dano / c.maxHealth;
+      expect(fracao(c.highDamage), `${lutador.id} soco rápido`).toBeGreaterThanOrEqual(0.025);
+      expect(fracao(c.highDamage), `${lutador.id} soco rápido`).toBeLessThanOrEqual(0.045);
+      expect(c.highDamage, `${lutador.id}`).toBeLessThan(c.lowKickDamage);
+      expect(c.lowKickDamage, `${lutador.id}`).toBeLessThan(c.kickDamage);
+      expect(c.kickDamage, `${lutador.id}`).toBeLessThan(c.lowDamage);
+      expect(fracao(c.lowDamage), `${lutador.id} soco forte`).toBeGreaterThanOrEqual(0.09);
+      const atordoa = Boolean(lutador.moves?.special?.stunMs);
+      expect(fracao(c.specialDamage), `${lutador.id} especial`).toBeGreaterThanOrEqual(atordoa ? 0.07 : 0.13);
     });
   });
 

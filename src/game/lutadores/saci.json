@@ -5,7 +5,7 @@
   "anchorUsage": "Saci, uma única perna, guarda voltada para esquerda",
   "stats": {},
   "combat": {
-    "specialDamage": 16,
+    "specialDamage": 30,
     "specialKnockback": 210,
     "specialHitstun": 300
   },

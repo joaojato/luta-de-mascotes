@@ -106,6 +106,19 @@ Voadora. Guarda em pé quebrada atordoa 0,3 s; guarda agachada quebrada, 0,6 s
 imbloqueável continua passando por qualquer guarda, sem esse atordoamento.
 Agachar sem guarda é esquiva do Soco rápido, do Tiro e do cachimbo do Saci.
 
+Guarda perfeita (João, 29/10/2026): defender até 0,15 s antes de um golpe
+**corpo a corpo** acertar. O defensor não é empurrado e o atacante fica
+atordoado 0,4 s (reação curta, não a tontura longa), com brilho e faísca azul.
+Vale parado ou saindo do dash. Não vale contra projétil (tiro, caravela,
+cachimbo, Pó de Arroz: só bloqueia, senão o tiro viraria armadilha para quem
+atira), nem contra especial imbloqueável, nem contra golpe que quebra aquela
+guarda (aí a guarda quebra como sempre). A CPU não faz guarda perfeita.
+
+Dash (João, 29/10/2026): dois toques no direcional em até 0,25 s. Para a
+frente, avança uns 180 px em 0,28 s; para trás, um recuo curto. Defender no
+meio do dash para na hora e entra em guarda. Arte pedida ao Codex
+(`dash-forward`, `dash-back`); sem ela, o andar faz as vezes.
+
 Luta: 230 de vida para todos os lutadores, round de 99 segundos.
 
 Ritmo (João, 28/10/2026, contra o spam de soco rápido):
@@ -114,8 +127,11 @@ Ritmo (João, 28/10/2026, contra o spam de soco rápido):
   animação vai até o fim. Atordoa 200 ms, menos que o intervalo entre socos
   sem emenda (cerca de 286 ms): quem apanha tem brecha para defender ou
   responder.
-- Dano padrão: soco rápido 4 por acerto, soco forte 18, chute básico 14,
-  chute baixo 10. Golpe lento rende mais que o rápido.
+- Dano padrão (escala de 29/10/2026, em fração dos 230 de vida): soco
+  rápido 7 (3%), chute baixo 14 (6%), chute básico e voadora 18 (8%), soco
+  forte 24 (10%), especial 34 (15%). Golpe lento rende mais que o rápido.
+  Exceções: meteoro do Urubu 30 e Pó de Arroz 18, porque já atordoam 1,5 s;
+  Almirante 9/21/19/38 e cachimbo do Saci 30. Cobrado por teste.
 - Guarda empurra 60% do golpe. Contra a parede, quem recua é o atacante.
 - Golpes que se encontram no mesmo quadro trocam: os dois levam.
 - Regra do Corpo (CLAUDE.md): só o corpo apanha; o alcance do desenho é

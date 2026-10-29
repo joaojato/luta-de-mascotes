@@ -9,14 +9,14 @@
     "jump": 1000
   },
   "combat": {
-    "highDamage": 5,
+    "highDamage": 9,
     "highKnockback": 220,
-    "lowDamage": 16,
+    "lowDamage": 21,
     "lowKnockback": 300,
-    "specialDamage": 20,
+    "specialDamage": 38,
     "specialKnockback": 250,
     "specialHitstun": 350,
-    "kickDamage": 15
+    "kickDamage": 19
   },
   "actions": [
     {

@@ -148,6 +148,10 @@ Em ordem de valor para a matéria, não de dificuldade:
 3. Modo história curto: três lutas com uma fala entre elas.
 4. Terceiro mascote, só por JSON + sprites, para provar a Regra do JSON.
 5. Ajustar a CPU herdada ao mascote (ela já existe; é balanceamento).
+6. Ideia do João (29/10/2026): **carga diferente por especial**. Hoje toda
+   barra enche no mesmo tempo; especial mais forte demoraria mais.
+7. Ideia do João (29/10/2026): **Bahia com o Super-Homem** como mascote
+   lutador (a base de arte já foi escolhida, ver `docs/revisao-golpes-v2.md`).
 
 ## Calendário sugerido (ajustar quando o prazo entrar no briefing)
 
