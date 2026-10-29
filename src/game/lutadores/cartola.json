@@ -59,6 +59,20 @@
       "label": "Walk Backward"
     },
     {
+      "action": "dash-back",
+      "label": "Dash para trás",
+      "file": "dash-back.png",
+      "frames": 4,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 62,
+        "y": 19,
+        "width": 130,
+        "height": 209
+      }
+    },
+    {
       "action": "dash-forward",
       "label": "Dash para a frente",
       "file": "dash-forward.png",
