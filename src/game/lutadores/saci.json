@@ -378,9 +378,9 @@
         ],
         "bounds": {
           "x": 65,
-          "y": 120,
+          "y": 175,
           "width": 130,
-          "height": 105
+          "height": 50
         }
       }
     }
@@ -394,7 +394,8 @@
     "special": {
       "kind": "dash",
       "startFrame": 2,
-      "endFrame": 6
+      "endFrame": 6,
+      "dodge": "pulo"
     },
     "kick": {
       "kind": "projectile",

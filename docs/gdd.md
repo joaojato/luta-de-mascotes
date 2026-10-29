@@ -171,6 +171,7 @@ do JSON (Regra do JSON: o motor não conhece mascote).
 | Urubu: meteoro | `meteor` | Térmica sobe, ele sai pelo alto da tela, o ponto de impacto segue o oponente até o mergulho começar e então trava; mergulho a 45 graus. Nenhuma guarda segura. Acerto atordoa 1,5 s, como o Pó de Arroz (vítima tonta, `stunned`). | Só pulando enquanto recua (`pulo-recuando`). |
 | Galo: bicada | `hop` | Voo baixo até 110 px do oponente, bicada na altura da cabeça, pouso. | Agachar (`agachar`). |
 | Bira: bote | `run` | Galope aos saltos (sheet própria, `approachAction`) até 230 px do oponente; bote com salto real até 90 px dele, mordida no ar uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
+| Saci: tornado | `dash` | Atravessa a tela girando, a uns 1000 px/s; só o funil de baixo acerta (João, 29/10/2026: antes a caixa ia até a cintura e não dava para pular). | Pular (`pulo`): quem está no ar quando ele passa escapa. Pular na carga é cedo demais (pousa antes). |
 
 O soco forte do Bira é a patada, com o efeito de garras no quadro 3.
 Especiais de avanço acertam uma vez: dano 34 por padrão (escala de 29/10/2026).
