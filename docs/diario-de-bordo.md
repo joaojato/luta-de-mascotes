@@ -1910,3 +1910,21 @@ camisa só estampada.
 **Aprovado explicitamente:** "ficou interessante a forma que ficou construída a torcida".
 **Atrito:** nada.
 **Em aberto:** aceite visual desta rodada.
+
+## 2026-10-29: Vercel atualizada com a torcida
+
+**Marco:** 2, segue em andamento.
+**Pedido:** como atualizar a Vercel com a versão mais recente do git; se
+fosse só commitar, commitar.
+**Feito:** commit não basta, a Vercel segue sem GitHub conectado. Havia
+outra sessão editando (Biriba, ovo, tontura, Bahia v12 pela metade); ele
+escolheu publicar só o último commit (3b63aef). Worktree limpo do commit no
+scratchpad, `vercel build --prod` e `vercel deploy --prebuilt --prod` com
+`--global-config ~/.vercel-pessoal`; o trabalho em andamento ficou intocado.
+**Verificado:** `npm run check` no worktree com 157 testes, build ok. Link de
+produção responde 200 e serve o `main-DycjOS6o.js` deste build.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** publicar o último commit em vez do estado atual.
+**Atrito:** nada.
+**Em aberto:** `vercel git connect` (ou o painel) para o push publicar sozinho.
