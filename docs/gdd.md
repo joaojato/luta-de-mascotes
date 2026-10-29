@@ -108,7 +108,8 @@ Agachar sem guarda é esquiva do Soco rápido, do Tiro e do cachimbo do Saci.
 
 Guarda perfeita (João, 29/10/2026): defender até 0,15 s antes de um golpe
 **corpo a corpo** acertar. O defensor não é empurrado e o atacante fica
-atordoado 0,4 s (reação curta, não a tontura longa), com brilho e faísca azul.
+tonto 0,8 s, com a animação de tontura (`stunned`), brilho e faísca azul
+(correção do João: antes era a reação curta por 0,4 s).
 Vale parado ou saindo do dash. Não vale contra projétil (tiro, caravela,
 cachimbo, Pó de Arroz: só bloqueia, senão o tiro viraria armadilha para quem
 atira), nem contra especial imbloqueável, nem contra golpe que quebra aquela

@@ -304,3 +304,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   projétil é só bloqueado, senão o tiro viraria armadilha para quem atira.
   Aprovou também a nova escala de dano (rápido 3%, forte 10%, especial 15%
   da vida). (2026-10-29)
+- **Guarda perfeita deixa tonto de verdade.** Eu tinha escolhido a reação
+  curta (`hit-high`, 0,4 s) para o atacante pego; o João corrigiu: animação
+  de tonto (`stunned`) e 0,8 s parado. A recompensa da defesa tem que ser
+  visível e grande. (2026-10-29)

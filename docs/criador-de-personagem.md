@@ -106,8 +106,8 @@ perna só, por exemplo).
 | `jump` | pulo | 6 a 8 | sobe, topo e cai |
 | `block-high` | defesa em pé | 2 a 4 | também é a pose da guarda perfeita |
 | `block-low` | defesa agachada | 2 a 4 | |
-| `hit-high` | reação curta a golpe | 4 a 6 | também é quem leva a guarda perfeita |
-| `stunned` | tonto, em loop | 4 | atordoamento longo (Pó de Arroz, meteoro) |
+| `hit-high` | reação curta a golpe | 4 a 6 | |
+| `stunned` | tonto, em loop | 4 | atordoamento longo (Pó de Arroz, meteoro) e quem toma guarda perfeita |
 | `knockdown` | derrubado | 8 a 10 | |
 | `dash-forward` | dash para a frente | 5 | corpo parado no eixo; quem move é o motor |
 | `dash-back` | dash para trás | 4 | saltinho com guarda alta |

@@ -1,4 +1,5 @@
 import type { GolpeId } from './golpes';
+import type { AttackProfile } from './types';
 
 export interface FighterMoveConfig {
   jump?: JumpFramesConfig;
@@ -261,8 +262,17 @@ export class DoubleTapDetector {
 
 /** Perfect guard (GDD, 29/10/2026): the guard was pressed at most this long before the hit landed. */
 export const PERFECT_GUARD_SECONDS = 0.15;
-/** How long a perfect guard leaves the attacker reeling (the short hit reaction, no damage). */
-export const PERFECT_GUARD_STUN_MS = 400;
+/** How long a perfect guard leaves the attacker dizzy (João, 29/10/2026: the `stunned` loop, 0.8 s). */
+export const PERFECT_GUARD_STUN_MS = 800;
+/** What the attacker takes on a perfect guard: no damage, no push, the dizzy loop for {@link PERFECT_GUARD_STUN_MS}. */
+export const PERFECT_GUARD_STAGGER: AttackProfile = {
+  kind: 'high',
+  height: 'high',
+  damage: 0,
+  knockback: 0,
+  hitstun: 0,
+  stunMs: PERFECT_GUARD_STUN_MS
+};
 
 /**
  * A guard that holds a melee hit right after being pressed is perfect. Projectiles

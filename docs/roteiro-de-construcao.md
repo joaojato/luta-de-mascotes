@@ -152,6 +152,8 @@ Em ordem de valor para a matéria, não de dificuldade:
    barra enche no mesmo tempo; especial mais forte demoraria mais.
 7. Ideia do João (29/10/2026): **Bahia com o Super-Homem** como mascote
    lutador (a base de arte já foi escolhida, ver `docs/revisao-golpes-v2.md`).
+8. Ideia do João (29/10/2026): **museu dos mascotes**, uma tela com a
+   história de cada mascote (origem, clube, curiosidades).
 
 ## Calendário sugerido (ajustar quando o prazo entrar no briefing)
 

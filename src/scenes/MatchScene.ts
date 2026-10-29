@@ -7,7 +7,7 @@ import { getCharacterDefinition } from '../game/hero';
 import { CONTORNO_TITULO, COR_FUNDO, FONTE_TITULO, SOMBRA_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from '../game/estilo';
 import { carregarControles, COMANDOS_LUTA, legendaDosBotoes, type ComandoLuta, type Controles, type Lado } from '../game/controles';
 import { MatchHud } from '../game/matchHud';
-import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STUN_MS, specialDodged } from '../game/moveMechanics';
+import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STAGGER, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
@@ -274,12 +274,8 @@ export class MatchScene extends BaseScene {
       attacker.registerOffense(blocked, isSpecial);
       defender.registerDefense(blocked);
       if (perfect) {
-        // The attacker reels with the short hit reaction: no damage, no push.
-        attacker.applyHit(
-          { kind: 'high', height: 'high', damage: 0, knockback: 0, hitstun: PERFECT_GUARD_STUN_MS },
-          facing === 1 ? -1 : 1,
-          false
-        );
+        // The attacker is left dizzy: no damage, no push.
+        attacker.applyHit(PERFECT_GUARD_STAGGER, facing === 1 ? -1 : 1, false);
       } else if (cornered && !armored) {
         // A cornered defender can't slide back, so the attacker gets the push.
         attacker.recoil(-facing * profile.knockback * (blocked ? BLOCK_PUSHBACK : 1));

@@ -3,7 +3,7 @@ import type * as Phaser from 'phaser';
 import type { AppContext } from './context';
 import { Fighter, NEUTRAL_FIGHTER_INPUT } from './fighter';
 import { createDefaultFighterPlaygroundState } from './fighterConfig';
-import { DASH_STOP_GAP } from './moveMechanics';
+import { DASH_STOP_GAP, PERFECT_GUARD_STAGGER } from './moveMechanics';
 
 vi.mock('phaser', () => ({
   Math: { Clamp: (v: number, min: number, max: number) => Math.max(min, Math.min(max, v)) },
@@ -289,6 +289,16 @@ describe('fighter move integration', () => {
     expect(fighter.x).toBe(stopped);
     expect(sprite.anims.currentAnim.key).toBe('urubu-block-high');
     expect(fighter.guardStance).toBe('alta');
+  });
+  it('a perfect guard leaves the attacker dizzy for 0.8 s, without damage', () => {
+    const {fighter, sprite} = setup('galo');
+    fighter.applyHit(PERFECT_GUARD_STAGGER, -1, false);
+    fighter.update(.75, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.isStunned).toBe(true);
+    expect(sprite.anims.currentAnim.key).toBe('galo-stunned');
+    expect(fighter.health01).toBe(1);
+    fighter.update(.1, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.isStunned).toBe(false);
   });
   it('a plain hit still shows the short hit reaction, not the dizzy loop', () => {
     const {fighter: victim, sprite} = setup('urubu');

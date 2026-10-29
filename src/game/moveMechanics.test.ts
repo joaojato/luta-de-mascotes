@@ -97,6 +97,15 @@ describe('guarda perfeita (GDD, 29/10/2026)', () => {
     expect(isPerfectGuard(true, false, PERFECT_GUARD_SECONDS + 0.01)).toBe(false);
     expect(isPerfectGuard(true, false, null)).toBe(false);
   });
+  it('só é perfeita a guarda que segura aquele golpe (João, 29/10/2026)', () => {
+    // Soco forte e chute baixo quebram a defesa em pé; voadora quebra a agachada.
+    expect(isPerfectGuard(guardHolds('soco-forte', 'alta'), false, 0)).toBe(false);
+    expect(isPerfectGuard(guardHolds('chute-baixo', 'alta'), false, 0)).toBe(false);
+    expect(isPerfectGuard(guardHolds('voadora', 'baixa'), false, 0)).toBe(false);
+    // Na guarda que segura, o mesmo golpe pode ser defendido perfeito.
+    expect(isPerfectGuard(guardHolds('soco-forte', 'baixa'), false, 0)).toBe(true);
+    expect(isPerfectGuard(guardHolds('voadora', 'alta'), false, 0)).toBe(true);
+  });
   it('projétil e guarda que não segurou nunca são perfeitos', () => {
     expect(isPerfectGuard(true, true, 0)).toBe(false);
     expect(isPerfectGuard(false, false, 0)).toBe(false);
