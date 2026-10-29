@@ -1,6 +1,7 @@
 import { preloadStarterAssets, registerStarterAnimations } from '../game/assets';
 import { registerGeneratedAssets } from '../game/generatedAssets';
 import { registerFightingUiAtlasFrames } from '../game/fightingUiAtlas';
+import { carregarTorcida } from '../game/torcidaCena';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
 
@@ -11,6 +12,7 @@ export class BootScene extends BaseScene {
 
   preload(): void {
     preloadStarterAssets(this);
+    carregarTorcida(this);
   }
 
   create(): void {

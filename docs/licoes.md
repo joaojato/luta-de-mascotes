@@ -354,3 +354,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   P2 à direita, sem reagir à luta. "Só essa diferença das cores já resolve
   grande parte das questões que eu tinha com o cenário." Contrato em
   `docs/torcida-dividida.md`. (2026-10-29)
+- **Medir desempenho trocando só a peça em teste.** A primeira medição da
+  torcida escondia também o fundo novo e acusou 37 contra 23 quadros; a
+  comparação justa (pintura antiga contra torcida nova, mesma página) deu
+  30 contra 26. O custo era uma camada de tela inteira, não os 708
+  torcedores. (2026-10-29)

@@ -1860,3 +1860,30 @@ soltando o especial do Urubu.
 **Atrito:** nada.
 **Em aberto:** quem remapeou na Academia guarda o mapa antigo no navegador
 (só no `npm run dev`); conectar o GitHub na Vercel.
+
+## 2026-10-29: Torcida dividida na Luta
+
+**Marco:** 2, segue em andamento.
+**Pedido:** dividir a torcida: cada metade com cores e estampa do clube do
+lutador daquele lado (camisa, bandeira, sinalizador), sem trocar de lado
+na luta e sem reagir a ela; usar a extensão do Codex direto daqui.
+**Feito:** contrato em `docs/torcida-dividida.md`. O Codex, chamado pela
+linha de comando da extensão, entregou arquibancada vazia, 10 tipos de
+torcedor em 4 poses com camisa em magenta, bandeira, fumaça, chama e as 39
+fileiras medidas (`docs/torcida-v1.md`). No código: `torcida` no JSON dos
+sete mascotes, `torcida.ts` (troca do magenta pela estampa, com sombra, por
+figura) e `torcidaCena.ts` (pinta uma folha por clube, monta as fileiras
+com sorteio fixo, três bandeiras e dois sinalizadores por lado na
+arquibancada central, tudo numa imagem redesenhada dez vezes por segundo).
+Sem a arte, a Luta volta à pintura antiga.
+**Verificado:** `npm run check` com 155 testes, build ok. No navegador:
+Flamengo x Vasco (rubro-negro listrado contra preto com faixa branca,
+fumaça vermelha e clara) e Galo x Bahia (listras do preto do Galo contra
+branco); 708 torcedores, console sem erro. Desempenho no navegador de teste
+sem placa de vídeo: 26 quadros contra 30 da pintura antiga.
+**Créditos gastos:** nada (Codex pela conta do ChatGPT).
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** a divisão por cores e a tabela de clubes.
+**Atrito:** primeiro sorteio pôs bandeiras e fumaça do P2 na lateral, fora
+da câmera; medição de desempenho torta na primeira vez (ver lições).
+**Em aberto:** aceite visual do João; menus com a torcida neutra ou dividida.

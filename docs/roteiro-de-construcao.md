@@ -71,6 +71,10 @@ ele é quebrado em dois, não esticado.
   laser dos olhos, Bora Bahêa que cresce com a distância e o corpo da v12
   (idle, andar, defesas, pulo, apanhar, tonto, queda). Falta: dash, chute
   baixo, soco no ar e voadora (Codex produzindo), retrato, nome final.
+- [x] Torcida dividida (29/10/2026): arquibancada da Luta com a metade do
+  P1 e a do P2 nas cores e estampas dos clubes (camisas, bandeiras,
+  fumaça), cada torcedor balançando no próprio ritmo. Arte do Codex,
+  contrato em `docs/torcida-dividida.md`. Os menus seguem com a pintura antiga.
 - [ ] Tarefa futura, pedida pelo João em 29/10/2026: **versão jogável no
   celular**, com botões na tela no lugar das teclas. Vem depois do build
   de computador na Vercel.

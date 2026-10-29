@@ -11,6 +11,9 @@ import { MatchHud } from '../game/matchHud';
 import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STAGGER, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
+import { LUTADORES } from '../game/lutadores';
+import { torcidaValida } from '../game/torcida';
+import { montarTorcida } from '../game/torcidaCena';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
 import { spawnHitSpark, type VfxColor } from '../game/vfx';
 import { BaseScene } from './BaseScene';
@@ -394,7 +397,15 @@ export class MatchScene extends BaseScene {
         .setDepth(-1);
     }
 
-    this.add.image(0, 0, stage.key).setOrigin(0, 0).setScale(scale).setDepth(0);
+    // Torcida dividida: metade esquerda veste o clube do P1, a direita o do
+    // P2. Sem a arte carregada, fica a pintura antiga.
+    const clube = (id: string) => ({ id, clube: torcidaValida(LUTADORES.find((l) => l.id === id)?.torcida) });
+    const temTorcida =
+      stage.id === 'estadio' &&
+      montarTorcida(this, scale, clube(this.config.p1CharacterId), clube(this.config.p2CharacterId), 0);
+    if (!temTorcida) {
+      this.add.image(0, 0, stage.key).setOrigin(0, 0).setScale(scale).setDepth(0);
+    }
     cam.setBounds(0, 0, this.stageWorldWidth, cam.height);
   }
 
