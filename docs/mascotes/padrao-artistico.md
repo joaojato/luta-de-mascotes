@@ -1,5 +1,7 @@
 # Padrão artístico — Urubu como referência
 
+Procedimento obrigatório: [produção de personagens](../producao-personagens.md). Gerar um personagem e uma ação por chamada, com a guarda aprovada da própria skin anexada; conferir cores, luz, identidade e todos os quadros antes de aplicar. As seções históricas abaixo não revogam revisões posteriores; em particular, a v7 corrige o clareamento/azulamento descrito na v5.
+
 Continuidade obrigatória dos membros: [continuidade-anatomica.md](../continuidade-anatomica.md). Cada perna mantém sua identidade anatômica durante giros, cruzamentos, ataque e recolhimento. A posição próxima/distante da câmera pode mudar numa rotação, mas a conexão quadril–joelho–pé e a transição de profundidade precisam ser contínuas. Preparar guia A/B quando houver ambiguidade; não copiar uma inversão para outras skins.
 
 Referência principal: `referencia/urubu/modelo-oficial.png`. Saci como referência complementar de linguagem arcade.

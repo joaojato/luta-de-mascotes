@@ -1771,3 +1771,27 @@ virado para a direita, console sem erro.
 tempo (crescimento do projétil); commit levou só os meus trechos.
 **Em aberto:** sheets do corpo; ligar o crescimento quando a outra sessão
 fechar; nome final; falas.
+
+## 2026-10-29: Esquadrão ganha o corpo da v12
+
+**Marco:** 2, segue em andamento.
+**Pedido:** implementar as últimas imagens do Codex. Ele instalou uma
+extensão para eu usar o Codex, mas pediu para manter o fluxo como está.
+**Feito:** integradas as 11 sheets que o Codex marcou como instaladas depois
+de revisão (`idle`, andar, agachar, pulo, defesas, apanhar, tonto, queda,
+soco leve de dois jabs), já ligadas por ele no `bahia.json`, mais o
+crescimento por distância do projétil (`growth`) que outra sessão
+implementou no motor. Ficaram fora: voadora (montada, sem revisão), chute
+baixo (rejeitado por ele), dash e soco no ar (não chegaram).
+**Verificado:** `npm run check` com 146 testes, build ok. Medição por quadro:
+escala estável (cabeça ao cinto 87 a 94 px), nenhum quadro afunda. No
+navegador contra o Urubu: dois jabs acertam (6%), defesa segura soco e
+chute sem perder vida, especial cresce e deixa tonto (12%), queda termina
+deitado e a luta segue para o round 2; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** primeiro teste de defesa falhou porque os dois lutadores
+estavam sobrepostos (bloqueio é geométrico); refeito a 177 px, segurou.
+**Em aberto:** `hit-high` ainda volta 36 px num quadro só (tranco); dash,
+chute baixo, soco no ar, voadora e retrato.

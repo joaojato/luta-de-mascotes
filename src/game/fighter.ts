@@ -13,6 +13,7 @@ import {
 } from './hero';
 import { spawnChargeAura } from './vfx';
 import {
+  projectileGrowthProgress,
   dashPosition,
   jumpFlightFrame,
   jumpFrames,
@@ -124,6 +125,9 @@ interface TravelingProjectile {
   connected: boolean;
   persistOnHit: boolean;
   rangeAfterHit: number;
+  growth?: ProjectileMoveConfig['growth'];
+  travelled: number;
+  initial: { width: number; height: number; scale: number; damage: number; stunMs: number };
   visual: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
 }
 
@@ -1830,13 +1834,26 @@ export class Fighter {
       signature:this.attackId, visual, width, height, speed,
       profile:{...getAttackProfile(this.combat(), kind), height:'high', stunMs: move.stunMs}, connected:false,
       move: (move.move as AttackMove | undefined) ?? (kind === 'special' ? 'onda' : 'tiro'),
-      persistOnHit:move.persistOnHit ?? false, rangeAfterHit: move.rangeAfterHit ?? 0});
+      persistOnHit:move.persistOnHit ?? false, rangeAfterHit: move.rangeAfterHit ?? 0,
+      growth: move.growth, travelled: 0,
+      initial: { width, height, scale: visual.scaleX,
+        damage: getAttackProfile(this.combat(), kind).damage, stunMs: move.stunMs ?? 0 }});
   }
 
   private updateProjectile(seconds: number): void {
     this.projectiles = this.projectiles.filter(shot => {
     shot.previousX = shot.x;
     shot.x += shot.facing*shot.speed*seconds;
+    shot.travelled += Math.abs(shot.x - shot.previousX);
+    if (shot.growth) {
+      const progress = projectileGrowthProgress(shot.travelled, shot.growth.distance);
+      const size = 1 + progress * (shot.growth.sizeMultiplier - 1);
+      shot.width = shot.initial.width * size;
+      shot.height = shot.initial.height * size;
+      shot.visual.setScale(shot.initial.scale * size);
+      shot.profile.damage = shot.initial.damage * (1 + progress * (shot.growth.damageMultiplier - 1));
+      shot.profile.stunMs = shot.initial.stunMs + progress * (shot.growth.maxStunMs - shot.initial.stunMs);
+    }
     // Arcing projectiles (the pipe) rise, fall and end on the ground.
     shot.vy += shot.gravity*seconds;
     shot.y += shot.vy*seconds;

@@ -1,5 +1,9 @@
 # Direção de arte e animação
 
+- Bahia, atualização de 29/10/2026: usuário autorizou a produção dos golpes próprios da primeira base aprovada, conforme docs/bahia-golpes-v11.md. Ataques, laser, preparação e grito têm MUITA cara de bravo; guarda, postura padrão, deslocamentos e dashes preservam a carinha fofa original. Não alterar identidade, paleta ou tamanho da cabeça para mudar expressão. O adiamento antigo das animações não se aplica a esses golpes agora autorizados; não registrar um lutador incompleto.
+
+- **Produção e revisão obrigatórias:** ler [docs/producao-personagens.md](docs/producao-personagens.md) antes de gerar/refazer sprites, animações ou retratos. Uma chamada de geração por personagem e por ação; nunca atlas coletivo de mascotes. Anexar a guarda aprovada da própria skin para cores, luz, proporções e pixels; movimento define só poses. Revisar fonte e cada quadro montado contra a guarda em escala real antes de aplicar. Instruções históricas não revogam correções posteriores do usuário.
+
 - Continuidade anatômica obrigatória: ler `docs/continuidade-anatomica.md`. Identificar pernas anatômicas A/B e segui-las do quadril ao pé em cada quadro; nunca trocar a perna do fundo pela próxima da câmera para acomodar uma pose. Giros mudam a profundidade progressivamente, mantendo a identidade dos membros e a perna que golpeia/recolhe. Cruzamentos ambíguos exigem guia técnico ou redesenho antes de aprovação. Vale também para braços.
 
 Regra explícita do usuário: todo personagem novo ou refeito deve seguir SEMPRE o estilo artístico e as animações do Urubu. Só mudar esse padrão quando o usuário pedir explicitamente. Uma imagem enviada como referência define a identidade do personagem, não substitui o padrão de traço, proporções ou animação.
@@ -21,3 +25,5 @@ Regra explícita do usuário: todo personagem novo ou refeito deve seguir SEMPRE
 - Revisão de coerência em `docs/coerencia-animacoes-v6.md`: conferir cada quadro da fonte e da folha montada antes de aplicar; manter direção ofensiva, braço, apoio, escala e pegada dos acessórios. Redesenhar quadros contraditórios; não esconder erro repetindo outra pose. Sustentação intencional de contato é permitida. Não reaplicar fontes antigas sobre correções novas.
 
 - Voadoras e luz em `docs/voadoras-e-iluminacao-v7.md`: a guarda aprovada define paleta, iluminação, proporções e pixels; uma folha de movimento define só poses. Não clarear/azular penas para corrigir contorno. Comparar com idle em escala real e conferir fonte sem cortes antes de montar. Voadora é diagonal descendente, inteiramente aérea, sem trajetória desenhada; Saci mantém uma única perna.
+
+- Bahia, pedido posterior: o usuário autorizou a integração e depois solicitou refazer/completar TODAS as animações, uma ação por vez. O adiamento histórico não se aplica mais. Ler `docs/bahia-animacoes-v12.md`. Manter flutuação sem passos, base v1, rosto fofo na guarda/movimento/dashes e muito bravo nos golpes. Nenhum membro cresce para alcançar o alvo; extensão vem de articulações e giro contínuo dos ombros/quadris. Queda perde sustentação e termina no chão.

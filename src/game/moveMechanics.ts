@@ -53,6 +53,8 @@ export interface ProjectileMoveConfig {
   visualFrames?: number;
   visualFrameRate?: number;
   visualScale?: number;
+  /** Distance-based growth, capped after the configured travel distance. */
+  growth?: { distance: number; sizeMultiplier: number; damageMultiplier: number; maxStunMs: number };
   hitWidth?: number;
   hitHeight?: number;
   persistOnHit?: boolean;
@@ -310,4 +312,9 @@ export function armorAbsorbs(move: AttackMove, defenderInHeavy: boolean): boolea
 /** Swept horizontal interval prevents fast bullets/dashes tunneling through hurtboxes. */
 export function sweptInterval(previous: number, next: number, radius: number): { x: number; width: number } {
   return { x: Math.min(previous, next)-radius, width: Math.abs(next-previous)+radius*2 };
+}
+
+/** Bounded growth based on distance actually travelled, independent of facing. */
+export function projectileGrowthProgress(distance: number, maximum: number): number {
+  return Math.max(0, Math.min(1, Math.abs(distance) / Math.max(1, maximum)));
 }

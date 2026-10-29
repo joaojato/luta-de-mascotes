@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { advanceStop, armorAbsorbs, DoubleTapDetector, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
+import { projectileGrowthProgress, advanceStop, armorAbsorbs, DoubleTapDetector, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
 
 describe('special traversal and flight timing', () => {
   it('holds the charge position, traverses continuously and stays at the destination during recovery', () => {
@@ -131,5 +131,15 @@ describe('dash por toque duplo (GDD, 29/10/2026)', () => {
     const trocou = new DoubleTapDetector();
     trocou.feed(1, 0); trocou.feed(0, .05);
     expect(trocou.feed(-1, .1)).toBe(0);
+  });
+});
+
+describe('distance-based projectile growth', () => {
+  it('starts small, grows equally in both directions and caps at the maximum', () => {
+    expect(projectileGrowthProgress(0, 700)).toBe(0);
+    expect(projectileGrowthProgress(350, 700)).toBe(.5);
+    expect(projectileGrowthProgress(-350, 700)).toBe(.5);
+    expect(projectileGrowthProgress(700, 700)).toBe(1);
+    expect(projectileGrowthProgress(1400, 700)).toBe(1);
   });
 });

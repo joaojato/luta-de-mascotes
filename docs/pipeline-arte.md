@@ -1,5 +1,7 @@
 # Pipeline de arte
 
+> Para a produção atual pelo Codex, seguir primeiro [produção de personagens](producao-personagens.md), AGENTS.md e o pedido vigente. Este documento conserva histórico de ferramentas, prompts e contagens; não torna Spriterrific obrigatório nem autoriza ignorar a ferramenta de imagens, a transparência, a guarda aprovada ou as revisões atuais. A interface foi corrigida para o estilo simples/de rua em [identidade-ui-v1.md](identidade-ui-v1.md), sem o acabamento ornamental anterior.
+
 Como cada asset nasce, com qual ferramenta, e o que é limitação conhecida.
 Arte é o gargalo deste projeto, não o código. Este documento existe para
 ninguém redescobrir isso do zero.

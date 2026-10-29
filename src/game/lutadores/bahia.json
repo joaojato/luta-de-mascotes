@@ -11,10 +11,10 @@
   "actions": [
     {
       "action": "idle",
-      "label": "Guarda pairando (quebra-galho: guarda)",
-      "file": "guard-reference.png",
-      "frames": 1,
-      "frameRate": 6,
+      "label": "Guarda flutuante",
+      "file": "idle.png",
+      "frames": 4,
+      "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
         "x": 63,
@@ -25,131 +25,131 @@
     },
     {
       "action": "walk-forward",
-      "label": "Flutuar para frente (quebra-galho: guarda)",
-      "file": "guard-reference.png",
-      "frames": 1,
-      "frameRate": 6,
+      "label": "Flutuar para frente",
+      "file": "walk-forward.png",
+      "frames": 8,
+      "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
-        "x": 63,
-        "y": 28,
-        "width": 130,
-        "height": 200
+        "x": 53,
+        "y": 14,
+        "width": 190,
+        "height": 214
       }
     },
     {
       "action": "walk-backward",
-      "label": "Flutuar para trás (quebra-galho: guarda)",
-      "file": "guard-reference.png",
-      "frames": 1,
-      "frameRate": 6,
+      "label": "Flutuar para trás",
+      "file": "walk-backward.png",
+      "frames": 8,
+      "frameRate": 8,
       "repeat": -1,
       "defaultVisual": {
-        "x": 63,
-        "y": 28,
-        "width": 130,
-        "height": 200
+        "x": 37,
+        "y": 17,
+        "width": 178,
+        "height": 211
       }
     },
     {
       "action": "crouch",
-      "label": "Agachar (quebra-galho: guarda)",
-      "file": "guard-reference.png",
-      "frames": 1,
-      "frameRate": 6,
+      "label": "Esquiva baixa",
+      "file": "crouch.png",
+      "frames": 5,
+      "frameRate": 20,
       "repeat": 0,
       "defaultVisual": {
-        "x": 63,
-        "y": 28,
-        "width": 130,
-        "height": 200
+        "x": 21,
+        "y": 20,
+        "width": 172,
+        "height": 208
       }
     },
     {
       "action": "jump",
-      "label": "Saltar (quebra-galho: guarda)",
-      "file": "guard-reference.png",
-      "frames": 1,
-      "frameRate": 6,
+      "label": "Salto",
+      "file": "jump.png",
+      "frames": 8,
+      "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 63,
-        "y": 28,
-        "width": 130,
-        "height": 200
+        "x": 52,
+        "y": 20,
+        "width": 183,
+        "height": 208
       }
     },
     {
       "action": "block-high",
-      "label": "Defesa alta (quebra-galho: guarda)",
-      "file": "guard-reference.png",
-      "frames": 1,
-      "frameRate": 6,
+      "label": "Defesa alta",
+      "file": "block-high.png",
+      "frames": 4,
+      "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
         "x": 63,
-        "y": 28,
-        "width": 130,
-        "height": 200
+        "y": 17,
+        "width": 138,
+        "height": 211
       },
       "guard": {
         "x": 63,
-        "y": 40,
+        "y": 32,
         "width": 90,
         "height": 100
       }
     },
     {
       "action": "hit-high",
-      "label": "Receber golpe (quebra-galho: guarda)",
-      "file": "guard-reference.png",
-      "frames": 1,
-      "frameRate": 6,
+      "label": "Reação ao golpe",
+      "file": "hit-high.png",
+      "frames": 6,
+      "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 63,
-        "y": 28,
-        "width": 130,
-        "height": 200
+        "x": 56,
+        "y": 16,
+        "width": 175,
+        "height": 212
       }
     },
     {
       "action": "knockdown",
-      "label": "Queda (quebra-galho: guarda)",
-      "file": "guard-reference.png",
-      "frames": 1,
-      "frameRate": 6,
+      "label": "Queda",
+      "file": "knockdown.png",
+      "frames": 10,
+      "frameRate": 10,
       "repeat": 0,
       "defaultVisual": {
-        "x": 63,
-        "y": 28,
-        "width": 130,
-        "height": 200
+        "x": 29,
+        "y": 20,
+        "width": 208,
+        "height": 208
       }
     },
     {
       "action": "light-punch",
-      "label": "Soco leve (quebra-galho: corte rápido)",
-      "file": "heavy-punch.png",
+      "label": "Dois socos rápidos",
+      "file": "light-punch.png",
       "frames": 6,
-      "frameRate": 20,
+      "frameRate": 14,
       "repeat": 0,
       "defaultVisual": {
-        "x": 37,
-        "y": 13,
-        "width": 156,
-        "height": 215
+        "x": 21,
+        "y": 18,
+        "width": 193,
+        "height": 210
       },
       "attackSpans": [
         {
           "frames": [
-            2
+            1
           ],
           "bounds": {
-            "x": 50,
-            "y": 115,
-            "width": 48,
-            "height": 36
+            "x": 21,
+            "y": 55,
+            "width": 28,
+            "height": 26
           }
         },
         {
@@ -157,17 +157,17 @@
             3
           ],
           "bounds": {
-            "x": 37,
-            "y": 125,
-            "width": 50,
-            "height": 32
+            "x": 25,
+            "y": 56,
+            "width": 28,
+            "height": 26
           }
         }
       ]
     },
     {
       "action": "heavy-punch",
-      "label": "Corte de mão aberta",
+      "label": "Corte descendente",
       "file": "heavy-punch.png",
       "frames": 6,
       "frameRate": 14,
@@ -226,7 +226,7 @@
     },
     {
       "action": "special-charge",
-      "label": "Enche o peito",
+      "label": "Preparar grito",
       "file": "special-charge.png",
       "frames": 4,
       "frameRate": 12,
@@ -260,6 +260,40 @@
           "ms": 400
         }
       ]
+    },
+    {
+      "action": "block-low",
+      "label": "Defesa baixa",
+      "file": "block-low.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 42,
+        "y": 20,
+        "width": 151,
+        "height": 208
+      },
+      "guard": {
+        "x": 43,
+        "y": 102,
+        "width": 60,
+        "height": 65
+      }
+    },
+    {
+      "action": "stunned",
+      "label": "Atordoado",
+      "file": "stunned.png",
+      "frames": 4,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 69,
+        "y": 20,
+        "width": 123,
+        "height": 208
+      }
     }
   ],
   "skins": [
@@ -315,9 +349,9 @@
       }
     },
     "jump": {
-      "takeoff": 0,
-      "airEnd": 0,
-      "land": 0
+      "takeoff": 3,
+      "airEnd": 7,
+      "land": 2
     }
   }
 }

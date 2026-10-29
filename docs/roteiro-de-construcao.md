@@ -65,8 +65,9 @@ ele é quebrado em dois, não esticado.
   (`FERRAMENTAS_DE_DEV` em `src/game/constants.ts`). Falta: decidir o
   deploy diante da autorização do Chong-U (`docs/varredura-chong-u.md`).
 - [ ] Esquadrão, o Bahia (29/10/2026): na seleção com corte de mão aberta,
-  laser dos olhos e Bora Bahêa; o resto parado na guarda. Falta: sheets do
-  corpo (pedido ao Codex), texto crescendo com a distância, nome final.
+  laser dos olhos, Bora Bahêa que cresce com a distância e o corpo da v12
+  (idle, andar, defesas, pulo, apanhar, tonto, queda). Falta: dash, chute
+  baixo, soco no ar e voadora (Codex produzindo), retrato, nome final.
 - [ ] Tarefa futura, pedida pelo João em 29/10/2026: **versão jogável no
   celular**, com botões na tela no lugar das teclas. Vem depois do build
   de computador na Vercel.
