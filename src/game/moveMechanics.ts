@@ -232,6 +232,33 @@ export function guardBreakStunMs(move: AttackMove, stance: GuardStance | null): 
   return stance !== null && !guardHolds(move, stance) ? GUARD_BREAK_STUN_MS[stance] : null;
 }
 
+/** Dash (GDD, 29/10/2026): two taps of the same direction within this window. */
+export const DASH_DOUBLE_TAP_SECONDS = 0.3;
+/** Dash travel in world px and its duration; the back dash is a shorter hop. */
+export const DASH_FORWARD = { distance: 180, seconds: 0.28 };
+export const DASH_BACK = { distance: 120, seconds: 0.22 };
+/** A forward dash stops this far (world px, centre to centre) from the opponent instead of crossing through. */
+export const DASH_STOP_GAP = 120;
+
+/** Spots a double tap: fed the held direction (-1, 0, 1) every frame. */
+export class DoubleTapDetector {
+  private held = 0;
+  private lastTap = { direction: 0, at: -Infinity };
+
+  /** Returns the direction of a double tap completed this frame, or 0. */
+  feed(direction: number, now: number): number {
+    const pressed = direction !== 0 && direction !== this.held;
+    this.held = direction;
+    if (!pressed) {
+      return 0;
+    }
+    const double = this.lastTap.direction === direction && now - this.lastTap.at <= DASH_DOUBLE_TAP_SECONDS;
+    // A completed double tap starts over: a third tap needs a fourth.
+    this.lastTap = double ? { direction: 0, at: -Infinity } : { direction, at: now };
+    return double ? direction : 0;
+  }
+}
+
 /** Perfect guard (GDD, 29/10/2026): the guard was pressed at most this long before the hit landed. */
 export const PERFECT_GUARD_SECONDS = 0.15;
 /** How long a perfect guard leaves the attacker reeling (the short hit reaction, no damage). */

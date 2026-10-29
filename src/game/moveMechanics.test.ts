@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { advanceStop, armorAbsorbs, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
+import { advanceStop, armorAbsorbs, DoubleTapDetector, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
 
 describe('special traversal and flight timing', () => {
   it('holds the charge position, traverses continuously and stays at the destination during recovery', () => {
@@ -100,5 +100,27 @@ describe('guarda perfeita (GDD, 29/10/2026)', () => {
   it('projétil e guarda que não segurou nunca são perfeitos', () => {
     expect(isPerfectGuard(true, true, 0)).toBe(false);
     expect(isPerfectGuard(false, false, 0)).toBe(false);
+  });
+});
+
+describe('dash por toque duplo (GDD, 29/10/2026)', () => {
+  it('dois toques na mesma direção em até 0,3 s viram dash nessa direção', () => {
+    const toque = new DoubleTapDetector();
+    expect(toque.feed(1, 0)).toBe(0);
+    expect(toque.feed(0, .05)).toBe(0);
+    expect(toque.feed(1, .15)).toBe(1);
+    // O terceiro toque não emenda outro dash sozinho.
+    expect(toque.feed(0, .2)).toBe(0);
+    expect(toque.feed(1, .3)).toBe(0);
+  });
+  it('segurar, demorar ou trocar de lado não é dash', () => {
+    const segurando = new DoubleTapDetector();
+    [0, .05, .1, .2].forEach((t) => expect(segurando.feed(-1, t)).toBe(0));
+    const lento = new DoubleTapDetector();
+    lento.feed(1, 0); lento.feed(0, .1);
+    expect(lento.feed(1, .45)).toBe(0);
+    const trocou = new DoubleTapDetector();
+    trocou.feed(1, 0); trocou.feed(0, .05);
+    expect(trocou.feed(-1, .1)).toBe(0);
   });
 });

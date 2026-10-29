@@ -3,6 +3,7 @@ import type * as Phaser from 'phaser';
 import type { AppContext } from './context';
 import { Fighter, NEUTRAL_FIGHTER_INPUT } from './fighter';
 import { createDefaultFighterPlaygroundState } from './fighterConfig';
+import { DASH_STOP_GAP } from './moveMechanics';
 
 vi.mock('phaser', () => ({
   Math: { Clamp: (v: number, min: number, max: number) => Math.max(min, Math.min(max, v)) },
@@ -246,6 +247,48 @@ describe('fighter move integration', () => {
     special();
     fighter.update(.3, NEUTRAL_FIGHTER_INPUT);
     expect(fighter.getActiveAttack()?.projectile).toBe(true);
+  });
+  it('double tapping toward the opponent dashes about 180 px, back dash recoils less', () => {
+    const tap = (fighter: Fighter, side: 'left' | 'right') => {
+      fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, [side]: true});
+      fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+      fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, [side]: true});
+    };
+    const {fighter} = setup('urubu');
+    const start = fighter.x;
+    tap(fighter, 'right');
+    for (let i = 0; i < 24; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    // Three frames of walking for the taps (~12 px) plus the dash.
+    expect(fighter.x - start).toBeGreaterThan(175);
+    expect(fighter.x - start).toBeLessThan(205);
+    const back = setup('urubu').fighter;
+    const from = back.x;
+    tap(back, 'left');
+    for (let i = 0; i < 24; i++) back.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(from - back.x).toBeGreaterThan(115);
+    expect(from - back.x).toBeLessThan(145);
+  });
+  it('a forward dash stops against the opponent instead of crossing through', () => {
+    const {fighter} = setup('urubu');
+    fighter.faceToward(330);
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, right: true});
+    fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, right: true});
+    for (let i = 0; i < 24; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.x).toBeLessThanOrEqual(330 - DASH_STOP_GAP);
+    expect(fighter.x).toBeGreaterThan(200);
+  });
+  it('blocking in the middle of a dash stops it at once and guards', () => {
+    const {fighter, sprite} = setup('urubu');
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, right: true});
+    fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, right: true});
+    fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    const stopped = fighter.x;
+    for (let i = 0; i < 10; i++) fighter.update(1/60, {...NEUTRAL_FIGHTER_INPUT, block: true});
+    expect(fighter.x).toBe(stopped);
+    expect(sprite.anims.currentAnim.key).toBe('urubu-block-high');
+    expect(fighter.guardStance).toBe('alta');
   });
   it('a plain hit still shows the short hit reaction, not the dizzy loop', () => {
     const {fighter: victim, sprite} = setup('urubu');

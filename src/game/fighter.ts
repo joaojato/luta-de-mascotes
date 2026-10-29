@@ -20,6 +20,10 @@ import {
   ADVANCE_KINDS,
   BLOCK_PUSHBACK,
   advanceStop,
+  DASH_BACK,
+  DASH_FORWARD,
+  DASH_STOP_GAP,
+  DoubleTapDetector,
   meteorDiveStart,
   strikeTravelStep,
   type AttackMove,
@@ -188,6 +192,9 @@ interface FighterActionKeys {
   specialCharge: string;
   special: string;
   knockdown: string;
+  /** Dash sheets (`dash-forward`, `dash-back`), or the walk meanwhile. */
+  dashForward: string;
+  dashBack: string;
 }
 
 /**
@@ -281,6 +288,13 @@ export class Fighter {
   private stunIsDizzy = false;
   /** Seconds the guard button has been held; null when released. */
   private guardHeld: number | null = null;
+  /** Fighter clock (s) and the double tap that starts a dash. */
+  private clock = 0;
+  private readonly doubleTap = new DoubleTapDetector();
+  private dashTap = 0;
+  private dash: { dir: 1 | -1; elapsed: number; seconds: number; distance: number } | null = null;
+  /** Where the opponent stands (from `faceToward`): a forward dash stops against it. */
+  private opponentX: number | null = null;
   private knockbackVel = 0;
   /** The strike in progress touched the opponent (hit or guard): only then a quick punch chains. */
   private strikeLanded = false;
@@ -511,6 +525,7 @@ export class Fighter {
    * @param targetX - The world x the fighter should face toward.
    */
   faceToward(targetX: number): void {
+    this.opponentX = targetX;
     if (this.locked) {
       return;
     }
@@ -720,6 +735,7 @@ export class Fighter {
     this.strike = null;
     this.endAdvanceEffects();
     this.advance = null;
+    this.dash = null;
 
     if (blocked) {
       this.knockbackVel = attackerFacing * profile.knockback * BLOCK_PUSHBACK;
@@ -780,6 +796,7 @@ export class Fighter {
     this.stunBlockLow = false;
     this.stunIsDizzy = false;
     this.guardHeld = null;
+    this.dash = null;
     this.knockbackVel = 0;
     this.attackConnected = true;
     this.attackActiveLast = false;
@@ -799,6 +816,8 @@ export class Fighter {
    */
   update(seconds: number, input: FighterInput): void {
     this.guardHeld = input.block ? (this.guardHeld === null ? 0 : this.guardHeld + seconds) : null;
+    this.clock += seconds;
+    this.dashTap = this.doubleTap.feed(this.horizontalDirection(input), this.clock);
     this.lastDx = this.posX - this.previousX;
     this.previousX = this.posX;
     if (!this.frozen) this.updateProjectile(seconds);
@@ -910,7 +929,9 @@ export class Fighter {
       airKick: find('jump-kick', 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
       specialCharge: findCharacterAnimationKeyByAction(this.character.id, 'special-charge') ?? key('crouch'),
       special: findCharacterAnimationKeyByAction(this.character.id, 'special') ?? key('heavy-kick'),
-      knockdown: key('knockdown')
+      knockdown: key('knockdown'),
+      dashForward: find('dash-forward') ?? key('walk-forward'),
+      dashBack: find('dash-back') ?? key('walk-backward')
     };
   }
 
@@ -1076,6 +1097,17 @@ export class Fighter {
    * @param input - The intent snapshot for this frame.
    */
   private updateGrounded(seconds: number, input: FighterInput): void {
+    // Dash (GDD): a double tap. Guard or any button cancels it at once.
+    const acting = input.block || input.light || input.heavy || input.special || input.jump;
+    if (acting) {
+      this.dash = null;
+    } else if (this.dashTap !== 0 && !this.dash && !input.crouch) {
+      this.startDash(this.dashTap === 1 ? 1 : -1);
+    }
+    if (this.dash) {
+      this.updateDash(seconds);
+      return;
+    }
     if (input.special && this.isMeterReady) {
       this.startSpecial();
       return;
@@ -1113,6 +1145,36 @@ export class Fighter {
     }
 
     this.playState(this.actionKeys.idle, true);
+  }
+
+  /** Starts a dash in world direction `dir`: forward when it points at the opponent. */
+  private startDash(dir: 1 | -1): void {
+    const forward = dir === this.facing;
+    this.dash = { dir, elapsed: 0, ...(forward ? DASH_FORWARD : DASH_BACK) };
+    const key = forward ? this.actionKeys.dashForward : this.actionKeys.dashBack;
+    const ownSheet = key !== this.actionKeys.walkForward && key !== this.actionKeys.walkBackward;
+    this.currentAnimKey = '';
+    this.playState(key, !ownSheet);
+  }
+
+  /** Moves the dash at a constant speed until its distance is covered. */
+  private updateDash(seconds: number): void {
+    const dash = this.dash!;
+    const step = Math.min(seconds, dash.seconds - dash.elapsed);
+    dash.elapsed += seconds;
+    let next = this.posX + (dash.dir * dash.distance * step) / dash.seconds;
+    const stop = this.opponentX === null ? null : this.opponentX - dash.dir * DASH_STOP_GAP;
+    const blocked = stop !== null && dash.dir * (this.opponentX! - this.posX) > 0 && dash.dir * (next - stop) > 0;
+    if (blocked) {
+      next = dash.dir * (this.posX - stop!) > 0 ? this.posX : stop!;
+    }
+    this.posX = Phaser.Math.Clamp(next, this.minX, this.maxX);
+    this.sprite.x = this.posX;
+    this.updateShadow();
+    if (blocked || dash.elapsed >= dash.seconds) {
+      this.dash = null;
+      this.currentAnimKey = '';
+    }
   }
 
   /**

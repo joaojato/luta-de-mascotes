@@ -114,7 +114,8 @@ cachimbo, Pó de Arroz: só bloqueia, senão o tiro viraria armadilha para quem
 atira), nem contra especial imbloqueável, nem contra golpe que quebra aquela
 guarda (aí a guarda quebra como sempre). A CPU não faz guarda perfeita.
 
-Dash (João, 29/10/2026): dois toques no direcional em até 0,25 s. Para a
+Dash (João, 29/10/2026): dois toques no direcional em até 0,3 s (0,25 s
+falhava em computador lento, que conta o tempo em quadros mais longos). Para a
 frente, avança uns 180 px em 0,28 s; para trás, um recuo curto. Defender no
 meio do dash para na hora e entra em guarda. Arte pedida ao Codex
 (`dash-forward`, `dash-back`); sem ela, o andar faz as vezes.
