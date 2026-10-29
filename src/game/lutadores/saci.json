@@ -53,6 +53,34 @@
       }
     },
     {
+      "action": "dash-back",
+      "label": "Dash para trás",
+      "file": "dash-back.png",
+      "frames": 4,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 54,
+        "y": 27,
+        "width": 148,
+        "height": 203
+      }
+    },
+    {
+      "action": "dash-forward",
+      "label": "Dash para a frente",
+      "file": "dash-forward.png",
+      "frames": 5,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 46,
+        "y": 33,
+        "width": 163,
+        "height": 197
+      }
+    },
+    {
       "action": "crouch",
       "label": "Agachar",
       "file": "crouch.png",

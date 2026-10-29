@@ -58,6 +58,34 @@
       "label": "Walk Backward"
     },
     {
+      "action": "dash-forward",
+      "label": "Dash para a frente",
+      "file": "dash-forward.png",
+      "frames": 5,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 40,
+        "y": 29,
+        "width": 175,
+        "height": 199
+      }
+    },
+    {
+      "action": "dash-back",
+      "label": "Dash para trás",
+      "file": "dash-back.png",
+      "frames": 4,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 66,
+        "y": 25,
+        "width": 123,
+        "height": 203
+      }
+    },
+    {
       "action": "crouch",
       "file": "crouch.png",
       "frames": 5,
