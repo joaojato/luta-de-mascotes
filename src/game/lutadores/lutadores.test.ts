@@ -173,6 +173,24 @@ describe('registro de lutadores (Regra do JSON)', () => {
     });
   });
 
+  it('Bahia tem o conjunto completo sem reutilizar poses provisórias entre comandos', () => {
+    const bahia = LUTADORES.find((lutador) => lutador.id === 'bahia')!;
+    const completas = [
+      ...ACOES_OBRIGATORIAS, 'dash-forward', 'dash-back', 'block-low', 'stunned',
+      'heavy-punch', 'low-kick', 'jump-punch', 'jump-kick', 'eye-laser', 'special-charge', 'special'
+    ];
+    expect(bahia.actions.map((acao) => acao.action)).toEqual(expect.arrayContaining(completas));
+    const folhas = completas.map((nome) => bahia.actions.find((acao) => acao.action === nome)!);
+    expect(new Set(folhas.map((acao) => acao.file)).size).toBe(completas.length);
+    folhas.forEach((acao) => {
+      expect(acao.frames, `${acao.action}: ainda é uma pose parada`).toBeGreaterThanOrEqual(4);
+      expect(acao.file).not.toBe('guard-reference.png');
+    });
+    expect(bahia.moves?.kick?.action).toBe('eye-laser');
+    expect(bahia.moves?.special?.mirror).toBe(false);
+    expect(bahia.moves?.effects?.bora.frameWidth).toBe(768);
+  });
+
   it('Almirante registra todos os movimentos em sheets próprias', () => {
     const almirante = LUTADORES.find((lutador) => lutador.id === 'almirante');
     expect(almirante).toBeTruthy();

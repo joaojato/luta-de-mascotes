@@ -1928,3 +1928,24 @@ produção responde 200 e serve o `main-DycjOS6o.js` deste build.
 **Aprovado explicitamente:** publicar o último commit em vez do estado atual.
 **Atrito:** nada.
 **Em aberto:** `vercel git connect` (ou o painel) para o push publicar sozinho.
+
+## 2026-10-29: Esquadrão completo e Biriba de cenário (trabalho do Codex)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** quando a sessão do Codex terminar, ligar as animações dela.
+**Feito:** conferido e commitado o que a sessão do Codex no VS Code deixou:
+as 20 ações do Esquadrão com sheets próprias (dash para a frente, chute
+baixo e soco no ar novos; o corte de mão aberta segue com a arte antiga,
+redesenho recusado pela ferramenta de imagens) e o Biriba de cenário, que
+acompanha o Bira pela beira do campo e late de vez em quando
+(`docs/biriba-cenario.md`, `biribaCena.ts`, `biribaMotion.ts`).
+**Verificado:** `npm run check` só com este recorte, verde. No navegador,
+Esquadrão contra Bira: chute baixo (6%) e soco no ar (3%) acertam, dash
+voando, Biriba ao lado do Bira; console sem erro além da folha de tontura
+que ainda não existe (outra entrega).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** a sessão anterior do Claude caiu no meio; o Codex de arte seguiu
+rodando sozinho.
+**Em aberto:** retrato do Esquadrão; corte de mão aberta redesenhado.

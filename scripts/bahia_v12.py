@@ -25,15 +25,29 @@ def belt_center(im):
     return sum(x for x,y in points)/len(points),sum(y for x,y in points)/len(points)
 
 
-def head_top(im):
-    skin=[]
+def face_skin_bounds(im):
+    """Largest connected skin region: exclude orange cape/boot edge pixels."""
+    skin=set()
     for y in range(im.height):
         for x in range(im.width):
             r,g,b,a=im.getpixel((x,y))
             if a>180 and r>145 and g>75 and b>40 and r>g*1.07 and g>b*1.08:
-                skin.append((x,y))
-    assert skin,'No face landmark'
-    left=min(x for x,y in skin);right=max(x for x,y in skin);top=min(y for x,y in skin);bottom=max(y for x,y in skin)
+                skin.add((x,y))
+    largest=[]
+    while skin:
+        start=skin.pop();todo=[start];component=[]
+        while todo:
+            x,y=todo.pop();component.append((x,y))
+            for point in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]:
+                if point in skin:skin.remove(point);todo.append(point)
+        if len(component)>len(largest):largest=component
+    assert largest,'No face landmark'
+    return (min(x for x,y in largest),min(y for x,y in largest),
+            max(x for x,y in largest)+1,max(y for x,y in largest)+1)
+
+
+def head_top(im):
+    left,top,right,bottom=face_skin_bounds(im)
     margin=round((right-left)*.25)
     hair=[]
     for y in range(max(0,top-(bottom-top)),top+1):
@@ -43,6 +57,23 @@ def head_top(im):
                 hair.append(y)
     assert hair,'No hair landmark'
     return min(hair)
+
+
+def face_center_x(im):
+    left,top,right,bottom=face_skin_bounds(im)
+    return (left+right-1)/2
+
+
+def preview_durations(action, count, fps):
+    durations=[round(1000/fps)]*count
+    current=json.loads((ROOT/'src/game/lutadores/bahia.json').read_text(encoding='utf-8'))
+    spec=next((a for a in current['actions'] if a['action']==action),{})
+    for timing in spec.get('timing',[]):
+        start,end=timing['frames']
+        for i in range(start,min(count-1,end)+1):durations[i]=timing['ms']
+    if action in ['crouch','block-high','block-low','knockdown','special-charge']:
+        durations[-1]+=900  # Preview only: visibly show the game's held final state.
+    return durations
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'output/bahia-v12'
@@ -80,12 +111,14 @@ def pack(action, count, fps, mode='belt', calibration=0, source_count=None, scal
             y = round(belt[1]-belt_center(cut)[1])
         elif mode == 'top':
             y = gb[1]
-        elif mode == 'head':
+        elif mode in ['head','head-fixed']:
             y = gb[1]-head_top(cut)
         elif mode == 'center':
             y = round(128-cut.height/2)
         else:
             y = gb[3]-cut.height
+        if mode=='head-fixed':
+            x=round(face_center_x(guard)-face_center_x(cut))
         if action == 'jump' and i in (1, 2):
             y = gb[3]-cut.height
         if action == 'idle':
@@ -123,8 +156,10 @@ def pack(action, count, fps, mode='belt', calibration=0, source_count=None, scal
         bg=Image.new('RGB',(256,256),'#29343f');bg.paste(frame,(0,0),frame);gifs.append(bg)
     sheet.save(OUT/f'{action}-packed.png')
     contact.save(OUT/f'{action}-contact.png')
-    gifs[0].save(OUT/f'{action}-preview.gif',save_all=True,append_images=gifs[1:],duration=round(1000/fps),loop=0)
+    durations=preview_durations(action,count,fps)
+    gifs[0].save(OUT/f'{action}-preview.gif',save_all=True,append_images=gifs[1:],duration=durations,loop=0)
     report={'action':action,'frames':count,'fps':fps,'scale':scale,'frameBoxes':boxes,'placements':placements,
+            'previewDurationsMs':durations,
             'calibration':calibration,'packing':{'mode':mode,'sourceCount':source_count or count,
             'sharedScaleOverride':scale_override,'sourceOffset':source_offset},
             'scaleBasis':'anatomical landmarks' if scale_override is not None else 'canonical guard height',
@@ -189,7 +224,7 @@ def rebuild_review():
         if not r['status'].startswith('installed'):
             pending.append(f'<li>{a}: {r["status"]}</li>')
             continue
-        prompt=f'{a}-corrected-prompt.txt' if (OUT/f'{a}-corrected-prompt.txt').exists() else f'{a}-final-prompt.txt'
+        prompt=r.get('promptFile') or (f'{a}-corrected-prompt.txt' if (OUT/f'{a}-corrected-prompt.txt').exists() else f'{a}-final-prompt.txt')
         cards.append(f'<article><h2>{a}</h2><img src="{a}-preview.gif">'
                      f'<p>{r["frames"]} quadros · {r["fps"]} FPS</p><p>{r["status"]}</p>'
                      f'<a href="{a}-contact.png">Quadros e base</a> · <a href="{a}-source.png">Fonte</a> · '
@@ -205,6 +240,7 @@ def rebuild_review():
         '</style><h1>Bahia — revisão individual v12</h1>'
         f'<p>{len(installed)} de {len(expected)} animações instaladas após revisão.</p>'
         '<p>Uma ação por geração. Guarda própria como régua de identidade. Pairando, sem passos. '
+        'Os GIFs repetem para revisão; esquiva e defesas sustentam o último quadro no jogo. '
         'GIFs e contatos são revisão de arte, não testes de combate.</p><main>'+''.join(cards)+
         '</main><h2>Em revisão, não instaladas</h2><ul>'+''.join(pending)+'</ul>',encoding='utf-8')
     (OUT/'report.json').write_text(json.dumps(reports,ensure_ascii=False,indent=2),encoding='utf-8')
@@ -243,7 +279,7 @@ def compose_individual(action, poses):
 
 if __name__ == '__main__':
     p=argparse.ArgumentParser();p.add_argument('action');p.add_argument('count',type=int,nargs='?');p.add_argument('fps',type=int,nargs='?')
-    p.add_argument('--mode',choices=['belt','feet','top','head','center'],default='belt')
+    p.add_argument('--mode',choices=['belt','feet','top','head','head-fixed','center'],default='belt')
     p.add_argument('--calibration',type=int,default=0);p.add_argument('--source-count',type=int)
     p.add_argument('--scale',type=float,help='One shared action scale from verified anatomical landmarks')
     p.add_argument('--source-offset',type=int,default=0,help='Skip a source-only canonical guard calibrator')

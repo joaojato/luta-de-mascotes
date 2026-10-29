@@ -128,6 +128,17 @@ Ordem, para ele parar de parecer estátua:
 6. `low-kick`, `jump-punch`, `jump-kick`: golpes reais com as pernas.
 7. `portrait.png` (busto) no lugar do recorte provisório.
 
+### Atualização Bahia v12 — 29/10/2026
+
+O corpo já tem 20 comandos com folhas próprias, sem usar a guarda como
+substituto de movimento. Destes, 19 foram refeitos e revisados nesta produção
+(110 quadros); `heavy-punch` ainda usa a arte anterior, pois a ferramenta de
+imagens recusou oito tentativas de redesenho. Retrato em busto continua pendente.
+Detalhes e regras de montagem em [bahia-animacoes-v12.md](bahia-animacoes-v12.md).
+Prévia local: `output/bahia-v12/revisao.html`; verificação dos arquivos:
+`python scripts/validate_bahia_v12.py`. Não considerar a revisão toda concluída
+enquanto o corte descendente não for redesenhado e inspecionado.
+
 ## Aberto em 29/10/2026: torcida dividida
 
 Arquibancada vazia, torcedores com camisa em cor chave, bandeira, fumaça,

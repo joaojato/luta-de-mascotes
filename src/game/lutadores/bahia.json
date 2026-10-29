@@ -2,7 +2,14 @@
   "id": "bahia",
   "label": "Esquadrão",
   "assetRoot": "/assets/lutadores/bahia",
-  "torcida": { "estampa": "lisa", "cores": ["#F0F0F0", "#1860D8", "#D81800"] },
+  "torcida": {
+    "estampa": "lisa",
+    "cores": [
+      "#F0F0F0",
+      "#1860D8",
+      "#D81800"
+    ]
+  },
   "anchorUsage": "Esquadrão pairando em guarda, voltado para a esquerda",
   "selecionavel": true,
   "stats": {},
@@ -234,9 +241,9 @@
       "repeat": 0,
       "defaultVisual": {
         "x": 63,
-        "y": 13,
-        "width": 151,
-        "height": 215
+        "y": 20,
+        "width": 143,
+        "height": 208
       }
     },
     {
@@ -368,6 +375,103 @@
         "y": 17,
         "width": 201,
         "height": 211
+      }
+    },
+    {
+      "action": "low-kick",
+      "label": "Chute baixo",
+      "file": "low-kick.png",
+      "frames": 8,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 16,
+        "y": 16,
+        "width": 194,
+        "height": 212
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 23,
+            "y": 151,
+            "width": 32,
+            "height": 28
+          }
+        },
+        {
+          "frames": [
+            4
+          ],
+          "bounds": {
+            "x": 15,
+            "y": 128,
+            "width": 33,
+            "height": 27
+          }
+        }
+      ],
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 20
+      }
+    },
+    {
+      "action": "jump-punch",
+      "label": "Soco no ar",
+      "file": "jump-punch.png",
+      "frames": 5,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 12,
+        "y": 18,
+        "width": 183,
+        "height": 154
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            1
+          ],
+          "bounds": {
+            "x": 28,
+            "y": 75,
+            "width": 28,
+            "height": 24
+          }
+        },
+        {
+          "frames": [
+            2
+          ],
+          "bounds": {
+            "x": 12,
+            "y": 64,
+            "width": 29,
+            "height": 24
+          }
+        }
+      ]
+    },
+    {
+      "action": "dash-forward",
+      "label": "Arrancada para frente",
+      "file": "dash-forward.png",
+      "frames": 5,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 54,
+        "y": 20,
+        "width": 189,
+        "height": 208
       }
     }
   ],

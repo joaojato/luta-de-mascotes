@@ -1,5 +1,12 @@
 # Direção de arte e animação
 
+- Biriba: exceção explícita do usuário para acompanhante de cenário do Bira.
+  É um cachorro sobre quatro patas, anda acompanhando o Bira e às vezes para
+  para latir sem som. Não transformar em lutador bípede nem copiar a guarda
+  do Urubu; preservar o acabamento pixel art do projeto e a identidade da
+  imagem enviada. Ler `docs/biriba-cenario.md` e acompanhar os quatro membros
+  NF/FF/NH/FH em cada pose.
+
 - Bahia, atualização de 29/10/2026: usuário autorizou a produção dos golpes próprios da primeira base aprovada, conforme docs/bahia-golpes-v11.md. Ataques, laser, preparação e grito têm MUITA cara de bravo; guarda, postura padrão, deslocamentos e dashes preservam a carinha fofa original. Não alterar identidade, paleta ou tamanho da cabeça para mudar expressão. O adiamento antigo das animações não se aplica a esses golpes agora autorizados; não registrar um lutador incompleto.
 
 - **Produção e revisão obrigatórias:** ler [docs/producao-personagens.md](docs/producao-personagens.md) antes de gerar/refazer sprites, animações ou retratos. Uma chamada de geração por personagem e por ação; nunca atlas coletivo de mascotes. Anexar a guarda aprovada da própria skin para cores, luz, proporções e pixels; movimento define só poses. Revisar fonte e cada quadro montado contra a guarda em escala real antes de aplicar. Instruções históricas não revogam correções posteriores do usuário.

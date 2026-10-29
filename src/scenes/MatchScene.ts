@@ -14,6 +14,7 @@ import { playSuperCutIn } from '../game/superCutIn';
 import { LUTADORES } from '../game/lutadores';
 import { torcidaValida } from '../game/torcida';
 import { montarTorcida } from '../game/torcidaCena';
+import { BiribaCena } from '../game/biribaCena';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
 import { spawnHitSpark, type VfxColor } from '../game/vfx';
 import { BaseScene } from './BaseScene';
@@ -58,6 +59,7 @@ export class MatchScene extends BaseScene {
 
   private p1!: Fighter;
   private p2!: Fighter;
+  private biribas: BiribaCena[] = [];
   private p1Keys!: PlayerKeys;
   private p2Keys!: PlayerKeys;
   private controles!: Controles;
@@ -96,6 +98,7 @@ export class MatchScene extends BaseScene {
     this.roundNumber = 1;
     this.p1Wins = 0;
     this.p2Wins = 0;
+    this.biribas = [];
     this.overlay = [];
 
     this.markActiveScene(SCENE_KEYS.Match);
@@ -139,6 +142,8 @@ export class MatchScene extends BaseScene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.p1?.destroy();
       this.p2?.destroy();
+      this.biribas.forEach((biriba) => biriba.destroy());
+      this.biribas = [];
       this.hud?.destroy();
       this.paineisCelular.forEach(({ painel }) => painel.destruir());
       this.paineisCelular = [];
@@ -190,6 +195,7 @@ export class MatchScene extends BaseScene {
     this.p2.update(seconds, p2Input);
 
     this.updateCamera(false);
+    this.biribas.forEach((biriba) => biriba.update(seconds));
 
     if (fighting) {
       this.resolveCombat();
@@ -447,6 +453,12 @@ export class MatchScene extends BaseScene {
     });
     this.p1.setOpponent(this.p2);
     this.p2.setOpponent(this.p1);
+    if (this.p1.characterId === 'cachorro') {
+      this.biribas.push(new BiribaCena(this, this.p1, groundY, -130));
+    }
+    if (this.p2.characterId === 'cachorro') {
+      this.biribas.push(new BiribaCena(this, this.p2, groundY, 130));
+    }
   }
 
   /**
@@ -587,6 +599,7 @@ export class MatchScene extends BaseScene {
     this.p1.setDepthBase(DEPTH_FRONT);
     this.p2.setDepthBase(DEPTH_BACK);
     this.updateCamera(true);
+    this.biribas.forEach((biriba) => biriba.reset());
     this.hud.animateFill();
     this.hud.updateWins(this.p1Wins, this.p2Wins);
 

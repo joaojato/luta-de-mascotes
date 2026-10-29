@@ -47,7 +47,7 @@ todas as ações. Não usar transformações locais para disfarçar anatomia err
 | dash-forward | 5 | 18 | Arrancada de voo, carinha fofa, sem passos |
 | dash-back | 4 | 18 | Arrancada de recuo, carinha fofa, sem passos |
 | low-kick | 8 | 12 | Chute baixo real com A, recolhe o mesmo membro |
-| jump-punch | 5 | 14 | Soco aéreo com A, frente e ligeiramente para baixo |
+| jump-punch | 5 | 14 | Soco aéreo com B, frente e ligeiramente para baixo; A protege |
 | jump-kick | 6 | 14 | Voadora descendente com A, B dobrada, recolhe A |
 | heavy-punch | 6 | 14 | Mão A aberta em corte descendente |
 | eye-laser | 6 | 14 | Mira e emissão pelos olhos, sem raio colado no corpo |
@@ -58,5 +58,16 @@ Retrato: busto próprio, preservando a mesma identidade. Fontes, prompts,
 referências de movimento, hashes, contatos e GIFs ficam em `output/bahia-v12/`.
 As verificações automáticas não substituem a inspeção visual dos membros.
 
-Estado inicial: produção em andamento. Os relatórios individuais registram
-o que foi montado; somente as ações revisadas devem substituir as provisórias.
+Estado em 29/10/2026: 19 ações refeitas e integradas, com 110 quadros de corpo.
+O soco descendente (`heavy-punch`) ainda usa a folha anterior: oito tentativas
+de geração/correção foram recusadas pela ferramenta de imagens. Não contar
+essa folha como refeita ou aprovada nesta revisão. O retrato anterior permanece.
+A prévia individual está em `output/bahia-v12/revisao.html`; o relatório
+`validation.json` distingue as ações entregues da pendência. Foram conferidos
+fontes e quadros montados; não foi realizado teste visual de combate nesta etapa.
+
+Cuidados de montagem: joelhos recolhidos não servem como régua de altura total.
+Usar cabeça, tronco e segmentos dos membros para definir uma escala comum à
+ação inteira. Nunca aumentar cada pose separadamente para preencher a célula.
+Ao alinhar pela face, excluir pixels alaranjados da capa e das botas: a maior
+região conectada de pele é a referência, seguida de inspeção visual.
