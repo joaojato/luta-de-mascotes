@@ -1,6 +1,10 @@
 # Pedidos de arte para o Codex
 
+Antes de produzir: ler [produção de personagens](producao-personagens.md). Uma geração por personagem e por ação, guarda aprovada da própria skin anexada e comparação de cada quadro com a base antes de aplicar. Este pedido define a tarefa; o guia define o controle de identidade, cor, estilo, anatomia e entrega.
+
 ## Aberto em 29/10/2026: dash (avanço rápido)
+
+**Artes entregues pelo Codex:** dash-forward.png, dash-back.png e jump-punch.png dos seis, produzidos individualmente; 18 folhas / 84 quadros em public/. Guia de integração: [movimentos-v10.md](movimentos-v10.md); hashes, caixas visuais e prévias em output/movimentos-v10/. Registro e validação no jogo continuam com Claude. Os detalhes do pedido original abaixo ficam preservados.
 
 Mecânica nova pedida pelo João: dois toques rápidos no direcional fazem o
 lutador dar um dash. É a porta de entrada da guarda perfeita (defender no
@@ -26,8 +30,8 @@ andar para trás acelerado, e o soco no ar já tem quebra-galho.
 **Não desenhar** (o Claude resolve com o que já existe):
 
 - Guarda perfeita: pose `block-high` com brilho e a faísca azul do atlas do HUD.
-- Atacante pego pela guarda perfeita: a reação curta `hit-high`. A tontura
-  `stunned` fica só para os atordoamentos longos.
+- Atacante pego pela guarda perfeita: a tontura `stunned` que já existe
+  (0,8 s, correção do João em 29/10/2026).
 
 Entrega como nas anteriores: arquivos finais em `public/`, guia em `docs/`
 e relatório com caixas visuais e hashes em `output/`. O Claude só integra o
@@ -41,7 +45,7 @@ Coordenadas exatas e detalhes: [identidade-ui-v1.md](identidade-ui-v1.md). Fonte
 
 ## Entrega 29/10/2026: vítimas estunadas
 
-Entregues `stunned.png` nas seis pastas principais: Urubu, Almirante, Saci, Cartola, Bira e Galo. Quatro quadros de tontura com X, estrelas e espirais sobre a cabeça, 6 FPS sugeridos, loop. Este pedido retoma as artes antes adiadas. Falta registrar/ligar a ação ao atordoamento na lógica pelo Claude. Guia: `docs/estunados-v8.md`; manifesto: `output/stun-v8/claude-integration.json`; prévias: `output/stun-v8/revisao.html`.
+Entregues `stunned.png` nas seis pastas principais: Urubu, Almirante, Saci, Cartola, Bira e Galo. A v8 foi rejeitada pelo usuário por divergir das bases e substituída pela v9, gerada individualmente com as guardas de cada skin. Quatro quadros, 6 FPS, loop; a ação já está registrada nos JSONs atuais. Guia vigente: `docs/estunados-v9.md`; relatório: `output/stun-v9/report.json`; prévias: `output/stun-v9/revisao.html`. Não reutilizar fontes/prompts da v8. Registro no JSON não substitui conferência do comportamento na Academia e no combate.
 
 O Claude escreve aqui o que a mecânica já espera e ainda não tem arte. O Codex
 desenha seguindo o `AGENTS.md` e `docs/mascotes/padrao-artistico.md`, salva

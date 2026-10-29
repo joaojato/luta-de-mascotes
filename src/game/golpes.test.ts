@@ -14,7 +14,7 @@ describe('catálogo de golpes', () => {
     expect(urubu['chute-basico']).toEqual(['tem', 'beak-pull']);
     expect(urubu['chute-baixo']).toEqual(['tem', 'low-kick']);
     expect(urubu['voadora']).toEqual(['tem', 'jump-kick']);
-    expect(urubu['soco-no-ar']).toEqual(['quebra-galho', 'light-punch']);
+    expect(urubu['soco-no-ar']).toEqual(['tem', 'jump-punch']);
     expect(urubu['especial'][0]).toBe('tem');
   });
   it('usa a sheet do Forte que o JSON escolhe (tiro do Almirante)', () => {

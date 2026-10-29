@@ -2,7 +2,6 @@
 import argparse
 import hashlib
 import json
-from collections import deque
 from pathlib import Path
 from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
@@ -14,6 +13,29 @@ FPS = {'dash-forward': 18, 'dash-back': 16, 'jump-punch': 14}
 
 def bounds(im):
     return im.getchannel('A').point(lambda a: 255 if a > 32 else 0).getbbox()
+
+
+def hip_axis(im):
+    """Estimate waist/hip axis from broad opaque runs, ignoring a distant fist."""
+    b=bounds(im)
+    samples=[]
+    a=im.getchannel('A')
+    for y in range(round(b[1]+(b[3]-b[1])*.54), round(b[1]+(b[3]-b[1])*.60)):
+        runs=[]
+        start=None
+        for x in range(im.width+1):
+            opaque=x<im.width and a.getpixel((x,y))>64
+            if opaque and start is None:
+                start=x
+            if not opaque and start is not None:
+                runs.append((start,x))
+                start=None
+        if runs:
+            run=max(runs,key=lambda r:r[1]-r[0])
+            samples.append((run[0]+run[1])/2)
+    assert samples
+    samples.sort()
+    return samples[len(samples)//2]
 
 
 def extract(source, count, keep_dust=False):
@@ -92,16 +114,26 @@ def main():
     guard=crops[-1] if args.action=='jump-punch' else crops[0]
     gb=bounds(guard)
     scale=(ib[3]-ib[1])/(gb[3]-gb[1])
+    prepared=[]
+    for crop in crops[:n]:
+        figure=crop.crop(bounds(crop))
+        prepared.append(figure.resize((round(figure.width*scale),round(figure.height*scale)),
+                                       Image.Resampling.NEAREST))
+    axes=[hip_axis(f) for f in prepared]
+    minimum_axis=max(2+a for a in axes)
+    maximum_axis=min(254-f.width+a for f,a in zip(prepared,axes))
+    assert minimum_axis<=maximum_axis, 'Cannot fit poses with stable body axis'
+    target_axis=max(minimum_axis,min(maximum_axis,hip_axis(idle)))
     frames=[]
+    placements=[]
     for index,crop in enumerate(crops[:n]):
         crop.save(folder/f'{args.action}-extracted-{index}.png')
-        b=bounds(crop)
-        figure=crop.crop(b)
-        figure=figure.resize((round(figure.width*scale),round(figure.height*scale)),
-                             Image.Resampling.NEAREST)
+        figure=prepared[index]
         assert figure.width<252 and figure.height<250, ('Oversize pose',index,figure.size)
         frame=Image.new('RGBA',(256,256))
-        x=round((ib[0]+ib[2]-figure.width)/2)
+        # Align the body rather than the full silhouette: an extending fist must
+        # not push the torso to the opposite side of the cell.
+        x=round(target_axis-axes[index])
         if args.action=='jump-punch':
             # Pose center is stable; motor supplies the world-space jump parabola.
             y=round(ib[1]+(ib[3]-ib[1])*.43-figure.height*.43)
@@ -116,6 +148,7 @@ def main():
         if args.action!='jump-punch' and index in (0,n-1):
             frame=idle.copy()
         frames.append(frame)
+        placements.append(dict(x=x,y=y,estimatedHipAxis=hip_axis(frame)))
     sheet=Image.new('RGBA',(1280,256))
     contact=Image.new('RGB',((n+1)*256,280),'#29343f')
     draw=ImageDraw.Draw(contact)
@@ -138,10 +171,17 @@ def main():
     backup=folder/(args.action+'-previous.png')
     if args.apply:
         if target.exists():
+            snapshot=OUT/'alignment-before.json'
+            allowed=json.loads(snapshot.read_text()) if snapshot.exists() else {}
+            expected=allowed.get(target.relative_to(ROOT).as_posix())
+            current_hash=hashlib.sha256(target.read_bytes()).hexdigest()
+            packed_hash=hashlib.sha256(packed.read_bytes()).hexdigest()
+            if expected:
+                assert current_hash in (expected,packed_hash), ('Changed since alignment review',target)
             if not backup.exists():
                 backup.write_bytes(target.read_bytes())
             else:
-                assert target.read_bytes() in (backup.read_bytes(),packed.read_bytes())
+                assert expected or target.read_bytes() in (backup.read_bytes(),packed.read_bytes())
         target.write_bytes(packed.read_bytes())
     report=dict(character=args.character,action=args.action,source=source_path.relative_to(ROOT).as_posix(),
                 file=target.relative_to(ROOT).as_posix(),frames=n,columns=5,frameWidth=256,frameHeight=256,
@@ -150,6 +190,9 @@ def main():
                 sha256=hashlib.sha256(packed.read_bytes()).hexdigest(),applied=args.apply,
                 reference=reference,scale=scale,
                 guardEndpointsFromIdle=args.action!='jump-punch',
+                placements=placements,
+                targetHipAxis=target_axis,
+                punchArmObserved='B, far in reference guard' if args.action=='jump-punch' else None,
                 gameReview='pending integration by logic owner')
     (folder/(args.action+'-report.json')).write_text(json.dumps(report,indent=2),encoding='utf-8')
     reports=[json.loads(f.read_text()) for f in OUT.glob('*/*-report.json')]

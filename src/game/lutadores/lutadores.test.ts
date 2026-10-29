@@ -62,7 +62,7 @@ describe('registro de lutadores (Regra do JSON)', () => {
         // Especial de projétil acerta pela entidade lançada, não pelo corpo.
         const especialDeProjetil = lutador.moves?.special?.kind === 'projectile';
         lutador.actions.forEach((spec) => {
-          const golpe = spec.action.startsWith('light-') || spec.action.startsWith('heavy-') || spec.action === 'low-kick';
+          const golpe = spec.action.startsWith('light-') || spec.action.startsWith('heavy-') || spec.action === 'low-kick' || spec.action === 'jump-punch';
           if (golpe || (spec.action === 'special' && !especialDeProjetil)) {
             expect(spec.attack ?? spec.attackSpans, `${spec.action} sem attack`).toBeTruthy();
           }
@@ -78,7 +78,7 @@ describe('registro de lutadores (Regra do JSON)', () => {
       it('toda ação pisa na linha do idle (Regra da Régua)', () => {
         const idle = lutador.actions.find((spec) => spec.action === 'idle');
         const chao = (idle?.defaultVisual.y ?? 0) + (idle?.defaultVisual.height ?? 0);
-        const aereas = ['jump', 'jump-kick', 'special', 'knockdown'];
+        const aereas = ['jump', 'jump-kick', 'jump-punch', 'special', 'knockdown'];
 
         lutador.actions.forEach((spec) => {
           const linha = spec.defaultVisual.y + spec.defaultVisual.height;
@@ -166,7 +166,7 @@ describe('registro de lutadores (Regra do JSON)', () => {
     expect(almirante!.selecionavel).toBe(true);
     const completas = [
       ...ACOES_OBRIGATORIAS, 'block-low', 'heavy-punch', 'heavy-kick', 'jump-kick', 'shot',
-      'special-charge', 'special', 'stunned', 'dash-forward', 'dash-back'
+      'special-charge', 'special', 'stunned', 'dash-forward', 'dash-back', 'jump-punch'
     ];
     expect(almirante!.actions.map((acao) => acao.action).sort()).toEqual(completas.sort());
     expect(new Set(almirante!.actions.map((acao) => acao.file)).size).toBe(completas.length);

@@ -65,9 +65,9 @@
       "frameRate": 18,
       "repeat": 0,
       "defaultVisual": {
-        "x": 40,
+        "x": 39,
         "y": 29,
-        "width": 175,
+        "width": 190,
         "height": 199
       }
     },
@@ -140,6 +140,44 @@
           "height": 67
         }
       }
+    },
+    {
+      "action": "jump-punch",
+      "label": "Soco no ar",
+      "file": "jump-punch.png",
+      "frames": 5,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 17,
+        "y": 40,
+        "width": 158,
+        "height": 174
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            1
+          ],
+          "bounds": {
+            "x": 29,
+            "y": 94,
+            "width": 40,
+            "height": 38
+          }
+        },
+        {
+          "frames": [
+            2
+          ],
+          "bounds": {
+            "x": 17,
+            "y": 91,
+            "width": 40,
+            "height": 32
+          }
+        }
+      ]
     },
     {
       "action": "block-high",
