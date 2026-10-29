@@ -25,7 +25,7 @@ export type MapaBotoes = Record<ComandoLuta, string>;
 export type Controles = Record<Lado, MapaBotoes>;
 
 export const CONTROLES_PADRAO: Controles = {
-  p1: { left: 'A', right: 'D', jump: 'W', crouch: 'S', block: 'C', light: 'F', heavy: 'G', special: 'V' },
+  p1: { left: 'A', right: 'D', jump: 'W', crouch: 'S', block: 'C', light: 'E', heavy: 'Q', special: 'SPACE' },
   p2: {
     left: 'LEFT',
     right: 'RIGHT',
