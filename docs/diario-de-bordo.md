@@ -1610,3 +1610,24 @@ virados para o oponente.
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** força do meteoro com 1,5 s de tontura (testar em luta).
+
+## 2026-10-29: Telas fora da luta viram nossas
+
+**Marco:** 2, segue em andamento.
+**Pedido:** reconfigurar o que era estético do Chong-U; o Codex faz a arte
+(HUD, faíscas, cartões, logo) e eu mudo o que não depende de arte.
+**Feito:** `estilo.ts` com a identidade da Seleção; fundo do estádio e
+título amarelo na cena base, usados por abertura, menu, modo, estádio,
+ajustes, Academia e Celular; botões e cartões redesenhados; textos em
+português; ajustes sem sobreposição; legenda da Luta lida dos controles
+salvos (antes ficava errada com tecla remapeada); apito sintetizado no lugar
+do mp3; favicon próprio; poda dos arquivos do RPG (1.772 linhas a menos).
+**Verificado:** `npm run check` com 124 testes, build ok. Nove telas
+fotografadas no navegador; jogo do zero até a luta sem erro de console nem
+arquivo faltando.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** visual do template nas telas de menu.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** ligar as entregas do Codex; trocar o shell de debug por um
+nosso (leva junto o resto do código do RPG); autorização do Chong-U.

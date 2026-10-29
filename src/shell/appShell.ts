@@ -69,7 +69,6 @@ import {
 } from '../game/levelEditor';
 import {
   buildTileGymConfigExport,
-  loadTileGymConfig,
   normalizeTileGymState,
   resolveTileBoundsEdit,
   TILE_GYM_CONFIG_SAVE_TARGET
@@ -271,16 +270,7 @@ export function createApp(root: HTMLElement): void {
       backgroundGym: normalizeBackgroundGymState(savedBackgroundGym)
     });
   });
-  void loadTileGymConfig().then((savedTileGym) => {
-    if (!savedTileGym) {
-      return;
-    }
-
-    debugStore.patchState({
-      tileGym: normalizeTileGymState(savedTileGym)
-    });
-  });
-  void loadEditorLevelIntoStore('editor-playground', false);
+  // Editor de fases e tile gym do starter de RPG: os arquivos saíram do build em 29/10/2026.
 
   const showPlayToast = (): void => {
     if (!playToast) {

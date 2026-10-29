@@ -15,6 +15,25 @@ critério de publicação. O critério é esta lista zerada.
   Estádio é o único cenário e o padrão da Luta e do painel de fundo do debug.
   PNGs e o atlas de props (nunca usado) foram para `arquivo/cenarios/rooftop/`.
 
+## Feito em 29/10/2026
+
+- Textos em português em todas as telas (abertura, menu, modo, estádio,
+  ajustes, rodapés) e legenda da Luta montada das teclas salvas.
+- Abertura, menu, modo, estádio e ajustes no estilo da Seleção
+  (`src/game/estilo.ts`): estádio escurecido, título amarelo, botões e
+  cartões desenhados por nós, sem as texturas geradas do template.
+- `ui-confirm.mp3` trocado por `apito.wav` (`scripts/apito.py`); favicon
+  próprio (bola no impacto).
+- Seção 2 apagada: `ui/quest`, `tiles/quest`, `levels`, `tile-gym.json`,
+  `index.json` e `uiAtlas.ts`; o Boot não carrega mais os atlas do RPG e o
+  shell não busca mais fase nem tile gym ao iniciar.
+- Com o Codex: atlas do HUD, faíscas, cartões de modo e logo.
+
+Sobra de código dele sem uso no jogo: `tileAtlas.ts`, `tileConfig.ts`,
+`levelEditor.ts`, `generatedAssets.ts` (texturas `sample-*` e `ui-*`) e a
+maior parte de `appShell.ts`, presos ao painel de debug. Saem juntos quando
+o shell for trocado por um nosso.
+
 ## 1. Arte e som dele que aparecem no jogo publicado (trocar)
 
 | Asset | Onde aparece | Código que consome |

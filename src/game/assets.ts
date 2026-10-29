@@ -9,12 +9,6 @@ import {
 import { GENERATED_TEXTURE_ASSETS, type GeneratedTextureAsset } from './generatedAssets';
 import { CHARACTER_ANIMATIONS, CHARACTER_ASSETS } from './hero';
 import { STAGE_IMAGE_ASSETS } from './stageConfig';
-import { TILE_ATLAS_IMAGE_URL, TILE_ATLAS_TEXTURE_KEY, TILE_ATLAS_SIZE } from './tileAtlas';
-import {
-  QUEST_UI_ATLAS_IMAGE_URL,
-  QUEST_UI_ATLAS_SIZE,
-  QUEST_UI_ATLAS_TEXTURE_KEY
-} from './uiAtlas';
 import {
   FIGHTING_UI_ATLAS_IMAGE_URL,
   FIGHTING_UI_ATLAS_SIZE,
@@ -71,26 +65,7 @@ export interface BackgroundLayerAsset {
 
 export type StarterAsset = ImageAsset | SpritesheetAsset | AtlasAsset | AudioAsset;
 
-export const TILE_IMAGE_ASSETS: ImageAsset[] = [
-  {
-    kind: 'image',
-    key: TILE_ATLAS_TEXTURE_KEY,
-    url: TILE_ATLAS_IMAGE_URL,
-    width: TILE_ATLAS_SIZE.width,
-    height: TILE_ATLAS_SIZE.height,
-    usage: 'quest platformer tile and object atlas'
-  }
-];
-
 export const UI_IMAGE_ASSETS: ImageAsset[] = [
-  {
-    kind: 'image',
-    key: QUEST_UI_ATLAS_TEXTURE_KEY,
-    url: QUEST_UI_ATLAS_IMAGE_URL,
-    width: QUEST_UI_ATLAS_SIZE.width,
-    height: QUEST_UI_ATLAS_SIZE.height,
-    usage: 'quest HUD portraits, health bars, coin counters, and game status icons'
-  },
   {
     kind: 'image',
     key: FIGHTING_UI_ATLAS_TEXTURE_KEY,
@@ -124,7 +99,6 @@ export const STARTER_ASSETS: StarterAsset[] = [
   ...CHARACTER_ASSETS,
   ...STAGE_IMAGE_ASSETS,
   ...MODE_CARD_IMAGE_ASSETS,
-  ...TILE_IMAGE_ASSETS,
   ...UI_IMAGE_ASSETS,
   ...STARTER_AUDIO_ASSETS
 ];
