@@ -1840,3 +1840,23 @@ que não existe em `public/`, sem efeito no jogo.
 login manual dele na CLI.
 **Em aberto:** mensagem ao Chong-U; deploy é manual até o GitHub ser
 conectado na Vercel; o 404 do `background-gym.json`.
+
+## 2026-10-29: P1 com Q, E, C e Espaço
+
+**Marco:** 2, segue em andamento.
+**Pedido:** perguntou se a Vercel atualiza sozinha com o git (ainda não:
+falta conectar o GitHub no login da Vercel) e pediu o P1 no padrão Q chute,
+E soco, C bloqueio, Espaço especial.
+**Feito:** `CONTROLES_PADRAO.p1` em `controles.ts` (F, G e V saem) e o teste
+de botões. Espaço estava livre na Luta; nos menus segue confirmando.
+Republicado na Vercel.
+**Verificado:** `npm run check` com 146 testes, build ok. No link publicado:
+legenda "E soco · Q chute · C defende · Espaço especial"; E acertou o
+Almirante em sequência até o medidor encher, e o Espaço gastou o medidor
+soltando o especial do Urubu.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** teclas padrão do P1.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** quem remapeou na Academia guarda o mapa antigo no navegador
+(só no `npm run dev`); conectar o GitHub na Vercel.

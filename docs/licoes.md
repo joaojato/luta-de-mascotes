@@ -343,3 +343,6 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **Link público antes da autorização do Chong-U, por escolha dele.** Diante
   do código sem licença, o João preferiu publicar já e assumir o risco
   (ADR 0006). Pedido de autorização continua devido. (2026-10-29)
+- **P1 joga com a mão esquerda em volta do WASD.** O João trocou F, G e V
+  por Q chute, E soco, C bloqueio e Espaço especial: tudo ao alcance sem
+  tirar os dedos do WASD. Tecla nova de P1 segue essa lógica. (2026-10-29)
