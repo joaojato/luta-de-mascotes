@@ -321,3 +321,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   chão agora dá um passo para a frente (`travel`) que cobre a inclinação
   (Regra do Passo). Sheet nova de chute: medir o tronco antes de ligar.
   (2026-10-29)
+- **Build publicado é só o jogo.** O João pediu a Vercel sem Academia
+  (ferramenta de desenvolvimento) e sem Celular (não finalizado). Tela de
+  dev fica atrás de `FERRAMENTAS_DE_DEV`, nunca no menu de quem joga.
+  (2026-10-29)
+- **Luta com celular como câmera não convenceu na prática.** Na avaliação do
+  João, a batalha pelo corpo não parece funcionar; o próximo passo para
+  jogar fora do teclado é botão na tela, e multiplayer vira estudo à parte.
+  (2026-10-29)

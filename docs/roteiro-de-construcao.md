@@ -60,6 +60,17 @@ ele é quebrado em dois, não esticado.
   Hoje são genéricos e não fazem nada de próprio; cada um precisa de uma
   mecânica que diga quem é o mascote, como a caravela do Almirante e o
   tornado do Saci.
+- [ ] Build para a Vercel (29/10/2026): o build publicado mostra só Jogar
+  e Ajustes. Academia e Celular ficam no `npm run dev`
+  (`FERRAMENTAS_DE_DEV` em `src/game/constants.ts`). Falta: decidir o
+  deploy diante da autorização do Chong-U (`docs/varredura-chong-u.md`).
+- [ ] Tarefa futura, pedida pelo João em 29/10/2026: **versão jogável no
+  celular**, com botões na tela no lugar das teclas. Vem depois do build
+  de computador na Vercel.
+- [ ] Tarefa futura, pedida pelo João em 29/10/2026: **multiplayer** (dois
+  jogadores em máquinas diferentes). A luta com celular como câmera não
+  pareceu funcionar na prática; o caminho de multiplayer será estudado à
+  parte.
 
 Atualizar esta lista ao fechar cada marco. É a primeira coisa que o agente lê
 na sessão.

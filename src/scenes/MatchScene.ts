@@ -4,6 +4,7 @@ import { celular, juntarInputs } from '../controle/celularNoJogo';
 import { PainelCelular } from '../controle/painelCelular';
 import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fighter';
 import { getCharacterDefinition } from '../game/hero';
+import { FERRAMENTAS_DE_DEV } from '../game/constants';
 import { CONTORNO_TITULO, COR_FUNDO, FONTE_TITULO, SOMBRA_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from '../game/estilo';
 import { carregarControles, COMANDOS_LUTA, legendaDosBotoes, type ComandoLuta, type Controles, type Lado } from '../game/controles';
 import { MatchHud } from '../game/matchHud';
@@ -511,6 +512,10 @@ export class MatchScene extends BaseScene {
 
   /** Esqueleto de cada celular num canto da tela, só enquanto ele estiver conectado. */
   private createPaineisCelular(): void {
+    // No build publicado não há relay nem tela de conexão: nada a ligar.
+    if (!FERRAMENTAS_DE_DEV) {
+      return;
+    }
     celular.iniciar();
     const { width } = this.cameras.main;
     const jogadores: (1 | 2)[] = this.config.mode === '1vcpu' ? [1] : [1, 2];

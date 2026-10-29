@@ -1728,3 +1728,22 @@ longe do oponente: soco forte anda 35 a 50 px, chute 54 a 85, chute baixo
 **Atrito:** nada.
 **Em aberto:** o passo soma ao alcance; jogar e ver se o chute baixo do
 Saci e do Galo (cerca de 90 px) ficou longo demais.
+
+## 2026-10-29: Build de computador pronto para a Vercel
+
+**Marco:** 2, segue em andamento; passo do Marco 3 (link publicado).
+**Pedido:** colocar o jogo na Vercel sem Academia e sem Celular; anotar
+versão mobile com botões na tela e multiplayer como tarefas futuras.
+**Feito:** `FERRAMENTAS_DE_DEV` (`import.meta.env.DEV`) em `constants.ts`.
+No build, o menu tem só Jogar e Ajustes e a Luta não liga o relay do
+celular (antes tentaria um WebSocket inexistente em loop). Roteiro e lições
+com as duas tarefas futuras.
+**Verificado:** `npm run check` com 139 testes, build de 60 MB. `vite
+preview` com Playwright: menu com dois botões, luta Urubu contra Almirante
+rodando com golpes, nenhum WebSocket aberto, console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** o deploy em si. A seção 3 da varredura (código do Chong-U
+sem licença) continua sem resposta dele.

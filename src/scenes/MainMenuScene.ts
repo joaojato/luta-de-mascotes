@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
-import { GAME_TAGLINE, GAME_TITLE } from '../game/constants';
+import { FERRAMENTAS_DE_DEV, GAME_TAGLINE, GAME_TITLE } from '../game/constants';
 import { createTextButton, type TextButton } from '../game/ui';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
@@ -80,10 +80,12 @@ export class MainMenuScene extends BaseScene {
     const academiaOption: MenuOption = { label: 'Academia', action: () => this.scene.start(SCENE_KEYS.Academia) };
     const celularOption: MenuOption = { label: 'Celular', action: () => this.scene.start(SCENE_KEYS.Conectar) };
     const settingsOption: MenuOption = { label: 'Ajustes', action: () => this.scene.start(SCENE_KEYS.Settings) };
-    this.options = [playOption, academiaOption, celularOption, settingsOption];
+    this.options = FERRAMENTAS_DE_DEV
+      ? [playOption, academiaOption, celularOption, settingsOption]
+      : [playOption, settingsOption];
 
     const spacing = 72;
-    const startY = this.cameras.main.centerY - spacing * 1.5 + 20;
+    const startY = this.cameras.main.centerY - (spacing * (this.options.length - 1)) / 2 + 20;
     let row = 0;
 
     const layoutButton = (option: MenuOption, optionIndex: number): void => {
@@ -101,10 +103,7 @@ export class MainMenuScene extends BaseScene {
       row += 1;
     };
 
-    layoutButton(playOption, 0);
-    layoutButton(academiaOption, 1);
-    layoutButton(celularOption, 2);
-    layoutButton(settingsOption, 3);
+    this.options.forEach(layoutButton);
 
     this.setSelection(0);
   }
