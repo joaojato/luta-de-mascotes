@@ -2,6 +2,7 @@
   "id": "bahia",
   "label": "Esquadrão",
   "assetRoot": "/assets/lutadores/bahia",
+  "torcida": { "estampa": "lisa", "cores": ["#F0F0F0", "#1860D8", "#D81800"] },
   "anchorUsage": "Esquadrão pairando em guarda, voltado para a esquerda",
   "selecionavel": true,
   "stats": {},

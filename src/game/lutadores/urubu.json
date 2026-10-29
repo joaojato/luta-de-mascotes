@@ -2,6 +2,7 @@
   "id": "urubu",
   "label": "Urubu",
   "assetRoot": "/assets/lutadores/urubu",
+  "torcida": { "estampa": "listras-horizontais", "cores": ["#B01010", "#181818"] },
   "anchorUsage": "urubu west-facing high-fidelity anchor, guard up",
   "skins": [
     {

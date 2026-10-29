@@ -1,6 +1,7 @@
 {
   "id": "galo",
   "assetRoot": "/assets/lutadores/galo",
+  "torcida": { "estampa": "listras-verticais", "cores": ["#403B3F", "#F0F0F0"] },
   "selecionavel": true,
   "label": "Galo",
   "anchorUsage": "Galo, padrão Urubu, guarda voltada para a esquerda",

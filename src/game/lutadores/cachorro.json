@@ -2,6 +2,7 @@
   "id": "cachorro",
   "label": "Bira",
   "assetRoot": "/assets/lutadores/cachorro",
+  "torcida": { "estampa": "listras-verticais", "cores": ["#181818", "#F0F0F0"] },
   "anchorUsage": "Bira, padrão Urubu, guarda voltada para a esquerda",
   "selecionavel": true,
   "stats": {},

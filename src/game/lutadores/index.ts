@@ -23,6 +23,8 @@ export interface LutadorJson {
   /** Pasta pública das sheets, ex. `/assets/lutadores/urubu`. */
   assetRoot: string;
   anchorUsage?: string;
+  /** Cores e estampa da metade dele na arquibancada (docs/torcida-dividida.md). */
+  torcida?: { estampa: string; cores: string[] };
   /** Falso tira o lutador da tela de seleção (fica só na Academia). Padrão: verdadeiro. */
   selecionavel?: boolean;
   /**

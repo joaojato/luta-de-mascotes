@@ -2,6 +2,7 @@
   "id": "almirante",
   "label": "Almirante",
   "assetRoot": "/assets/lutadores/almirante",
+  "torcida": { "estampa": "faixa-diagonal", "cores": ["#181818", "#ECECEC"] },
   "anchorUsage": "Almirante em guarda, voltado para a esquerda",
   "selecionavel": true,
   "stats": {
