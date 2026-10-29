@@ -1887,3 +1887,26 @@ sem placa de vídeo: 26 quadros contra 30 da pintura antiga.
 **Atrito:** primeiro sorteio pôs bandeiras e fumaça do P2 na lateral, fora
 da câmera; medição de desempenho torta na primeira vez (ver lições).
 **Em aberto:** aceite visual do João; menus com a torcida neutra ou dividida.
+
+## 2026-10-29: Torcida com todas as cores do clube
+
+**Marco:** 2, segue em andamento.
+**Pedido:** mais variedade (torcedores de camisa lisa nas cores do time),
+o vermelho do Bahia tinha sumido, detalhes na mesma regra, sinalizador
+coeso e nunca preto; cores da torcida no procedimento de lutador novo.
+**Feito:** cada metade mistura a estampa (60%) com camisas lisas em cada
+cor do clube, gola na cor seguinte; bandeira na estampa e em faixas com
+todas as cores; três sinalizadores por lado revezando as cores do clube com
+brilho de 35% ou mais. Regras em `docs/torcida-dividida.md`, bloco 2.6 do
+criador e etapa 5 da skill `lutador-novo`; teste cobra que toda cor de todo
+clube vira camisa e bandeira e que nenhum sinalizador é escuro.
+**Verificado:** `npm run check` com 161 testes, build ok. No navegador:
+Galo x Bahia (camisas brancas, azuis e vermelhas; fumaça azul, vermelha e
+branca) e Fluminense x Flamengo (grená, verde e branco nas duas formas;
+fumaça só vermelha do lado rubro-negro); console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a regra de uma cor só de fumaça e a
+camisa só estampada.
+**Aprovado explicitamente:** "ficou interessante a forma que ficou construída a torcida".
+**Atrito:** nada.
+**Em aberto:** aceite visual desta rodada.

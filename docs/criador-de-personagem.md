@@ -39,9 +39,13 @@ aparecer neste arquivo.
 3. Roupa e acessório (camisa sem escudo, bengala, cachimbo, capa...).
 4. Tem imagem de referência? Onde está? (vai para `referencia/<slug>/`)
 5. Algo que ele **não** pode parecer?
-6. Torcida: cores do clube (tirar da sprite dele, não da camisa oficial) e
-   estampa da camisa: `lisa`, `listras-horizontais`, `listras-verticais` ou
-   `faixa-diagonal` (`torcida` no JSON, ver `docs/torcida-dividida.md`).
+6. Torcida (`torcida` no JSON, regras em `docs/torcida-dividida.md`):
+   **todas** as cores do clube, não só as duas principais (o Bahia é branco,
+   azul **e** vermelho), tiradas da sprite dele e não da camisa oficial, a
+   primeira sendo a da camisa; e a estampa: `lisa`, `listras-horizontais`,
+   `listras-verticais` ou `faixa-diagonal`. Toda cor vira camisa lisa de
+   parte da torcida e entra na bandeira; as que não forem escuras viram
+   sinalizador. Conferir na Luta que cada cor aparece.
 
 ## 3. Como ele luta
 
@@ -149,3 +153,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 29/10/2026: laser dos olhos (`eye-laser`) e efeito com texto que não
   espelha, com célula própria (Esquadrão).
 - 29/10/2026: torcida dividida, cores e estampa por mascote.
+- 29/10/2026: torcida com todas as cores do clube (camisas lisas, bandeira, sinalizador).

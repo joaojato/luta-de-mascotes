@@ -127,15 +127,30 @@ export function indiceDaCor(clube: TorcidaClube, x: number, y: number, caixa: Ca
 }
 
 /**
- * Bandeira de clube de camisa lisa: faixas horizontais com todas as cores.
- * Os outros usam a própria estampa.
- * @param clube - Estampa e cores da camisa.
+ * As camisas de um lado da arquibancada: a estampa do clube e uma camisa
+ * lisa em cada cor dele, com a gola na cor seguinte. Assim toda cor do time
+ * aparece (o vermelho do Bahia sumia quando só estava na barra).
+ * @param clube - Estampa e cores.
  */
-export function estampaDaBandeira(clube: TorcidaClube): TorcidaClube {
-  if (clube.estampa !== 'lisa' || clube.cores.length < 2) {
-    return clube;
+export function variantesDaCamisa(clube: TorcidaClube): TorcidaClube[] {
+  const lisas = clube.cores.map((cor, i) => ({
+    estampa: 'lisa' as const,
+    cores: clube.cores.length > 1 ? [cor, clube.cores[(i + 1) % clube.cores.length]] : [cor]
+  }));
+  return [clube, ...lisas];
+}
+
+/**
+ * Bandeiras: a da estampa da camisa e uma em faixas com todas as cores do
+ * clube. Camisa lisa já vira faixas, então sobra uma só.
+ * @param clube - Estampa e cores.
+ */
+export function bandeirasDoClube(clube: TorcidaClube): TorcidaClube[] {
+  const faixas: TorcidaClube = { estampa: 'listras-horizontais', cores: clube.cores };
+  if (clube.estampa === 'lisa' || clube.cores.length < 2) {
+    return [clube.cores.length < 2 ? clube : faixas];
   }
-  return { estampa: 'listras-horizontais', cores: clube.cores };
+  return clube.cores.length > 2 ? [clube, faixas] : [clube];
 }
 
 /**
@@ -185,14 +200,18 @@ export function pintarChave(
 }
 
 /**
- * Cor da fumaça do sinalizador: a primeira cor viva do clube; time preto e
- * branco solta fumaça clara (fumaça preta some no céu da noite).
+ * Cores do sinalizador: as do clube que fazem sentido em fumaça, vivas
+ * primeiro e depois as claras. Cor escura (brilho abaixo de 35%) nunca vira
+ * fumaça: sinalizador preto não existe e some no céu da noite. Clube só de
+ * cores escuras solta fumaça branca.
  * @param clube - Estampa e cores.
  */
-export function corDaFumaca(clube: TorcidaClube): number {
+export function coresDoSinalizador(clube: TorcidaClube): number[] {
   const rgb = clube.cores.map(corHex);
+  const brilho = ([r, g, b]: Rgb): number => Math.max(r, g, b) / 255;
   const saturacao = ([r, g, b]: Rgb): number => (Math.max(r, g, b) - Math.min(r, g, b)) / Math.max(1, Math.max(r, g, b));
-  const viva = rgb.find((cor) => saturacao(cor) > 0.4);
-  const escolhida = viva ?? rgb.reduce((clara, cor) => (cor[0] + cor[1] + cor[2] > clara[0] + clara[1] + clara[2] ? cor : clara));
-  return (escolhida[0] << 16) | (escolhida[1] << 8) | escolhida[2];
+  const acesas = rgb.filter((cor) => brilho(cor) >= 0.35);
+  const ordem = [...acesas.filter((cor) => saturacao(cor) > 0.4), ...acesas.filter((cor) => saturacao(cor) <= 0.4)];
+  const cores = ordem.map(([r, g, b]) => (r << 16) | (g << 8) | b);
+  return cores.length > 0 ? cores : [0xf0f0f0];
 }

@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 
-import { corDaFumaca, estampaDaBandeira, pintarChave, type TorcidaClube } from './torcida';
+import { bandeirasDoClube, coresDoSinalizador, pintarChave, variantesDaCamisa, type TorcidaClube } from './torcida';
 
 /**
  * Monta a torcida dividida na Luta (docs/torcida-dividida.md): fundo sem
@@ -216,24 +216,33 @@ export function montarTorcida(
   const meio = dados.divisaoX;
   scene.add.image(0, 0, TORCIDA_CHAVES.fundo).setOrigin(0, 0).setScale(escala).setDepth(profundidade);
 
+  // Uma folha pintada por camisa do clube (estampa e as lisas) e por
+  // bandeira; ficam guardadas pelo id do lutador para as próximas lutas.
   const lados = [p1, p2].map((lado) => {
-    const torcedores = texturaFatiada(scene, TORCIDA_CHAVES.torcedores, `torcida-torcedores-${lado.id}`, dados.torcedores.celula, lado.clube);
-    const bandeira = texturaFatiada(scene, TORCIDA_CHAVES.bandeira, `torcida-bandeira-${lado.id}`, dados.bandeira.celula, estampaDaBandeira(lado.clube));
+    const camisas = variantesDaCamisa(lado.clube).map((camisa, i) =>
+      texturaFatiada(scene, TORCIDA_CHAVES.torcedores, `torcida-torcedores-${lado.id}-${i}`, dados.torcedores.celula, camisa)
+    );
+    const bandeiras = bandeirasDoClube(lado.clube).map((bandeira, i) => {
+      const textura = texturaFatiada(scene, TORCIDA_CHAVES.bandeira, `torcida-bandeira-${lado.id}-${i}`, dados.bandeira.celula, bandeira);
+      return { textura, anim: animacao(scene, `${textura}-tremula`, textura, [...Array(dados.bandeira.quadros).keys()], 8) };
+    });
     return {
       lado,
-      torcedores,
-      bandeira,
-      animTipo: (tipo: number) =>
+      camisas,
+      bandeiras,
+      sinalizador: coresDoSinalizador(lado.clube),
+      animTipo: (camisa: number, tipo: number) =>
         animacao(
           scene,
-          `${torcedores}-tipo${tipo}`,
-          torcedores,
+          `${camisas[camisa]}-tipo${tipo}`,
+          camisas[camisa],
           BALANCO.map((q) => tipo * dados.torcedores.quadros + Math.min(q, dados.torcedores.quadros - 1)),
           3
-        ),
-      animBandeira: animacao(scene, `${bandeira}-tremula`, bandeira, [...Array(dados.bandeira.quadros).keys()], 8)
+        )
     };
   });
+  // Seis em cada dez com a estampa do clube, o resto de camisa lisa numa das cores dele.
+  const sortearCamisa = (total: number): number => (total < 2 || sortear() < 0.6 ? 0 : 1 + Math.floor(sortear() * (total - 1)));
   const fumaca = texturaFatiada(scene, TORCIDA_CHAVES.fumaca, 'torcida-fumaca-quadros', dados.fumaca.celula, null);
   const chama = texturaFatiada(scene, TORCIDA_CHAVES.sinalizador, 'torcida-sinalizador-quadros', dados.sinalizador.celula, null);
   const animFumaca = animacao(scene, `${fumaca}-sobe`, fumaca, [...Array(dados.fumaca.quadros).keys()], 8);
@@ -273,10 +282,12 @@ export function montarTorcida(
     for (let x = fileira.xInicio + passo / 2; x <= fileira.xFim; x += passo) {
       const px = x + (sortear() - 0.5) * passo * 0.3;
       const ladoIndice: 0 | 1 = px < meio ? 0 : 1;
+      const lado = lados[ladoIndice];
+      const camisa = sortearCamisa(lado.camisas.length);
       const tipo = Math.floor(sortear() * dados.torcedores.tipos);
       const inicio = Math.floor(sortear() * BALANCO.length);
       const ritmo = 0.7 + sortear() * 0.6;
-      camadas[indice].gente.push(criar(indice, px, fileira.y, lados[ladoIndice].torcedores, pes, lados[ladoIndice].animTipo(tipo), inicio, ritmo));
+      camadas[indice].gente.push(criar(indice, px, fileira.y, lado.camisas[camisa], pes, lado.animTipo(camisa, tipo), inicio, ritmo));
       if (fileira.setor === 'central') posicoes.push({ x: px, fileira: indice, lado: ladoIndice });
     }
   });
@@ -305,18 +316,19 @@ export function montarTorcida(
   const celula = dados.torcedores.celula;
   ([0, 1] as const).forEach((ladoIndice) => {
     const lado = lados[ladoIndice];
-    espalhar(ladoIndice, 3, [0.1, 0.5]).forEach((p) => {
+    espalhar(ladoIndice, 3, [0.1, 0.5]).forEach((p, k) => {
       const f = fileiras[p.fileira];
+      const bandeira = lado.bandeiras[k % lado.bandeiras.length];
       camadas[p.fileira].atras.push(
-        criar(p.fileira, p.x, f.y - celula.altura * 0.55 * f.escala, lado.bandeira, dados.bandeira.origem, lado.animBandeira, Math.floor(sortear() * dados.bandeira.quadros))
+        criar(p.fileira, p.x, f.y - celula.altura * 0.55 * f.escala, bandeira.textura, dados.bandeira.origem, bandeira.anim, Math.floor(sortear() * dados.bandeira.quadros))
       );
     });
-    espalhar(ladoIndice, 2, [0.35, 0.75]).forEach((p) => {
+    espalhar(ladoIndice, 3, [0.35, 0.75]).forEach((p, k) => {
       const f = fileiras[p.fileira];
       const mao = { x: p.x + celula.largura * 0.2 * f.escala, y: f.y - celula.altura * 0.85 * f.escala };
       const topoDaChama = mao.y - dados.sinalizador.celula.altura * 0.75 * f.escala;
       const fumacaSprite = criar(p.fileira, mao.x, topoDaChama, fumaca, dados.fumaca.origem, animFumaca, Math.floor(sortear() * dados.fumaca.quadros));
-      fumacaSprite.setTint(corDaFumaca(lado.lado.clube)).setAlpha(0.85);
+      fumacaSprite.setTint(lado.sinalizador[k % lado.sinalizador.length]).setAlpha(0.85);
       camadas[p.fileira].frente.push(fumacaSprite, criar(p.fileira, mao.x, mao.y, chama, dados.sinalizador.origem, animChama, 0));
     });
   });

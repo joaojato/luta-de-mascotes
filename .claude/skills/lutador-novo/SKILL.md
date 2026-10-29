@@ -63,10 +63,20 @@ caixas desenhadas, ajustar o JSON até cada golpe acertar onde parece
 acertar (Regra do Corpo: só o corpo apanha; a caixa de acerto vai até onde o
 desenho vai). Depois, uma luta contra outro mascote.
 
+## Etapa 5: torcida
+
+Declarar `torcida` no JSON com **todas** as cores do clube (amostradas da
+sprite do mascote) e a estampa da camisa, conforme o bloco 2.6 do criador.
+Abrir uma luta contra outro mascote e conferir que cada cor aparece na
+metade dele: em camisas, bandeiras e sinalizadores (nenhum sinalizador
+escuro). O teste em `src/game/torcida.test.ts` cobra o JSON; a cor que some
+na tela só aparece olhando.
+
 ## Critério de pronto
 
 - `npm run check` passa, saída mostrada.
 - Mascote na seleção, luta sem erro no console.
+- Torcida dele na Luta com todas as cores do clube visíveis.
 - Ficha do GDD completa; diário com o que saiu errado.
 - Se o mascote trouxe ação, golpe ou tipo de especial novo, ele entrou em
   `docs/criador-de-personagem.md` (Regra do Criador, cobrada por teste).

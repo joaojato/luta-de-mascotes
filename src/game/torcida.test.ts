@@ -2,13 +2,15 @@ import { describe, expect, it } from 'vitest';
 
 import { LUTADORES } from './lutadores';
 import {
+  bandeirasDoClube,
   brilhoDaChave,
-  corDaFumaca,
+  corHex,
+  coresDoSinalizador,
   ESTAMPAS,
-  estampaDaBandeira,
   indiceDaCor,
   pintarChave,
   TORCIDA_NEUTRA,
+  variantesDaCamisa,
   torcidaValida,
   type TorcidaClube
 } from './torcida';
@@ -56,7 +58,7 @@ describe('torcida dividida (docs/torcida-dividida.md)', () => {
     expect(indiceDaCor(bahia, 10, 0, caixa)).toBe(1);
     expect(indiceDaCor(bahia, 10, 12, caixa)).toBe(0);
     expect(indiceDaCor(bahia, 10, 23, caixa)).toBe(2);
-    expect(estampaDaBandeira(bahia).estampa).toBe('listras-horizontais');
+    expect(bandeirasDoClube(bahia)).toEqual([{ estampa: 'listras-horizontais', cores: bahia.cores }]);
   });
 
   it('pinta só a chave, multiplica pela sombra e estampa cada célula pela própria camisa', () => {
@@ -73,9 +75,19 @@ describe('torcida dividida (docs/torcida-dividida.md)', () => {
     expect([...pixels.slice(28, 32)]).toEqual([0xc8, 0x32, 0, 255]);
   });
 
-  it('fumaça usa a primeira cor viva; preto e branco solta fumaça clara', () => {
-    expect(corDaFumaca({ estampa: 'listras-horizontais', cores: ['#B01010', '#181818'] })).toBe(0xb01010);
-    expect(corDaFumaca({ estampa: 'faixa-diagonal', cores: ['#181818', '#ECECEC'] })).toBe(0xececec);
+  it('cada cor do clube ganha uma camisa lisa, com a gola na cor seguinte', () => {
+    const bahia: TorcidaClube = { estampa: 'lisa', cores: ['#F0F0F0', '#1860D8', '#D81800'] };
+    const camisas = variantesDaCamisa(bahia);
+    expect(camisas[0]).toBe(bahia);
+    expect(camisas.slice(1).map((c) => c.cores[0])).toEqual(bahia.cores);
+    expect(camisas[3]).toEqual({ estampa: 'lisa', cores: ['#D81800', '#F0F0F0'] });
+  });
+
+  it('sinalizador: cores vivas do clube, depois as claras, nunca escura', () => {
+    expect(coresDoSinalizador({ estampa: 'listras-horizontais', cores: ['#B01010', '#181818'] })).toEqual([0xb01010]);
+    expect(coresDoSinalizador({ estampa: 'faixa-diagonal', cores: ['#181818', '#ECECEC'] })).toEqual([0xececec]);
+    expect(coresDoSinalizador({ estampa: 'lisa', cores: ['#F0F0F0', '#1860D8', '#D81800'] })).toEqual([0x1860d8, 0xd81800, 0xf0f0f0]);
+    expect(coresDoSinalizador({ estampa: 'lisa', cores: ['#181818'] })).toEqual([0xf0f0f0]);
   });
 
   it('JSON inválido vira torcida neutra, nunca magenta', () => {
@@ -90,6 +102,20 @@ describe('torcida dividida (docs/torcida-dividida.md)', () => {
       expect(torcida, `${lutador.id} sem torcida`).toBeTruthy();
       expect(ESTAMPAS, `${lutador.id}`).toContain(torcida!.estampa);
       expect(torcidaValida(torcida), `${lutador.id}`).not.toBe(TORCIDA_NEUTRA);
+    });
+  });
+
+  it('toda cor de todo clube aparece numa camisa, e nenhum sinalizador é escuro', () => {
+    LUTADORES.filter((lutador) => lutador.selecionavel !== false).forEach((lutador) => {
+      const clube = torcidaValida(lutador.torcida);
+      const lisas = variantesDaCamisa(clube).map((camisa) => camisa.cores[0]);
+      clube.cores.forEach((cor) => expect(lisas, `${lutador.id} ${cor}`).toContain(cor));
+      const bandeiras = bandeirasDoClube(clube).flatMap((bandeira) => bandeira.cores);
+      clube.cores.forEach((cor) => expect(bandeiras, `${lutador.id} bandeira ${cor}`).toContain(cor));
+      coresDoSinalizador(clube).forEach((cor) => {
+        expect(Math.max(cor >> 16, (cor >> 8) & 255, cor & 255), `${lutador.id} sinalizador escuro`).toBeGreaterThanOrEqual(0.35 * 255);
+        expect(clube.cores.map(corHex).map(([r, g, b]) => (r << 16) | (g << 8) | b).concat(0xf0f0f0), `${lutador.id}`).toContain(cor);
+      });
     });
   });
 });

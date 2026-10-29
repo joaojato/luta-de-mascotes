@@ -36,6 +36,19 @@ do João).
 | Saci | Internacional | `lisa` | `#E81810`, `#F0F0F0` (detalhe) |
 | Esquadrão | Bahia | `lisa` | `#F0F0F0`, `#1860D8`, `#D81800` (detalhes) |
 
+Regras de cor (João, 29/10/2026):
+
+- **Toda cor do clube aparece.** Cada metade mistura a estampa (6 em cada
+  10 torcedores) com camisas lisas em cada cor do clube, gola na cor
+  seguinte. O vermelho do Bahia sumia quando só existia num detalhe.
+- **Detalhes seguem a mesma regra.** Bandeira na estampa e, para clube de
+  três cores ou camisa lisa, em faixas com todas as cores.
+- **Sinalizador coeso com o clube e nunca escuro.** As cores do clube com
+  brilho de 35% ou mais, vivas primeiro; os sinalizadores de um lado
+  revezam entre elas. Clube só de cores escuras solta fumaça branca.
+- **Faz parte de todo lutador novo** (skill `lutador-novo`, etapa 5, e
+  bloco 2.6 do criador).
+
 No JSON de cada mascote (Regra do JSON):
 
 ```json

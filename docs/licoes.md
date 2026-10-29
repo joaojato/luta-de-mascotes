@@ -359,3 +359,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   comparação justa (pintura antiga contra torcida nova, mesma página) deu
   30 contra 26. O custo era uma camada de tela inteira, não os 708
   torcedores. (2026-10-29)
+- **Toda cor do clube tem que aparecer na torcida.** O Bahia saiu só branco
+  e azul: o vermelho estava na barra de 2 px da camisa e sumiu. O João pediu
+  variedade (torcedores de camisa lisa em cada cor do time), detalhes na
+  mesma regra e sinalizador coeso com o clube, nunca preto. As cores da
+  torcida viram parte do procedimento de todo lutador novo. (2026-10-29)
