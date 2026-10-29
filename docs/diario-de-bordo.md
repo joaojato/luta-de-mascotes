@@ -1812,3 +1812,31 @@ de 513 px acerta (8%), voadora acerta (8%), console sem erro.
 **Aprovado explicitamente:** nada.
 **Atrito:** nada.
 **Em aberto:** dash, chute baixo, soco no ar, retrato, tranco do `hit-high`.
+
+## 2026-10-29: Jogo publicado na Vercel
+
+**Marco:** 2, segue em andamento; passo do Marco 3 (link publicado).
+**Pedido:** "Dê deploy no vercel do jogo". Perguntado sobre o código do
+Chong-U sem licença, escolheu público agora, com o Esquadrão incluso.
+**Feito:** ADR 0006 (deploy público antes da resposta do Chong-U). Projeto
+`luta-de-mascotes` na conta pessoal `joaojato` da Vercel, em
+**https://luta-de-mascotes.vercel.app**. O conector da Vercel não tem acesso
+ao escopo pessoal e a CLI da máquina está logada na Icons4u, então a CLI
+ganhou um login separado em `~/.vercel-pessoal` (o da Icons4u fica intacto).
+Ligar ao GitHub falhou (falta conectar o GitHub ao login da Vercel); o
+deploy foi `vercel build --prod` local e `vercel deploy --prebuilt --prod`,
+que sobe só o build, nunca o código-fonte nem `.env`. `.vercel` no
+`.gitignore`.
+**Verificado:** `npm run check` com 146 testes, build de 64 MB, nenhuma chave
+no build. Link de produção responde 200 sem login. Chromium headless no link
+publicado: abertura, menu só com Jogar e Ajustes, seleção com os sete (com o
+Esquadrão), luta Urubu contra Almirante com HUD e estádio; nenhum WebSocket.
+Único erro: 404 em `configs/background-gym.json`, config do painel de debug
+que não existe em `public/`, sem efeito no jogo.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** link público antes da autorização do Chong-U.
+**Atrito:** conector da Vercel sem acesso ao escopo pessoal; precisou de
+login manual dele na CLI.
+**Em aberto:** mensagem ao Chong-U; deploy é manual até o GitHub ser
+conectado na Vercel; o 404 do `background-gym.json`.

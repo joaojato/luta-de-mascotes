@@ -60,10 +60,13 @@ ele é quebrado em dois, não esticado.
   Hoje são genéricos e não fazem nada de próprio; cada um precisa de uma
   mecânica que diga quem é o mascote, como a caravela do Almirante e o
   tornado do Saci.
-- [ ] Build para a Vercel (29/10/2026): o build publicado mostra só Jogar
-  e Ajustes. Academia e Celular ficam no `npm run dev`
-  (`FERRAMENTAS_DE_DEV` em `src/game/constants.ts`). Falta: decidir o
-  deploy diante da autorização do Chong-U (`docs/varredura-chong-u.md`).
+- [x] Build para a Vercel (29/10/2026): publicado em
+  https://luta-de-mascotes.vercel.app, só Jogar e Ajustes. Academia e
+  Celular ficam no `npm run dev` (`FERRAMENTAS_DE_DEV`). Público antes da
+  autorização do Chong-U (ADR 0006). Republicar: `npx vercel build --prod`
+  e `npx vercel deploy --prebuilt --prod`, os dois com
+  `--global-config ~/.vercel-pessoal`. Falta: mensagem ao Chong-U e
+  conectar o GitHub na Vercel para deploy a cada push.
 - [ ] Esquadrão, o Bahia (29/10/2026): na seleção com corte de mão aberta,
   laser dos olhos, Bora Bahêa que cresce com a distância e o corpo da v12
   (idle, andar, defesas, pulo, apanhar, tonto, queda). Falta: dash, chute

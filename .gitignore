@@ -45,3 +45,6 @@ __pycache__/
 
 # Rascunhos e conferências de arte do Codex (material bruto)
 output/
+
+# Vínculo local com o projeto da Vercel
+.vercel

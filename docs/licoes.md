@@ -334,3 +334,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   `fighter.ts` e `moveMechanics.ts` ao mesmo tempo. Separei meus trechos por
   patch no índice em vez de commitar o arquivo inteiro. Conferir `git diff`
   antes de todo commit. (2026-10-29)
+- **Deploy da Vercel sai da conta pessoal por um login separado.** O
+  conector da Vercel não alcança o escopo `joaojatos-projects` e a CLI da
+  máquina é da Icons4u. Todo comando da CLI neste projeto leva
+  `--global-config ~/.vercel-pessoal`. Sem o GitHub conectado, publicar é
+  `vercel build --prod` e `vercel deploy --prebuilt --prod`: o `--prebuilt`
+  evita subir `Fight_Detection/`, `referencia/` e `.env`. (2026-10-29)
+- **Link público antes da autorização do Chong-U, por escolha dele.** Diante
+  do código sem licença, o João preferiu publicar já e assumir o risco
+  (ADR 0006). Pedido de autorização continua devido. (2026-10-29)
