@@ -291,3 +291,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   momento" sobre a tontura v9, o meteoro que atordoa e a nuvem que envolve.
   Próximo passo pedido por ele: trocar tudo que é estético do Chong-U.
   (2026-10-29)
+- **Interface é de rua, simples.** O João corrigiu o Codex: nada de
+  metálico, dourado ornamental ou medieval; pintura clara sobre carvão,
+  detalhes vermelho e azul. Vale para todas as telas: o `estilo.ts` trocou
+  o amarelo da Seleção pelo creme da logo. (2026-10-29)
+- **Só integrar o que o Codex publicou em `public/` com guia em `docs/`.**
+  Peguei rascunhos de `output/` enquanto ele terminava e gravei os cartões
+  por cima dos finais dele um minuto depois. Restaurado pelos hashes do
+  relatório. Fonte em `output/` não é entrega. (2026-10-29)

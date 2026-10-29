@@ -4,6 +4,7 @@ import { celular, juntarInputs } from '../controle/celularNoJogo';
 import { PainelCelular } from '../controle/painelCelular';
 import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fighter';
 import { getCharacterDefinition } from '../game/hero';
+import { CONTORNO_TITULO, COR_FUNDO, FONTE_TITULO, SOMBRA_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from '../game/estilo';
 import { carregarControles, COMANDOS_LUTA, legendaDosBotoes, type ComandoLuta, type Controles, type Lado } from '../game/controles';
 import { MatchHud } from '../game/matchHud';
 import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, jumpsOver, specialDodged } from '../game/moveMechanics';
@@ -113,12 +114,13 @@ export class MatchScene extends BaseScene {
 
     this.banner = this.add
       .text(this.cameras.main.centerX, this.cameras.main.centerY - 40, '', {
-        color: '#f8fafc',
-        fontFamily: 'monospace',
-        fontSize: '64px',
-        stroke: '#020617',
-        strokeThickness: 8
+        color: TEXTO_DESTAQUE,
+        fontFamily: FONTE_TITULO,
+        fontSize: '84px',
+        stroke: CONTORNO_TITULO,
+        strokeThickness: 10
       })
+      .setShadow(0, 6, SOMBRA_TITULO, 0, true, true)
       .setOrigin(0.5)
       .setDepth(BANNER_DEPTH)
       .setScrollFactor(0)
@@ -337,9 +339,9 @@ export class MatchScene extends BaseScene {
     const p2 = this.p2.health01;
 
     if (p1 > p2) {
-      this.endRound(1, 'TIME UP', '#facc15');
+      this.endRound(1, 'TEMPO ESGOTADO', TEXTO_DESTAQUE);
     } else if (p2 > p1) {
-      this.endRound(2, 'TIME UP', '#facc15');
+      this.endRound(2, 'TEMPO ESGOTADO', TEXTO_DESTAQUE);
     } else {
       this.drawRound();
     }
@@ -352,7 +354,7 @@ export class MatchScene extends BaseScene {
     }
 
     this.phase = 'roundEnd';
-    this.showBanner('DRAW', '#e2e8f0', 1.1);
+    this.showBanner('EMPATE', TEXTO_CLARO, 1.1);
     this.time.delayedCall(1100, () => this.startRound());
   }
 
@@ -568,7 +570,7 @@ export class MatchScene extends BaseScene {
         return;
       }
 
-      this.showBanner('FIGHT!', '#facc15', 1.15);
+      this.showBanner('FIGHT!', TEXTO_DESTAQUE, 1.15);
       this.phase = 'fighting';
       this.p1.setFrozen(false);
       this.p2.setFrozen(false);
@@ -626,35 +628,38 @@ export class MatchScene extends BaseScene {
     const { centerX, centerY, width, height } = this.cameras.main;
 
     const dim = this.add
-      .rectangle(centerX, centerY, width, height, 0x020617, 0.62)
+      .rectangle(centerX, centerY, width, height, COR_FUNDO, 0.66)
       .setDepth(OVERLAY_DEPTH)
       .setScrollFactor(0);
 
     const title = this.add
-      .text(centerX, centerY - 90, `${winnerName}  WINS!`, {
-        color: '#facc15',
-        fontFamily: 'monospace',
-        fontSize: '46px',
-        stroke: '#020617',
-        strokeThickness: 6,
+      .text(centerX, centerY - 90, `${winnerName.toUpperCase()} VENCE!`, {
+        color: TEXTO_DESTAQUE,
+        fontFamily: FONTE_TITULO,
+        fontSize: '56px',
+        stroke: CONTORNO_TITULO,
+        strokeThickness: 8,
         align: 'center'
       })
+      .setShadow(0, 5, SOMBRA_TITULO, 0, true, true)
       .setOrigin(0.5)
       .setDepth(OVERLAY_DEPTH)
       .setScrollFactor(0);
 
     const score = this.add
       .text(centerX, centerY - 30, `${this.p1Wins} - ${this.p2Wins}`, {
-        color: '#e2e8f0',
-        fontFamily: 'monospace',
-        fontSize: '28px'
+        color: TEXTO_CLARO,
+        fontFamily: FONTE_TITULO,
+        fontSize: '32px',
+        stroke: CONTORNO_TITULO,
+        strokeThickness: 5
       })
       .setOrigin(0.5)
       .setDepth(OVERLAY_DEPTH)
       .setScrollFactor(0);
 
-    const rematch = this.makeOverlayButton(centerX, centerY + 40, 'Rematch  (R)', () => this.rematch());
-    const menu = this.makeOverlayButton(centerX, centerY + 96, 'Main Menu  (Esc)', () => this.goToMenu());
+    const rematch = this.makeOverlayButton(centerX, centerY + 40, 'REVANCHE  (R)', () => this.rematch());
+    const menu = this.makeOverlayButton(centerX, centerY + 96, 'MENU  (Esc)', () => this.goToMenu());
 
     this.overlay = [dim, title, score, rematch, menu];
   }
@@ -669,19 +674,19 @@ export class MatchScene extends BaseScene {
   private makeOverlayButton(x: number, y: number, label: string, onClick: () => void): Phaser.GameObjects.Text {
     const button = this.add
       .text(x, y, label, {
-        color: '#e2e8f0',
-        fontFamily: 'monospace',
-        fontSize: '22px',
-        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-        padding: { x: 18, y: 10 }
+        color: TEXTO_CLARO,
+        fontFamily: FONTE_TITULO,
+        fontSize: '26px',
+        backgroundColor: 'rgba(11, 7, 22, 0.9)',
+        padding: { x: 22, y: 10 }
       })
       .setOrigin(0.5)
       .setDepth(OVERLAY_DEPTH)
       .setScrollFactor(0)
       .setInteractive({ useHandCursor: true });
 
-    button.on('pointerover', () => button.setColor('#facc15'));
-    button.on('pointerout', () => button.setColor('#e2e8f0'));
+    button.on('pointerover', () => button.setColor(TEXTO_DESTAQUE).setBackgroundColor('rgba(42, 7, 7, 0.92)'));
+    button.on('pointerout', () => button.setColor(TEXTO_CLARO).setBackgroundColor('rgba(11, 7, 22, 0.9)'));
     button.on('pointerdown', onClick);
 
     return button;

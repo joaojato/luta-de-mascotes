@@ -53,8 +53,8 @@ export class ModeSelectScene extends BaseScene {
 
   private buildCards(): void {
     const { centerX, centerY } = this.cameras.main;
-    const cardWidth = 320;
-    const cardHeight = 260;
+    const cardWidth = 380;
+    const cardHeight = 390;
     const gap = 60;
     const totalWidth = cardWidth * MODE_OPTIONS.length + gap * (MODE_OPTIONS.length - 1);
     const startX = centerX - totalWidth / 2 + cardWidth / 2;
@@ -65,11 +65,12 @@ export class ModeSelectScene extends BaseScene {
         y: centerY + 10,
         width: cardWidth,
         height: cardHeight,
-        title: option.title,
+        // O cartão já traz o "1 VS 1" desenhado na arte.
+        title: '',
         subtitle: option.subtitle,
         texture: option.texture,
-        imageMaxSize: 168,
-        imageOffsetY: -46,
+        imageMaxSize: 352,
+        imageOffsetY: -22,
         onHover: () => this.setSelection(index),
         onClick: () => this.confirm(index)
       });

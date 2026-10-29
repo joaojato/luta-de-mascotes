@@ -32,7 +32,9 @@ export class MainMenuScene extends BaseScene {
 
     this.markActiveScene(SCENE_KEYS.MainMenu);
     this.createBackdrop();
-    this.createHeading(GAME_TITLE, GAME_TAGLINE);
+    if (!this.createLogo(108, 440)) {
+      this.createHeading(GAME_TITLE, GAME_TAGLINE);
+    }
 
     this.renderMenu();
 

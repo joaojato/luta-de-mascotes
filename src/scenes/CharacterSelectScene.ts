@@ -3,7 +3,7 @@ import * as Phaser from 'phaser';
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { FIGHTER_CHARACTER_DEFINITIONS, findCharacterAnimationKeyByAction, type CharacterDefinition } from '../game/hero';
 import { LUTADORES } from '../game/lutadores';
-import { COR_OURO, COR_P1, COR_P2, FONTE_TITULO } from '../game/estilo';
+import { COR_DESTAQUE, COR_P1, COR_P2, FONTE_TITULO } from '../game/estilo';
 import { SCENE_KEYS, type MatchMode } from '../game/types';
 import { BaseScene } from './BaseScene';
 
@@ -14,7 +14,7 @@ interface CharacterSelectData {
 
 const P1_COLOR = COR_P1;
 const P2_COLOR = COR_P2;
-const GOLD = COR_OURO;
+const GOLD = COR_DESTAQUE;
 const TILE_SIZE = 116;
 const TILE_GAP = 10;
 const MAX_COLUMNS = 6;

@@ -189,6 +189,12 @@ export class MatchHud {
         ? { anchorX: slotLeft, topY: slotTop, width: slotWidth, height: slotHeight, originX: 0 }
         : { anchorX: slotLeft + slotWidth, topY: slotTop, width: slotWidth, height: slotHeight, originX: 1 };
 
+    // Vida perdida: o vão da moldura de rua é transparente, então o fundo escuro vem daqui.
+    const track = this.scene.add
+      .rectangle(slotLeft, slotTop, slotWidth, slotHeight, 0x111114, 0.92)
+      .setOrigin(0, 0);
+    this.root.add(track);
+
     const fill = this.scene.add
       .image(geometry.anchorX, geometry.topY, KEY, 'health-fill-green-left')
       .setOrigin(geometry.originX, 0);
@@ -229,6 +235,11 @@ export class MatchHud {
     const frameTop = centerY - PORTRAIT_DISP / 2;
     const socketCx = frameLeft + (socket.x + socket.width / 2) * sx;
     const socketCy = frameTop + (socket.y + socket.height / 2) * sy;
+
+    // Mesmo motivo da barra: o vão do retrato é transparente na moldura de rua.
+    this.root.add(
+      this.scene.add.rectangle(socketCx, socketCy, socket.width * sx, socket.height * sy, 0x111114, 0.92)
+    );
 
     const portraitKey = getCharacterDefinition(characterId).portrait.key;
     if (this.scene.textures.exists(portraitKey)) {

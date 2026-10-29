@@ -1,6 +1,6 @@
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { GAME_TAGLINE, GAME_TITLE } from '../game/constants';
-import { CONTORNO_TITULO, FONTE_TEXTO, FONTE_TITULO, TEXTO_CLARO, TEXTO_OURO } from '../game/estilo';
+import { CONTORNO_TITULO, SOMBRA_TITULO, FONTE_TEXTO, FONTE_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from '../game/estilo';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
 
@@ -17,21 +17,23 @@ export class SplashScene extends BaseScene {
     const camera = this.cameras.main;
     this.createBackdrop();
 
-    this.add
-      .text(camera.centerX, camera.centerY - 40, GAME_TITLE.toUpperCase(), {
-        color: TEXTO_OURO,
-        fontFamily: FONTE_TITULO,
-        fontSize: camera.width < camera.height ? '64px' : '96px',
-        stroke: CONTORNO_TITULO,
-        strokeThickness: 12
-      })
-      .setOrigin(0.5)
-      .setShadow(0, 6, '#000000', 0, true, true)
-      .setDepth(2);
+    if (!this.createLogo(camera.centerY - 50, 820)) {
+      this.add
+        .text(camera.centerX, camera.centerY - 40, GAME_TITLE.toUpperCase(), {
+          color: TEXTO_DESTAQUE,
+          fontFamily: FONTE_TITULO,
+          fontSize: camera.width < camera.height ? '64px' : '96px',
+          stroke: CONTORNO_TITULO,
+          strokeThickness: 12
+        })
+        .setOrigin(0.5)
+        .setShadow(0, 6, SOMBRA_TITULO, 0, true, true)
+        .setDepth(2);
+    }
 
     if (GAME_TAGLINE) {
       this.add
-        .text(camera.centerX, camera.centerY + 40, GAME_TAGLINE, {
+        .text(camera.centerX, camera.centerY + 110, GAME_TAGLINE, {
           color: TEXTO_CLARO,
           fontFamily: FONTE_TEXTO,
           fontSize: '22px',

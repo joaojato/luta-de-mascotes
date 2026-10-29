@@ -1,5 +1,11 @@
 # Pedidos de arte para o Codex
 
+## Entrega 29/10/2026: interface de rua
+
+HUD e faíscas refeitos no atlas ativo de 1254×1254, preservando os 22 recortes e sockets. Cartões 1 VS 1 / 1 VS CPU substituídos por Urubu contra Galo numa quadra de bairro. Logo transparente 1200×400 em public/assets/branding/luta-de-mascotes-logo.png, pronto para integrar na abertura/menu. Direção explícita do usuário: simples, de rua, sem metálico/medieval.
+
+Coordenadas exatas e detalhes: [identidade-ui-v1.md](identidade-ui-v1.md). Fontes finais, prompts, hashes, backups e prévias: output/identidade-ui-v1/. Nenhuma alteração de TypeScript nesta entrega.
+
 ## Entrega 29/10/2026: vítimas estunadas
 
 Entregues `stunned.png` nas seis pastas principais: Urubu, Almirante, Saci, Cartola, Bira e Galo. Quatro quadros de tontura com X, estrelas e espirais sobre a cabeça, 6 FPS sugeridos, loop. Este pedido retoma as artes antes adiadas. Falta registrar/ligar a ação ao atordoamento na lógica pelo Claude. Guia: `docs/estunados-v8.md`; manifesto: `output/stun-v8/claude-integration.json`; prévias: `output/stun-v8/revisao.html`.

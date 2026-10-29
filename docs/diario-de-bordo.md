@@ -1631,3 +1631,24 @@ arquivo faltando.
 **Atrito:** nenhum.
 **Em aberto:** ligar as entregas do Codex; trocar o shell de debug por um
 nosso (leva junto o resto do código do RPG); autorização do Chong-U.
+
+## 2026-10-29: Identidade de rua do Codex no jogo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** aplicar as entregas do Codex e ficar de olho nas próximas.
+**Feito:** HUD e faíscas (atlas com os mesmos 22 recortes), cartões de modo
+(Urubu contra Galo na quadra de bairro) e logo na abertura e no menu; cores
+do `estilo.ts` trocadas do amarelo para o creme com sombra vermelha da logo;
+fundo escuro no vão da barra de vida e do retrato (a moldura nova é
+transparente ali); letreiros e fim de luta no estilo novo e em português
+(VENCE!, REVANCHE, TEMPO ESGOTADO, EMPATE; FIGHT! e K.O. ficam). Vigia de
+arquivos ligado nas pastas de entrega do Codex.
+**Verificado:** `npm run check` com 124 testes, build ok. Hashes das quatro
+saídas do Codex conferidos com o relatório. Nove telas, HUD com vida baixa,
+faísca no acerto e tela de vitória fotografados no navegador.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada; desfiz meu próprio erro (cartões
+gravados por cima dos finais do Codex).
+**Aprovado explicitamente:** nada.
+**Atrito:** apliquei rascunho de `output/` enquanto o Codex terminava.
+**Em aberto:** shell de debug (código dele); autorização do Chong-U.

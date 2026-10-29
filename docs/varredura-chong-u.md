@@ -27,7 +27,9 @@ critério de publicação. O critério é esta lista zerada.
 - Seção 2 apagada: `ui/quest`, `tiles/quest`, `levels`, `tile-gym.json`,
   `index.json` e `uiAtlas.ts`; o Boot não carrega mais os atlas do RPG e o
   shell não busca mais fase nem tile gym ao iniciar.
-- Com o Codex: atlas do HUD, faíscas, cartões de modo e logo.
+- Codex (identidade de rua, `docs/identidade-ui-v1.md`): atlas do HUD com
+  faíscas, cartões de modo e logo, ligados no jogo. Com isso a seção 1
+  está zerada: nenhuma arte ou som dele aparece no jogo.
 
 Sobra de código dele sem uso no jogo: `tileAtlas.ts`, `tileConfig.ts`,
 `levelEditor.ts`, `generatedAssets.ts` (texturas `sample-*` e `ui-*`) e a

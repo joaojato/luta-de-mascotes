@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 
-import { COR_BORDA, COR_OURO, COR_PAINEL, FONTE_TEXTO, FONTE_TITULO, TEXTO_APAGADO, TEXTO_CLARO, TEXTO_OURO } from './estilo';
+import { COR_BORDA, COR_DESTAQUE, COR_PAINEL, FONTE_TEXTO, FONTE_TITULO, TEXTO_APAGADO, TEXTO_CLARO, TEXTO_DESTAQUE } from './estilo';
 
 export interface TextButton {
   group: Phaser.GameObjects.Container;
@@ -34,9 +34,9 @@ export function createTextButton(scene: Phaser.Scene, config: TextButtonConfig):
   const group = scene.add.container(0, 0, [background, label]);
 
   const setSelected = (selected: boolean): void => {
-    background.setStrokeStyle(selected ? 3 : 2, selected ? COR_OURO : COR_BORDA, 1);
-    background.setFillStyle(selected ? 0x1c1405 : COR_PAINEL, selected ? 0.92 : 0.82);
-    label.setColor(selected ? TEXTO_OURO : TEXTO_CLARO);
+    background.setStrokeStyle(selected ? 3 : 2, selected ? COR_DESTAQUE : COR_BORDA, 1);
+    background.setFillStyle(selected ? 0x2a0707 : COR_PAINEL, selected ? 0.92 : 0.82);
+    label.setColor(selected ? TEXTO_DESTAQUE : TEXTO_CLARO);
   };
 
   background.on('pointerover', () => {
@@ -148,7 +148,7 @@ export function createSelectionCard(scene: Phaser.Scene, config: SelectionCardCo
   const setSelected = (selected: boolean, accent: number = 0x38bdf8): void => {
     background.setStrokeStyle(selected ? 4 : 2, selected ? accent : CARD_BASE_STROKE, 1);
     container.setScale(selected ? 1.05 : 1);
-    title.setColor(selected ? TEXTO_OURO : TEXTO_CLARO);
+    title.setColor(selected ? TEXTO_DESTAQUE : TEXTO_CLARO);
   };
 
   const setDimmed = (dimmed: boolean): void => {

@@ -95,10 +95,21 @@ export const MODE_CARD_IMAGE_ASSETS: ImageAsset[] = [
   }
 ];
 
+/** Logo do jogo (várzea, Codex, 29/10/2026): abertura e menu. */
+export const LOGO_IMAGE_ASSET: ImageAsset = {
+  kind: 'image',
+  key: 'logo',
+  url: '/assets/branding/luta-de-mascotes-logo.png',
+  width: 1200,
+  height: 400,
+  usage: 'logo Luta de Mascotes na abertura e no menu'
+};
+
 export const STARTER_ASSETS: StarterAsset[] = [
   ...CHARACTER_ASSETS,
   ...STAGE_IMAGE_ASSETS,
   ...MODE_CARD_IMAGE_ASSETS,
+  LOGO_IMAGE_ASSET,
   ...UI_IMAGE_ASSETS,
   ...STARTER_AUDIO_ASSETS
 ];
