@@ -16,6 +16,8 @@ def box(im):
 
 
 def main():
+    if (ROOT / 'output/stun-v9/report.json').exists():
+        raise SystemExit('Stun v8 superseded by v9. Use scripts/stun_v9.py; do not reapply rejected atlas.')
     source = Image.open(OUT / 'atlas-source.png').convert('RGBA')
     report, cards = [], []
     for row, (name, folder) in enumerate(ROOTS.items()):

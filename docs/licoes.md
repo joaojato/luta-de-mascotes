@@ -283,3 +283,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   tiro e parecia cortado. O João quer a nuvem passando por cima do oponente,
   na frente dos dois lutadores. Efeito de área atravessa o alvo e se desfaz
   nele; só projétil sólido some no impacto. (2026-10-29)
+- **Arte nova parte da guarda de cada um, não de um atlas coletivo.** A
+  tontura v8 saiu de uma imagem só com os seis e perdeu identidade, estilo e
+  cores; o João rejeitou. A v9, gerada lutador por lutador com a guarda
+  aprovada como referência, ficou fiel. (2026-10-29)

@@ -1,5 +1,7 @@
 # Estunados: ciclo de tontura
 
+> ENTREGA REJEITADA pelo usuario por divergencia das bases. Substituida pela [revisao v9](estunados-v9.md). As afirmacoes de validacao abaixo descrevem a entrega antiga e nao constituem aprovacao. Nao reaplicar o atlas v8.
+
 Pedido de 29/10/2026: todos os seis lutadores atuais ficam visivelmente confusos, com corpo cambaleando, braços frouxos, olhos desfocados e símbolos cartoon sobre a cabeça. Esta entrega substitui o adiamento das artes de vítimas estunadas.
 
 Arte gerada com a ferramenta de imagens a partir das guardas aprovadas. As quatro poses oscilam cabeça e tronco sem trocar membros; Saci conserva uma única perna. X, estrelas amarelas e espirais ciano mudam de posição sobre uma elipse pontilhada. O efeito está incorporado às poses, não exige partícula separada.

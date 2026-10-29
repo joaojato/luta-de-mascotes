@@ -1592,3 +1592,21 @@ pela frente e se desfaz no centro dele.
 **Em aberto:** meteoro com 1,5 s de tontura e imbloqueável pode ficar forte
 demais (testar em luta); o Urubu aterrissa em cima do alvo e o cobre
 durante a tontura; conferir os seis `stunned` na Academia.
+
+## 2026-10-29: Tontura v9 no jogo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** implementar as novas animações de tontura (v9 do Codex).
+**Feito:** a v9 substituiu os seis `stunned.png` da v8 (rejeitada por perder
+identidade e cores). Mesmo formato (4 quadros, 6 FPS, loop); caixas visuais
+dos seis JSONs refeitas pelo `output/stun-v9/report.json`, só o corpo, sem
+os símbolos.
+**Verificado:** `npm run check` com 123 testes, build ok. Prancha de
+comparação do Codex conferida (Saci com uma perna só). Na Luta, os seis
+tontos lado a lado com o próprio idle: mesma escala, pé na linha do chão,
+virados para o oponente.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** tontura v8.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** força do meteoro com 1,5 s de tontura (testar em luta).

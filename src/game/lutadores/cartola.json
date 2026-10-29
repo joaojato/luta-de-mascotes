@@ -176,9 +176,9 @@
       "frameRate": 6,
       "repeat": -1,
       "defaultVisual": {
-        "x": 63,
+        "x": 73,
         "y": 28,
-        "width": 129,
+        "width": 108,
         "height": 200
       }
     },
