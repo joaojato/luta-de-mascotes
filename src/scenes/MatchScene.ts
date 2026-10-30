@@ -11,6 +11,8 @@ import { MatchHud } from '../game/matchHud';
 import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STAGGER, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
+import { syncLoopingAudioAsset, stopAudioAsset } from '../game/core/audio';
+import { tocarSom } from '../game/sons';
 import { LUTADORES } from '../game/lutadores';
 import { torcidaValida } from '../game/torcida';
 import { montarTorcida } from '../game/torcidaCena';
@@ -138,8 +140,10 @@ export class MatchScene extends BaseScene {
     }
 
     this.startRound();
+    syncLoopingAudioAsset(this, 'torcida', this.app.settingsStore.getState());
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      stopAudioAsset(this, 'torcida');
       this.p1?.destroy();
       this.p2?.destroy();
       this.biribas.forEach((biriba) => biriba.destroy());
@@ -292,6 +296,15 @@ export class MatchScene extends BaseScene {
       }
 
       this.spawnHitFx(attack.rect, hurt, blocked, isSpecial, finisher, perfect);
+      this.som(
+        perfect ? 'defesa-perfeita'
+          : blocked ? 'defesa'
+          : breakStunMs !== null ? 'defesa-quebrada'
+          : isSpecial ? 'impacto-especial'
+          : attack.move === 'soco-rapido' || attack.move === 'soco-no-ar' ? 'impacto-leve'
+          : attack.move === 'chute-baixo' ? 'impacto-baixo'
+          : 'impacto-pesado'
+      );
     };
   }
 
@@ -347,7 +360,11 @@ export class MatchScene extends BaseScene {
    * @param delta - Milliseconds since the previous frame.
    */
   private tickRoundTimer(delta: number): void {
+    const antes = Math.ceil(this.roundTimeMs / 1000);
     this.roundTimeMs = Math.max(0, this.roundTimeMs - delta);
+    const agora = Math.ceil(this.roundTimeMs / 1000);
+    // Tique a cada um dos últimos 5 segundos.
+    if (agora < antes && agora >= 1 && agora <= 5) this.som('relogio');
 
     if (this.roundTimeMs <= 0) {
       this.resolveTimeOut();
@@ -375,6 +392,7 @@ export class MatchScene extends BaseScene {
     }
 
     this.phase = 'roundEnd';
+    this.som('tempo-esgotado');
     this.showBanner('EMPATE', TEXTO_CLARO, 1.1);
     this.time.delayedCall(1100, () => this.startRound());
   }
@@ -415,6 +433,11 @@ export class MatchScene extends BaseScene {
     cam.setBounds(0, 0, this.stageWorldWidth, cam.height);
   }
 
+  /** Plays a match sound with the current volume settings (docs/sons.md). */
+  private som(chave: string): void {
+    tocarSom(this, chave, this.app.settingsStore.getState());
+  }
+
   /** Spawns P1 (left, facing right) and P2 (right, facing left). */
   private spawnFighters(): void {
     const cam = this.cameras.main;
@@ -436,7 +459,10 @@ export class MatchScene extends BaseScene {
       minX,
       maxX,
       depth: DEPTH_FRONT,
-      onSpecialStart: (fighter) => playSuperCutIn(this, { characterId: fighter.characterId, side: 'left' })
+      onSpecialStart: (fighter) => {
+        this.som('especial-entrada');
+        playSuperCutIn(this, { characterId: fighter.characterId, side: 'left' });
+      }
     });
 
     this.p2 = new Fighter({
@@ -449,7 +475,10 @@ export class MatchScene extends BaseScene {
       minX,
       maxX,
       depth: DEPTH_BACK,
-      onSpecialStart: (fighter) => playSuperCutIn(this, { characterId: fighter.characterId, side: 'right' })
+      onSpecialStart: (fighter) => {
+        this.som('especial-entrada');
+        playSuperCutIn(this, { characterId: fighter.characterId, side: 'right' });
+      }
     });
     this.p1.setOpponent(this.p2);
     this.p2.setOpponent(this.p1);
@@ -604,6 +633,7 @@ export class MatchScene extends BaseScene {
     this.hud.updateWins(this.p1Wins, this.p2Wins);
 
     this.showBanner(`ROUND ${this.roundNumber}`, '#f8fafc');
+    this.som('round');
 
     this.time.delayedCall(900, () => {
       if (this.phase !== 'intro') {
@@ -611,6 +641,7 @@ export class MatchScene extends BaseScene {
       }
 
       this.showBanner('FIGHT!', TEXTO_DESTAQUE, 1.15);
+      this.som('luta-comeca');
       this.phase = 'fighting';
       this.p1.setFrozen(false);
       this.p2.setFrozen(false);
@@ -644,6 +675,7 @@ export class MatchScene extends BaseScene {
         ? `P1 ${getCharacterDefinition(this.config.p1CharacterId).label}`
         : `${this.config.mode === '1vcpu' ? 'CPU' : 'P2'} ${getCharacterDefinition(this.config.p2CharacterId).label}`;
     this.showBanner(bannerText, bannerColor, 1.2);
+    this.som(bannerText === 'K.O.' ? 'ko' : 'tempo-esgotado');
 
     this.time.delayedCall(1100, () => {
       const matchOver = this.p1Wins >= ROUNDS_TO_WIN || this.p2Wins >= ROUNDS_TO_WIN;
@@ -664,6 +696,7 @@ export class MatchScene extends BaseScene {
   private endMatch(winnerName: string): void {
     this.phase = 'matchOver';
     this.hideBanner();
+    this.som('vitoria');
 
     const { centerX, centerY, width, height } = this.cameras.main;
 

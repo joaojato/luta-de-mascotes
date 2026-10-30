@@ -111,6 +111,10 @@ Cada uma tem nome para poder ser cobrada depois.
   que muda o que um mascote precisa entra lá no mesmo commit. Pedido de
   personagem novo começa devolvendo essas perguntas (skill `lutador-novo`).
   Cobrada por teste em `lutadores.test.ts`.
+- **Regra do Som.** Lutador não tem código de som. O motor toca o som
+  geral de cada evento; o bloco `sons` do JSON troca pelo próprio do
+  mascote ou cala com `null`. Todo som é gerado por `scripts/sons.py`
+  (`docs/sons.md`, ADR 0007). Cobrada por teste em `src/game/sons.test.ts`.
 - **Regra da v1.** A v1 é: 2 mascotes, 1 cenário, 4 golpes por mascote, 2
   jogadores no mesmo teclado. A CPU veio de brinde no motor herdado e pode
   ficar. Nada além disso é construído antes de a v1 rodar de ponta a ponta.

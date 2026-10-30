@@ -35,6 +35,8 @@ export interface HeroAnimationDefinition {
 
 export interface CharacterDefinition {
   moves?: FighterMoveConfig;
+  /** Sons próprios por evento (docs/sons.md, Regra do Som). */
+  sons?: Record<string, string | null>;
   id: string;
   label: string;
   role: 'player' | 'enemy';

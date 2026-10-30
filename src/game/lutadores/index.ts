@@ -19,6 +19,8 @@ import porco from './porco.json';
  */
 export interface LutadorJson {
   moves?: FighterMoveConfig;
+  /** Sons próprios por evento: evento → chave do som, ou null para calar (docs/sons.md). */
+  sons?: Record<string, string | null>;
   id: string;
   label: string;
   /** Pasta pública das sheets, ex. `/assets/lutadores/urubu`. */
@@ -168,6 +170,7 @@ export function buildLutador(lutador: LutadorJson): CharacterDefinition {
 
   return buildFighterCharacter({
     moves: lutador.moves,
+    sons: lutador.sons,
     id: lutador.id,
     label: lutador.label,
     assetRoot: lutador.assetRoot,

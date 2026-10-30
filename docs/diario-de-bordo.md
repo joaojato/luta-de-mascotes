@@ -2073,3 +2073,26 @@ console sem erro.
 **Aprovado explicitamente:** nada.
 **Atrito:** nada.
 **Em aberto:** nada.
+
+## 2026-10-30: Sons gerais e dos golpes (entrega 1)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** fazer os sons do jogo, do geral ao específico, mapeando todos a
+partir das animações; ele não sabia como.
+**Feito:** mapa em `docs/sons.md`, cinco camadas e cerca de 60 sons; ADR
+0007 (síntese em Python, só biblioteca padrão). `scripts/sons.py` gera 28
+WAV: menus, partida (torcida em loop, round, apito, K.O., tempo, vitória,
+relógio, barra cheia, entrada do especial), corpo (passo, pulo, aterrissar,
+dash, queda, tontura) e golpes do catálogo (sopro leve e pesado, impactos
+leve, pesado, baixo e especial, defesa, guarda quebrada, guarda perfeita,
+projétil, carga). Regra do Som: o motor toca o geral e o bloco `sons` do
+JSON troca pelo próprio do mascote, ou cala com `null`.
+**Verificado:** `npm run check` com 175 testes; sons sem estalo no fim
+(medido); numa luta no navegador tocaram os 19 esperados e a torcida ficou
+em loop; console sem erro. Eu não ouço o resultado: o aceite é do João.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** `audio.ts` e `sons.ts` se importavam; lista separada em
+`sonsLista.ts`. O lutador de teste não tem ajustes de volume; som tolerante.
+**Em aberto:** camada 5, os sons de cada mascote.

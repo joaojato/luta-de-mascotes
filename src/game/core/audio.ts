@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 
 import type { GameSettings } from '../types';
+import { SOM_ASSETS } from '../sonsLista';
 
 export type AudioCategory = 'music' | 'sfx';
 type VolumeAdjustableSound = Phaser.Sound.BaseSound & {
@@ -36,7 +37,8 @@ export const AUDIO_KEYS = {
 export type AudioKey = (typeof AUDIO_KEYS)[keyof typeof AUDIO_KEYS];
 
 export const STARTER_AUDIO_ASSETS: StarterAudioAsset[] = [
-  audio(AUDIO_KEYS.uiConfirm, 'sfx', '/assets/audio/sfx/apito.wav', 0.3, false, 'apito de juiz que confirma nos menus')
+  audio(AUDIO_KEYS.uiConfirm, 'sfx', '/assets/audio/sfx/apito.wav', 0.3, false, 'apito de juiz que confirma nos menus'),
+  ...SOM_ASSETS
 ];
 export const STARTER_AUDIO_CUES: GeneratedAudioCue[] = [
   cue('starter-jump', 'sfx', 380, 0.08, 0.34, 'generated jump cue'),

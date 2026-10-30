@@ -97,6 +97,7 @@ export class ModeSelectScene extends BaseScene {
 
   private moveSelection(direction: number): void {
     const next = Phaser.Math.Wrap(this.selectedIndex + direction, 0, this.cards.length);
+    if (next !== this.selectedIndex) playAudioCue(this, 'ui-mover', this.app.settingsStore.getState());
     this.setSelection(next);
   }
 

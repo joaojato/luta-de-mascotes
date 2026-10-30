@@ -51,6 +51,7 @@ export interface FighterActionSpec {
  */
 export interface FighterCharacterConfig {
   moves?: FighterMoveConfig;
+  sons?: Record<string, string | null>;
   id: string;
   label: string;
   role?: CharacterDefinition['role'];
@@ -123,6 +124,7 @@ export function buildFighterCharacter(config: FighterCharacterConfig): Character
 
   return {
     moves: config.moves,
+    sons: config.sons,
     id: config.id,
     label: config.label,
     role: config.role ?? 'player',

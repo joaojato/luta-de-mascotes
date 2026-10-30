@@ -12,6 +12,7 @@ import {
   type HeroBoundsFrame
 } from './hero';
 import { spawnChargeAura } from './vfx';
+import { somDoEvento, tocarSom } from './sons';
 import {
   passedDropPoint,
   projectileGrowthProgress,
@@ -310,6 +311,8 @@ export class Fighter {
   private tontura: Phaser.GameObjects.Sprite | null = null;
   /** Where the opponent stood when a dropping move (the Biriba) was called. */
   private dropTargetX: number | null = null;
+  /** Seconds walked since the last step sound. */
+  private stepClock = 0;
   /** Seconds the guard button has been held; null when released. */
   private guardHeld: number | null = null;
   /** Fighter clock (s) and the double tap that starts a dash. */
@@ -470,7 +473,9 @@ export class Fighter {
       return;
     }
 
+    const wasFull = this.meter >= METER_MAX;
     this.meter = Phaser.Math.Clamp(this.meter + amount, 0, METER_MAX);
+    if (!wasFull && this.meter >= METER_MAX && this.hasSpecial) this.som('especial-pronto', 'especial-pronto');
   }
 
   /**
@@ -782,6 +787,8 @@ export class Fighter {
       this.stunIsBlock = false;
       this.hitstunTimer = 0;
       this.playState(this.actionKeys.knockdown, false);
+      // The body hits the floor a moment after the blow.
+      this.scene.time?.delayedCall(280, () => this.som('queda', 'queda'));
       return;
     }
 
@@ -790,7 +797,10 @@ export class Fighter {
     this.locked = false;
     this.hitstunTimer = Math.max(profile.hitstun, profile.stunMs ?? 0) / 1000;
     this.currentAnimKey = '';
-    if (this.stunIsDizzy) this.playState(this.actionKeys.stunned, true);
+    if (this.stunIsDizzy) {
+      this.playState(this.actionKeys.stunned, true);
+      this.som('tontura', 'tontura');
+    }
     else this.playState(this.actionKeys.hitHigh, false);
   }
 
@@ -1170,6 +1180,11 @@ export class Fighter {
       this.sprite.x = this.posX;
       this.updateShadow();
       this.playWalk(direction === this.facing);
+      this.stepClock += seconds;
+      if (this.stepClock >= 0.3) {
+        this.stepClock = 0;
+        this.som('passo', 'passo');
+      }
       return;
     }
 
@@ -1178,6 +1193,7 @@ export class Fighter {
 
   /** Starts a dash in world direction `dir`: forward when it points at the opponent. */
   private startDash(dir: 1 | -1): void {
+    this.som('dash', 'dash');
     const forward = dir === this.facing;
     this.dash = { dir, elapsed: 0, ...(forward ? DASH_FORWARD : DASH_BACK) };
     const key = forward ? this.actionKeys.dashForward : this.actionKeys.dashBack;
@@ -1274,6 +1290,7 @@ export class Fighter {
     };
     this.startOneShot(sheet[move] ?? this.actionKeys.lightPunch);
     this.strike = move;
+    this.som(move === 'chute-basico' ? 'chute' : move, move === 'soco-rapido' ? 'ar-leve' : 'ar-pesado');
     const extra = this.strikeMove();
     // Where the opponent stands the moment the move is called: the drop falls there.
     if (extra?.drop) this.dropTargetX = this.opponent ? this.opponent.posX : (this.opponentX ?? this.posX);
@@ -1496,6 +1513,17 @@ export class Fighter {
    * Plays a named effect sheet from the JSON (`moves.effects`) at a world point,
    * feet-anchored and mirrored like the fighter. One-shot effects remove themselves.
    */
+  /**
+   * Plays the sound of an event (docs/sons.md): the fighter's own from its
+   * JSON `sons` block, or the general one every fighter has.
+   * @param evento - Event name (`passo`, `chute`, `especial`...).
+   * @param geral - The general sound key for this event.
+   */
+  private som(evento: string, geral: string | null): void {
+    const settings = this.app.settingsStore?.getState();
+    if (settings) tocarSom(this.scene, somDoEvento(this.character.sons, evento, geral), settings);
+  }
+
   private spawnEffect(name: string, x: number, y: number, mirror = true): Phaser.GameObjects.Sprite | null {
     const key = findCharacterAnimationKeyByAction(this.character.id, `fx-${name}`);
     if (!key) {
@@ -1570,6 +1598,7 @@ export class Fighter {
     this.attackActiveLast = false;
 
     this.onSpecialStart?.(this);
+    this.som('carga', 'especial-carga');
     spawnChargeAura(this.scene, this.sprite.x, this.sprite.y - this.sprite.displayHeight * 0.45);
     const chargeEffect = this.character.moves?.special?.chargeEffect;
     if (chargeEffect) {
@@ -1683,6 +1712,7 @@ export class Fighter {
    * a second time), and a recovery squat on touchdown.
    */
   private startJump(): void {
+    this.som('pulo', 'pulo');
     const frames = this.jumpFrames();
     this.jumpPhase = 'prepare';
     this.jumpClock = 0;
@@ -1733,6 +1763,7 @@ export class Fighter {
     this.jumpPhase = 'attack';
     this.airAttackUsed = true;
     this.strike = move;
+    this.som(move, move === 'soco-no-ar' ? 'ar-leve' : 'ar-pesado');
     this.currentAnimKey = animKey;
     this.attackId += 1;
     this.attackConnected = false;
@@ -1761,6 +1792,7 @@ export class Fighter {
 
   /** Touchdown: cancels an unfinished air strike and holds the landing squat. */
   private startLanding(): void {
+    this.som('aterrissar', 'aterrissar');
     this.diveVelX = 0;
     this.strike = null;
     this.removeStrikeListeners();
@@ -1824,6 +1856,7 @@ export class Fighter {
   }
 
   private spawnProjectile(move: ProjectileMoveConfig, kind: AttackKind): void {
+    this.som(kind === 'special' ? 'projetil-especial' : 'projetil', 'projetil-lancar');
     const width = move.hitWidth ?? 12;
     const height = move.hitHeight ?? 12;
     const speed = move.speed ?? 900;

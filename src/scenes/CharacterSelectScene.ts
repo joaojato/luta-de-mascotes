@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 
-import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
+import { playAudioCue } from '../game/core/audio';
 import { FIGHTER_CHARACTER_DEFINITIONS, findCharacterAnimationKeyByAction, type CharacterDefinition } from '../game/hero';
 import { LUTADORES } from '../game/lutadores';
 import { COR_DESTAQUE, COR_P1, COR_P2, FONTE_TITULO } from '../game/estilo';
@@ -287,6 +287,7 @@ export class CharacterSelectScene extends BaseScene {
 
     cursor.index = next;
     this.refreshCursor(cursor);
+    playAudioCue(this, 'ui-mover', this.app.settingsStore.getState());
   }
 
   private step(index: number, dx: number, dy: number): number {
@@ -337,7 +338,7 @@ export class CharacterSelectScene extends BaseScene {
     cursor.locked = true;
     this.refreshCursor(cursor);
     this.showPreview(cursor, 'light-punch');
-    playAudioCue(this, AUDIO_KEYS.uiConfirm, this.app.settingsStore.getState());
+    playAudioCue(this, 'ui-travar', this.app.settingsStore.getState());
 
     this.flashTile(cursor.index, () => {
       if (this.mode === '1vcpu') {
@@ -380,7 +381,7 @@ export class CharacterSelectScene extends BaseScene {
       this.p2.locked = true;
       this.refreshCursor(this.p2);
       this.showPreview(this.p2, 'light-punch');
-      playAudioCue(this, AUDIO_KEYS.uiConfirm, this.app.settingsStore.getState());
+      playAudioCue(this, 'ui-travar', this.app.settingsStore.getState());
       this.flashTile(cpuIndex, () => this.time.delayedCall(350, () => this.startMatch()));
     });
   }
