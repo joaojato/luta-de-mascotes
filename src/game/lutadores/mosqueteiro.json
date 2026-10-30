@@ -1,0 +1,82 @@
+{
+  "id": "mosqueteiro",
+  "label": "Mosqueteiro",
+  "assetRoot": "/assets/lutadores/mosqueteiro",
+  "sons": {
+    "soco-rapido": "corte",
+    "chute-baixo": "corte",
+    "chute": null,
+    "projetil": "tiro-garrucha",
+    "carga": "assobio-dedos"
+  },
+  "torcida": { "estampa": "listras-verticais", "cores": ["#181818", "#F0F0F0"] },
+  "anchorUsage": "Mosqueteiro de risca de giz em guarda, voltado para a esquerda",
+  "selecionavel": true,
+  "stats": {},
+  "combat": {
+    "highDamage": 8,
+    "lowKickDamage": 15,
+    "kickDamage": 26,
+    "lowDamage": 28,
+    "specialDamage": 32
+  },
+  "skins": [{ "id": "jogo-v1", "label": "Risca de giz", "pasta": "jogo-v1" }],
+  "moves": {
+    "kick": { "kind": "projectile", "action": "shot", "releaseFrame": 9, "speed": 900 },
+    "special": {
+      "kind": "esquadrao",
+      "skipCharge": true,
+      "esquadrao": {
+        "lider": { "nome": "gaviao", "posto": 200 },
+        "seguidores": [
+          { "nome": "gorro", "posto": 120 },
+          { "nome": "bone", "posto": 280 },
+          { "nome": "boina", "posto": 340 }
+        ],
+        "dano": 8,
+        "caixa": { "largura": 110, "altura": 110 }
+      }
+    },
+    "effects": {
+      "gaviao-idle": { "file": "gavioes/principal/idle.png", "frames": 4, "frameRate": 6, "repeat": -1, "frameWidth": 471, "frameHeight": 272 },
+      "gaviao-takeoff": { "file": "gavioes/principal/takeoff.png", "frames": 6, "frameRate": 12, "frameWidth": 471, "frameHeight": 272 },
+      "gaviao-flight": { "file": "gavioes/principal/flight.png", "frames": 4, "frameRate": 12, "repeat": -1, "frameWidth": 471, "frameHeight": 272 },
+      "gaviao-strike": { "file": "gavioes/principal/strike.png", "frames": 6, "frameRate": 14, "frameWidth": 471, "frameHeight": 272 },
+      "gaviao-return": { "file": "gavioes/principal/return.png", "frames": 4, "frameRate": 10, "frameWidth": 471, "frameHeight": 272 },
+      "gorro-idle": { "file": "gavioes/gorro/interact.png", "frames": 6, "frameRate": 4, "repeat": -1, "frameWidth": 294, "frameHeight": 213 },
+      "gorro-takeoff": { "file": "gavioes/gorro/takeoff.png", "frames": 6, "frameRate": 14, "frameWidth": 294, "frameHeight": 213 },
+      "gorro-flight": { "file": "gavioes/gorro/flight.png", "frames": 4, "frameRate": 14, "repeat": -1, "frameWidth": 294, "frameHeight": 213 },
+      "gorro-strike": { "file": "gavioes/gorro/strike.png", "frames": 6, "frameRate": 16, "frameWidth": 294, "frameHeight": 213 },
+      "gorro-return": { "file": "gavioes/gorro/return.png", "frames": 4, "frameRate": 12, "frameWidth": 294, "frameHeight": 213 },
+      "bone-idle": { "file": "gavioes/bone/interact.png", "frames": 6, "frameRate": 5, "repeat": -1, "frameWidth": 294, "frameHeight": 213 },
+      "bone-takeoff": { "file": "gavioes/bone/takeoff.png", "frames": 6, "frameRate": 14, "frameWidth": 294, "frameHeight": 213 },
+      "bone-flight": { "file": "gavioes/bone/flight.png", "frames": 4, "frameRate": 14, "repeat": -1, "frameWidth": 294, "frameHeight": 213 },
+      "bone-strike": { "file": "gavioes/bone/strike.png", "frames": 6, "frameRate": 16, "frameWidth": 294, "frameHeight": 213 },
+      "bone-return": { "file": "gavioes/bone/return.png", "frames": 4, "frameRate": 12, "frameWidth": 294, "frameHeight": 213 },
+      "boina-idle": { "file": "gavioes/boina/interact.png", "frames": 6, "frameRate": 3, "repeat": -1, "frameWidth": 236, "frameHeight": 213 },
+      "boina-takeoff": { "file": "gavioes/boina/takeoff.png", "frames": 6, "frameRate": 14, "frameWidth": 236, "frameHeight": 213 },
+      "boina-flight": { "file": "gavioes/boina/flight.png", "frames": 4, "frameRate": 14, "repeat": -1, "frameWidth": 236, "frameHeight": 213 },
+      "boina-strike": { "file": "gavioes/boina/strike.png", "frames": 6, "frameRate": 16, "frameWidth": 236, "frameHeight": 213 },
+      "boina-return": { "file": "gavioes/boina/return.png", "frames": 4, "frameRate": 12, "frameWidth": 236, "frameHeight": 213 }
+    }
+  },
+  "actions": [
+    { "action": "idle", "label": "Guarda", "file": "idle.png", "frames": 4, "frameRate": 8, "repeat": -1, "frameWidth": 512, "defaultVisual": { "x": 165, "y": 29, "width": 171, "height": 201 } },
+    { "action": "walk-forward", "label": "Andar para frente", "file": "walk-forward.png", "frames": 8, "frameRate": 10, "repeat": -1, "frameWidth": 512, "defaultVisual": { "x": 138, "y": 25, "width": 204, "height": 205 } },
+    { "action": "walk-backward", "label": "Andar para trás", "file": "walk-backward.png", "frames": 8, "frameRate": 10, "repeat": -1, "frameWidth": 512, "defaultVisual": { "x": 135, "y": 26, "width": 206, "height": 204 } },
+    { "action": "crouch", "label": "Agachar", "file": "crouch.png", "frames": 6, "frameRate": 16, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 81, "y": 29, "width": 274, "height": 201 } },
+    { "action": "jump", "label": "Saltar", "file": "jump.png", "frames": 8, "frameRate": 12, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 130, "y": 25, "width": 219, "height": 205 } },
+    { "action": "jump-punch", "label": "Corte no ar", "file": "jump-punch.png", "frames": 6, "frameRate": 14, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 81, "y": 4, "width": 240, "height": 196 }, "attack": { "frames": [2, 3], "bounds": { "x": 88, "y": 78, "width": 64, "height": 32 } } },
+    { "action": "jump-kick", "label": "Estocada no ar", "file": "jump-kick.png", "frames": 6, "frameRate": 14, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 100, "y": 43, "width": 237, "height": 187 }, "attack": { "frames": [2, 3], "bounds": { "x": 100, "y": 160, "width": 50, "height": 70 } } },
+    { "action": "block-high", "label": "Defesa alta", "file": "block-high.png", "frames": 6, "frameRate": 12, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 125, "y": 5, "width": 228, "height": 225 }, "guard": { "x": 125, "y": 20, "width": 100, "height": 110 } },
+    { "action": "block-low", "label": "Defesa baixa", "file": "block-low.png", "frames": 4, "frameRate": 12, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 43, "y": 69, "width": 330, "height": 161 }, "guard": { "x": 120, "y": 60, "width": 110, "height": 140 } },
+    { "action": "hit-high", "label": "Receber golpe", "file": "hit-high.png", "frames": 6, "frameRate": 12, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 104, "y": 29, "width": 292, "height": 201 } },
+    { "action": "stunned", "label": "Atordoado", "file": "stunned.png", "frames": 4, "frameRate": 6, "repeat": -1, "frameWidth": 512, "defaultVisual": { "x": 132, "y": 36, "width": 211, "height": 194 } },
+    { "action": "light-punch", "label": "Duas estocadas", "file": "light-punch.png", "frames": 12, "frameRate": 16, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 2, "y": 24, "width": 356, "height": 206 }, "attackSpans": [{ "frames": [2, 3], "bounds": { "x": 9, "y": 97, "width": 126, "height": 26 } }, { "frames": [7, 8], "bounds": { "x": 2, "y": 100, "width": 133, "height": 21 } }] },
+    { "action": "heavy-punch", "label": "Cotovelada", "file": "heavy-punch.png", "frames": 10, "frameRate": 14, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 86, "y": 1, "width": 281, "height": 229 }, "attack": { "frames": [3, 4], "bounds": { "x": 186, "y": 60, "width": 48, "height": 48 } }, "travel": { "frames": [2, 5], "distance": 40 } },
+    { "action": "low-kick", "label": "Estocada baixa", "file": "low-kick.png", "frames": 10, "frameRate": 14, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 0, "y": 29, "width": 341, "height": 201 }, "attack": { "frames": [2, 3, 4], "bounds": { "x": 0, "y": 148, "width": 135, "height": 44 } }, "travel": { "frames": [1, 2], "distance": 15 } },
+    { "action": "shot", "label": "Tiro de mosquete", "file": "shot.png", "frames": 16, "frameRate": 16, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 82, "y": 0, "width": 277, "height": 230 }, "attack": { "frames": [9], "bounds": { "x": 83, "y": 75, "width": 52, "height": 34 } } },
+    { "action": "special", "label": "Chamar os Gaviões", "file": "special-charge.png", "frames": 6, "frameRate": 12, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 137, "y": 26, "width": 196, "height": 204 } },
+    { "action": "knockdown", "label": "Queda", "file": "knockdown.png", "frames": 10, "frameRate": 10, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 100, "y": 29, "width": 294, "height": 201 } }
+  ]
+}

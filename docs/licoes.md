@@ -381,3 +381,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   disse que os sons "ainda não estão me agradando, mas a gente resolve isso
   depois". Síntese pura pode não bastar; na próxima rodada, perguntar quais
   sons incomodam mais e considerar pacote CC0 (ADR 0007 já prevê). (2026-10-30)
+- **Plano do Codex sem reações não é lutador pronto.** A entrega do
+  Mosqueteiro veio com 14 ações e nenhuma reação (apanhar, tonto, cair).
+  Pedido de mascote ao Codex lista `hit-high`, `stunned` e `knockdown` desde
+  o começo; se faltarem, `codex exec --enable image_generation` pede só elas
+  e volta em uns 10 minutos, sem esperar o João. (2026-10-30)

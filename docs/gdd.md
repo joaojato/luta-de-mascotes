@@ -375,3 +375,35 @@ Rival: em aberto
 Torcida: camisas verdes ou brancas (João). `stunned` e `knockdown` ainda em
 produção; a queda usa a reação de apanhar e a tontura cai no padrão do motor.
 Retrato e âncora são recortes provisórios da guarda.
+
+## Mosqueteiro (Corinthians): ficha (30/10/2026)
+
+Entrou jogável pelo vigia de lutador novo, com a arte do Codex
+(`docs/mosqueteiro-animacoes-v1.md`). A entrega bruta vem em células
+640×320 e fica fora do git (`base-v1/`); o jogo usa a conversão para
+512×256 em `jogo-v1/` (`scripts/celula_codex.py`, escala 0,92). As reações
+(`hit-high`, `stunned`, `knockdown`) foram pedidas ao Codex à parte, porque
+o plano dele não as tinha.
+
+```
+Nome no jogo: Mosqueteiro
+Slug (pasta e JSON): mosqueteiro
+Silhueta em uma frase: mosqueteiro de risca de giz preta, chapéu largo com pluma vinho, espada fina e mosquete nas costas
+Arquétipo: alcance de espada e tiro lento e forte
+Vida / velocidade / peso: padrão / padrão / padrão
+Fala de entrada: em aberto
+Fala de vitória: em aberto
+Paleta (3 cores, sem o escudo): preto, branco, vinho
+Rival: em aberto
+```
+
+| Botão | Golpe | Sheet |
+|---|---|---|
+| Soco | duas estocadas com a mesma espada (dois acertos separados) | `light-punch.png` |
+| Baixo + Soco | cotovelada que sai do agachamento e termina em pé | `heavy-punch.png` |
+| Chute | tiro de mosquete: embainha, mira, dispara no quadro 9, desembainha (26 de dano) | `shot.png` |
+| Baixo + Chute | estocada baixa, abaixado durante o contato | `low-kick.png` |
+| Especial | Gaviões da Fiel (tipo `esquadrao`): o Gavião mergulha do alto; só se acertar sem defesa, os três Gaviõezinhos (gorro, boné, boina) atacam um por vez de lados alternados, sem guarda que segure; 8 de dano cada contato | `special-charge.png` + `gavioes/*` |
+
+Torcida: listras verticais preto e branco, como a risca de giz.
+Retrato e âncora são recortes da guarda.

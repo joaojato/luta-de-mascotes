@@ -45,10 +45,12 @@ function planoDoCodex(slug) {
     if (!existsSync(arquivo)) continue;
     try {
       const plano = JSON.parse(readFileSync(arquivo, 'utf8'));
-      if (plano[slug]) {
+      // O plano lista as ações sob o slug ou sob `body` (o do Dragão).
+      const corpo = plano[slug] ?? plano.body;
+      if (corpo) {
         // NPCs do plano (os Gaviões): cada ação vira `<npc>/<acao>.png` em alguma subpasta da skin.
         const npcs = Object.entries(plano.npcs ?? {}).flatMap(([npc, acoes]) => Object.keys(acoes).map((acao) => `${npc}/${acao}.png`));
-        return { acoes: Object.keys(plano[slug]), npcs };
+        return { acoes: Object.keys(corpo), npcs };
       }
     } catch {
       // Plano sendo escrito: tenta de novo na próxima volta.

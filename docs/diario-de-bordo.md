@@ -2173,3 +2173,30 @@ joystick, aviso de girar em pé; console sem erro.
 tem como confirmar no toque); o 1 VS 1 saiu do celular.
 **Em aberto:** teste em celular de verdade; Corinthiano e Dragão quando o
 Codex entregar.
+
+## 2026-10-30: Mosqueteiro (Corinthians) entra no jogo pelo vigia
+
+**Marco:** 2, segue em andamento.
+**Pedido:** com o João dormindo, colocar o Corinthiano no jogo assim que o
+Codex terminasse, commitar e publicar na Vercel; depois, o mesmo com o Dragão.
+**Feito:** o vigia acordou com a entrega completa (14 ações e os 4 Gaviões).
+O plano do Codex não tinha `hit-high`, `stunned` nem `knockdown`; pedi as
+três ao Codex pela linha de comando (`codex exec` com geração de imagem) e
+elas chegaram em uns 10 minutos. Folhas convertidas de 640×320 para 512×256
+em `jogo-v1/` (`celula_codex.py` ganhou `--saida`, `--pe-saida`, `--so` e
+`--espelhar`; o Bonezinho voa virado para a direita e foi espelhado inteiro).
+`mosqueteiro.json` com chute = tiro de mosquete, especial `esquadrao` com os
+Gaviões, torcida em listras verticais preto e branco, retrato e âncora
+recortados da guarda. Entrega bruta `base-v1/` fora do git. O vigia passou a
+ler planos com a chave `body` (o do Dragão).
+**Verificado:** `npm run check` (186 testes, build). Na luta contra o
+Almirante: duas estocadas 8+8, cotovelada 28, estocada baixa 15, tiro 26,
+especial 32 (Gavião acerta e os três pequenos completam); nocaute toca a
+queda inteira; console sem erro.
+**Créditos gastos:** nada no Spriterrific (arte pelo Codex).
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** a estocada baixa recua na arte, mas a Regra do Passo pede passo
+à frente: ficou um passo curto de 15 px antes do contato.
+**Em aberto:** o João ver o Mosqueteiro jogando; Dragão goianiense quando o
+Codex terminar.

@@ -48,3 +48,6 @@ output/
 
 # Vínculo local com o projeto da Vercel
 .vercel
+
+# Entrega bruta do Codex (células 640x320); o jogo usa a conversão em jogo-v1/.
+public/assets/lutadores/mosqueteiro/base-v1/
