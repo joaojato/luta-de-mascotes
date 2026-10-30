@@ -1,11 +1,13 @@
 import { STORAGE_KEY } from './constants';
 import { createStore, type Store } from './store';
+import { DIFICULDADES, type Dificuldade } from './cpu';
 import type { GameSettings } from './types';
 
 export const DEFAULT_SETTINGS: GameSettings = {
   sfxVolume: 0.8,
   musicVolume: 0.55,
-  muted: false
+  muted: false,
+  cpuDificuldade: 'medio'
 };
 
 export function sanitizeSettings(raw: unknown): GameSettings {
@@ -17,7 +19,10 @@ export function sanitizeSettings(raw: unknown): GameSettings {
   return {
     sfxVolume: normalizeVolume(candidate?.sfxVolume, legacyVolume ?? DEFAULT_SETTINGS.sfxVolume),
     musicVolume: normalizeVolume(candidate?.musicVolume, legacyVolume ?? DEFAULT_SETTINGS.musicVolume),
-    muted: typeof candidate?.muted === 'boolean' ? candidate.muted : DEFAULT_SETTINGS.muted
+    muted: typeof candidate?.muted === 'boolean' ? candidate.muted : DEFAULT_SETTINGS.muted,
+    cpuDificuldade: DIFICULDADES.some((d) => d.id === candidate?.cpuDificuldade)
+      ? (candidate!.cpuDificuldade as Dificuldade)
+      : DEFAULT_SETTINGS.cpuDificuldade
   };
 }
 

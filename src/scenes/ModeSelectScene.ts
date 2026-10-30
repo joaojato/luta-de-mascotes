@@ -1,6 +1,8 @@
 import * as Phaser from 'phaser';
 
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
+import { DIFICULDADES } from '../game/cpu';
+import { FONTE_TITULO, TEXTO_DESTAQUE } from '../game/estilo';
 import { createSelectionCard, type SelectionCard } from '../game/ui';
 import { SCENE_KEYS, type MatchMode } from '../game/types';
 import { controlesDeToqueAtivos } from '../toque/telaToque';
@@ -32,6 +34,8 @@ const ACCENT = 0x38bdf8;
 export class ModeSelectScene extends BaseScene {
   private cards: SelectionCard[] = [];
   private selectedIndex = 0;
+  /** Dificuldade da CPU: aparece com o 1 VS CPU selecionado (↑ ↓ ou toque troca). */
+  private dificuldade!: Phaser.GameObjects.Text;
 
   constructor() {
     super(SCENE_KEYS.ModeSelect);
@@ -46,10 +50,11 @@ export class ModeSelectScene extends BaseScene {
     this.createHeading('Escolha o modo', 'Como você quer jogar?');
 
     this.buildCards();
+    this.criarDificuldade();
     this.registerInput();
     this.setSelection(0);
 
-    this.createFooterHint('← → ou A/D para escolher   •   Enter ou Espaço confirma   •   Esc volta');
+    this.createFooterHint('← → escolhe o modo   •   ↑ ↓ dificuldade da CPU   •   Enter ou Espaço confirma   •   Esc volta');
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.cards.forEach((card) => card.destroy());
@@ -86,6 +91,32 @@ export class ModeSelectScene extends BaseScene {
     });
   }
 
+  private criarDificuldade(): void {
+    const { centerX, height } = this.cameras.main;
+    this.dificuldade = this.add
+      .text(centerX, height - 68, '', { color: TEXTO_DESTAQUE, fontFamily: FONTE_TITULO, fontSize: '26px', backgroundColor: 'rgba(11, 7, 22, 0.9)', padding: { x: 18, y: 6 } })
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerdown', () => this.trocarDificuldade(1));
+    this.mostrarDificuldade();
+  }
+
+  private mostrarDificuldade(): void {
+    const atual = DIFICULDADES.find((d) => d.id === this.app.settingsStore.getState().cpuDificuldade) ?? DIFICULDADES[1];
+    this.dificuldade.setText(`Dificuldade da CPU:  ◀ ${atual.nome} ▶`);
+    this.dificuldade.setVisible(opcoesDeModo()[this.selectedIndex]?.mode === '1vcpu');
+  }
+
+  private trocarDificuldade(passo: number): void {
+    if (opcoesDeModo()[this.selectedIndex]?.mode !== '1vcpu') return;
+    const estado = this.app.settingsStore.getState();
+    const i = DIFICULDADES.findIndex((d) => d.id === estado.cpuDificuldade);
+    const proxima = DIFICULDADES[Phaser.Math.Wrap(i + passo, 0, DIFICULDADES.length)];
+    this.app.settingsStore.setState({ ...estado, cpuDificuldade: proxima.id });
+    playAudioCue(this, 'ui-mover', estado);
+    this.mostrarDificuldade();
+  }
+
   private registerInput(): void {
     const keyboard = this.input.keyboard;
     if (!keyboard) {
@@ -96,6 +127,10 @@ export class ModeSelectScene extends BaseScene {
     keyboard.on('keydown-A', () => this.moveSelection(-1));
     keyboard.on('keydown-RIGHT', () => this.moveSelection(1));
     keyboard.on('keydown-D', () => this.moveSelection(1));
+    keyboard.on('keydown-UP', () => this.trocarDificuldade(1));
+    keyboard.on('keydown-W', () => this.trocarDificuldade(1));
+    keyboard.on('keydown-DOWN', () => this.trocarDificuldade(-1));
+    keyboard.on('keydown-S', () => this.trocarDificuldade(-1));
     keyboard.on('keydown-ENTER', () => this.confirm(this.selectedIndex));
     keyboard.on('keydown-SPACE', () => this.confirm(this.selectedIndex));
     keyboard.on('keydown-ESC', () => this.goToMenu());
@@ -111,6 +146,7 @@ export class ModeSelectScene extends BaseScene {
   private setSelection(index: number): void {
     this.selectedIndex = index;
     this.cards.forEach((card, cardIndex) => card.setSelected(cardIndex === index, ACCENT));
+    if (this.dificuldade) this.mostrarDificuldade();
   }
 
   private confirm(index: number): void {

@@ -8,12 +8,14 @@ describe('sanitizeSettings', () => {
       sanitizeSettings({
         sfxVolume: 0.4,
         musicVolume: 0.2,
-        muted: true
+        muted: true,
+        cpuDificuldade: 'dificil'
       })
     ).toEqual({
       sfxVolume: 0.4,
       musicVolume: 0.2,
-      muted: true
+      muted: true,
+      cpuDificuldade: 'dificil'
     });
   });
 
@@ -26,7 +28,8 @@ describe('sanitizeSettings', () => {
     ).toEqual({
       sfxVolume: 0.35,
       musicVolume: 0.35,
-      muted: false
+      muted: false,
+      cpuDificuldade: 'medio'
     });
   });
 
@@ -34,7 +37,8 @@ describe('sanitizeSettings', () => {
     expect(
       sanitizeSettings({
         sfxVolume: 99,
-        musicVolume: -1
+        musicVolume: -1,
+        cpuDificuldade: 'impossivel'
       })
     ).toEqual(DEFAULT_SETTINGS);
   });

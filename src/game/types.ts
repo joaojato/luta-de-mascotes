@@ -1,3 +1,5 @@
+import type { Dificuldade } from './cpu';
+
 export const SCENE_KEYS = {
   Boot: 'BootScene',
   Splash: 'SplashScene',
@@ -62,6 +64,8 @@ export interface GameSettings {
   sfxVolume: number;
   musicVolume: number;
   muted: boolean;
+  /** Dificuldade da CPU no 1 VS CPU (escolhida na tela de modo). */
+  cpuDificuldade: Dificuldade;
 }
 
 export interface InputSnapshot {

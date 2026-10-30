@@ -64,8 +64,8 @@ const METER_GAIN_ON_BLOCK = 4;
 const CLOUD_DEPTH = 20;
 /**
  * After the charge wind-up completes, the fighter holds the charged pose for this
- * long before the special executes — the "super freeze" that lets the cut-in
- * cinematic land before the move launches.
+ * long before the special executes — the "super freeze" that lets the charged
+ * pose read before the move launches.
  */
 const SUPER_FREEZE_MS = 360;
 /** Each wind-up frame of a jump, still on the ground, lasts this long. */
@@ -441,6 +441,17 @@ export class Fighter {
   /** Mid heavy on the ground: the quick punch bounces off (armor). */
   get isInHeavy(): boolean {
     return this.grounded && this.locked && this.strike === 'soco-forte';
+  }
+
+  /** In the middle of a strike or a special (what the CPU reads as an attack coming). */
+  get isAttacking(): boolean {
+    if (this.defeated || !this.locked) return false;
+    return this.strike !== null || this.currentAnimKey === this.actionKeys.specialCharge || this.currentAnimKey === this.actionKeys.special;
+  }
+
+  /** Something of his is flying at the other fighter: a shot, a drop, the allies of an esquadrão. */
+  get hasThreatInFlight(): boolean {
+    return this.projectiles.some((shot) => !shot.connected) || !(this.esquadrao?.pronto ?? true);
   }
 
   /** Pinned against a stage edge: the attacker is the one pushed back. */

@@ -2275,3 +2275,32 @@ scripts de medição travaram; refeitos com amostragem simples.
 **Em aberto:** modo online (só no roteiro, nada feito); painel do
 localhost grava no `fighter-playground.json` herdado, não no JSON do
 mascote; Dragão quando o Codex terminar; sons.
+
+## 2026-10-30: pausa no Tab, CPU com três níveis, sem rodapé e sem a janela do especial
+
+**Marco:** 2, segue em andamento.
+**Pedido:** tirar o rodapé com os botões da luta; menu de pausa no Tab com
+controles e comandos; tirar a janela que aparecia em todo especial (arte do
+criador do jogo-base); CPU que ataca de verdade, com níveis de dificuldade.
+**Feito:** rodapé removido. `src/game/menuPausa.ts`: Tab pausa a luta
+inteira (animações, tempo, som) e mostra as teclas de cada lado, os golpes
+de cada mascote lidos do JSON dele e os comandos gerais; Tab continua, Esc
+vai ao menu. `superCutIn.ts` apagado; o som de entrada do especial fica.
+`src/game/cpu.ts` no lugar do sorteio cego: lê distância, golpe e projétil
+do oponente, barra cheia; chega perto, mistura soco, soco forte, chute e
+chute baixo, defende depois do tempo de reação, pune quem está tonto, atira
+de longe se o chute é tiro, usa o especial. Três perfis (Fácil, Médio,
+Difícil) mudando reação, intervalo entre golpes, defesa, especial,
+agressividade e punição. Dificuldade na tela de modo (↑ ↓ ou toque com o
+1 VS CPU selecionado), guarda nos ajustes do aparelho.
+**Verificado:** testes da CPU (7) e dos ajustes; no navegador, P1 parado
+por 20 s: Fácil começou 12 golpes, Difícil 39 e tirou 95 de vida; pausa
+congela a vida; tela de modo mostra a dificuldade; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** rodapé da luta; janela do especial.
+**Aprovado explicitamente:** nada.
+**Atrito:** outra sessão está reescrevendo `src/toque/telaToque.ts` (menu e
+pausa do celular) e apagou o botão de pausa que eu tinha posto lá; a pausa
+no toque fica com ela. A CPU antiga era o sorteio herdado do jogo-base.
+**Em aberto:** Dragão (entrega pronta, integrando agora); nível do chão,
+sombra e tela de vitória pedidos em seguida.

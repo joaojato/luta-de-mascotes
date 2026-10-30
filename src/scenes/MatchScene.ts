@@ -6,11 +6,13 @@ import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fight
 import { getCharacterDefinition } from '../game/hero';
 import { FERRAMENTAS_DE_DEV } from '../game/constants';
 import { CONTORNO_TITULO, COR_FUNDO, FONTE_TITULO, SOMBRA_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from '../game/estilo';
-import { carregarControles, COMANDOS_LUTA, legendaDosBotoes, type ComandoLuta, type Controles, type Lado } from '../game/controles';
+import { carregarControles, COMANDOS_LUTA, type ComandoLuta, type Controles, type Lado } from '../game/controles';
+import { CpuLutador, DIFICULDADES } from '../game/cpu';
+import { MenuPausa } from '../game/menuPausa';
+import { controlesDeToqueAtivos } from '../toque/telaToque';
 import { MatchHud } from '../game/matchHud';
 import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STAGGER, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
-import { playSuperCutIn } from '../game/superCutIn';
 import { syncLoopingAudioAsset, stopAudioAsset } from '../game/core/audio';
 import { proximaTorcida, tocarSom } from '../game/sons';
 import { LUTADORES } from '../game/lutadores';
@@ -65,7 +67,9 @@ export class MatchScene extends BaseScene {
   private p1Keys!: PlayerKeys;
   private p2Keys!: PlayerKeys;
   private controles!: Controles;
-  private cpu?: CpuController;
+  private cpu?: CpuLutador;
+  /** Tela de pausa aberta (Tab): a luta para inteira por baixo. */
+  private pausa: MenuPausa | null = null;
   private paineisCelular: { jogador: 1 | 2; painel: PainelCelular }[] = [];
 
   private phase: MatchPhase = 'intro';
@@ -109,7 +113,6 @@ export class MatchScene extends BaseScene {
     this.buildStage();
     this.spawnFighters();
     this.registerKeys();
-    this.createControlsLegend();
     this.createPaineisCelular();
 
     this.hud = new MatchHud(this, {
@@ -135,9 +138,8 @@ export class MatchScene extends BaseScene {
       .setScrollFactor(0)
       .setAlpha(0);
 
-    if (this.config.mode === '1vcpu') {
-      this.cpu = new CpuController();
-    }
+    this.cpu = this.novaCpu();
+    this.pausa = null;
 
     this.startRound();
     syncLoopingAudioAsset(this, 'torcida', this.app.settingsStore.getState());
@@ -163,6 +165,9 @@ export class MatchScene extends BaseScene {
    * @param delta - Milliseconds since the previous frame.
    */
   update(time: number, delta: number): void {
+    if (this.pausa) {
+      return;
+    }
     const seconds = delta / 1000;
     const fighting = this.phase === 'fighting';
 
@@ -173,15 +178,10 @@ export class MatchScene extends BaseScene {
     const p1Input = fighting ? juntarInputs(this.readKeys(this.p1Keys), p1Celular) : { ...NEUTRAL_FIGHTER_INPUT };
     const p2Input = fighting
       ? this.cpu
-        ? this.cpu.update(time)
+        ? this.cpu.atualizar(this.leituraDaCpu(time))
         : juntarInputs(this.readKeys(this.p2Keys), p2Celular)
       : { ...NEUTRAL_FIGHTER_INPUT };
     this.updatePaineisCelular();
-
-    // CPU occasionally unleashes its special once the meter is charged.
-    if (fighting && this.cpu && this.p2.isMeterReady && Phaser.Math.Between(0, 150) === 0) {
-      p2Input.special = true;
-    }
 
     this.p1.faceToward(this.p2.x);
     this.p2.faceToward(this.p1.x);
@@ -473,10 +473,7 @@ export class MatchScene extends BaseScene {
       minX,
       maxX,
       depth: DEPTH_FRONT,
-      onSpecialStart: (fighter) => {
-        this.som('especial-entrada');
-        playSuperCutIn(this, { characterId: fighter.characterId, side: 'left' });
-      }
+      onSpecialStart: () => this.som('especial-entrada')
     });
 
     this.p2 = new Fighter({
@@ -489,10 +486,7 @@ export class MatchScene extends BaseScene {
       minX,
       maxX,
       depth: DEPTH_BACK,
-      onSpecialStart: (fighter) => {
-        this.som('especial-entrada');
-        playSuperCutIn(this, { characterId: fighter.characterId, side: 'right' });
-      }
+      onSpecialStart: () => this.som('especial-entrada')
     });
     this.p1.setOpponent(this.p2);
     this.p2.setOpponent(this.p1);
@@ -549,6 +543,8 @@ export class MatchScene extends BaseScene {
     this.p1Keys = teclas('p1');
     this.p2Keys = teclas('p2');
 
+    keyboard.addCapture('TAB');
+    keyboard.on('keydown-TAB', () => this.alternarPausa());
     keyboard.on('keydown-ESC', () => this.goToMenu());
     keyboard.on('keydown-BACKSPACE', () => this.goToMenu());
     keyboard.on('keydown-R', () => {
@@ -608,23 +604,65 @@ export class MatchScene extends BaseScene {
     });
   }
 
-  /** Draws the control legend at the bottom of the screen. */
-  private createControlsLegend(): void {
-    const { centerX, height } = this.cameras.main;
-    const p1 = `P1: ${legendaDosBotoes(this.controles.p1)}`;
-    const p2 = this.config.mode === '1vcpu' ? 'P2: CPU' : `P2: ${legendaDosBotoes(this.controles.p2)}`;
+  /** CPU do 1 VS CPU, na dificuldade escolhida na tela de modo (docs/cpu.md). */
+  private novaCpu(): CpuLutador | undefined {
+    return this.config.mode === '1vcpu' ? new CpuLutador(this.app.settingsStore.getState().cpuDificuldade) : undefined;
+  }
 
-    this.add
-      .text(centerX, height - 22, `${p1}      ${p2}      Esc menu`, {
-        color: '#cbd5f5',
-        fontFamily: 'monospace',
-        fontSize: '12px',
-        backgroundColor: 'rgba(2, 6, 23, 0.6)',
-        padding: { x: 10, y: 5 }
-      })
-      .setOrigin(0.5)
-      .setDepth(HUD_DEPTH)
-      .setScrollFactor(0);
+  /** O que a CPU (P2) enxerga da luta neste quadro. */
+  private leituraDaCpu(time: number) {
+    const eu = this.p2;
+    const oponente = this.p1;
+    return {
+      tempoMs: time,
+      eu: {
+        x: eu.x,
+        noAr: eu.isAirborne,
+        atordoado: eu.isStunned,
+        barraCheia: eu.isMeterReady,
+        chuteDeLonge: getCharacterDefinition(eu.characterId).moves?.kick?.kind === 'projectile'
+      },
+      oponente: {
+        x: oponente.x,
+        noAr: oponente.isAirborne,
+        atordoado: oponente.isStunned,
+        atacando: oponente.isAttacking,
+        projetil: oponente.hasThreatInFlight,
+        caido: oponente.isDefeated
+      }
+    };
+  }
+
+  /** Tab abre e fecha a pausa: teclas, golpes de cada mascote e comandos. */
+  private alternarPausa(): void {
+    if (this.pausa) {
+      this.pausa.destroy();
+      this.pausa = null;
+      this.anims.resumeAll();
+      this.tweens.resumeAll();
+      this.time.paused = false;
+      this.sound.resumeAll();
+      return;
+    }
+    if (this.phase === 'matchOver') {
+      return;
+    }
+    const toque = controlesDeToqueAtivos();
+    const cpu = this.config.mode === '1vcpu';
+    const dificuldade = DIFICULDADES.find((d) => d.id === this.app.settingsStore.getState().cpuDificuldade)?.nome;
+    this.pausa = new MenuPausa(
+      this,
+      [
+        { titulo: 'P1', personagemId: this.config.p1CharacterId, botoes: toque ? null : this.controles.p1 },
+        { titulo: cpu ? `CPU (${dificuldade})` : 'P2', personagemId: this.config.p2CharacterId, botoes: cpu ? null : this.controles.p2 }
+      ],
+      OVERLAY_DEPTH + 10,
+      { continuar: () => this.alternarPausa(), menu: () => this.goToMenu() }
+    );
+    this.anims.pauseAll();
+    this.tweens.pauseAll();
+    this.time.paused = true;
+    this.sound.pauseAll();
   }
 
   /** Resets both fighters to their corners and runs the round intro. */
@@ -786,7 +824,7 @@ export class MatchScene extends BaseScene {
     this.roundNumber = 1;
     this.p1Wins = 0;
     this.p2Wins = 0;
-    this.cpu = this.config.mode === '1vcpu' ? new CpuController() : undefined;
+    this.cpu = this.novaCpu();
     this.startRound();
   }
 
@@ -814,84 +852,4 @@ export class MatchScene extends BaseScene {
  */
 function isActing(input: FighterInput): boolean {
   return input.left || input.right || input.jump || input.light || input.heavy;
-}
-
-/**
- * A placeholder CPU opponent: mostly idle, occasionally performing a short
- * random action (a strike, a hop, or a brief walk/crouch/block). Produces a
- * {@link FighterInput} each frame for the second fighter in 1vCPU matches.
- */
-class CpuController {
-  private nextDecisionAt = 0;
-  private holdUntil = 0;
-  private moveDir = 0;
-  private holdCrouch = false;
-  private holdBlock = false;
-
-  /**
-   * Produce the CPU's input for this frame.
-   * @param timeMs - The current Phaser clock time in ms.
-   */
-  update(timeMs: number): FighterInput {
-    const input: FighterInput = { ...NEUTRAL_FIGHTER_INPUT };
-
-    if (timeMs >= this.nextDecisionAt) {
-      this.decide(timeMs, input);
-      this.nextDecisionAt = timeMs + Phaser.Math.Between(700, 1700);
-    }
-
-    if (timeMs < this.holdUntil) {
-      if (this.moveDir < 0) {
-        input.left = true;
-      } else if (this.moveDir > 0) {
-        input.right = true;
-      }
-      input.crouch = input.crouch || this.holdCrouch;
-      input.block = input.block || this.holdBlock;
-    } else {
-      this.moveDir = 0;
-      this.holdCrouch = false;
-      this.holdBlock = false;
-    }
-
-    return input;
-  }
-
-  /**
-   * Choose the CPU's next behaviour, emitting one-shot strikes immediately and
-   * scheduling held movement/guard for a short window.
-   * @param timeMs - The current Phaser clock time in ms.
-   * @param input - The input snapshot to mutate for one-shot edges.
-   */
-  private decide(timeMs: number, input: FighterInput): void {
-    const roll = Math.random();
-
-    if (roll < 0.32) {
-      return;
-    }
-    if (roll < 0.5) {
-      input.light = true;
-      return;
-    }
-    if (roll < 0.63) {
-      input.heavy = true;
-      return;
-    }
-    if (roll < 0.72) {
-      input.jump = true;
-      return;
-    }
-    if (roll < 0.9) {
-      this.moveDir = Math.random() < 0.5 ? -1 : 1;
-      this.holdUntil = timeMs + Phaser.Math.Between(350, 800);
-      return;
-    }
-
-    if (Math.random() < 0.5) {
-      this.holdCrouch = true;
-    } else {
-      this.holdBlock = true;
-    }
-    this.holdUntil = timeMs + Phaser.Math.Between(350, 800);
-  }
 }
