@@ -6,10 +6,11 @@
 //   node scripts/vigia-lutador.mjs --hook    JSON para o hook SessionStart
 //   node scripts/vigia-lutador.mjs --esperar fica rodando até haver entrega
 //
-// Entrega conta como pronta quando uma skin tem o conjunto mínimo de ações
-// (a ordem de prioridade de docs/criador-de-personagem.md) e nenhum arquivo
-// da pasta mudou nos últimos 10 minutos (o Codex terminou de escrever).
-import { existsSync, readdirSync, statSync } from 'node:fs';
+// Entrega conta como pronta quando a skin tem todas as ações do plano do
+// Codex (output/<slug>*/plan.json) ou, sem plano, o conjunto mínimo (a ordem
+// de prioridade de docs/criador-de-personagem.md), e nenhum arquivo da pasta
+// mudou nos últimos 10 minutos (o Codex terminou de escrever).
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 const RAIZ = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
@@ -28,6 +29,23 @@ function maisRecente(dir) {
   return t;
 }
 
+/** Ações que o plano do Codex promete para este mascote, se houver plano. */
+function planoDoCodex(slug) {
+  const saida = join(RAIZ, 'output');
+  if (!existsSync(saida)) return null;
+  for (const pasta of readdirSync(saida).filter((p) => p.startsWith(slug))) {
+    const arquivo = join(saida, pasta, 'plan.json');
+    if (!existsSync(arquivo)) continue;
+    try {
+      const plano = JSON.parse(readFileSync(arquivo, 'utf8'));
+      if (plano[slug]) return { acoes: Object.keys(plano[slug]) };
+    } catch {
+      // Plano sendo escrito: tenta de novo na próxima volta.
+    }
+  }
+  return null;
+}
+
 function pendentes() {
   const registrados = new Set(readdirSync(JSONS).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)));
   return readdirSync(SPRITES)
@@ -35,7 +53,10 @@ function pendentes() {
     .map((slug) => {
       const pasta = join(SPRITES, slug);
       const skins = readdirSync(pasta).filter((s) => existsSync(join(pasta, s, 'idle.png')));
-      const faltam = MINIMO.filter((acao) => !skins.some((s) => existsSync(join(pasta, s, `${acao}.png`))));
+      // Com plano do Codex (output/<slug>*/plan.json), pronto é o plano inteiro; sem plano, o mínimo.
+      const plano = planoDoCodex(slug);
+      const esperadas = plano ? plano.acoes : MINIMO;
+      const faltam = esperadas.filter((acao) => !skins.some((s) => existsSync(join(pasta, s, `${acao}.png`))));
       const quieto = Date.now() - maisRecente(pasta) > QUIETO_MS;
       return { slug, skins, faltam, pronto: faltam.length === 0 && quieto };
     });
