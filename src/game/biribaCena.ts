@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { BiribaMotion, type BiribaAction } from './biribaMotion';
 import type { Fighter } from './fighter';
+import { PLANO_DE_FUNDO } from './planoDeFundo';
 
 const PASTA = '/assets/cenarios/biriba';
 const ACOES: Record<BiribaAction, { frames: number; fps: number }> = {
@@ -48,18 +49,19 @@ export class BiribaCena {
     }
     // Fighters have transparent space below their drawn feet; place the dog
     // behind the visible contact line, rather than behind the logical origin.
-    const y = groundY - 60;
-    this.shadow = scene.add.ellipse(bira.x, y - 2, 76, 12, 0x000000, 0.2).setDepth(2);
+    const y = groundY - PLANO_DE_FUNDO.recuo;
+    this.shadow = scene.add.ellipse(bira.x, y - 2, 76, 12, 0x000000, 0.2).setDepth(PLANO_DE_FUNDO.profundidade - 1);
     this.sprite = scene.add.sprite(bira.x, y, 'biriba-idle')
       .setOrigin(0.5, 232 / 256)
       .setScale(0.5)
-      .setDepth(3);
+      .setDepth(PLANO_DE_FUNDO.profundidade);
     this.reset();
   }
 
   reset(): void {
     const cam = this.scene.cameras.main;
-    this.motion.reset(this.bira.x + this.offsetX, cam.scrollX + 68, cam.scrollX + cam.width - 68);
+    const m = PLANO_DE_FUNDO.margem;
+    this.motion.reset(this.bira.x + this.offsetX, cam.scrollX + m, cam.scrollX + cam.width - m);
     this.motion.facing = this.bira.facingDirection;
     this.renderedAction = undefined;
     this.render();
@@ -67,7 +69,8 @@ export class BiribaCena {
 
   update(seconds: number): void {
     const cam = this.scene.cameras.main;
-    this.motion.update(seconds, this.bira.x + this.offsetX, cam.scrollX + 68, cam.scrollX + cam.width - 68);
+    const m = PLANO_DE_FUNDO.margem;
+    this.motion.update(seconds, this.bira.x + this.offsetX, cam.scrollX + m, cam.scrollX + cam.width - m);
     this.render();
   }
 

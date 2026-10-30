@@ -1,3 +1,5 @@
+import { PLANO_DE_FUNDO } from './planoDeFundo';
+
 export type BiribaAction = 'idle' | 'walk' | 'bark';
 
 /** A spectator follows horizontally; he never shares a fighter's jumping Y. */
@@ -38,7 +40,7 @@ export class BiribaMotion {
     const stoppingDistance = this.action === 'walk' ? 7 : 22;
     if (Math.abs(distance) > stoppingDistance) {
       this.facing = distance > 0 ? 1 : -1;
-      const step = Math.min(Math.abs(distance), 340 * dt);
+      const step = Math.min(Math.abs(distance), PLANO_DE_FUNDO.passo * dt);
       this.x += this.facing * step;
       this.action = 'walk';
     } else {

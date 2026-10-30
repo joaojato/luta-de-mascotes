@@ -27,6 +27,14 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - Bullet vence parágrafo. Uma recomendação vence um catálogo de opções.
   (regra global dele)
 - Documento de contrato antes de código. (regra global dele)
+- **NPC que acompanha fica no fundo e anda junto.** Os Gaviões entraram no
+  mesmo chão e na mesma camada do lutador, parecendo na frente dele, e só
+  deslizavam atrás. Ele pediu igual ao Biriba e disse que todo NPC dele será
+  assim: atrás dos lutadores, entre eles e a torcida, acompanhando o dono.
+  Virou a Regra do Fundo. (2026-10-30)
+- **Ataque de NPC não tem hora certa.** O mergulho do Gavião saía sempre
+  1 s depois do botão; ele aprovou essa janela e pediu sorteio de 0,5 s
+  antes até 0,8 s depois, e mais velocidade. (2026-10-30)
 - Projeto que nasce de uma sessão da Alure ganha `CLAUDE.md` com identidade
   própria e o trabalho de verdade roda em sessão limpa, aberta na pasta do
   projeto. (regra dele de 01/09/2026, no projeto Designer de Restaurantes)

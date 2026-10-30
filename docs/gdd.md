@@ -403,7 +403,7 @@ Rival: em aberto
 | Baixo + Soco | cotovelada que sai do agachamento e termina em pé | `heavy-punch.png` |
 | Chute | tiro de mosquete: embainha, mira, dispara no quadro 9, desembainha (26 de dano) | `shot.png` |
 | Baixo + Chute | estocada baixa, abaixado durante o contato | `low-kick.png` |
-| Especial | Gaviões da Fiel (tipo `esquadrao`): o Gavião mergulha do alto; só se acertar sem defesa, os três Gaviõezinhos (gorro, boné, boina) atacam um por vez de lados alternados, sem guarda que segure; 8 de dano cada contato | `special-charge.png` + `gavioes/*` |
+| Especial | Gaviões da Fiel (tipo `esquadrao`): o Gavião mergulha do alto; só se acertar sem defesa, os três Gaviõezinhos (gorro, boné, boina) atacam um por vez de lados alternados, sem guarda que segure; 8 de dano cada contato. O mergulho sai numa hora sorteada entre 0,5 s e 1,8 s depois do botão. Fora do especial, os quatro andam atrás dele no fundo | `special-charge.png` + `gavioes/*` |
 
 Torcida: listras verticais preto e branco, como a risca de giz.
 Retrato e âncora são recortes da guarda.

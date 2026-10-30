@@ -1,8 +1,11 @@
 import * as Phaser from 'phaser';
+import { sortearMergulho, type JanelaDoMergulho } from './mergulho';
+import { PLANO_DE_FUNDO } from './planoDeFundo';
 
 /**
  * Especial "esquadrão" (docs/criador-de-personagem.md, bloco 5): o mascote
- * chama aliados que ficam de prontidão atrás dele. O líder decola, sai pelo
+ * chama aliados que ficam de prontidão no plano de fundo (Regra do Fundo,
+ * src/game/planoDeFundo.ts), andando atrás dele. O líder decola, sai pelo
  * alto e mergulha no oponente; só se esse golpe acertar os seguidores atacam,
  * um por vez e de lados alternados, sem guarda que segure. Errou ou foi
  * defendido: todos voltam ao posto. Tudo vem do JSON (Regra do JSON); a arte
@@ -15,7 +18,7 @@ export interface MembroEsquadrao {
   nome: string;
   /** Tamanho em relação ao dono. */
   escala?: number;
-  /** Onde fica de prontidão: px de quadro atrás do dono. */
+  /** Onde fica de prontidão no fundo: px de quadro atrás do dono. */
   posto: number;
 }
 
@@ -28,6 +31,11 @@ export interface EsquadraoConfig {
   caixa?: { largura: number; altura: number };
   /** Altura do alvo acima do chão, em px de quadro (o peito). */
   alturaAlvo?: number;
+  /**
+   * Quando o líder mergulha, em segundos desde o botão: sorteado entre
+   * `segundos - adiantar` e `segundos + atrasar`, para não ter hora certa.
+   */
+  mergulho?: JanelaDoMergulho;
 }
 
 /** O que o esquadrão precisa saber do dono, sem depender da classe Fighter. */
@@ -67,12 +75,17 @@ interface Membro {
   ativo: boolean;
   assinatura: number;
   lado: 1 | -1;
+  /** No posto: andando atrás do dono (histerese, como o Biriba). */
+  andando: boolean;
+  /** Escala no começo do ataque: quem sai do fundo cresce até o tamanho do lutador. */
+  escalaInicial: number;
 }
 
 const SUBIDA_PX_S = 1500;
 const SAIDA_PX_S = 1300;
 const VOLTA_SEGUNDOS = 0.6;
-const MERGULHO_SEGUNDOS = 0.45;
+/** Velocidade do mergulho do líder (antes 0,45 s fixos, cerca de 1850 px/s). */
+const MERGULHO_PX_S = 2600;
 const ATAQUE_LATERAL_PX_S = 1100;
 const ESPERA_ENTRE_SEGUIDORES = 0.25;
 /** Assinaturas próprias, longe das do dono, para a Luta não confundir os golpes. */
@@ -85,15 +98,22 @@ export class Esquadrao {
   private mergulhou = false;
   private seguidorDaVez = -1;
   private espera = 0;
+  /** Tempo desde o botão e o momento sorteado do mergulho do líder. */
+  private tempoDoLider = 0;
+  private momentoDoMergulho = 0;
 
-  constructor(private readonly dono: DonoDoEsquadrao, private readonly cfg: EsquadraoConfig) {
+  constructor(
+    private readonly dono: DonoDoEsquadrao,
+    private readonly cfg: EsquadraoConfig,
+    private readonly aleatorio: () => number = Math.random
+  ) {
     this.membros = [cfg.lider, ...cfg.seguidores].map((membro) => {
       const chave = dono.animacao(`${membro.nome}-idle`) ?? '__MISSING';
       const sprite = dono.scene.add.sprite(0, 0, chave).setOrigin(0.5, 1).setVisible(chave !== '__MISSING');
       return {
         cfg: membro, sprite, estado: 'posto' as Estado, relogio: 0,
         de: new Phaser.Math.Vector2(), para: new Phaser.Math.Vector2(), duracao: 0,
-        ativo: false, assinatura: 0, lado: 1 as 1 | -1
+        ativo: false, assinatura: 0, lado: 1 as 1 | -1, andando: false, escalaInicial: 1
       };
     });
     this.reset();
@@ -110,6 +130,8 @@ export class Esquadrao {
     this.fase = 'lider';
     this.acertou = false;
     this.mergulhou = false;
+    this.tempoDoLider = 0;
+    this.momentoDoMergulho = sortearMergulho(this.cfg.mergulho, this.aleatorio);
     this.decolar(this.membros[0]);
   }
 
@@ -147,11 +169,16 @@ export class Esquadrao {
   }
 
   update(segundos: number): void {
-    this.membros.forEach((membro) => this.atualizarMembro(membro, segundos));
+    const postos = this.postos();
+    this.membros.forEach((membro, i) => this.atualizarMembro(membro, segundos, postos[i]));
 
     if (this.fase === 'lider') {
       const lider = this.membros[0];
-      if (lider.estado === 'fora' && !this.mergulhou && lider.relogio > 0.3) {
+      this.tempoDoLider += segundos;
+      // Mergulha na hora sorteada: do alto se já saiu da tela, ou de onde estiver
+      // no ar se a hora chegou antes (nunca do chão).
+      const noAr = lider.estado === 'fora' || (lider.estado === 'decolando' && lider.sprite.y < this.posto(lider).y - 40);
+      if (noAr && !this.mergulhou && this.tempoDoLider >= this.momentoDoMergulho) {
         this.mergulhou = true;
         this.mergulhar(lider);
       } else if (lider.estado === 'fora' && this.mergulhou) {
@@ -190,9 +217,34 @@ export class Esquadrao {
 
   // ---------------------------------------------------------------- estados
 
-  private posto(membro: Membro): Phaser.Math.Vector2 {
+  /**
+   * Onde cada um fica no fundo: atrás do dono, no chão do plano de fundo. O
+   * grupo inteiro se desloca para caber na câmera, sem perder o espaçamento.
+   */
+  private postos(): Phaser.Math.Vector2[] {
     const escala = this.dono.escala();
-    return new Phaser.Math.Vector2(this.dono.x() - this.dono.lado() * membro.cfg.posto * escala, this.dono.chao());
+    const y = this.dono.chao() - PLANO_DE_FUNDO.recuo;
+    const xs = this.membros.map((m) => this.dono.x() - this.dono.lado() * m.cfg.posto * escala * PLANO_DE_FUNDO.escala);
+    const vista = this.dono.scene.cameras?.main?.worldView;
+    if (vista && vista.width > 0) {
+      // Metade do desenho, não da célula (a célula tem folga transparente).
+      const meia = this.membros.map((m) => m.sprite.width * this.escalaNoFundo(m) * 0.3);
+      const esquerda = Math.min(...xs.map((x, i) => x - meia[i]));
+      const direita = Math.max(...xs.map((x, i) => x + meia[i]));
+      const min = vista.x + PLANO_DE_FUNDO.margem;
+      const max = vista.right - PLANO_DE_FUNDO.margem;
+      const desvio = esquerda < min ? min - esquerda : direita > max ? max - direita : 0;
+      return xs.map((x) => new Phaser.Math.Vector2(x + desvio, y));
+    }
+    return xs.map((x) => new Phaser.Math.Vector2(x, y));
+  }
+
+  private posto(membro: Membro): Phaser.Math.Vector2 {
+    return this.postos()[this.membros.indexOf(membro)];
+  }
+
+  private escalaNoFundo(membro: Membro): number {
+    return this.dono.escala() * (membro.cfg.escala ?? 1) * PLANO_DE_FUNDO.escala;
   }
 
   private tocar(membro: Membro, acao: string): void {
@@ -203,6 +255,7 @@ export class Esquadrao {
   private irAoPosto(membro: Membro): void {
     const p = this.posto(membro);
     membro.estado = 'posto';
+    membro.andando = false;
     membro.sprite.setPosition(p.x, p.y).setVisible(true).setFlipX(this.dono.lado() === 1);
     this.tocar(membro, 'idle');
   }
@@ -219,11 +272,16 @@ export class Esquadrao {
       this.voltarTodos();
       return;
     }
-    // Entra pelo alto, do lado do dono, em diagonal até o peito do oponente.
+    // Entra pelo alto, do lado do dono, em diagonal até o peito do oponente;
+    // ainda subindo, parte de onde está.
     const lado: 1 | -1 = this.dono.x() <= alvo.x ? 1 : -1;
-    membro.de.set(alvo.x - lado * 320 * this.dono.escala(), this.topoDaTela() - 40);
-    membro.para.set(alvo.x, alvo.y + membro.sprite.displayHeight * 0.45);
-    this.comecarAtaque(membro, lado, MERGULHO_SEGUNDOS);
+    const subindo = membro.estado === 'decolando';
+    if (subindo) membro.de.set(membro.sprite.x, membro.sprite.y);
+    else membro.de.set(alvo.x - lado * 320 * this.dono.escala(), this.topoDaTela() - 40);
+    const escalaFinal = this.dono.escala() * (membro.cfg.escala ?? 1);
+    membro.para.set(alvo.x, alvo.y + escalaFinal * membro.sprite.height * 0.45);
+    this.comecarAtaque(membro, lado, membro.de.distance(membro.para) / MERGULHO_PX_S);
+    membro.escalaInicial = subindo ? this.escalaNoFundo(membro) : escalaFinal;
   }
 
   private comecarSeguidores(): void {
@@ -257,6 +315,7 @@ export class Esquadrao {
     membro.duracao = Math.max(0.15, duracao);
     membro.lado = lado;
     membro.ativo = true;
+    membro.escalaInicial = this.dono.escala() * (membro.cfg.escala ?? 1);
     membro.assinatura = proximaAssinatura++;
     membro.sprite.setVisible(true).setPosition(membro.de.x, membro.de.y).setFlipX(lado === 1);
     this.tocar(membro, 'flight');
@@ -282,18 +341,31 @@ export class Esquadrao {
     });
   }
 
-  private atualizarMembro(membro: Membro, segundos: number): void {
+  private atualizarMembro(membro: Membro, segundos: number, p: Phaser.Math.Vector2): void {
     membro.relogio += segundos;
-    membro.sprite.setDepth(this.dono.profundidade() + (membro.estado === 'posto' ? -1 : 2));
-    membro.sprite.setScale(this.dono.escala() * (membro.cfg.escala ?? 1));
+    // Só quem ataca sai do fundo e passa na frente dos lutadores.
+    const noFundo = membro.estado === 'posto' || membro.estado === 'decolando' || membro.estado === 'voltando';
+    membro.sprite.setDepth(noFundo ? PLANO_DE_FUNDO.profundidade : this.dono.profundidade() + 2);
+    membro.sprite.setScale(noFundo ? this.escalaNoFundo(membro) : this.dono.escala() * (membro.cfg.escala ?? 1));
 
     switch (membro.estado) {
       case 'posto': {
-        // Segue o dono devagar, como quem acompanha de longe.
-        const p = this.posto(membro);
-        membro.sprite.x += (p.x - membro.sprite.x) * Math.min(1, segundos * 3);
-        membro.sprite.y = p.y;
-        membro.sprite.setFlipX(this.dono.lado() === 1);
+        // Anda atrás do dono como o Biriba: passo constante, histerese para
+        // não tremer entre andar e parar, e saltinhos enquanto anda.
+        const dt = Math.min(segundos, 0.1);
+        const distancia = p.x - membro.sprite.x;
+        const parada = membro.andando ? 7 : 22;
+        if (Math.abs(distancia) > parada) {
+          const sentido = distancia > 0 ? 1 : -1;
+          membro.sprite.x += sentido * Math.min(Math.abs(distancia), PLANO_DE_FUNDO.passo * dt);
+          membro.sprite.setFlipX(sentido === 1);
+          membro.andando = true;
+        } else {
+          membro.sprite.setFlipX(this.dono.lado() === 1);
+          membro.andando = false;
+        }
+        const saltinho = membro.andando ? Math.abs(Math.sin(membro.relogio * 14)) * 6 * this.dono.escala() : 0;
+        membro.sprite.y = p.y - saltinho;
         break;
       }
       case 'decolando': {
@@ -311,6 +383,8 @@ export class Esquadrao {
         break;
       case 'atacando': {
         const t = Math.min(1, membro.relogio / membro.duracao);
+        const escalaFinal = this.dono.escala() * (membro.cfg.escala ?? 1);
+        membro.sprite.setScale(membro.escalaInicial + (escalaFinal - membro.escalaInicial) * t);
         membro.sprite.setPosition(
           membro.de.x + (membro.para.x - membro.de.x) * t,
           membro.de.y + (membro.para.y - membro.de.y) * t
@@ -333,7 +407,6 @@ export class Esquadrao {
       }
       case 'voltando': {
         const t = Math.min(1, membro.relogio / VOLTA_SEGUNDOS);
-        const p = this.posto(membro);
         membro.sprite.setPosition(p.x, membro.de.y + (p.y - membro.de.y) * (1 - (1 - t) * (1 - t)));
         if (t >= 1) this.irAoPosto(membro);
         break;

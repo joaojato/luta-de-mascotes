@@ -34,7 +34,8 @@
           { "nome": "boina", "posto": 340 }
         ],
         "dano": 8,
-        "caixa": { "largura": 110, "altura": 110 }
+        "caixa": { "largura": 110, "altura": 110 },
+        "mergulho": { "segundos": 1, "adiantar": 0.5, "atrasar": 0.8 }
       }
     },
     "effects": {

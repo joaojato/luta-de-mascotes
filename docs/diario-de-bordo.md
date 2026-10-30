@@ -2200,3 +2200,28 @@ queda inteira; console sem erro.
 à frente: ficou um passo curto de 15 px antes do contato.
 **Em aberto:** o João ver o Mosqueteiro jogando; Dragão goianiense quando o
 Codex terminar.
+
+## 2026-10-30: Gaviões no fundo e mergulho sem hora certa
+
+**Marco:** 2, segue em andamento.
+**Pedido:** os Gaviões ficavam na frente do lutador e não acompanhavam o
+Mosqueteiro; ele quer igual ao Biriba (fundo, entre lutadores e torcida, e
+todo NPC dele será assim). Depois: mergulho do Gavião principal mais rápido
+e numa hora sorteada, de 0,5 s antes a 0,8 s depois da janela atual.
+**Feito:** `src/game/planoDeFundo.ts` guarda o plano do Biriba (camada 3,
+pé 60 px acima do chão da luta, margem da câmera, passo 340 px/s) e o
+Biriba passou a usar. Os Gaviões no posto ficam nesse plano, em 60% do
+tamanho, andam atrás do dono com passo constante e saltinhos, e o grupo se
+desloca para caber na câmera. Só no ataque saem do fundo; o mergulho que
+parte do meio da subida cresce do tamanho do fundo ao do lutador. Mergulho
+a 2600 px/s (antes 0,45 s fixos) e momento sorteado por `mergulho` no JSON
+(`segundos` 1, `adiantar` 0,5, `atrasar` 0,8), em `src/game/mergulho.ts`
+com teste. Regra do Fundo no `CLAUDE.md` e no criador.
+**Verificado:** `npm run check` (189 testes, build). Na luta: Gaviões no
+fundo, atrás dos dois, andando junto; seis especiais com sorteios de 0,55 s
+a 1,44 s, mergulho na hora sorteada, dano 32 em todos; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** posição e camada dos Gaviões no posto.
+**Aprovado explicitamente:** a janela do mergulho ("achei boa"), base do sorteio.
+**Atrito:** nenhum.
+**Em aberto:** Dragão goianiense quando o Codex terminar; sons.

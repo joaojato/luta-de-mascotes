@@ -115,6 +115,11 @@ Cada uma tem nome para poder ser cobrada depois.
   geral de cada evento; o bloco `sons` do JSON troca pelo próprio do
   mascote ou cala com `null`. Todo som é gerado por `scripts/sons.py`
   (`docs/sons.md`, ADR 0007). Cobrada por teste em `src/game/sons.test.ts`.
+- **Regra do Fundo.** NPC que acompanha um lutador (o Biriba do Bira, os
+  Gaviões do Mosqueteiro) vive no plano de fundo: atrás dos dois lutadores,
+  entre eles e a torcida, menor e com o pé mais alto que o chão da luta.
+  Anda junto com o dono, nunca fica parado nem sai da tela. Só sai do fundo
+  para atacar. Valores em `src/game/planoDeFundo.ts`.
 - **Regra da v1.** A v1 é: 2 mascotes, 1 cenário, 4 golpes por mascote, 2
   jogadores no mesmo teclado. A CPU veio de brinde no motor herdado e pode
   ficar. Nada além disso é construído antes de a v1 rodar de ponta a ponta.
