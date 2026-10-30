@@ -310,7 +310,7 @@
       "file": "heavy-wing-spread-v1.png",
       "frameWidth": 512,
       "frames": 20,
-      "frameRate": 16,
+      "frameRate": 22,
       "repeat": 0,
       "defaultVisual": {
         "x": 70,
@@ -337,7 +337,16 @@
           3
         ],
         "distance": 12
-      }
+      },
+      "timing": [
+        {
+          "frames": [
+            9,
+            19
+          ],
+          "ms": 30
+        }
+      ]
     },
     {
       "action": "heavy-kick",

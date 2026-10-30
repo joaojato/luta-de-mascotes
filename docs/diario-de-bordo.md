@@ -2059,3 +2059,17 @@ acerta a 178, 236 e 307 px, 10,4%, asas inteiras na tela; console sem erro.
 **Atrito:** o guia do Codex ainda diz "em andamento"; integrado depois de 5
 minutos sem mudança nos arquivos.
 **Em aberto:** a caixa de acerto cobre as duas asas, inclusive a de trás.
+
+## 2026-10-29: Golpe de asas mais rápido
+
+**Marco:** 2, segue em andamento.
+**Pedido:** o golpe novo do Urubu estava lento demais.
+**Feito:** abertura de 16 para 22 FPS e fechamento a 30 ms por quadro.
+**Verificado:** `npm run check` verde; no navegador o acerto sai em 0,33 s
+(era cerca de 0,4 s) e o golpe acaba em 0,79 s (era 1,25 s), 10,4%,
+console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a velocidade do golpe de asas.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** nada.

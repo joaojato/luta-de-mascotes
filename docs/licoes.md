@@ -368,3 +368,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   Porco foi commitado com a queda apontando para o quebra-galho, embora o
   Codex tivesse entregado a sheet minutos antes; o João notou que ele não
   caía. Conferir `pending` de novo logo antes de commitar. (2026-10-29)
+- **Golpe de asas do Urubu estava lento demais.** 1,25 s (20 quadros a 16
+  FPS) com o fechamento arrastado; o João pediu mais rápido. Ficou abertura
+  a 22 FPS e fechamento a 30 ms por quadro, 0,8 s no total. Golpe pesado
+  com muitos quadros: acelerar a recuperação antes do acerto. (2026-10-29)
