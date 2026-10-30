@@ -56,6 +56,8 @@ export interface DropConfig {
   hitEffect?: string;
   /** Particles bursting on a hit, to make it obvious. */
   hitParticles?: ParticleBurst[];
+  /** Falling on the head (still in the air) stuns this long, dizzy; a mine on the ground does not. */
+  stunMs?: number;
   /** Landing without hitting, it stays on the ground as a mine: whoever steps on it takes `damageFactor` of the damage. */
   mine?: { seconds: number; damageFactor: number };
 }
@@ -163,13 +165,17 @@ export interface StrikeTravel {
   reach?: number;
 }
 
-/** Sheet px a strike travels this step: `distance` spread evenly over its frames, nothing outside them. */
-export function strikeTravelStep(travel: StrikeTravel, frame: number, frameRate: number, seconds: number): number {
+/**
+ * Sheet px a strike travels this step: each frame of the window moves an equal
+ * share of `distance` over its own display time (`timing` may stretch it),
+ * nothing outside the window.
+ */
+export function strikeTravelStep(travel: StrikeTravel, frame: number, frameMs: number, seconds: number): number {
   const [from, to] = travel.frames;
   if (frame < from || frame > to) {
     return 0;
   }
-  return (travel.distance * frameRate * seconds) / (to - from + 1);
+  return (travel.distance * seconds * 1000) / (frameMs * (to - from + 1));
 }
 
 /** A run of frames (first and last) shown for `ms` each, instead of the frame rate. */

@@ -156,7 +156,8 @@ describe('registro de lutadores (Regra do JSON)', () => {
   it('chute e soco forte de chão andam para a frente (Regra do Passo)', () => {
     LUTADORES.forEach((lutador) => {
       lutador.actions
-        .filter((spec) => ['heavy-punch', 'heavy-kick', 'low-kick'].includes(spec.action))
+        // Estocada (golpe com `recuo`, a do Mosqueteiro) recua depois do contato, a pedido do João.
+        .filter((spec) => ['heavy-punch', 'heavy-kick', 'low-kick'].includes(spec.action) && !spec.recuo)
         .forEach((spec) => {
           expect(spec.travel?.distance ?? 0, `${lutador.id} ${spec.action}`).toBeGreaterThan(0);
           expect(spec.travel!.frames[1], `${lutador.id} ${spec.action}`).toBeLessThan(spec.frames);

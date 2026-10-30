@@ -41,6 +41,8 @@ export interface FighterActionSpec {
   guard?: Rect;
   /** The fighter slides forward during these frames (e.g. a sliding tackle). */
   travel?: StrikeTravel;
+  /** Steps back during these frames, one window per thrust (the Mosqueteiro's estocadas). */
+  recuo?: StrikeTravel[];
   /** Frames shown for their own time: fast wind-up, held contact (the rest follow `frameRate`). */
   timing?: FrameTiming[];
 }
@@ -210,6 +212,7 @@ function makeAnimation(
     repeat: spec.repeat,
     bounds,
     ...(spec.travel ? { travel: spec.travel } : {}),
+    ...(spec.recuo ? { recuo: spec.recuo } : {}),
     ...(spec.timing ? { frameDurations: frameDurations(spec.frames, spec.frameRate, spec.timing) } : {})
   };
 }

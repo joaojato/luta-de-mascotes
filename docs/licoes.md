@@ -35,6 +35,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   andarem atrás do dono; era descrição do que ele queria: o Biriba precisa
   acompanhar, os Gaviões ficam parados assistindo. Quando ele compara com
   outro NPC, perguntar qual parte é igual em vez de copiar tudo. (2026-10-30)
+- **Mosqueteiro é esgrima: lento para sair e voltar, estocada ligeira, e
+  recua a cada estocada.** Só a cotovelada sai rápido, com avanço maior e
+  volta um pouco lenta. O ritmo do golpe faz parte do personagem, não só o
+  desenho. (2026-10-30)
+- **Ataque sem defesa não prende o oponente.** Nos Gaviõezinhos (sem
+  guarda) o oponente tem que poder se mexer; o que garante o acerto é eles
+  serem teleguiados, não o atordoamento. (2026-10-30)
 - **Ataque de NPC não tem hora certa.** O mergulho do Gavião saía sempre
   1 s depois do botão; ele aprovou essa janela e pediu sorteio de 0,5 s
   antes até 0,8 s depois, e mais velocidade. (2026-10-30)

@@ -76,11 +76,13 @@ describe('special traversal and flight timing', () => {
 
   it('spreads a strike slide over its frames only', () => {
     const slide = { frames: [4, 8], distance: 100 };
-    expect(strikeTravelStep(slide, 3, 14, 1 / 14)).toBe(0);
-    expect(strikeTravelStep(slide, 9, 14, 1 / 14)).toBe(0);
+    expect(strikeTravelStep(slide, 3, 1000 / 14, 1 / 14)).toBe(0);
+    expect(strikeTravelStep(slide, 9, 1000 / 14, 1 / 14)).toBe(0);
     // Five moving frames at 14 FPS: one frame's time moves a fifth of the distance.
-    expect(strikeTravelStep(slide, 4, 14, 1 / 14)).toBeCloseTo(20);
-    expect(strikeTravelStep(slide, 8, 14, 1 / 14)).toBeCloseTo(20);
+    expect(strikeTravelStep(slide, 4, 1000 / 14, 1 / 14)).toBeCloseTo(20);
+    expect(strikeTravelStep(slide, 8, 1000 / 14, 1 / 14)).toBeCloseTo(20);
+    // A frame held longer by `timing` still moves only its share, over its own time.
+    expect(strikeTravelStep(slide, 5, 200, 0.2)).toBeCloseTo(20);
     expect(meteorDiveStart(700, 600, 0, 1)).toEqual({ x: 100, y: 0 });
     expect(meteorDiveStart(700, 600, 0, -1)).toEqual({ x: 1300, y: 0 });
   });

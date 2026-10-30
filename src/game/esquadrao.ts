@@ -7,7 +7,8 @@ import { PLANO_DE_FUNDO } from './planoDeFundo';
  * chama aliados que ficam de prontidão no plano de fundo (Regra do Fundo,
  * src/game/planoDeFundo.ts), parados assistindo à luta. O líder decola, sai pelo
  * alto e mergulha no oponente; só se esse golpe acertar os seguidores atacam,
- * um por vez e de lados alternados, sem guarda que segure. Errou ou foi
+ * um por vez e de lados alternados, sem guarda que segure, teleguiados: o
+ * oponente pode andar e pular, eles vão atrás. Errou ou foi
  * defendido: todos voltam ao posto. Tudo vem do JSON (Regra do JSON); a arte
  * de cada membro são efeitos `<nome>-idle`, `-takeoff`, `-flight`, `-strike`
  * e `-return` no bloco `effects`.
@@ -48,6 +49,8 @@ export interface DonoDoEsquadrao {
   escala(): number;
   profundidade(): number;
   alvoX(): number | null;
+  /** Corpo do oponente agora (pulando, agachado), para os teleguiados. */
+  alvoCorpo(): Phaser.Geom.Rectangle | null;
   /** Chave da animação de um efeito do mascote (`fx-<nome>`), se existir. */
   animacao(efeito: string): string | null;
 }
@@ -87,6 +90,8 @@ const VOLTA_SEGUNDOS = 0.6;
 /** Velocidade do mergulho do líder (antes 0,45 s fixos, cerca de 1850 px/s). */
 const MERGULHO_PX_S = 2600;
 const ATAQUE_LATERAL_PX_S = 1100;
+/** Teleguiado que não alcança nisso (oponente caído, fim de round) desiste. */
+const PERSEGUICAO_MAXIMA_S = 2.5;
 const ESPERA_ENTRE_SEGUIDORES = 0.25;
 /** Assinaturas próprias, longe das do dono, para a Luta não confundir os golpes. */
 let proximaAssinatura = 900_000;
@@ -378,6 +383,10 @@ export class Esquadrao {
       case 'fora':
         break;
       case 'atacando': {
+        if (membro !== this.membros[0]) {
+          this.perseguir(membro, segundos);
+          break;
+        }
         const t = Math.min(1, membro.relogio / membro.duracao);
         const escalaFinal = this.dono.escala() * (membro.cfg.escala ?? 1);
         membro.sprite.setScale(membro.escalaInicial + (escalaFinal - membro.escalaInicial) * t);
@@ -409,6 +418,32 @@ export class Esquadrao {
         break;
       }
     }
+  }
+
+  /**
+   * Seguidor teleguiado: voa a passo constante para o corpo do oponente onde
+   * ele estiver agora, vira se o oponente passar por cima e só sai quando a
+   * Luta confirma o contato.
+   */
+  private perseguir(membro: Membro, segundos: number): void {
+    const corpo = this.dono.alvoCorpo();
+    if (!corpo || membro.relogio > PERSEGUICAO_MAXIMA_S) {
+      this.sair(membro);
+      return;
+    }
+    membro.sprite.setScale(this.dono.escala() * (membro.cfg.escala ?? 1));
+    // A caixa do membro fica no meio do corpo dele (ver contato()): mira esse ponto no centro do oponente.
+    const alvo = new Phaser.Math.Vector2(corpo.centerX, corpo.centerY + membro.sprite.displayHeight * 0.45);
+    const atual = new Phaser.Math.Vector2(membro.sprite.x, membro.sprite.y);
+    const distancia = atual.distance(alvo);
+    const passo = Math.min(distancia, ATAQUE_LATERAL_PX_S * segundos);
+    if (distancia > 0) atual.add(alvo.clone().subtract(atual).scale(passo / distancia));
+    membro.sprite.setPosition(atual.x, atual.y);
+    if (Math.abs(alvo.x - atual.x) > 4) {
+      membro.lado = alvo.x > atual.x ? 1 : -1;
+      membro.sprite.setFlipX(membro.lado === 1);
+    }
+    if (distancia < 160 * this.dono.escala()) this.tocar(membro, 'strike');
   }
 
   private alvo(): Phaser.Math.Vector2 | null {

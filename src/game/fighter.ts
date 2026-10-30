@@ -621,8 +621,9 @@ export class Fighter {
       const especial = this.character.moves?.special?.esquadrao;
       return {
         rect: contato.rect,
-        // Contato baixo e curto: o oponente fica no lugar para o próximo aliado.
-        profile: { ...getAttackProfile(this.combat(), 'special'), damage: especial?.dano ?? 8, knockback: 40, hitstun: 650 },
+        // Contato baixo e curto. Os seguidores (sem guarda) atordoam pouco: o
+        // oponente volta a andar e pular entre um e outro, e eles vão atrás.
+        profile: { ...getAttackProfile(this.combat(), 'special'), damage: especial?.dano ?? 8, knockback: 40, hitstun: contato.bloqueavel ? 650 : 220 },
         signature: contato.assinatura, move: 'especial', finisher: contato.ultimo, facing: contato.lado,
         projectile: true, unblockable: !contato.bloqueavel
       };
@@ -1110,6 +1111,7 @@ export class Fighter {
         escala: () => this.appliedScale,
         profundidade: () => this.depthBase,
         alvoX: () => this.opponent?.x ?? null,
+        alvoCorpo: () => this.opponent?.getHurtRect() ?? null,
         animacao: (efeito) => findCharacterAnimationKeyByAction(this.character.id, `fx-${efeito}`)
       }, especial.esquadrao);
     }
@@ -1355,14 +1357,26 @@ export class Fighter {
     }
   }
 
-  /** Slides the fighter during a strike's `travel` frames, stopping `reach` short of the opponent. */
+  /**
+   * Slides the fighter during a strike's `travel` frames, stopping `reach` short
+   * of the opponent, and steps it back during its `recuo` frames.
+   */
   private updateStrikeTravel(seconds: number): void {
     const animation = this.strike ? this.currentAnimation() : null;
-    const travel = animation?.travel;
-    if (!animation || !travel) {
+    if (!animation) {
       return;
     }
-    const step = strikeTravelStep(travel, this.currentFrameIndex(animation), animation.frameRate, seconds);
+    const frame = this.currentFrameIndex(animation);
+    const frameMs = animation.frameDurations?.[frame] ?? 1000 / animation.frameRate;
+    const back = (animation.recuo ?? []).reduce((total, recuo) => total + strikeTravelStep(recuo, frame, frameMs, seconds), 0);
+    if (back > 0) {
+      this.posX = Phaser.Math.Clamp(this.posX - this.facing * back * this.appliedScale, this.minX, this.maxX);
+    }
+    const travel = animation.travel;
+    if (!travel) {
+      return;
+    }
+    const step = strikeTravelStep(travel, frame, frameMs, seconds);
     if (step <= 0) {
       return;
     }
@@ -1994,7 +2008,7 @@ export class Fighter {
     const visual = key
       ? this.scene.add.sprite(x, y, key, 0).setOrigin(.5, .5).setScale(this.appliedScale).setDepth(this.depthBase + 2).play(key)
       : this.scene.add.rectangle(x, y, width, height, 0x6b4423).setDepth(this.depthBase + 2);
-    const profile = { ...getAttackProfile(this.combat(), 'kick'), height: 'high' as const };
+    const profile = { ...getAttackProfile(this.combat(), 'kick'), height: 'high' as const, stunMs: drop.stunMs };
     // Lands on the drawn floor (where the shadows sit), so a mine is under the feet.
     return { x, previousX: x, y, vy: 0, gravity: drop.gravity ?? 1600, floorY: this.groundY - SHADOW_FOOT_OFFSET * this.appliedScale - height / 2,
       facing: carrier.facing, life: 5, signature: carrier.signature, visual, width, height, speed: 0,
@@ -2012,7 +2026,8 @@ export class Fighter {
     shot.y = shot.floorY;
     shot.visual.y = shot.y;
     shot.life = shot.mine.seconds;
-    shot.profile = { ...shot.profile, damage: shot.profile.damage * shot.mine.damageFactor };
+    // On the ground it is only a mine: weaker, and no head-hit stun.
+    shot.profile = { ...shot.profile, damage: shot.profile.damage * shot.mine.damageFactor, stunMs: undefined };
     if ('anims' in shot.visual) shot.visual.anims.pause();
     this.scene.tweens?.add({ targets: shot.visual, alpha: 0.25, duration: 120, yoyo: true, repeat: 3,
       delay: Math.max(0, shot.mine.seconds - 1) * 1000 });

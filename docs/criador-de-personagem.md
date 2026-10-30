@@ -70,7 +70,10 @@ Para cada linha: como ele faz esse golpe? Se for o padrão, basta dizer "padrão
 
 Soco forte, chute básico e chute baixo dão um passo para a frente (Regra do
 Passo, `travel` no JSON). Pergunta: o golpe dele avança mais que o normal,
-como o carrinho do Bira, ou fica no lugar (golpe de longe, tiro)?
+como o carrinho do Bira, ou fica no lugar (golpe de longe, tiro)? Ou é
+estocada, que recua um passo depois de cada contato (`recuo`, uma janela
+por estocada, como o Mosqueteiro)? Ritmo do golpe: lento para sair e para
+voltar com o contato ligeiro, ou rápido para sair (`timing` por quadro)?
 
 Golpe próprio no lugar de um padrão (já existem: bicada do Urubu
 `beak-pull`, cachimbo do Saci `pipe-throw`, tiro do Almirante `shot`, giro
@@ -84,7 +87,8 @@ Golpe que **chama alguém** (o Biriba): o chamado é a sheet do lutador; quem
 vem atravessa o campo como projétil que não acerta (`spawnFrom: "behind"`)
 e solta o que cai (`drop`) sobre onde o oponente estava no momento do
 chamado. O que cai é o golpe `queda`: nenhuma guarda segura, só sair do
-lugar. Enquanto quem veio está atravessando, o golpe não sai de novo.
+lugar. Se acertar ainda caindo, pode deixar o oponente tonto (`stunMs` no
+`drop`, como o cocô do Biriba). Enquanto quem veio está atravessando, o golpe não sai de novo.
 
 NPC do mascote (o Biriba, os Gaviões) segue a Regra do Fundo: fica atrás
 dos dois lutadores, entre eles e a torcida, e só sai do fundo para atacar.
@@ -106,7 +110,7 @@ encolhe (`src/game/planoDeFundo.ts`).
    | `meteor` | sai da tela e cai em diagonal | meteoro do Urubu |
    | `dash` | avança em linha atravessando a tela | tornado do Saci |
    | `strike` | golpe parado, no lugar | (padrão de golpe comum) |
-   | `esquadrao` | chama aliados que ficam de prontidão no fundo, atrás dele: o líder sai pelo alto e mergulha numa hora sorteada (`mergulho`: `segundos`, menos `adiantar` até mais `atrasar`); só se acertar, os outros atacam um por vez de lados alternados, sem guarda que segure | Gaviões da Fiel do Mosqueteiro |
+   | `esquadrao` | chama aliados que ficam de prontidão no fundo, atrás dele: o líder sai pelo alto e mergulha numa hora sorteada (`mergulho`: `segundos`, menos `adiantar` até mais `atrasar`); só se acertar, os outros atacam um por vez de lados alternados, sem guarda que segure, teleguiados (o oponente anda e pula entre um e outro, eles vão atrás) | Gaviões da Fiel do Mosqueteiro |
 
    Se nenhum serve, é mecânica nova no motor: vira conversa à parte antes
    do mascote.
@@ -190,3 +194,5 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 30/10/2026: som de dor por mascote (`dor`, `dor-forte`, `dor-ko`).
 - 30/10/2026: especial `esquadrao` (aliados que atacam no lugar do mascote; arte de cada aliado em efeitos `<nome>-idle`, `-takeoff`, `-flight`, `-strike`, `-return`).
 - 30/10/2026: Regra do Fundo para NPC que acompanha o mascote; `mergulho` sorteado no `esquadrao`.
+- 30/10/2026: `recuo` (estocada que recua depois de cada contato); seguidores do `esquadrao` teleguiados.
+- 30/10/2026: `stunMs` no `drop` (o que cai na cabeça atordoa).

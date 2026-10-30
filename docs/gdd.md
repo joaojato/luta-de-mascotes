@@ -399,11 +399,11 @@ Rival: em aberto
 
 | Botão | Golpe | Sheet |
 |---|---|---|
-| Soco | duas estocadas com a mesma espada (dois acertos separados) | `light-punch.png` |
-| Baixo + Soco | cotovelada que sai do agachamento e termina em pé | `heavy-punch.png` |
+| Soco | duas estocadas com a mesma espada (dois acertos separados): lenta para sair e para voltar, estocada ligeira, um passo para trás depois de cada uma | `light-punch.png` |
+| Baixo + Soco | cotovelada que sai do agachamento e termina em pé: o único golpe que sai rápido, com avanço longo e volta um pouco lenta | `heavy-punch.png` |
 | Chute | tiro de mosquete: embainha, mira, dispara no quadro 9, desembainha (26 de dano) | `shot.png` |
-| Baixo + Chute | estocada baixa, abaixado durante o contato | `low-kick.png` |
-| Especial | Gaviões da Fiel (tipo `esquadrao`): o Gavião mergulha do alto; só se acertar sem defesa, os três Gaviõezinhos (gorro, boné, boina) atacam um por vez de lados alternados, sem guarda que segure; 8 de dano cada contato. O mergulho sai numa hora sorteada entre 0,5 s e 1,8 s depois do botão. Fora do especial, os quatro ficam parados no fundo, assistindo, no lugar marcado no começo do round | `special-charge.png` + `gavioes/*` |
+| Baixo + Chute | estocada baixa, abaixado durante o contato: lenta para sair e para voltar, ligeira no contato, um passo para trás depois | `low-kick.png` |
+| Especial | Gaviões da Fiel (tipo `esquadrao`): o Gavião mergulha do alto; só se acertar sem defesa, os três Gaviõezinhos (gorro, boné, boina) atacam um por vez de lados alternados, sem guarda que segure e teleguiados (o oponente volta a andar e pular entre um e outro, mas eles vão atrás); 8 de dano cada contato. O mergulho sai numa hora sorteada entre 0,5 s e 1,8 s depois do botão. Fora do especial, os quatro ficam parados no fundo, assistindo, no lugar marcado no começo do round | `special-charge.png` + `gavioes/*` |
 
 Torcida: listras verticais preto e branco, como a risca de giz.
 Retrato e âncora são recortes da guarda.

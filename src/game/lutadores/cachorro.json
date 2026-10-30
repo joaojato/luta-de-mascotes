@@ -575,6 +575,7 @@
         "hitWidth": 44,
         "hitHeight": 44,
         "hitEffect": "coco-splash",
+        "stunMs": 1000,
         "mine": {
           "seconds": 2,
           "damageFactor": 0.5

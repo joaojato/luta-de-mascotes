@@ -2245,3 +2245,33 @@ feito na entrada anterior por leitura errada do pedido.
 **Atrito:** li a comparação com o Biriba como "fazer igual" em tudo; ele só
 queria o mesmo plano de fundo.
 **Em aberto:** Dragão goianiense quando o Codex terminar; sons.
+
+## 2026-10-30: Gaviõezinhos teleguiados, esgrima do Mosqueteiro e cocô que atordoa
+
+**Marco:** 2, segue em andamento.
+**Pedido:** (1) no ataque sem defesa o oponente tem que poder se mexer, mas
+os Gaviõezinhos são teleguiados; (2) golpes do Mosqueteiro lentos para sair
+e para voltar, estocada ligeira, um passo para trás a cada estocada; só a
+cotovelada sai rápido, com avanço maior e volta um pouco lenta; (3) o cocô
+do Biriba que cai na cabeça atordoa por 1 s. Perguntou também do modo
+online e do painel de edição do localhost.
+**Feito:** (1) contato dos seguidores atordoa 220 ms (antes 650) e eles
+perseguem o corpo do oponente onde ele estiver, pulando ou andando; o líder
+segue em linha reta (dá para defender e fugir). (2) motor ganhou `recuo`
+(passo para trás por janela de quadros) e o passo passou a respeitar o
+`timing` de cada quadro; Mosqueteiro com `timing` nas três estocadas e na
+cotovelada (avanço 70, antes 40). Regra do Passo ganhou a exceção da
+estocada. (3) `stunMs` no `drop`; o do Biriba é 1000; a mina não atordoa.
+**Verificado:** `npm run check` (189 testes, build). Na luta: Gaviõezinhos
+acertam o Almirante pulando, que fica livre entre um e outro, 32 de dano;
+duas estocadas 8+8 em 1,0 s (antes 0,75) com recuo depois de cada uma;
+cotovelada 28, avança 99 px; estocada baixa 15 e recua 38 px; cocô 18 de
+dano e 1003 ms de tontura; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o passo à frente da estocada baixa.
+**Aprovado explicitamente:** nada.
+**Atrito:** o navegador de teste ficou lento (cerca de 25 quadros/s) e dois
+scripts de medição travaram; refeitos com amostragem simples.
+**Em aberto:** modo online (só no roteiro, nada feito); painel do
+localhost grava no `fighter-playground.json` herdado, não no JSON do
+mascote; Dragão quando o Codex terminar; sons.

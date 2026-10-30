@@ -20,6 +20,8 @@ cai reto.
   Bira não faz nada.
 - Dano do chute básico (`kickDamage`). O acerto e o chão mostram o
   respingo.
+- **Na cabeça atordoa** (João, 30/10): o cocô que acerta ainda caindo deixa
+  o oponente tonto por 1 s (`drop.stunMs`). A mina no chão não atordoa.
 - **Mina** (João, 29/10): o cocô que cai no chão sem acertar fica lá 2
   segundos. Quem pisar leva metade do dano; pular por cima escapa. Pisca no
   último segundo antes de sumir (`drop.mine`).

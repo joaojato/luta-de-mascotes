@@ -29,6 +29,8 @@ export interface HeroAnimationDefinition {
   repeat: number;
   bounds: HeroBoundsFrame[];
   travel?: StrikeTravel;
+  /** Steps back after each thrust (see FighterActionSpec.recuo). */
+  recuo?: StrikeTravel[];
   /** Per-frame display time (ms) when the JSON sets a `timing`. */
   frameDurations?: number[];
 }
