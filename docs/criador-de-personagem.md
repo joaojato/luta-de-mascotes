@@ -76,7 +76,8 @@ Golpe próprio no lugar de um padrão (já existem: bicada do Urubu
 `beak-pull`, cachimbo do Saci `pipe-throw`, tiro do Almirante `shot`, giro
 do Galo `spin-kick` (hoje no chute baixo), laser dos olhos do Esquadrão
 `eye-laser`, ovo do Galo `egg-throw`, chamado do Biriba do Bira
-`summon-biriba`): ele tem algum? No lugar de qual botão? Golpe próprio no
+`summon-biriba`, mordida e coice de costas do Porco, que usam as sheets
+`heavy-punch` e `low-kick`): ele tem algum? No lugar de qual botão? Golpe próprio no
 chute baixo usa `lowKick` no JSON, como o `kick` usa no chute.
 
 Golpe que **chama alguém** (o Biriba): o chamado é a sheet do lutador; quem
@@ -116,6 +117,8 @@ lugar. Enquanto quem veio está atravessando, o golpe não sai de novo.
 9. O efeito tem texto (como o "Bora Bahêa" do Esquadrão)? Texto não pode
    espelhar quando ele vira de lado (`mirror: false` no projétil), e efeito
    mais largo que 256 px declara a célula (`frameWidth`, `frameHeight`).
+11. O efeito é largo e sai de um ponto do corpo (o jato de vômito do Porco
+    sai da boca)? `launchForward` diz quanto à frente nasce o centro dele.
 10. O projétil quebra ou respinga no acerto e no chão (`hitEffect`, como o
     ovo do Galo e o cocô do Biriba)? Solta partículas no acerto
     (`hitParticles`: cores, quantidade, se caem ou sobem, se ficam saindo

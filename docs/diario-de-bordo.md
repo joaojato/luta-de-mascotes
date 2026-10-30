@@ -1980,3 +1980,25 @@ primeira vez; console sem erro.
 aviso de fim se perdeu; vigia novo pelo arquivo de resposta. Partículas da
 primeira versão pequenas demais contra a torcida escura.
 **Em aberto:** aceite visual do João.
+
+## 2026-10-29: Porco na seleção
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Coloca o porco"; torcida com camisas brancas ou verdes.
+**Feito:** questionário respondido com proposta, aceita. `porco.json` com
+as 20 sheets que o Codex revisou: dois socos, mordida, chute, coice de
+costas com passo largo, voadora, soco no ar, dash e o vômito como projétil
+`nuvem` (pular e agachar não escapam), tonto 1 s, 8%. Caixas de acerto
+medidas nos PNGs só na altura do punho, boca, pé e casco. Motor:
+`launchForward`, para o jato largo nascer na boca. Torcida verde
+(`#087028`, do terno) e branca. Retrato e âncora recortados da guarda.
+**Verificado:** `npm run check` verde. No navegador contra o Urubu: soco
+6,1%, mordida 10,4%, chute 7,8%, coice 6,1%, vômito 7,8% de perto e a 350
+px com tontura; arquibancada verde e branca; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** a proposta do questionário ("Pode adicionar").
+**Atrito:** caixas automáticas pegavam o pé junto do punho; recortadas por
+altura. A corrida antes do coice depende de motor novo.
+**Em aberto:** `stunned`, `knockdown`, retrato; jato que se descola da boca
+enquanto anda; corrida do coice.

@@ -1,0 +1,28 @@
+{
+  "bodyAction": "special",
+  "suggestedEmissionFrames": [
+    2,
+    3
+  ],
+  "mouthAnchors": {
+    "2": [
+      61,
+      88
+    ],
+    "3": [
+      70,
+      87
+    ]
+  },
+  "effect": "vomit-jet.png",
+  "effectCell": [
+    512,
+    256
+  ],
+  "effectMouthOrigin": [
+    480,
+    128
+  ],
+  "direction": "left",
+  "previewOnlyNotCombatTest": true
+}

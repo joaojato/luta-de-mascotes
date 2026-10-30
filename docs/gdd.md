@@ -346,3 +346,32 @@ defesas alta e baixa, apanhar, tonto e queda (termina deitado). Ainda faltam
 produção) e o retrato próprio; retrato e âncora seguem recortes da guarda.
 O texto do Bora Bahêa cresce com a distância (`growth`: 1,8× em 700 px, dano
 até 1,6× e tontura de 1 s até 1,8 s).
+
+## Porco (Palmeiras): ficha (29/10/2026)
+
+Entrou jogável por pedido do João ("Coloca o porco"), com a arte da sessão do
+Codex (`docs/porco-animacoes-v1.md`, skin `terno-v1`).
+
+```
+Nome no jogo: Porco
+Slug (pasta e JSON): porco
+Silhueta em uma frase: javali verde de terno rasgado, presas de marfim, calção branco
+Arquétipo: pressão de perto (mordida, coice, vômito à queima-roupa)
+Vida / velocidade / peso: padrão / igual ao Urubu / padrão
+Fala de entrada: em aberto
+Fala de vitória: em aberto
+Paleta (3 cores, sem o escudo): verde, verde-escuro, branco
+Rival: em aberto
+```
+
+| Botão | Golpe | Sheet |
+|---|---|---|
+| Soco | dois socos alternados | `light-punch.png` |
+| Baixo + Soco | mordida (abre e fecha a mandíbula, tronco avança) | `heavy-punch.png` |
+| Chute | chute padrão | `heavy-kick.png` |
+| Baixo + Chute | coice de costas com passo largo (a corrida antes dele, `low-kick-run.png`, fica para quando o motor tiver corrida fora do especial) | `low-kick.png` |
+| Especial | vômito verde: jato que sai da boca, anda 240 px e se desfaz; defesa segura, pular e agachar não escapam, tonto 1 s, dano 18 (8%) | `special-charge.png`, `special.png` + `vomit-jet.png` |
+
+Torcida: camisas verdes ou brancas (João). `stunned` e `knockdown` ainda em
+produção; a queda usa a reação de apanhar e a tontura cai no padrão do motor.
+Retrato e âncora são recortes provisórios da guarda.

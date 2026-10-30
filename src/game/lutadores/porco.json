@@ -1,0 +1,434 @@
+{
+  "id": "porco",
+  "label": "Porco",
+  "assetRoot": "/assets/lutadores/porco",
+  "torcida": {
+    "estampa": "lisa",
+    "cores": [
+      "#087028",
+      "#F0F0F0"
+    ]
+  },
+  "anchorUsage": "Porco de terno em guarda, voltado para a esquerda",
+  "selecionavel": true,
+  "stats": {},
+  "combat": {
+    "specialDamage": 18
+  },
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Guarda",
+      "file": "idle.png",
+      "frames": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 43,
+        "y": 28,
+        "width": 169,
+        "height": 200
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Andar para frente",
+      "file": "walk-forward.png",
+      "frames": 8,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 44,
+        "y": 24,
+        "width": 168,
+        "height": 204
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Andar para trás",
+      "file": "walk-backward.png",
+      "frames": 8,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 46,
+        "y": 27,
+        "width": 164,
+        "height": 201
+      }
+    },
+    {
+      "action": "dash-forward",
+      "label": "Dash para a frente",
+      "file": "dash-forward.png",
+      "frames": 5,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 31,
+        "y": 28,
+        "width": 194,
+        "height": 200
+      }
+    },
+    {
+      "action": "dash-back",
+      "label": "Dash para trás",
+      "file": "dash-back.png",
+      "frames": 4,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 36,
+        "y": 11,
+        "width": 184,
+        "height": 217
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Agachar",
+      "file": "crouch.png",
+      "frames": 5,
+      "frameRate": 20,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 41,
+        "y": 28,
+        "width": 174,
+        "height": 200
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Saltar",
+      "file": "jump.png",
+      "frames": 8,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 42,
+        "y": 28,
+        "width": 171,
+        "height": 200
+      }
+    },
+    {
+      "action": "jump-kick",
+      "label": "Voadora",
+      "file": "jump-kick.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 29,
+        "y": 28,
+        "width": 197,
+        "height": 184
+      },
+      "attack": {
+        "frames": [
+          2
+        ],
+        "bounds": {
+          "x": 29,
+          "y": 166,
+          "width": 46,
+          "height": 40
+        }
+      }
+    },
+    {
+      "action": "jump-punch",
+      "label": "Soco no ar",
+      "file": "jump-punch.png",
+      "frames": 5,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 32,
+        "y": 28,
+        "width": 192,
+        "height": 187
+      },
+      "attack": {
+        "frames": [
+          2
+        ],
+        "bounds": {
+          "x": 32,
+          "y": 74,
+          "width": 40,
+          "height": 26
+        }
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Defesa alta",
+      "file": "block-high.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 38,
+        "y": 27,
+        "width": 179,
+        "height": 201
+      },
+      "guard": {
+        "x": 38,
+        "y": 37,
+        "width": 100,
+        "height": 95
+      }
+    },
+    {
+      "action": "block-low",
+      "label": "Defesa baixa",
+      "file": "block-low.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 38,
+        "y": 28,
+        "width": 179,
+        "height": 200
+      },
+      "guard": {
+        "x": 38,
+        "y": 90,
+        "width": 110,
+        "height": 110
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Receber golpe",
+      "file": "hit-high.png",
+      "frames": 6,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 42,
+        "y": 26,
+        "width": 172,
+        "height": 202
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Dois socos",
+      "file": "light-punch.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 23,
+        "y": 28,
+        "width": 209,
+        "height": 200
+      },
+      "attack": {
+        "frames": [
+          1,
+          3
+        ],
+        "bounds": {
+          "x": 23,
+          "y": 71,
+          "width": 45,
+          "height": 28
+        }
+      }
+    },
+    {
+      "action": "heavy-punch",
+      "label": "Mordida",
+      "file": "heavy-punch.png",
+      "frames": 8,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 16,
+        "y": 24,
+        "width": 224,
+        "height": 204
+      },
+      "attack": {
+        "frames": [
+          3,
+          4
+        ],
+        "bounds": {
+          "x": 16,
+          "y": 41,
+          "width": 51,
+          "height": 82
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 25
+      }
+    },
+    {
+      "action": "heavy-kick",
+      "label": "Chute",
+      "file": "heavy-kick.png",
+      "frames": 10,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 20,
+        "y": 24,
+        "width": 215,
+        "height": 204
+      },
+      "attack": {
+        "frames": [
+          3,
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 21,
+          "y": 84,
+          "width": 54,
+          "height": 57
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 40
+      }
+    },
+    {
+      "action": "low-kick",
+      "label": "Coice de costas",
+      "file": "low-kick.png",
+      "frames": 10,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 33,
+        "y": 26,
+        "width": 190,
+        "height": 202
+      },
+      "attack": {
+        "frames": [
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 33,
+          "y": 95,
+          "width": 57,
+          "height": 38
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          4
+        ],
+        "distance": 60
+      }
+    },
+    {
+      "action": "special-charge",
+      "label": "Enjoo",
+      "file": "special-charge.png",
+      "frames": 5,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 33,
+        "y": 28,
+        "width": 190,
+        "height": 200
+      }
+    },
+    {
+      "action": "special",
+      "label": "Vômito",
+      "file": "special.png",
+      "frames": 6,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 41,
+        "y": 28,
+        "width": 173,
+        "height": 200
+      },
+      "timing": [
+        {
+          "frames": [
+            3,
+            3
+          ],
+          "ms": 350
+        }
+      ]
+    },
+    {
+      "action": "knockdown",
+      "label": "Queda (quebra-galho: apanhar)",
+      "file": "hit-high.png",
+      "frames": 10,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 25,
+        "y": 28,
+        "width": 205,
+        "height": 200
+      },
+      "_info": "hit-high"
+    }
+  ],
+  "skins": [
+    {
+      "id": "terno-v1",
+      "label": "Terno",
+      "pasta": "terno-v1"
+    }
+  ],
+  "moves": {
+    "special": {
+      "kind": "projectile",
+      "releaseFrame": 2,
+      "speed": 240,
+      "range": 240,
+      "visualEffect": "vomito",
+      "visualScale": 1,
+      "launchHeight": 167,
+      "launchForward": 227,
+      "hitWidth": 230,
+      "hitHeight": 90,
+      "stunMs": 1000,
+      "move": "nuvem",
+      "persistOnHit": true,
+      "rangeAfterHit": 120
+    },
+    "effects": {
+      "vomito": {
+        "file": "vomit-jet.png",
+        "frames": 6,
+        "frameRate": 10,
+        "frameWidth": 512,
+        "frameHeight": 256
+      }
+    }
+  }
+}

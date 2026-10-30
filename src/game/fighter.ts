@@ -1837,7 +1837,7 @@ export class Fighter {
     if (effectKey) {
       // Effect-sheet projectile (pipe, powder cloud): centred at hand height;
       // from behind (the Biriba), it enters at the camera edge behind him.
-      x = fromBehind ? this.behindEdgeX(width / 2) : this.posX + this.facing * 70 * this.appliedScale;
+      x = fromBehind ? this.behindEdgeX(width / 2) : this.posX + this.facing * (move.launchForward ?? 70) * this.appliedScale;
       y = this.groundY - (move.launchHeight ?? 110) * this.appliedScale;
       visual = this.scene.add.sprite(x, y, effectKey, 0)
         .setOrigin(.5, .5).setScale(move.visualScale ?? this.appliedScale).setFlipX(move.mirror !== false && this.facing === 1)

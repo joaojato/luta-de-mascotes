@@ -75,6 +75,9 @@ ele é quebrado em dois, não esticado.
   P1 e a do P2 nas cores e estampas dos clubes (camisas, bandeiras,
   fumaça), cada torcedor balançando no próprio ritmo. Arte do Codex,
   contrato em `docs/torcida-dividida.md`. Os menus seguem com a pintura antiga.
+- [ ] Porco (29/10/2026): na seleção com a arte do Codex (mordida, coice,
+  vômito). Falta: `stunned`, `knockdown`, retrato, corrida antes do coice
+  (motor), falas e rival.
 - [ ] Tarefa futura, pedida pelo João em 29/10/2026: **versão jogável no
   celular**, com botões na tela no lugar das teclas. Vem depois do build
   de computador na Vercel.

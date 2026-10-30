@@ -90,6 +90,8 @@ export interface ProjectileMoveConfig {
   /** Projectile drawn with an effect sheet from `effects`, centred `launchHeight` frame px above the ground. */
   visualEffect?: string;
   launchHeight?: number;
+  /** Frame px ahead of the fighter where the effect's centre starts (default 70); a wide jet starts at the mouth. */
+  launchForward?: number;
   /** Projectile arc: initial upward speed and gravity (px/s, px/s²); it ends when it falls to the ground. */
   launchVy?: number;
   gravity?: number;

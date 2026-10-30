@@ -1,0 +1,1459 @@
+{
+  "actions": [
+    {
+      "action": "idle",
+      "frames": 4,
+      "fps": 8,
+      "repeatSuggested": -1,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.3766478342749529,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 4,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          44,
+          28,
+          212,
+          228
+        ],
+        [
+          45,
+          30,
+          210,
+          228
+        ],
+        [
+          43,
+          30,
+          212,
+          228
+        ]
+      ],
+      "sourceSha256": "25077205c3fead6eafd2cdbf230cc5b7b59cd5b8c739f18fd3a10c07417d1a1a",
+      "assetSha256": "36ac2b1ac82b48f5d1d5537cf4b7a8598340e389d319a515573de02cd19022d3",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected source and four packed poses against suit v2: same green fur, white shorts, green torn jacket/vest/tie, tusks and hooves. Planted A/B legs stay attached to same hips; arm A rises in guard without growing; no clipped parts, logos or new light. Canonical first guard exact."
+    },
+    {
+      "action": "walk-forward",
+      "frames": 8,
+      "fps": 8,
+      "repeatSuggested": -1,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.5347593582887701,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 8,
+      "frameBounds": [
+        [
+          49,
+          28,
+          207,
+          228
+        ],
+        [
+          49,
+          24,
+          206,
+          228
+        ],
+        [
+          53,
+          24,
+          202,
+          228
+        ],
+        [
+          59,
+          30,
+          197,
+          228
+        ],
+        [
+          52,
+          27,
+          204,
+          228
+        ],
+        [
+          54,
+          29,
+          202,
+          228
+        ],
+        [
+          44,
+          29,
+          212,
+          228
+        ],
+        [
+          48,
+          27,
+          208,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        131.0,
+        124.0,
+        134.5,
+        140.0,
+        123.0,
+        129.5,
+        122.5,
+        119.0
+      ],
+      "sourceSha256": "bd8f19a3e1cc5defb29031ebb7c22f5519505b71e42880faa8b884aa92a5c0f8",
+      "assetSha256": "0242df64629448a3575c5daaa19123880bf929aac1cd252eba1b94eb76cb6422",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Compared eight raw and packed forward-step phases with current Urubu guide and Porco base. Alternating legs remain rooted in correct hips through passing/crossing, guard hands stable, no bone/hoof growth, head/tusks and torn suit/white shorts preserved. Standing body scale common across action, no injected guard frame disrupting walking loop. All margins checked."
+    },
+    {
+      "action": "walk-backward",
+      "frames": 8,
+      "fps": 8,
+      "repeatSuggested": -1,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.5235602094240838,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 8,
+      "frameBounds": [
+        [
+          46,
+          28,
+          210,
+          228
+        ],
+        [
+          58,
+          28,
+          197,
+          228
+        ],
+        [
+          64,
+          27,
+          192,
+          228
+        ],
+        [
+          59,
+          28,
+          197,
+          228
+        ],
+        [
+          63,
+          27,
+          193,
+          228
+        ],
+        [
+          64,
+          27,
+          192,
+          228
+        ],
+        [
+          68,
+          28,
+          188,
+          228
+        ],
+        [
+          47,
+          28,
+          208,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        148.0,
+        126.5,
+        132.5,
+        129.0,
+        143.5,
+        133.0,
+        133.5,
+        126.5
+      ],
+      "sourceSha256": "8f6b060aad408b4fb89fb7df4706a4f60eed4002cdb05b0100a43d3450981b94",
+      "assetSha256": "495d2ec29ee5f631eae6395248ddbdd1b1ae5bd9a0a9c7aec89f571e0184777c",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Reviewed eight backward-step source and packed poses with Urubu retreat guide: keeps gaze and guardLEFT while legs retreatRIGHT and pass/cross coherently; same A/B hips, no reversed attack or limb growth. Same suit/head/tusks/white shorts and common body scale; no guard fallback injected into loop. Full alpha margins checked."
+    },
+    {
+      "action": "dash-forward",
+      "frames": 5,
+      "fps": 18,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.4444444444444444,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 5,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          35,
+          65,
+          221,
+          228
+        ],
+        [
+          31,
+          64,
+          225,
+          228
+        ],
+        [
+          34,
+          63,
+          221,
+          228
+        ],
+        [
+          45,
+          28,
+          211,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        145.5,
+        127.0,
+        142.0,
+        125.5
+      ],
+      "sourceSha256": "42316e58c4fc16251eaca996d995b39f81020efcaf19c9c9bba4d2c37547ecc5",
+      "assetSha256": "7ea88665797f952a03ac0cb3e186fe3d8b7aaf0894738523f96a7d89200f2f49",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected five source and packed frames with Urubu dash guide: same crouched guarded forward driveLEFT, rear A pushes and front B receives, coherent knees/hips/shoulders and unchanged limb size. Same head/tusks/green suit/white shorts. No dust/trails or clipping; exact canonical guard endpoints intentionally used."
+    },
+    {
+      "action": "dash-back",
+      "frames": 4,
+      "fps": 18,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.390625,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 4,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          36,
+          11,
+          220,
+          208
+        ],
+        [
+          51,
+          27,
+          205,
+          208
+        ],
+        [
+          45,
+          28,
+          211,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        122.0,
+        152.5,
+        125.5
+      ],
+      "sourceSha256": "8a9ca4e6a7fb8c240cb2c413c19ce1b8ff22fe3a6d8e2fa64dd3648a514b55df",
+      "assetSha256": "369a423b9ba8bc023abaa9f8a4ebb8c5fa558993a82fadf5de9de7c82c82dd95",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Reviewed four raw and packed poses: face staysLEFT, both guard fists rise, body retreatsRIGHT with two unsupported hop beats and return to original stance. Same own shoulders/hips and bone lengths, no species/palette/costume changes. Hop poses1-2 translated as whole figures above baseline, not rescaled; all body margins and original endpoints checked."
+    },
+    {
+      "action": "crouch",
+      "frames": 5,
+      "fps": 20,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.39447731755424065,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 5,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          47,
+          54,
+          208,
+          228
+        ],
+        [
+          51,
+          88,
+          205,
+          228
+        ],
+        [
+          43,
+          104,
+          213,
+          228
+        ],
+        [
+          41,
+          109,
+          215,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        124.5,
+        163.0,
+        174.5,
+        166.0
+      ],
+      "sourceSha256": "64b66b94fa6bbffa4c36225a0129aefa60ed07cc17a0e258f34f520177cfa60e",
+      "assetSha256": "b9a12c3f5fc5f4a4b94bcd97f62537229d097d7f6d6fabd3e47e4af6d199c6e5",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected source and all five packed poses: knees/hips fold progressively into deep duck, final119px silhouette remains low with normal head/torso/limb units, two separate hooves grounded. Same arms protect forward, A/B roots retained, suit tears/white shorts/tusks/colors stable. No stand-up ending or anatomical rescaling; full margins checked."
+    },
+    {
+      "action": "jump",
+      "frames": 8,
+      "fps": 10,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.49261083743842365,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 8,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          54,
+          56,
+          202,
+          228
+        ],
+        [
+          56,
+          78,
+          199,
+          228
+        ],
+        [
+          56,
+          28,
+          200,
+          227
+        ],
+        [
+          57,
+          28,
+          199,
+          207
+        ],
+        [
+          57,
+          28,
+          199,
+          182
+        ],
+        [
+          45,
+          28,
+          210,
+          200
+        ],
+        [
+          42,
+          28,
+          213,
+          207
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        130.5,
+        114.5,
+        134.5,
+        159.0,
+        158.5,
+        130.5,
+        134.5
+      ],
+      "sourceSha256": "b94b91e1ba7b4a577f9917423cf534a91da8b0ce243092a4af1d4e0420e498c1",
+      "assetSha256": "061437508c41de7d22eebb3285f756585323ec6c1e279a99d81ed72c2ebcd117",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Reviewed eight raw and packed jump phases with Urubu guide:0 guard,1-2 planted preparation,3-7 airborne with toes/hooves unsupported and knees changing continuously. All aerial head tops28px, no second parabola or final planted guard. Same A/B hips through tucking and reopening, arms stay guarded, head/tusks/green suit/white shorts unchanged; common scale and complete margins checked."
+    },
+    {
+      "action": "jump-kick",
+      "frames": 6,
+      "fps": 14,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.45558086560364464,
+      "calibration": 6,
+      "mode": "head",
+      "sourceCount": 7,
+      "frameBounds": [
+        [
+          43,
+          28,
+          213,
+          207
+        ],
+        [
+          43,
+          28,
+          213,
+          204
+        ],
+        [
+          29,
+          28,
+          226,
+          206
+        ],
+        [
+          51,
+          28,
+          205,
+          212
+        ],
+        [
+          55,
+          28,
+          201,
+          189
+        ],
+        [
+          60,
+          28,
+          196,
+          178
+        ]
+      ],
+      "whiteShortsAxes": [
+        136.5,
+        140.5,
+        150.0,
+        144.5,
+        141.0,
+        132.5
+      ],
+      "sourceSha256": "3d6c61cfd2f364d5ec6d565e97ae9733a38318b16bab675ed12cc8e5ed6f2a0b",
+      "assetSha256": "3d92766ed5e43bb15bc21ea7f60948657e59e514dd783842512cc2b05761b423",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected all seven source figures and six packed combat frames: same foreground kicking leg extends downLEFT0-3 and retracts4-5, other leg remains folded with continuous pants/hip occlusion; no swapping to opposite leg. All six airborne with fixed local head top28, no standing endpoints or drawn trajectory. Extra canonical guard6 used only for shared scale. Same skull/tusks/suit/white shorts/hooves, no clipped extremities or bone elongation."
+    },
+    {
+      "action": "jump-punch",
+      "frames": 5,
+      "fps": 14,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.40404040404040403,
+      "calibration": 5,
+      "mode": "head",
+      "sourceCount": 6,
+      "frameBounds": [
+        [
+          61,
+          28,
+          194,
+          215
+        ],
+        [
+          46,
+          28,
+          209,
+          215
+        ],
+        [
+          32,
+          28,
+          224,
+          211
+        ],
+        [
+          59,
+          28,
+          196,
+          212
+        ],
+        [
+          68,
+          28,
+          188,
+          210
+        ]
+      ],
+      "whiteShortsAxes": [
+        120.5,
+        141.5,
+        154.0,
+        126.5,
+        122.5
+      ],
+      "sourceSha256": "7ccf4b0944bee1be4ea5c040fafeda135f08b38d382da16a06cc0b639d7f5cb4",
+      "assetSha256": "54f394102012ad93d773bb8bfa9f68a7480c31483c03a72a05beefd797af48c0",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected six raw figures and five packed airborne punch poses: far armB extendsLEFT in1-2 then retracts3-4, near armA stays guarding, continuous original shoulder attachments with visible protraction. Both legs remain tucked and retain hip identity. Extra standing guard5 excluded from combat. Fixed aerial head height, same tusks/head units/suit/white shorts, no planted guard flash or clipped fist/hoof."
+    },
+    {
+      "action": "block-high",
+      "frames": 4,
+      "fps": 10,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.3838771593090211,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 4,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          38,
+          29,
+          217,
+          228
+        ],
+        [
+          39,
+          27,
+          216,
+          228
+        ],
+        [
+          39,
+          27,
+          216,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        122.5,
+        119.0,
+        118.5
+      ],
+      "sourceSha256": "6b88c9d6671f2a30c9ee26c08cb244ca046e39a68fc119d38a00cb670c6dfd61",
+      "assetSha256": "eae12f066debfe35a3b81966d50cb2e43f82bcf8c89be6ffdd545bbbc5f9741a",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected source and four packed poses: both fists/forearms move in front of snout/face and last two HOLD protection, not hands behind ears or open guard. Occluded tusks remain correctly rooted where visible. Same own shoulders/elbows, A/B leg supports, green torn suit and white shorts; no new light, clipping or guard reset at end."
+    },
+    {
+      "action": "block-low",
+      "frames": 4,
+      "fps": 10,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.3424657534246575,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 4,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          38,
+          54,
+          217,
+          228
+        ],
+        [
+          41,
+          84,
+          214,
+          228
+        ],
+        [
+          41,
+          86,
+          215,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        123.5,
+        96.0,
+        96.5
+      ],
+      "sourceSha256": "f68b07efb4eabc1d72a767c3ba7e8cf6390e3df95e4d5a85613b4d3833f25a01",
+      "assetSha256": "ac7695768c5202e97f6c1475d496b200c1c757c0fa6087967b67461a29d633c9",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Reviewed four source and packed frames against base and low-guard guide: knees/hips lower with two grounded hooves, both fists/forearms stay forward protecting snout/chest, final remains low and defended. Original shoulders/elbows and A/B hips connected, no hidden extra limb, head/tusks/suit/white shorts preserved. No guard reset, new light or cropped body."
+    },
+    {
+      "action": "hit-high",
+      "frames": 6,
+      "fps": 12,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.44052863436123346,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 6,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          50,
+          26,
+          205,
+          228
+        ],
+        [
+          49,
+          36,
+          206,
+          228
+        ],
+        [
+          42,
+          31,
+          214,
+          228
+        ],
+        [
+          42,
+          31,
+          213,
+          228
+        ],
+        [
+          45,
+          28,
+          211,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        119.0,
+        112.0,
+        124.5,
+        123.0,
+        125.5
+      ],
+      "sourceSha256": "6b5463d1750aa3dd145bd30fcb4bc27536b3bf74d8ad9cdc5eb26601531f47b2",
+      "assetSha256": "c2929847d885b47e9461786795a09e060affcbccf5a7e10f6ddca1e0eb43455b",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Reviewed six raw and packed hit phases with Urubu guide: impact comes fromLEFT, torso/head recoilRIGHT with natural neck connection and wince, peak2 then regain guard3-5. Same original A/B legs, arm/shoulder roots, stable tusks and own green suit/white shorts. No head stretch, flying disconnected parts, new lighting or clipping; original endpoints intentional."
+    },
+    {
+      "action": "stunned",
+      "frames": 4,
+      "fps": 6,
+      "repeatSuggested": -1,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.3952569169960474,
+      "calibration": 4,
+      "mode": "feet",
+      "sourceCount": 5,
+      "frameBounds": [
+        [
+          52,
+          47,
+          204,
+          228
+        ],
+        [
+          46,
+          47,
+          210,
+          228
+        ],
+        [
+          52,
+          41,
+          203,
+          228
+        ],
+        [
+          48,
+          42,
+          208,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        110.0,
+        114.0,
+        120.5,
+        127.0
+      ],
+      "sourceSha256": "3f02c4b128ea8d3bbb1017477b9e6457b1178c3ae3cfa9a9bf952ea553e5f420",
+      "assetSha256": "cc1a620479b82c610dd4032c589b6d6b5cdf9262eceeac2f11d43c903ac5dc54",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected five calibrated source figures and four packed dazed poses. Same head/limb units as extra upright guard4, which is excluded from animation; hunched silhouettes remain181-187px instead of being enlarged to200. Loose hands/shoulders, slight continuous head wobble, fixed own hip roots and grounded hooves. All frames dazed facingLEFT, no alert guard flash, drawn stars/effects or new light; suit/white shorts/tusks and margins checked."
+    },
+    {
+      "action": "light-punch",
+      "frames": 6,
+      "fps": 14,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.45248868778280543,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 6,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          23,
+          30,
+          232,
+          228
+        ],
+        [
+          48,
+          30,
+          208,
+          228
+        ],
+        [
+          28,
+          29,
+          228,
+          228
+        ],
+        [
+          43,
+          28,
+          213,
+          228
+        ],
+        [
+          45,
+          28,
+          211,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        144.0,
+        123.0,
+        129.5,
+        118.5,
+        125.5
+      ],
+      "sourceSha256": "cbdee759fe315e3411da53eeec1b4182d4024256307b6ff1c532231978fde27d",
+      "assetSha256": "a6a2dd53e5ee9de9a6fb0f66c0e40165f4488a14221042617d1177bf05761290",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected six source and packed frames: first impact1 is far armB, second3 is near armA with visible back/jacket seam and shoulder rotation, not a repeated jab. Same shoulder roots, other hand guards, normal elbow/wrist and hoof pivots, coherent return4-5. Same green fur/tusks/ripped suit/white shorts, no heavy outline halo or cropped fist; exact canonical endpoints intentional."
+    },
+    {
+      "action": "heavy-punch",
+      "frames": 8,
+      "fps": 14,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.47961630695443647,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 8,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          46,
+          26,
+          209,
+          228
+        ],
+        [
+          44,
+          24,
+          212,
+          228
+        ],
+        [
+          17,
+          41,
+          238,
+          228
+        ],
+        [
+          16,
+          51,
+          240,
+          228
+        ],
+        [
+          41,
+          36,
+          214,
+          228
+        ],
+        [
+          36,
+          30,
+          219,
+          228
+        ],
+        [
+          45,
+          28,
+          211,
+          228
+        ]
+      ],
+      "sourceSha256": "473c9344013b110e417cc19203aa053bf1285543bc696a2aec2f6585949f88f5",
+      "assetSha256": "a9a61db90c87e01ee0dbd3371298f45e30f12ea277ca0ca4dd0139d298306f66",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected all eight raw and packed frames: jaw opens in2-3, closes at full left reach in4 and pulls back in5, head advances with torso without stretching snout/neck. Same tusk roots, A/B arms/legs and planted hooves, suit/white shorts/palette remain coherent. Full figures and margins checked; original guard endpoints restored intentionally."
+    },
+    {
+      "action": "heavy-kick",
+      "frames": 10,
+      "fps": 12,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.5780346820809249,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 10,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          72,
+          26,
+          184,
+          228
+        ],
+        [
+          66,
+          24,
+          189,
+          228
+        ],
+        [
+          20,
+          25,
+          235,
+          228
+        ],
+        [
+          29,
+          28,
+          227,
+          228
+        ],
+        [
+          24,
+          30,
+          232,
+          228
+        ],
+        [
+          45,
+          27,
+          210,
+          228
+        ],
+        [
+          53,
+          31,
+          203,
+          228
+        ],
+        [
+          60,
+          29,
+          195,
+          228
+        ],
+        [
+          45,
+          28,
+          211,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        134.5,
+        126.5,
+        132.5,
+        144.0,
+        141.0,
+        141.5,
+        125.5,
+        129.0,
+        125.5
+      ],
+      "sourceSha256": "fff0d1f3f2968b77f8007fa734ab461cf54cc0cb5029215515d58b13a2911c5e",
+      "assetSha256": "8584513afaf95d3efd306b09309792920857fadf8947f83a6def4266102bdce3",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Reviewed ten source and packed kick phases against Urubu template: same A leg raises1-2, extendsLEFT3-6, bends/retracts7 and settles8-9 while B supports/pivots with coherent pelvis rotation. No change of kicking limb during recovery; hands remain connected in guard/rebalance. Same hoof scale, skull/tusks/ripped green suit/white shorts. Complete margins and canonical guard endpoints checked."
+    },
+    {
+      "action": "low-kick-run",
+      "frames": 8,
+      "fps": 16,
+      "repeatSuggested": -1,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.5115089514066496,
+      "calibration": 8,
+      "mode": "feet",
+      "sourceCount": 9,
+      "frameBounds": [
+        [
+          42,
+          80,
+          213,
+          209
+        ],
+        [
+          12,
+          81,
+          244,
+          209
+        ],
+        [
+          41,
+          80,
+          214,
+          211
+        ],
+        [
+          41,
+          80,
+          214,
+          209
+        ],
+        [
+          23,
+          118,
+          233,
+          228
+        ],
+        [
+          61,
+          118,
+          195,
+          228
+        ],
+        [
+          28,
+          114,
+          227,
+          228
+        ],
+        [
+          26,
+          80,
+          229,
+          178
+        ]
+      ],
+      "whiteShortsAxes": [
+        165.0,
+        155.0,
+        177.0,
+        158.5,
+        158.5,
+        171.0,
+        164.0,
+        164.5
+      ],
+      "sourceSha256": "42a5b2eb7577d2077c0647a2f8a9897088b907ed49e4c1bd062c2ff6d15f05cc",
+      "assetSha256": "78d90f44362249f2652ae0e017d3893e691f13757f28c09456f573ca2afefe5c",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Reviewed nine raw figures and eight packed run poses. Corrected pose2 now folds knees/elbows instead of stretching; no clipped hooves or shrinking individual frames. Same anatomical units calibrated against extra standing source pose8 (excluded from animation), original near/far limbs retained. Suspended beats0-3/7 separated from grounded knuckle/hoof contacts4-6. Head/tusks, ripped green suit and white shorts compared to base at final scale."
+    },
+    {
+      "action": "low-kick",
+      "frames": 10,
+      "fps": 14,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.4728132387706856,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 10,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          56,
+          26,
+          199,
+          228
+        ],
+        [
+          63,
+          43,
+          192,
+          228
+        ],
+        [
+          51,
+          28,
+          204,
+          208
+        ],
+        [
+          33,
+          28,
+          223,
+          171
+        ],
+        [
+          44,
+          28,
+          212,
+          180
+        ],
+        [
+          62,
+          28,
+          193,
+          192
+        ],
+        [
+          66,
+          41,
+          190,
+          228
+        ],
+        [
+          54,
+          27,
+          202,
+          228
+        ],
+        [
+          45,
+          28,
+          211,
+          228
+        ]
+      ],
+      "sourceSha256": "862a7df41c38701de7fcb8f9bdd074ec9281f4524ac3f361023160a9e92566e4",
+      "assetSha256": "8d382d9dee4f6a879383db89a409501e92fd193fbd911f63c8bfbd498202a101",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Reviewed all ten source and packed frames plus isolated contact4. True progressive turn shows plain jacket back and head facesRIGHT during3-7; same original A folds at3, kicksLEFT in4-5, retracts6 and lands at7 while B stays folded. Both legs off ground during3-6, equal local head height there; no changing attacking leg or bone extension. Costume, tusks and palette stable. Transparent RGB from neighbor in isolated diagnostic has alpha0, verified not present in packed art. Guard endpoints restored intentionally."
+    },
+    {
+      "action": "special-charge",
+      "frames": 5,
+      "fps": 14,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.3929273084479371,
+      "calibration": 0,
+      "mode": "feet",
+      "sourceCount": 5,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          43,
+          31,
+          213,
+          228
+        ],
+        [
+          44,
+          43,
+          211,
+          228
+        ],
+        [
+          33,
+          45,
+          223,
+          228
+        ],
+        [
+          37,
+          43,
+          218,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        150.5,
+        125.5,
+        133.0,
+        127.0
+      ],
+      "sourceSha256": "9123651a5a23b54f40cf12f39703dadbf480e05d4192cec20311e55af12a2cc5",
+      "assetSha256": "837227a9161fa4e0ec0e133cccfef74102a49b59b482d26469c12bccba359802",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Reviewed source and all five packed frames: near A hand presses belly, far B braces near face/chest, torso progressively hunches, jaw slightly opens only at held final pose. No head inflation or green recoloring; identical suit/shorts/hooves, planted feet and same A/B attachments. Final remains prepared instead of returning to guard."
+    },
+    {
+      "action": "special",
+      "frames": 6,
+      "fps": 12,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.42105263157894735,
+      "calibration": 6,
+      "mode": "feet",
+      "sourceCount": 7,
+      "frameBounds": [
+        [
+          49,
+          31,
+          207,
+          228
+        ],
+        [
+          46,
+          33,
+          210,
+          228
+        ],
+        [
+          41,
+          30,
+          214,
+          228
+        ],
+        [
+          50,
+          29,
+          205,
+          228
+        ],
+        [
+          50,
+          28,
+          206,
+          228
+        ],
+        [
+          45,
+          28,
+          211,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        131.5,
+        157.5,
+        129.5,
+        133.5,
+        131.5,
+        125.5
+      ],
+      "sourceSha256": "edf85b44347740ab7b434b50b073ac4ff13ccb0fd2e997ff258c4b13175951b5",
+      "assetSha256": "82de7cd2501e2b774d036237342e87f0d1e239fb30b3f46964fb2c3fd36be868",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected seven source figures and six body frames, calibration6 excluded. Progressive jaw opening1-2, sustained emission2-3 with body braced and mouth aimedLEFT, closes4 and returns guard5. Source changes which hand braces belly as the other withdraws; both remain attached to their original shoulders with normal lengths. Same tusks/skull/green suit/white shorts; no fluid on body sheet or recoloring. Full margins and planted hooves checked."
+    },
+    {
+      "action": "knockdown",
+      "frames": 10,
+      "fps": 10,
+      "repeatSuggested": 0,
+      "columns": 5,
+      "cell": [
+        256,
+        256
+      ],
+      "scale": 0.547945205479452,
+      "calibration": 0,
+      "mode": "ko",
+      "sourceCount": 10,
+      "frameBounds": [
+        [
+          45,
+          28,
+          211,
+          228
+        ],
+        [
+          48,
+          41,
+          208,
+          228
+        ],
+        [
+          31,
+          56,
+          225,
+          228
+        ],
+        [
+          26,
+          90,
+          230,
+          228
+        ],
+        [
+          30,
+          111,
+          226,
+          228
+        ],
+        [
+          29,
+          128,
+          226,
+          228
+        ],
+        [
+          27,
+          149,
+          228,
+          228
+        ],
+        [
+          27,
+          153,
+          228,
+          228
+        ],
+        [
+          28,
+          153,
+          228,
+          228
+        ],
+        [
+          25,
+          154,
+          230,
+          228
+        ]
+      ],
+      "whiteShortsAxes": [
+        125.5,
+        98.5,
+        113.5,
+        121.0,
+        119.0,
+        115.5,
+        114.5,
+        111.5,
+        118.5,
+        111.5
+      ],
+      "sourceSha256": "d21d63a08e55a92e5cb47de11afe218340ffb68c2850e68191c68813cf2ca450",
+      "assetSha256": "eb2ce50bd4740130e80f41722f4d7651ea61985e20cda8b8849338f1bcd46b84",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected all ten source and packed fall phases: continuous backward fallRIGHT, head staysRIGHT and hoovesLEFT after rotation, A/B legs retain near/far identity and arms stay at same shoulders through occlusion. No body reversal, detached tusks/limbs or horizontal-pose enlargement. Final7-9 lie and settle on ground, no guard reset. Same torn green suit/vest/tie and white shorts, all extremities/margins checked."
+    }
+  ],
+  "pending": [],
+  "effects": [
+    {
+      "action": "vomit-jet",
+      "frames": 6,
+      "fps": 10,
+      "columns": 5,
+      "cell": [
+        512,
+        256
+      ],
+      "direction": "left",
+      "mouthOrigin": [
+        480,
+        128
+      ],
+      "frameBounds": [
+        [
+          314,
+          90,
+          480,
+          170
+        ],
+        [
+          226,
+          73,
+          480,
+          171
+        ],
+        [
+          132,
+          34,
+          480,
+          206
+        ],
+        [
+          157,
+          36,
+          480,
+          212
+        ],
+        [
+          213,
+          78,
+          480,
+          168
+        ],
+        [
+          245,
+          97,
+          480,
+          157
+        ]
+      ],
+      "scale": 0.5092592592592593,
+      "sourceSha256": "59bde4da5a7799c32abf79b94c2e267ff999b42d244ab20de960ce50b1eacf95",
+      "assetSha256": "58db6d958e9f8fc027e17828f9b950dd757be546bbd92d48948dfe203438cf6f",
+      "status": "installed after visual inspection",
+      "reviewNotes": "Inspected all six raw and packed effects: dirty olive/yellow-green lumpy cartoon fluid and small chunks, narrow attachmentRIGHT and wide splashLEFT, no realistic gore or character. Full disconnected droplets preserved with transparent gutter crops, one common scale, same mouth origin480,128 in all frames. No cropped tail or droplets, logos or shadows."
+    }
+  ],
+  "runtimeRegistered": false
+}
