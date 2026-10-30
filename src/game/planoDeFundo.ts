@@ -1,8 +1,9 @@
 /**
- * Regra do Fundo: NPC que acompanha um lutador (o Biriba do Bira, os Gaviões
- * do Mosqueteiro) vive num plano só dele, atrás dos dois lutadores e na frente
- * da torcida. Anda junto com o dono, mas nunca no mesmo chão nem na mesma
- * camada. Só sai do fundo quando ataca.
+ * Regra do Fundo: NPC de um lutador (o Biriba do Bira, os Gaviões do
+ * Mosqueteiro) vive num plano só dele, atrás dos dois lutadores e na frente
+ * da torcida, nunca no mesmo chão nem na mesma camada. Só sai do fundo quando
+ * ataca. Se anda junto com o dono é do NPC: o Biriba acompanha o Bira, os
+ * Gaviões ficam parados assistindo.
  */
 export const PLANO_DE_FUNDO = {
   /** Abaixo dos lutadores (5 e 8 na Luta, sombras 4 e 7) e acima da torcida (0). */

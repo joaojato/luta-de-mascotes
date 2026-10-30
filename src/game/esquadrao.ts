@@ -5,7 +5,7 @@ import { PLANO_DE_FUNDO } from './planoDeFundo';
 /**
  * Especial "esquadrão" (docs/criador-de-personagem.md, bloco 5): o mascote
  * chama aliados que ficam de prontidão no plano de fundo (Regra do Fundo,
- * src/game/planoDeFundo.ts), andando atrás dele. O líder decola, sai pelo
+ * src/game/planoDeFundo.ts), parados assistindo à luta. O líder decola, sai pelo
  * alto e mergulha no oponente; só se esse golpe acertar os seguidores atacam,
  * um por vez e de lados alternados, sem guarda que segure. Errou ou foi
  * defendido: todos voltam ao posto. Tudo vem do JSON (Regra do JSON); a arte
@@ -75,8 +75,8 @@ interface Membro {
   ativo: boolean;
   assinatura: number;
   lado: 1 | -1;
-  /** No posto: andando atrás do dono (histerese, como o Biriba). */
-  andando: boolean;
+  /** Lugar no fundo, marcado no começo do round: dali só sai para atacar. */
+  fixo: Phaser.Math.Vector2;
   /** Escala no começo do ataque: quem sai do fundo cresce até o tamanho do lutador. */
   escalaInicial: number;
 }
@@ -113,7 +113,7 @@ export class Esquadrao {
       return {
         cfg: membro, sprite, estado: 'posto' as Estado, relogio: 0,
         de: new Phaser.Math.Vector2(), para: new Phaser.Math.Vector2(), duracao: 0,
-        ativo: false, assinatura: 0, lado: 1 as 1 | -1, andando: false, escalaInicial: 1
+        ativo: false, assinatura: 0, lado: 1 as 1 | -1, fixo: new Phaser.Math.Vector2(), escalaInicial: 1
       };
     });
     this.reset();
@@ -169,8 +169,7 @@ export class Esquadrao {
   }
 
   update(segundos: number): void {
-    const postos = this.postos();
-    this.membros.forEach((membro, i) => this.atualizarMembro(membro, segundos, postos[i]));
+    this.membros.forEach((membro) => this.atualizarMembro(membro, segundos));
 
     if (this.fase === 'lider') {
       const lider = this.membros[0];
@@ -205,8 +204,10 @@ export class Esquadrao {
     this.acertou = false;
     this.mergulhou = false;
     this.seguidorDaVez = -1;
-    this.membros.forEach((membro) => {
+    const postos = this.postos();
+    this.membros.forEach((membro, i) => {
       membro.ativo = false;
+      membro.fixo.copy(postos[i]);
       this.irAoPosto(membro);
     });
   }
@@ -218,8 +219,9 @@ export class Esquadrao {
   // ---------------------------------------------------------------- estados
 
   /**
-   * Onde cada um fica no fundo: atrás do dono, no chão do plano de fundo. O
-   * grupo inteiro se desloca para caber na câmera, sem perder o espaçamento.
+   * Onde cada um fica no fundo no começo do round: atrás do dono, no chão do
+   * plano de fundo. O grupo inteiro se desloca para caber na câmera, sem
+   * perder o espaçamento. Depois disso ficam parados; não seguem o dono.
    */
   private postos(): Phaser.Math.Vector2[] {
     const escala = this.dono.escala();
@@ -240,7 +242,14 @@ export class Esquadrao {
   }
 
   private posto(membro: Membro): Phaser.Math.Vector2 {
-    return this.postos()[this.membros.indexOf(membro)];
+    return membro.fixo;
+  }
+
+  /** Parado no fundo, vira para onde a luta está (o meio entre os dois). */
+  private olharParaALuta(membro: Membro): void {
+    const alvo = this.dono.alvoX();
+    const meio = alvo === null ? this.dono.x() : (this.dono.x() + alvo) / 2;
+    if (Math.abs(meio - membro.sprite.x) > 30) membro.sprite.setFlipX(meio > membro.sprite.x);
   }
 
   private escalaNoFundo(membro: Membro): number {
@@ -255,8 +264,8 @@ export class Esquadrao {
   private irAoPosto(membro: Membro): void {
     const p = this.posto(membro);
     membro.estado = 'posto';
-    membro.andando = false;
-    membro.sprite.setPosition(p.x, p.y).setVisible(true).setFlipX(this.dono.lado() === 1);
+    membro.sprite.setPosition(p.x, p.y).setVisible(true);
+    this.olharParaALuta(membro);
     this.tocar(membro, 'idle');
   }
 
@@ -336,12 +345,13 @@ export class Esquadrao {
       membro.relogio = 0;
       const p = this.posto(membro);
       membro.de.set(p.x, this.topoDaTela() - 40);
-      membro.sprite.setVisible(true).setPosition(membro.de.x, membro.de.y).setFlipX(this.dono.lado() === 1);
+      membro.sprite.setVisible(true).setPosition(membro.de.x, membro.de.y);
+      this.olharParaALuta(membro);
       this.tocar(membro, 'return');
     });
   }
 
-  private atualizarMembro(membro: Membro, segundos: number, p: Phaser.Math.Vector2): void {
+  private atualizarMembro(membro: Membro, segundos: number): void {
     membro.relogio += segundos;
     // Só quem ataca sai do fundo e passa na frente dos lutadores.
     const noFundo = membro.estado === 'posto' || membro.estado === 'decolando' || membro.estado === 'voltando';
@@ -349,25 +359,11 @@ export class Esquadrao {
     membro.sprite.setScale(noFundo ? this.escalaNoFundo(membro) : this.dono.escala() * (membro.cfg.escala ?? 1));
 
     switch (membro.estado) {
-      case 'posto': {
-        // Anda atrás do dono como o Biriba: passo constante, histerese para
-        // não tremer entre andar e parar, e saltinhos enquanto anda.
-        const dt = Math.min(segundos, 0.1);
-        const distancia = p.x - membro.sprite.x;
-        const parada = membro.andando ? 7 : 22;
-        if (Math.abs(distancia) > parada) {
-          const sentido = distancia > 0 ? 1 : -1;
-          membro.sprite.x += sentido * Math.min(Math.abs(distancia), PLANO_DE_FUNDO.passo * dt);
-          membro.sprite.setFlipX(sentido === 1);
-          membro.andando = true;
-        } else {
-          membro.sprite.setFlipX(this.dono.lado() === 1);
-          membro.andando = false;
-        }
-        const saltinho = membro.andando ? Math.abs(Math.sin(membro.relogio * 14)) * 6 * this.dono.escala() : 0;
-        membro.sprite.y = p.y - saltinho;
+      case 'posto':
+        // Parados no lugar, só assistindo (o Biriba é quem acompanha o dono).
+        membro.sprite.setPosition(membro.fixo.x, membro.fixo.y);
+        this.olharParaALuta(membro);
         break;
-      }
       case 'decolando': {
         const takeoff = membro.sprite.anims.currentAnim;
         const preparo = takeoff ? (takeoff.frames.length / takeoff.frameRate) * 0.5 : 0.25;
@@ -407,6 +403,7 @@ export class Esquadrao {
       }
       case 'voltando': {
         const t = Math.min(1, membro.relogio / VOLTA_SEGUNDOS);
+        const p = membro.fixo;
         membro.sprite.setPosition(p.x, membro.de.y + (p.y - membro.de.y) * (1 - (1 - t) * (1 - t)));
         if (t >= 1) this.irAoPosto(membro);
         break;

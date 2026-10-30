@@ -27,11 +27,14 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - Bullet vence parágrafo. Uma recomendação vence um catálogo de opções.
   (regra global dele)
 - Documento de contrato antes de código. (regra global dele)
-- **NPC que acompanha fica no fundo e anda junto.** Os Gaviões entraram no
-  mesmo chão e na mesma camada do lutador, parecendo na frente dele, e só
-  deslizavam atrás. Ele pediu igual ao Biriba e disse que todo NPC dele será
-  assim: atrás dos lutadores, entre eles e a torcida, acompanhando o dono.
-  Virou a Regra do Fundo. (2026-10-30)
+- **NPC fica no fundo; acompanhar o dono é decisão de cada um.** Os
+  Gaviões entraram no mesmo chão e na mesma camada do lutador, parecendo na
+  frente dele. Ele pediu o plano do Biriba (atrás dos lutadores, entre eles
+  e a torcida) e disse que todo NPC dele será assim: virou a Regra do Fundo.
+  Li "não se mexeram, diferente do Biriba" como defeito e fiz os Gaviões
+  andarem atrás do dono; era descrição do que ele queria: o Biriba precisa
+  acompanhar, os Gaviões ficam parados assistindo. Quando ele compara com
+  outro NPC, perguntar qual parte é igual em vez de copiar tudo. (2026-10-30)
 - **Ataque de NPC não tem hora certa.** O mergulho do Gavião saía sempre
   1 s depois do botão; ele aprovou essa janela e pediu sorteio de 0,5 s
   antes até 0,8 s depois, e mais velocidade. (2026-10-30)

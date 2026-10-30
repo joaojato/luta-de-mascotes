@@ -86,10 +86,11 @@ e solta o que cai (`drop`) sobre onde o oponente estava no momento do
 chamado. O que cai é o golpe `queda`: nenhuma guarda segura, só sair do
 lugar. Enquanto quem veio está atravessando, o golpe não sai de novo.
 
-NPC que **acompanha** o mascote (o Biriba, os Gaviões) segue a Regra do
-Fundo: fica atrás dos dois lutadores, entre eles e a torcida, e anda junto
-com o dono. Só sai do fundo para atacar. Pedir a arte dele no tamanho do
-lutador: o motor encolhe (`src/game/planoDeFundo.ts`).
+NPC do mascote (o Biriba, os Gaviões) segue a Regra do Fundo: fica atrás
+dos dois lutadores, entre eles e a torcida, e só sai do fundo para atacar.
+Perguntar se ele acompanha o dono (o Biriba anda com o Bira) ou fica parado
+assistindo (os Gaviões). Pedir a arte dele no tamanho do lutador: o motor
+encolhe (`src/game/planoDeFundo.ts`).
 
 ## 5. Especial
 

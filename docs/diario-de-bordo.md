@@ -2225,3 +2225,23 @@ a 1,44 s, mergulho na hora sorteada, dano 32 em todos; console sem erro.
 **Aprovado explicitamente:** a janela do mergulho ("achei boa"), base do sorteio.
 **Atrito:** nenhum.
 **Em aberto:** Dragão goianiense quando o Codex terminar; sons.
+
+## 2026-10-30: Gaviões parados no fundo, só assistindo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** os Gaviões não acompanham o Mosqueteiro; ao contrário do
+Biriba, ficam parados assistindo.
+**Feito:** cada Gavião marca o lugar no fundo no começo do round (atrás do
+dono, deslocado para caber na câmera) e fica ali; só vira para o meio da
+luta. Depois do especial volta ao mesmo lugar. Regra do Fundo reescrita:
+o plano é de todo NPC, acompanhar o dono é decisão de cada um.
+**Verificado:** `npm run check` (189 testes, build). Na luta, o Mosqueteiro
+andou de x=618 a 1086 e os Gaviões ficaram em 332 a 517; especial com 32 de
+dano e volta ao mesmo lugar; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o andar dos Gaviões atrás do dono,
+feito na entrada anterior por leitura errada do pedido.
+**Aprovado explicitamente:** nada.
+**Atrito:** li a comparação com o Biriba como "fazer igual" em tudo; ele só
+queria o mesmo plano de fundo.
+**Em aberto:** Dragão goianiense quando o Codex terminar; sons.
