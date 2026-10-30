@@ -113,7 +113,12 @@ describe('registro de lutadores (Regra do JSON)', () => {
   // esticados não são alvo; quem alcança mais longe ganha o alcance de fato.
   it('golpe e andar no chão apanham só no corpo do idle (Regra do Corpo)', () => {
     LUTADOR_CHARACTERS.forEach((personagem) => {
-      const hit = (acao: string) => personagem.animations.find((a) => a.action === acao)?.bounds[0].hit;
+      const hit = (acao: string) => {
+        const animation = personagem.animations.find((a) => a.action === acao);
+        const box = animation?.bounds[0].hit;
+        // Compare relative to the actor, not the left edge of differently wide cells.
+        return box && animation ? { ...box, x: box.x - animation.sheet.frameWidth / 2 } : undefined;
+      };
       const corpo = hit('idle');
       ['light-punch', 'heavy-punch', 'heavy-kick', 'low-kick', 'walk-forward'].forEach((acao) => {
         if (hit(acao)) expect(hit(acao), `${personagem.id} ${acao}`).toEqual(corpo);
@@ -121,6 +126,28 @@ describe('registro de lutadores (Regra do JSON)', () => {
       const voadora = personagem.animations.find((a) => a.action === 'jump-kick');
       if (voadora) expect(voadora.bounds[0].hit, `${personagem.id} voadora`).not.toEqual(corpo);
     });
+  });
+
+  // Asas largas mantêm o corpo e encerram o acerto antes da recuperação.
+  it('asas do Urubu cabem na sheet e só acertam antes do fechamento demorado', () => {
+    const urubu = LUTADORES.find((l) => l.id === 'urubu')!;
+    const spec = urubu.actions.find((a) => a.action === 'heavy-punch')!;
+    const character = LUTADOR_CHARACTERS.find((c) => c.id === 'urubu')!;
+    const wings = character.animations.find((a) => a.action === 'heavy-punch')!;
+    const idle = character.animations.find((a) => a.action === 'idle')!;
+    expect(wings.sheet.frameWidth).toBeGreaterThan(idle.sheet.frameWidth);
+    const png = readFileSync(resolve(PUBLIC_DIR, `.${urubu.assetRoot}`, spec.file));
+    expect(png.readUInt32BE(16)).toBe(wings.sheet.frameWidth * 5);
+    expect(png.readUInt32BE(20)).toBe(Math.ceil(spec.frames / 5) * wings.sheet.frameHeight);
+    const active = wings.bounds.filter((f) => f.attack);
+    const last = active.at(-1)!.frame;
+    expect(active.every((f, i) => i === 0 || f.frame === active[i - 1].frame + 1)).toBe(true);
+    expect(wings.bounds.length - last - 1).toBeGreaterThanOrEqual(10);
+    expect(wings.bounds.slice(last + 1).every((f) => f.attack === null)).toBe(true);
+    const reach = active[0].attack!;
+    const body = active[0].hit!;
+    expect(reach.x).toBeLessThan(body.x);
+    expect(reach.x + reach.width).toBeGreaterThan(body.x + body.width);
   });
 
   // Regra do Passo: chute e soco forte de chão dão um passo para a frente. O

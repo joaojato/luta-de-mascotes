@@ -1,5 +1,21 @@
 # Pedidos de arte para o Codex
 
+## Entrega: Porco — terno verde e golpes próprios
+
+Conjunto de 21 animações de corpo (134 quadros), produzido uma ação por vez
+a partir de `referencia/porco/base-terno-v2.png`. Preserva terno verde com
+mangas rasgadas, colete/gravata, calção branco e identidade do porco.
+Pesado é mordida; baixo tem corrida em galope separada e salto de costas com
+coice; especial tem preparo, emissão e jato de vômito verde-oliva cartunesco
+separado (seis quadros). Restante acompanha os guias atuais do Urubu.
+
+Assets: `public/assets/lutadores/porco/terno-v1/`, com `manifest.json` e
+`emission-guide.json`. Guia completo: [porco-animacoes-v1.md](porco-animacoes-v1.md).
+Prévia: `output/porco-v1/revisao.html`; fontes, prompts, contatos, hashes e
+validação na mesma pasta. Verificação: `python scripts/porco.py verify`.
+Arte concluída e conferida; integração do lutador e mecânicas ficam com o
+responsável pela lógica. Não há registro ou teste de combate nesta entrega.
+
 ## Entrega 29/10/2026: Bahia — golpes próprios e expressões
 
 Artes produzidas separadamente a partir da primeira base aprovada: mão aberta descendente, laser dos olhos, preparação e emissão do Bora Bahêa; projétil de laser e texto separados. Caminho: public/assets/lutadores/bahia/base/. Expressões muito bravas nos ataques e fofas na guarda. Guia, contagens e integração: [bahia-golpes-v11.md](bahia-golpes-v11.md). Fontes, prompts, hashes e prévias: output/bahia-v11/. Não registrar o personagem incompleto; demais animações e mecânicas seguem pendentes.

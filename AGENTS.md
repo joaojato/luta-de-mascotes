@@ -1,5 +1,19 @@
 # Direção de arte e animação
 
+- Urubu, pedido posterior: pesado deixa de ser o cruzado e passa a abrir os
+  dois braços/asas para os lados, com penas longas, alcance maior e fechamento
+  gradual demorado, sem envergadura exagerada. Ler `docs/urubu-asas-v1.md`.
+  Duas asas são os braços existentes (A direita/B esquerda), nunca um par
+  extra. Preservar paleta do idle e corpo de 200 px; célula larga permite asas
+  longas sem encolher o personagem. Mudança específica do pesado do Urubu.
+
+- Porco: usar a base `referencia/porco/base-terno-v2.png` (terno verde com
+  mangas rasgadas, colete/gravata e calção branco). Pedido posterior autoriza
+  as animações: pesado é mordida, baixo usa corrida como Bira seguida de salto
+  de costas/coice e especial é vômito verde sujo cartunesco. Ler
+  `docs/porco-animacoes-v1.md`. Demais ações seguem Urubu; não substituir a
+  base pelo figurino antigo, nem registrar o lutador incompleto.
+
 - Biriba: exceção explícita do usuário para acompanhante de cenário do Bira.
   É um cachorro sobre quatro patas, anda acompanhando o Bira e às vezes para
   para latir sem som. Não transformar em lutador bípede nem copiar a guarda

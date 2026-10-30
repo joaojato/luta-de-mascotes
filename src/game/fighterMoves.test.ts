@@ -3,6 +3,7 @@ import type * as Phaser from 'phaser';
 import type { AppContext } from './context';
 import { Fighter, NEUTRAL_FIGHTER_INPUT } from './fighter';
 import { createDefaultFighterPlaygroundState } from './fighterConfig';
+import { getCharacterAnimationDefinition } from './hero';
 import { DASH_STOP_GAP, PERFECT_GUARD_STAGGER } from './moveMechanics';
 
 vi.mock('phaser', () => ({
@@ -325,7 +326,9 @@ describe('fighter move integration', () => {
       const {fighter, sprite} = setup('urubu');
       fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, ...input});
       expect(sprite.anims.currentAnim.key).toBe(sheet);
-      sprite.frame.name = move === 'soco-rapido' ? 1 : move === 'soco-forte' ? 2 : 4;
+      // Contact frame from the fighter's own data (the wing spread hits on 6-8, the old cross on 2).
+      const contact = getCharacterAnimationDefinition('urubu', sheet).bounds.find((frame) => frame.attack)?.frame;
+      sprite.frame.name = contact ?? 0;
       expect(fighter.getActiveAttack()?.move).toBe(move);
     }
     const saci = setup('saci');

@@ -2,7 +2,13 @@
   "id": "urubu",
   "label": "Urubu",
   "assetRoot": "/assets/lutadores/urubu",
-  "torcida": { "estampa": "listras-horizontais", "cores": ["#B01010", "#181818"] },
+  "torcida": {
+    "estampa": "listras-horizontais",
+    "cores": [
+      "#B01010",
+      "#181818"
+    ]
+  },
   "anchorUsage": "urubu west-facing high-fidelity anchor, guard up",
   "skins": [
     {
@@ -300,35 +306,37 @@
     },
     {
       "action": "heavy-punch",
-      "label": "Soco forte (cruzado)",
-      "file": "heavy-cross-v2.png",
-      "frames": 6,
-      "frameRate": 12,
+      "label": "Golpe de asas (pesado)",
+      "file": "heavy-wing-spread-v1.png",
+      "frameWidth": 512,
+      "frames": 20,
+      "frameRate": 16,
       "repeat": 0,
       "defaultVisual": {
-        "x": 6,
+        "x": 70,
         "y": 28,
-        "width": 198,
+        "width": 360,
         "height": 200
       },
       "attack": {
         "frames": [
-          2,
-          3
+          6,
+          7,
+          8
         ],
         "bounds": {
-          "x": 5,
-          "y": 65,
-          "width": 100,
-          "height": 55
+          "x": 80,
+          "y": 86,
+          "width": 344,
+          "height": 64
         }
       },
       "travel": {
         "frames": [
           1,
-          2
+          3
         ],
-        "distance": 25
+        "distance": 12
       }
     },
     {

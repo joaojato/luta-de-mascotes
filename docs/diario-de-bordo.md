@@ -2039,3 +2039,23 @@ responde 200; republicado e conferido no navegador.
 **Atrito:** o teste de golpes quebra no disco por causa do soco de asas do
 Urubu, que o Codex integra agora; publicado só o commit.
 **Em aberto:** soco de asas do Urubu; renomear o projeto na Vercel e o repo.
+
+## 2026-10-29: Urubu com o golpe de asas no soco forte
+
+**Marco:** 2, segue em andamento.
+**Pedido:** incluir a animação nova do Urubu.
+**Feito:** a sessão do Codex no app desenhou e integrou o golpe: 20
+quadros a 16 FPS em células 512×256 (`heavy-wing-spread-v1.png`), asas
+saindo dos próprios braços, acerto nos quadros 6 a 8, fechamento lento. O
+motor ganhou `frameWidth` por ação, com a caixa do corpo deslocada para
+continuar no lugar. Eu corrigi o teste de golpes, que fixava o quadro 2 do
+cruzado antigo; agora lê o contato do próprio golpe.
+**Verificado:** `npm run check` com 172 testes, build ok. Altura do bico ao
+pé igual à da guarda (170 contra 168 px). No navegador contra o Almirante:
+acerta a 178, 236 e 307 px, 10,4%, asas inteiras na tela; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o cruzado do Urubu (arquivo mantido).
+**Aprovado explicitamente:** nada.
+**Atrito:** o guia do Codex ainda diz "em andamento"; integrado depois de 5
+minutos sem mudança nos arquivos.
+**Em aberto:** a caixa de acerto cobre as duas asas, inclusive a de trás.
