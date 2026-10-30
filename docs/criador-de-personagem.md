@@ -100,6 +100,7 @@ lugar. Enquanto quem veio está atravessando, o golpe não sai de novo.
    | `meteor` | sai da tela e cai em diagonal | meteoro do Urubu |
    | `dash` | avança em linha atravessando a tela | tornado do Saci |
    | `strike` | golpe parado, no lugar | (padrão de golpe comum) |
+   | `esquadrao` | chama aliados que ficam de prontidão atrás dele: o líder sai pelo alto e mergulha; só se acertar, os outros atacam um por vez de lados alternados, sem guarda que segure | Gaviões da Fiel do Mosqueteiro |
 
    Se nenhum serve, é mecânica nova no motor: vira conversa à parte antes
    do mascote.
@@ -181,3 +182,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 29/10/2026: torcida com todas as cores do clube (camisas lisas, bandeira, sinalizador).
 - 29/10/2026: golpe que chama alguém (`drop`, `queda`), `lowKick`, `hitEffect` de projétil e tontura como partícula do jogo.
 - 30/10/2026: som de dor por mascote (`dor`, `dor-forte`, `dor-ko`).
+- 30/10/2026: especial `esquadrao` (aliados que atacam no lugar do mascote; arte de cada aliado em efeitos `<nome>-idle`, `-takeoff`, `-flight`, `-strike`, `-return`).

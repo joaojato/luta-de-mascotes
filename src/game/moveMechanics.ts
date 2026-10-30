@@ -1,4 +1,5 @@
 import type { GolpeId } from './golpes';
+import type { EsquadraoConfig } from './esquadrao';
 import type { AttackProfile } from './types';
 
 export interface FighterMoveConfig {
@@ -72,6 +73,8 @@ export interface ParticleBurst {
 export interface ProjectileMoveConfig {
   action?: string;
   kind: string;
+  /** `esquadrao`: aliados que atacam no lugar do mascote (src/game/esquadrao.ts). */
+  esquadrao?: EsquadraoConfig;
   startFrame?: number;
   endFrame?: number;
   releaseFrame?: number;

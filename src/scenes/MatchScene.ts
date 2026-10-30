@@ -285,7 +285,7 @@ export class MatchScene extends BaseScene {
     return () => {
       defender.applyHit(perfect ? { ...profile, knockback: 0 } : profile, facing, blocked, armored);
       defender.flashHit(blocked);
-      attacker.markAttackConnected(attack.signature);
+      attacker.markAttackConnected(attack.signature, blocked);
       attacker.registerOffense(blocked, isSpecial);
       defender.registerDefense(blocked);
       if (perfect) {

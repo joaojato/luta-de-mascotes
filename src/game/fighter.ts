@@ -13,6 +13,7 @@ import {
 } from './hero';
 import { spawnChargeAura } from './vfx';
 import { somDoEvento, tocarSom } from './sons';
+import { Esquadrao } from './esquadrao';
 import {
   passedDropPoint,
   projectileGrowthProgress,
@@ -279,6 +280,9 @@ export class Fighter {
     dir: 1 | -1;
   } | null = null;
   private opponent: Fighter | null = null;
+
+  /** Aliados do especial `esquadrao` (os Gaviões do Mosqueteiro), se o mascote tiver. */
+  private esquadrao: Esquadrao | null = null;
   private previousX = 0;
   private lastDx = 0;
   /** Effect sprites that live while a phase lasts (thermal column, dive trail). */
@@ -612,6 +616,17 @@ export class Fighter {
    * animation is on an attack-active frame and the swing hasn't connected yet.
    */
   getActiveAttack(): ActiveAttack | null {
+    const contato = this.defeated ? null : this.esquadrao?.contato();
+    if (contato) {
+      const especial = this.character.moves?.special?.esquadrao;
+      return {
+        rect: contato.rect,
+        // Contato baixo e curto: o oponente fica no lugar para o próximo aliado.
+        profile: { ...getAttackProfile(this.combat(), 'special'), damage: especial?.dano ?? 8, knockback: 40, hitstun: 650 },
+        signature: contato.assinatura, move: 'especial', finisher: contato.ultimo, facing: contato.lado,
+        projectile: true, unblockable: !contato.bloqueavel
+      };
+    }
     const shot = this.projectiles.find(projectile => !projectile.connected && !projectile.carrier);
     if (shot && !this.defeated) {
       const sweep = sweptInterval(shot.previousX, shot.x, shot.width/2);
@@ -667,7 +682,8 @@ export class Fighter {
   }
 
   /** Marks the current swing as having connected so it can't hit again. */
-  markAttackConnected(signature?: number): void {
+  markAttackConnected(signature?: number, blocked = false): void {
+    if (signature !== undefined && this.esquadrao?.confirmar(signature, blocked)) return;
     const shot = this.projectiles.find(projectile => !projectile.connected && !projectile.carrier && (signature === undefined || projectile.signature === signature));
     if (shot) {
       shot.connected = true;
@@ -820,6 +836,7 @@ export class Fighter {
    */
   resetForRound(x: number, facing: 1 | -1): void {
     this.clearProjectile();
+    this.esquadrao?.reset();
     this.jumpPhase = null;
     this.diveVelX = 0;
     this.strike = null;
@@ -865,6 +882,7 @@ export class Fighter {
     this.lastDx = this.posX - this.previousX;
     this.previousX = this.posX;
     if (!this.frozen) this.updateProjectile(seconds);
+    this.esquadrao?.update(seconds);
     this.updateTontura();
     if (this.defeated) {
       this.playState(this.actionKeys.knockdown, false);
@@ -936,6 +954,7 @@ export class Fighter {
   /** Destroys the fighter's display objects. */
   destroy(): void {
     this.clearProjectile();
+    this.esquadrao?.destroy();
     this.endAdvanceEffects();
     this.sprite?.removeAllListeners();
     this.sprite?.destroy();
@@ -1081,6 +1100,20 @@ export class Fighter {
 
     this.boundsGraphics = this.scene.add.graphics().setDepth(depth + 45);
 
+    const especial = this.character.moves?.special;
+    if (especial?.kind === 'esquadrao' && especial.esquadrao) {
+      this.esquadrao = new Esquadrao({
+        scene: this.scene,
+        x: () => this.posX,
+        chao: () => this.groundY,
+        lado: () => this.facing,
+        escala: () => this.appliedScale,
+        profundidade: () => this.depthBase,
+        alvoX: () => this.opponent?.x ?? null,
+        animacao: (efeito) => findCharacterAnimationKeyByAction(this.character.id, `fx-${efeito}`)
+      }, especial.esquadrao);
+    }
+
     this.playState(this.actionKeys.idle, true);
   }
 
@@ -1154,7 +1187,7 @@ export class Fighter {
       this.updateDash(seconds);
       return;
     }
-    if (input.special && this.isMeterReady) {
+    if (input.special && this.isMeterReady && (this.esquadrao?.pronto ?? true)) {
       this.startSpecial();
       return;
     }
@@ -1674,6 +1707,8 @@ export class Fighter {
     this.attackConnected = false;
     this.attackActiveLast = false;
     const move = this.character.moves?.special;
+    // Esquadrão: o mascote dá o sinal (a sheet do especial) e os aliados atacam.
+    this.esquadrao?.atacar();
     if (move && ADVANCE_KINDS.includes(move.kind)) {
       this.startAdvance(move);
       return;
