@@ -68,7 +68,7 @@ if (modo === '--esperar') {
         systemMessage: `Vigia de lutador: ${prontos.map((p) => p.slug).join(', ')} pronto para integrar.`,
         hookSpecificOutput: {
           hookEventName: 'SessionStart',
-          additionalContext: `${texto} O João pediu que entre no jogo automaticamente: integrar com a skill lutador-novo (Etapas 3 a 5), rodar npm run check, commitar e avisar.`
+          additionalContext: `${texto} O João pediu que entre no jogo automaticamente: integrar com a skill lutador-novo (Etapas 3 a 5), rodar npm run check, commitar, dar push e publicar na Vercel (autorizado por ele em 30/10/2026 para o Corinthiano e o Dragão goianiense; procedimento em docs/licoes.md, "Deploy da Vercel sai da conta pessoal"), e avisar.`
         }
       }));
     }

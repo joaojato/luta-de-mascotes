@@ -3,6 +3,7 @@ import * as Phaser from 'phaser';
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { createSelectionCard, type SelectionCard } from '../game/ui';
 import { SCENE_KEYS, type MatchMode } from '../game/types';
+import { controlesDeToqueAtivos } from '../toque/telaToque';
 import { BaseScene } from './BaseScene';
 
 interface ModeOption {
@@ -16,6 +17,11 @@ const MODE_OPTIONS: ModeOption[] = [
   { mode: '1v1', title: '1 VS 1', subtitle: 'Dois jogadores, um teclado', texture: 'mode-card-1v1' },
   { mode: '1vcpu', title: '1 VS CPU', subtitle: 'Você escolhe, a CPU responde', texture: 'mode-card-1vcpu' }
 ];
+
+/** No celular só há um par de mãos na tela: o 1 VS 1 fica para o teclado (docs/mobile.md). */
+function opcoesDeModo(): ModeOption[] {
+  return controlesDeToqueAtivos() ? MODE_OPTIONS.filter((option) => option.mode === '1vcpu') : MODE_OPTIONS;
+}
 
 const ACCENT = 0x38bdf8;
 
@@ -56,10 +62,11 @@ export class ModeSelectScene extends BaseScene {
     const cardWidth = 380;
     const cardHeight = 390;
     const gap = 60;
-    const totalWidth = cardWidth * MODE_OPTIONS.length + gap * (MODE_OPTIONS.length - 1);
+    const opcoes = opcoesDeModo();
+    const totalWidth = cardWidth * opcoes.length + gap * (opcoes.length - 1);
     const startX = centerX - totalWidth / 2 + cardWidth / 2;
 
-    MODE_OPTIONS.forEach((option, index) => {
+    opcoes.forEach((option, index) => {
       const card = createSelectionCard(this, {
         x: startX + index * (cardWidth + gap),
         y: centerY + 10,
@@ -109,6 +116,6 @@ export class ModeSelectScene extends BaseScene {
   private confirm(index: number): void {
     this.setSelection(index);
     playAudioCue(this, AUDIO_KEYS.uiConfirm, this.app.settingsStore.getState());
-    this.scene.start(SCENE_KEYS.LevelSelect, { mode: MODE_OPTIONS[index].mode });
+    this.scene.start(SCENE_KEYS.LevelSelect, { mode: opcoesDeModo()[index].mode });
   }
 }

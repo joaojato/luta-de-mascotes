@@ -994,3 +994,200 @@ body.is-number-dragging * {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ─────────────────────────────  Toque (docs/mobile.md)  ─────────────────── */
+
+/* Jogo publicado: nada rola, nada estica. dvh acompanha a barra do navegador. */
+.app-shell.app-shell--game-only {
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.app-shell--game-only .app-shell__workspace,
+.app-shell--game-only .game-root {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+}
+
+html.com-toque,
+html.com-toque body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toque {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  font-family: var(--font-display);
+  --toque-borda: rgba(244, 233, 216, 0.55);
+  --toque-fundo: rgba(13, 11, 30, 0.38);
+  --toque-aceso: rgba(57, 255, 122, 0.45);
+}
+
+.toque button,
+.toque__direcional {
+  pointer-events: auto;
+  touch-action: none;
+}
+
+/* Voltar, tela cheia e setas/joystick: coluna estreita na borda esquerda, longe da vida e do relógio. */
+.toque__topo {
+  position: absolute;
+  top: 50%;
+  left: max(8px, env(safe-area-inset-left));
+  transform: translateY(-100%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toque__mini {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink);
+  background: var(--toque-fundo);
+  border: 2px solid var(--toque-borda);
+  border-radius: 8px;
+}
+
+.toque__mini.is-on {
+  background: var(--toque-aceso);
+}
+
+.toque__esquerda {
+  position: absolute;
+  left: max(18px, env(safe-area-inset-left));
+  bottom: max(18px, env(safe-area-inset-bottom));
+}
+
+.toque__direcional {
+  position: relative;
+  width: min(36vh, 168px);
+  height: min(36vh, 168px);
+  border-radius: 50%;
+  background: var(--toque-fundo);
+  border: 2px solid var(--toque-borda);
+}
+
+.toque__seta {
+  position: absolute;
+  width: 34%;
+  height: 34%;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  font-size: 14px;
+  border-radius: 8px;
+  background: rgba(244, 233, 216, 0.1);
+}
+
+.toque__seta.is-on {
+  background: var(--toque-aceso);
+}
+
+.toque__seta--cima { left: 33%; top: 2%; }
+.toque__seta--baixo { left: 33%; bottom: 2%; }
+.toque__seta--esq { left: 2%; top: 33%; }
+.toque__seta--dir { right: 2%; top: 33%; }
+
+.toque__pino {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42%;
+  height: 42%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(244, 233, 216, 0.35);
+  border: 2px solid var(--toque-borda);
+  display: none;
+}
+
+/* Joystick: some a cruz de setas, aparece o pino que segue o dedo. */
+.toque__direcional[data-modo='joystick'] .toque__seta {
+  background: none;
+  font-size: 9px;
+  opacity: 0.45;
+}
+
+.toque__direcional[data-modo='joystick'] .toque__seta.is-on {
+  opacity: 1;
+  background: none;
+  color: var(--accent);
+}
+
+.toque__direcional[data-modo='joystick'] .toque__pino {
+  display: block;
+}
+
+/* Losango à direita: Soco à esquerda, Chute em cima, Especial à direita, Bloqueio embaixo. */
+.toque__direita {
+  position: absolute;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  width: min(44vh, 204px);
+  height: min(44vh, 204px);
+}
+
+.toque__botao {
+  position: absolute;
+  width: 37%;
+  height: 37%;
+  border-radius: 50%;
+  padding: 0;
+  font-family: var(--font-readout);
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  background: var(--toque-fundo);
+  border: 3px solid var(--toque-borda);
+}
+
+.toque__botao.is-on {
+  background: var(--toque-aceso);
+  transform: scale(0.94);
+}
+
+.toque__botao--chute { left: 31.5%; top: 0; border-color: #ffd447; }
+.toque__botao--soco { left: 0; top: 31.5%; border-color: #ff3c78; }
+.toque__botao--especial { right: 0; top: 31.5%; border-color: #39ff7a; }
+.toque__botao--bloqueio { left: 31.5%; bottom: 0; border-color: #7fb7ff; }
+
+.toque__girar,
+.toque__aviso {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  text-align: center;
+  font-size: 12px;
+  line-height: 2;
+  color: var(--ink);
+  background: rgba(7, 6, 19, 0.94);
+  pointer-events: auto;
+}
+
+.toque__aviso:not([hidden]) {
+  display: grid;
+  font-size: 10px;
+  padding: 24px;
+}
+
+@media (orientation: portrait) {
+  html.com-toque .toque__girar {
+    display: grid;
+  }
+}

@@ -78,9 +78,10 @@ ele é quebrado em dois, não esticado.
 - [ ] Porco (29/10/2026): na seleção com a arte do Codex (mordida, coice,
   vômito). Falta: `stunned`, `knockdown`, retrato, corrida antes do coice
   (motor), falas e rival.
-- [ ] Tarefa futura, pedida pelo João em 29/10/2026: **versão jogável no
-  celular**, com botões na tela no lugar das teclas. Vem depois do build
-  de computador na Vercel.
+- [ ] **Versão jogável no celular** (pedida em 29/10, feita em 30/10/2026):
+  deitado, sem rolagem, tela cheia, setas ou joystick à esquerda e soco,
+  chute, bloqueio e especial à direita; só 1 VS CPU no toque. Contrato em
+  `docs/mobile.md`. Falta: teste num celular de verdade.
 - [ ] Tarefa futura, pedida pelo João em 29/10/2026: **multiplayer** (dois
   jogadores em máquinas diferentes). A luta com celular como câmera não
   pareceu funcionar na prática; o caminho de multiplayer será estudado à

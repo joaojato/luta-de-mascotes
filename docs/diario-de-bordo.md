@@ -2150,3 +2150,26 @@ animado (lição registrada).
 por arquivo no scratchpad.
 **Em aberto:** aceite de ouvido; integrar o Mosqueteiro quando o vigia
 avisar.
+
+## 2026-10-30: Versão mobile, celular deitado com botões na tela
+
+**Marco:** 2, segue em andamento.
+**Pedido:** versão mobile deitada, sem barra de rolagem, opção de tela
+cheia, direcional por setas ou joystick (o jogador escolhe) e soco, chute,
+bloqueio e especial à direita. Depois, publicar na Vercel quando o
+Corinthiano entrar, e fazer o mesmo com o Dragão goianiense.
+**Feito:** `src/toque/` (direção em 8 fatias testada; camada de botões que
+aperta as teclas do P1), CSS sem rolagem com `100dvh`, manifesto para abrir
+em tela cheia pelo ícone, ícones gerados da logo, só 1 VS CPU no toque.
+Hook do vigia passou a mandar publicar na Vercel (autorização do João).
+**Verificado:** `npm run check`. Celular simulado 844×390 com toque real:
+sem rolagem, fluxo inteiro só com toques, andar e socar com dois dedos,
+joystick, aviso de girar em pé; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada. Sons: "ainda não estão me agradando"
+(lição registrada, fica para depois).
+**Atrito:** primeira rodada escolheu 1 VS 1 e travou na seleção (o P2 não
+tem como confirmar no toque); o 1 VS 1 saiu do celular.
+**Em aberto:** teste em celular de verdade; Corinthiano e Dragão quando o
+Codex entregar.

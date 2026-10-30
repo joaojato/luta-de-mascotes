@@ -377,3 +377,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   descendo por cima da explosão) e era para ser estrondoso. Impacto grande
   é grave; bicho e gente por formantes com tremor e sopro, nunca tom limpo
   subindo ou descendo ("boing", "piu-piu", bolha). (2026-10-30)
+- **Os sons sintetizados ainda não agradam.** Depois da entrega 3 o João
+  disse que os sons "ainda não estão me agradando, mas a gente resolve isso
+  depois". Síntese pura pode não bastar; na próxima rodada, perguntar quais
+  sons incomodam mais e considerar pacote CC0 (ADR 0007 já prevê). (2026-10-30)
