@@ -9,15 +9,22 @@
 // Entrega conta como pronta quando a skin tem todas as ações do plano do
 // Codex (output/<slug>*/plan.json) ou, sem plano, o conjunto mínimo (a ordem
 // de prioridade de docs/criador-de-personagem.md), e nenhum arquivo da pasta
-// mudou nos últimos 10 minutos (o Codex terminou de escrever).
+// mudou nos últimos 20 minutos (o Codex terminou de escrever).
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, sep } from 'node:path';
 
 const RAIZ = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
 const SPRITES = join(RAIZ, 'public/assets/lutadores');
 const JSONS = join(RAIZ, 'src/game/lutadores');
-const QUIETO_MS = 10 * 60 * 1000;
+const QUIETO_MS = 20 * 60 * 1000;
 const MINIMO = ['idle', 'walk-forward', 'hit-high', 'knockdown', 'light-punch', 'heavy-kick'];
+
+function listar(dir) {
+  return readdirSync(dir).flatMap((nome) => {
+    const p = join(dir, nome);
+    return statSync(p).isDirectory() ? listar(p) : [p.split(sep).join('/')];
+  });
+}
 
 function maisRecente(dir) {
   let t = statSync(dir).mtimeMs;
@@ -38,7 +45,11 @@ function planoDoCodex(slug) {
     if (!existsSync(arquivo)) continue;
     try {
       const plano = JSON.parse(readFileSync(arquivo, 'utf8'));
-      if (plano[slug]) return { acoes: Object.keys(plano[slug]) };
+      if (plano[slug]) {
+        // NPCs do plano (os Gaviões): cada ação vira `<npc>/<acao>.png` em alguma subpasta da skin.
+        const npcs = Object.entries(plano.npcs ?? {}).flatMap(([npc, acoes]) => Object.keys(acoes).map((acao) => `${npc}/${acao}.png`));
+        return { acoes: Object.keys(plano[slug]), npcs };
+      }
     } catch {
       // Plano sendo escrito: tenta de novo na próxima volta.
     }
@@ -57,8 +68,16 @@ function pendentes() {
       const plano = planoDoCodex(slug);
       const esperadas = plano ? plano.acoes : MINIMO;
       const faltam = esperadas.filter((acao) => !skins.some((s) => existsSync(join(pasta, s, `${acao}.png`))));
-      const quieto = Date.now() - maisRecente(pasta) > QUIETO_MS;
-      return { slug, skins, faltam, pronto: faltam.length === 0 && quieto };
+      const arquivos = listar(pasta);
+      (plano?.npcs ?? []).forEach((fim) => {
+        if (!arquivos.some((arquivo) => arquivo.endsWith(fim))) faltam.push(fim);
+      });
+      const parado = Date.now() - maisRecente(pasta);
+      // Saída de segurança: o mascote completo e uma hora parado conta como pronto,
+      // mesmo que os NPCs tenham chegado com outro nome de arquivo.
+      const mascoteCompleto = faltam.every((falta) => falta.includes('/'));
+      const pronto = (faltam.length === 0 && parado > QUIETO_MS) || (mascoteCompleto && parado > 60 * 60 * 1000);
+      return { slug, skins, faltam, pronto };
     });
 }
 
