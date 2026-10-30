@@ -17,10 +17,19 @@ const SONS: [chave: string, volume: number, loop?: boolean][] = [
   ['tiro-garrucha', 0.55], ['caravela', 0.5], ['sino-navio', 0.35],
   ['bicada', 0.4], ['asas', 0.4], ['termica', 0.35], ['meteoro', 0.55],
   ['cachimbo', 0.35], ['tornado', 0.45], ['po-de-arroz', 0.4],
-  ['garra', 0.4], ['bote', 0.45], ['assobio-dedos', 0.3], ['coco', 0.45], ['latido', 0.2],
+  ['garra', 0.4], ['bote', 0.45], ['assobio-dedos', 0.3], ['coco', 0.45], ['latido', 0.45],
   ['giro', 0.35], ['ovo-arremesso', 0.3], ['ovo-quebra', 0.45], ['cacarejo', 0.35],
   ['laser', 0.4], ['corte', 0.35], ['bora-bahea', 0.55],
-  ['mordida', 0.45], ['coice', 0.5], ['enjoo', 0.35], ['vomito', 0.45]
+  ['mordida', 0.45], ['coice', 0.5], ['enjoo', 0.35], ['vomito', 0.45],
+  // Entrega 3: latido do Biriba voando, mergulho e pouso do Urubu.
+  ['latido-voo', 0.45], ['mergulho', 0.5], ['meteoro-pouso', 0.75],
+  // Dor: geral e de cada bicho (eventos `dor`, `dor-forte`, `dor-ko`).
+  ['dor', 0.4], ['dor-forte', 0.45], ['dor-ko', 0.5],
+  ['dor-porco', 0.4], ['dor-forte-porco', 0.45], ['dor-galo', 0.35], ['dor-forte-galo', 0.4],
+  ['dor-urubu', 0.4], ['dor-forte-urubu', 0.45], ['dor-cao', 0.35], ['dor-forte-cao', 0.4],
+  // Torcida à toa: soltos por cima do loop, bem baixos.
+  ['torcida-coro', 0.16], ['torcida-uh', 0.16], ['torcida-assobio', 0.1], ['torcida-batucada', 0.14],
+  ['torcida-palmas', 0.12]
 ];
 
 export const SOM_ASSETS: StarterAudioAsset[] = SONS.map(([chave, volume, loop]) => ({

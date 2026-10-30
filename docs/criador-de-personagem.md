@@ -152,8 +152,10 @@ E ainda: retrato (`portrait.png`, busto) e âncora (`anchor-w.png`).
 
 Todo mascote nasce com os sons gerais (`docs/sons.md`). Perguntar só o que
 é dele: o golpe próprio tem som próprio (tiro, ovo, latido)? O especial
-soa como o quê? Ele anda sem passo (paira)? Entra no bloco `sons` do JSON
-(Regra do Som) e, se o som não existe, em `scripts/sons.py`.
+soa como o quê? Ele anda sem passo (paira)? Se é bicho, como ele grita de
+dor (`dor` e `dor-forte`: grunhido, grasnido, ganido)? Gente usa a dor
+geral. Entra no bloco `sons` do JSON (Regra do Som) e, se o som não existe,
+em `scripts/sons.py`. Nada de som de desenho animado.
 
 ## 7. O que sai do questionário
 
@@ -178,3 +180,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 29/10/2026: torcida dividida, cores e estampa por mascote.
 - 29/10/2026: torcida com todas as cores do clube (camisas lisas, bandeira, sinalizador).
 - 29/10/2026: golpe que chama alguém (`drop`, `queda`), `lowKick`, `hitEffect` de projétil e tontura como partícula do jogo.
+- 30/10/2026: som de dor por mascote (`dor`, `dor-forte`, `dor-ko`).

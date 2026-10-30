@@ -372,3 +372,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   FPS) com o fechamento arrastado; o João pediu mais rápido. Ficou abertura
   a 22 FPS e fechamento a 30 ms por quadro, 0,8 s no total. Golpe pesado
   com muitos quadros: acelerar a recuperação antes do acerto. (2026-10-29)
+- **Som de desenho animado não serve.** O João pediu "sem sons goofy": o
+  pouso do Urubu estava "muito fino" (o meteoro tinha um apito de 2600 Hz
+  descendo por cima da explosão) e era para ser estrondoso. Impacto grande
+  é grave; bicho e gente por formantes com tremor e sopro, nunca tom limpo
+  subindo ou descendo ("boing", "piu-piu", bolha). (2026-10-30)

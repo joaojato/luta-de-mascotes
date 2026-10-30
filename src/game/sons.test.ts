@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import { LUTADORES } from './lutadores';
-import { somDoEvento } from './sons';
+import { proximaTorcida, somDoEvento, TORCIDA_A_TOA } from './sons';
 import { SOM_ASSETS } from './sonsLista';
 
 const PUBLIC_DIR = resolve(__dirname, '../../public');
@@ -19,6 +19,19 @@ describe('sons (docs/sons.md, Regra do Som)', () => {
     expect(somDoEvento({ chute: 'tiro-garrucha' }, 'chute', 'ar-pesado')).toBe('tiro-garrucha');
     expect(somDoEvento({ passo: null }, 'passo', 'passo')).toBeNull();
     expect(somDoEvento({ chute: 'tiro-garrucha' }, 'pulo', 'pulo')).toBe('pulo');
+  });
+
+  it('a torcida à toa nunca repete o mesmo som seguido e espera de 5 a 11 s', () => {
+    const chaves = new Set(SOM_ASSETS.map((som) => som.key));
+    TORCIDA_A_TOA.forEach((chave) => expect(chaves.has(chave), chave).toBe(true));
+    let anterior: string | null = null;
+    for (let i = 0; i < 200; i += 1) {
+      const { chave, ms } = proximaTorcida(anterior);
+      expect(chave).not.toBe(anterior);
+      expect(ms).toBeGreaterThanOrEqual(5000);
+      expect(ms).toBeLessThanOrEqual(11000);
+      anterior = chave;
+    }
   });
 
   it('todo som citado no JSON de um mascote existe', () => {

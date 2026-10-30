@@ -64,7 +64,8 @@ export function getEffectiveVolume(
 export function playAudioAsset(
   scene: Phaser.Scene,
   asset: StarterAudioAsset,
-  settings: GameSettings
+  settings: GameSettings,
+  detune = 0
 ): void {
   if (scene.sound.locked || !scene.cache.audio.exists(asset.key)) {
     return;
@@ -78,15 +79,16 @@ export function playAudioAsset(
 
   scene.sound.play(asset.key, {
     loop: asset.loop,
-    volume
+    volume,
+    ...(detune ? { detune } : {})
   });
 }
 
-export function playAudioCue(scene: Phaser.Scene, key: AudioKey | string, settings: GameSettings): void {
+export function playAudioCue(scene: Phaser.Scene, key: AudioKey | string, settings: GameSettings, detune = 0): void {
   const asset = STARTER_AUDIO_ASSETS.find((candidate) => candidate.key === key);
 
   if (asset) {
-    playAudioAsset(scene, asset, settings);
+    playAudioAsset(scene, asset, settings, detune);
     return;
   }
 

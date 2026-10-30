@@ -74,6 +74,8 @@ const JUMP_LANDING_SECONDS = 0.1;
 /** Flying kick: the dive forward and down the moment the kick comes out. */
 const FLYING_KICK_SPEED_X = 380;
 const FLYING_KICK_DROP = 300;
+/** Minimum gap between two pain grunts (ms): a combo grunts once, not every hit. */
+const PAIN_COOLDOWN_MS = 350;
 /** Damage profile of each catalog move (Ajustes tab edits these per fighter). */
 const ATTACK_KIND_OF: Record<AttackMove, AttackKind> = {
   'soco-rapido': 'high',
@@ -313,6 +315,9 @@ export class Fighter {
   private dropTargetX: number | null = null;
   /** Seconds walked since the last step sound. */
   private stepClock = 0;
+
+  /** When the last pain grunt played (scene ms): a combo doesn't grunt every hit. */
+  private lastPainAt = -Infinity;
   /** Seconds the guard button has been held; null when released. */
   private guardHeld: number | null = null;
   /** Fighter clock (s) and the double tap that starts a dash. */
@@ -782,6 +787,7 @@ export class Fighter {
     this.knockbackVel = attackerFacing * profile.knockback;
 
     if (this.health <= 0) {
+      this.somDeDor('dor-ko');
       this.defeated = true;
       this.locked = true;
       this.grounded = true;
@@ -793,6 +799,7 @@ export class Fighter {
       return;
     }
 
+    this.somDeDor(profile.kind === 'high' ? 'dor' : 'dor-forte');
     this.stunIsBlock = false;
     this.stunIsDizzy = (profile.stunMs ?? 0) > profile.hitstun;
     this.locked = false;
@@ -1452,6 +1459,7 @@ export class Fighter {
         a.fromY = start.y;
         a.phase = 'dive';
         a.clock = 0;
+        this.som('especial-mergulho', null);
         this.facing = dir;
         this.sprite.setFlipX(dir === 1);
         if (move.trailEffect) {
@@ -1479,6 +1487,7 @@ export class Fighter {
         this.sprite.y = this.groundY;
         this.trailFx?.destroy();
         this.trailFx = null;
+        this.som('especial-pouso', null);
         a.phase = 'recover';
         a.clock = 0;
       }
@@ -1520,9 +1529,24 @@ export class Fighter {
    * @param evento - Event name (`passo`, `chute`, `especial`...).
    * @param geral - The general sound key for this event.
    */
-  private som(evento: string, geral: string | null): void {
+  private som(evento: string, geral: string | null, detune = 0): void {
     const settings = this.app.settingsStore?.getState();
-    if (settings) tocarSom(this.scene, somDoEvento(this.character.sons, evento, geral), settings);
+    if (settings) tocarSom(this.scene, somDoEvento(this.character.sons, evento, geral), settings, detune);
+  }
+
+  /**
+   * Grunhido de dor quando o golpe entra. Golpe fraco é `dor`, o resto é
+   * `dor-forte`; o tom varia um pouco a cada vez e um combo não grita a
+   * cada quadro.
+   */
+  private somDeDor(evento: 'dor' | 'dor-forte' | 'dor-ko'): void {
+    const agora = this.scene.time?.now ?? 0;
+    if (evento !== 'dor-ko' && agora - this.lastPainAt < PAIN_COOLDOWN_MS) return;
+    this.lastPainAt = agora;
+    // O KO sem som próprio usa o `dor-forte` do mascote, se ele tiver.
+    const sons = this.character.sons;
+    const usado = evento === 'dor-ko' && sons && !('dor-ko' in sons) && 'dor-forte' in sons ? 'dor-forte' : evento;
+    this.som(usado, evento, (Math.random() - 0.5) * 300);
   }
 
   private spawnEffect(name: string, x: number, y: number, mirror = true): Phaser.GameObjects.Sprite | null {

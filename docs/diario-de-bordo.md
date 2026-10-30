@@ -2117,3 +2117,36 @@ tocou os próprios sons nos golpes certos; console sem erro. Não ouvi.
 **Atrito:** o primeiro teste apertava o chute ainda travado no golpe
 anterior e acusou falta do tiro e do assobio; isolado, tocaram.
 **Em aberto:** aceite de ouvido do João; vozes ficam para gravação.
+
+## 2026-10-30: Vigia do Corinthiano e sons de dor, latido e torcida (entrega 3)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** um hook que coloque o Corinthiano no jogo sozinho quando o
+Codex terminar; enquanto isso, latido do Biriba, dor dos personagens,
+torcida fazendo barulho à toa e nada de som "goofy" (o pouso do Urubu
+estava fino, era para ser estrondoso).
+**Feito:** `scripts/vigia-lutador.mjs` acha sprite entregue sem JSON (pasta
+nova em `public/assets/lutadores/` com idle, andar, hit-high, knockdown,
+soco rápido e chute, quieta há 10 min). Roda no hook `SessionStart` de
+`.claude/settings.json` (sessão nova já abre sabendo) e em segundo plano
+na sessão aberta. O Mosqueteiro (`mosqueteiro/base-v1`) começou a chegar
+durante a sessão, só com o idle. Sons: voz por formantes em
+`scripts/sons.py` (`glote`, `vogal`), 19 sons novos (dor geral e de
+porco, galo, urubu e cão; latido em voo; mergulho e pouso do Urubu; cinco
+da torcida) e 12 refeitos sem cara de desenho animado. Motor: eventos
+`dor`, `dor-forte`, `dor-ko` (tom variando, um grito a cada 0,35 s),
+`especial-mergulho` e `especial-pouso`; a Luta sorteia um som da torcida a
+cada 5 a 11 s. O latido estava a 0,2 de volume, quase inaudível; foi a 0,45.
+**Verificado:** `npm run check` com 176 testes. Medi os WAVs: o pouso tem
+85% da energia abaixo de 150 Hz, nenhum termina com estalo. No navegador:
+dor do Porco com tom variando, Urubu meteoro → mergulho → acerto → pouso,
+Biriba latindo em voo, KO com gemido, torcida à toa tocando sozinha;
+console sem erro. Não ouvi.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** pouso do Urubu e os sons de desenho
+animado (lição registrada).
+**Aprovado explicitamente:** nada.
+**Atrito:** heredoc do bash quebrou de novo com aspas; scripts Python vão
+por arquivo no scratchpad.
+**Em aberto:** aceite de ouvido; integrar o Mosqueteiro quando o vigia
+avisar.

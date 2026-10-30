@@ -2,7 +2,7 @@
   "id": "porco",
   "label": "Porco",
   "assetRoot": "/assets/lutadores/porco",
-  "sons": {"soco-forte": "mordida", "chute-baixo": "coice", "carga": "enjoo", "projetil-especial": "vomito"},
+  "sons": {"soco-forte": "mordida", "chute-baixo": "coice", "carga": "enjoo", "projetil-especial": "vomito", "dor": "dor-porco", "dor-forte": "dor-forte-porco"},
   "torcida": {
     "estampa": "lisa",
     "cores": [

@@ -24,8 +24,23 @@ export function somDoEvento(sons: SonsDoLutador | undefined, evento: string, ger
  * @param scene - Cena que toca.
  * @param chave - Chave do som, ou `null` para não tocar nada.
  * @param settings - Ajustes de volume e mudo.
+ * @param detune - Desvio de tom em cents (a dor varia a cada golpe).
  */
-export function tocarSom(scene: Phaser.Scene, chave: string | null, settings: GameSettings): void {
+export function tocarSom(scene: Phaser.Scene, chave: string | null, settings: GameSettings, detune = 0): void {
   if (!chave || !scene.sound || !scene.cache?.audio) return;
-  playAudioCue(scene, chave, settings);
+  playAudioCue(scene, chave, settings, detune);
+}
+
+/** Sons soltos da torcida, um sorteado de tempos em tempos (docs/sons.md). */
+export const TORCIDA_A_TOA = ['torcida-coro', 'torcida-uh', 'torcida-assobio', 'torcida-batucada', 'torcida-palmas'];
+
+/**
+ * Próximo som solto da torcida e quanto esperar até ele: nunca o mesmo duas
+ * vezes seguidas, entre 5 e 11 segundos.
+ * @param anterior - O último que tocou.
+ * @param sorteio - Fonte de acaso (os testes passam uma fixa).
+ */
+export function proximaTorcida(anterior: string | null, sorteio: () => number = Math.random): { chave: string; ms: number } {
+  const opcoes = TORCIDA_A_TOA.filter((chave) => chave !== anterior);
+  return { chave: opcoes[Math.floor(sorteio() * opcoes.length)], ms: 5000 + sorteio() * 6000 };
 }

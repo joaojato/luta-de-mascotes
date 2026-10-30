@@ -12,7 +12,7 @@ import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds,
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { playSuperCutIn } from '../game/superCutIn';
 import { syncLoopingAudioAsset, stopAudioAsset } from '../game/core/audio';
-import { tocarSom } from '../game/sons';
+import { proximaTorcida, tocarSom } from '../game/sons';
 import { LUTADORES } from '../game/lutadores';
 import { torcidaValida } from '../game/torcida';
 import { montarTorcida } from '../game/torcidaCena';
@@ -141,6 +141,7 @@ export class MatchScene extends BaseScene {
 
     this.startRound();
     syncLoopingAudioAsset(this, 'torcida', this.app.settingsStore.getState());
+    this.agendarTorcida(null);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       stopAudioAsset(this, 'torcida');
@@ -436,6 +437,19 @@ export class MatchScene extends BaseScene {
   /** Plays a match sound with the current volume settings (docs/sons.md). */
   private som(chave: string): void {
     tocarSom(this, chave, this.app.settingsStore.getState());
+  }
+
+  /**
+   * The crowd makes noise on its own (chant, "uuuh", whistles, drums, claps)
+   * every few seconds, over the loop. It doesn't follow the fight.
+   * @param anterior - The last one, so the same never plays twice in a row.
+   */
+  private agendarTorcida(anterior: string | null): void {
+    const { chave, ms } = proximaTorcida(anterior);
+    this.time.delayedCall(ms, () => {
+      this.som(chave);
+      this.agendarTorcida(chave);
+    });
   }
 
   /** Spawns P1 (left, facing right) and P2 (right, facing left). */

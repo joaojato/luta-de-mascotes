@@ -13,5 +13,18 @@
       "Bash(git commit*)",
       "Bash(git push*)"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/vigia-lutador.mjs\" --hook",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
   }
 }
