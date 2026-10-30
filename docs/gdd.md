@@ -407,3 +407,16 @@ Rival: em aberto
 
 Torcida: listras verticais preto e branco, como a risca de giz.
 Retrato e âncora são recortes da guarda.
+
+## Dragão (Atlético Goianiense): ficha (30/10/2026)
+
+Arte do Codex (`docs/dragao-animacoes-v1.md`), células 512×384 por causa das
+asas (`frameHeight` no JSON). Torcida em listras verticais vermelho e preto.
+
+| Botão | Golpe | Dano |
+|---|---|---|
+| Soco | dois socos brutos alternando os braços | 8 + 8 |
+| Baixo + Soco | soco no estômago, um só, com giro de quadril | 28 |
+| Chute | cuspida curta de fogo (efeito `fire-short`) | 22 |
+| Baixo + Chute | rabada giratória de 360 graus, a cauda acerta uma vez | 16 |
+| Especial | sopro de fogo (tipo `sopro`): sobe, paira e varre com um jato contínuo do chão à frente até o alto; sem guarda que segure; escapa quem vai para baixo dele | 34 |

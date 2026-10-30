@@ -28,6 +28,11 @@ export interface FighterActionSpec {
   frames: number;
   /** Wider body-action cells preserve the fighter's scale when wings extend. */
   frameWidth?: number;
+  /**
+   * Taller cells (the Dragão's wings): the sprite pivots on the cell bottom, so
+   * the feet stay 28 px above the bottom whatever the height.
+   */
+  frameHeight?: number;
   frameRate: number;
   repeat: number;
   defaultVisual: Rect;
@@ -89,7 +94,7 @@ export function buildFighterCharacter(config: FighterCharacterConfig): Character
   };
 
   const spritesheets: SpritesheetAsset[] = config.actions.map((spec) =>
-    sheet(animationKey(config.id, spec.action), `${config.assetRoot}/${spec.file}`, spec.frames, spec.frameWidth)
+    sheet(animationKey(config.id, spec.action), `${config.assetRoot}/${spec.file}`, spec.frames, spec.frameWidth, spec.frameHeight)
   );
 
   // Regra do Corpo: on the ground only the body (the idle box) gets hit, so a
@@ -195,8 +200,8 @@ function makeAnimation(
   const bounds: HeroBoundsFrame[] = Array.from({ length: spec.frames }, (_, frame) => ({
     frame,
     visual: { ...spec.defaultVisual },
-    collision: collisionBounds(spec.defaultVisual, animationSheet.frameWidth),
-    hit: hitBounds(hurt, animationSheet.frameWidth),
+    collision: collisionBounds(spec.defaultVisual, animationSheet.frameWidth, animationSheet.frameHeight),
+    hit: hitBounds(hurt, animationSheet.frameWidth, animationSheet.frameHeight),
     attack: attackByFrame.get(frame) ?? null,
     guard: spec.guard ? { ...spec.guard } : null
   }));
@@ -258,13 +263,13 @@ function requireSheet(sheets: SpritesheetAsset[], key: string): SpritesheetAsset
  * Derive a centered collision box from a visual box, anchored to the feet.
  * @param visual - The visual bounding box.
  */
-function collisionBounds(visual: Rect, frameWidth = FRAME_WIDTH): Rect {
+function collisionBounds(visual: Rect, frameWidth = FRAME_WIDTH, frameHeight = FRAME_HEIGHT): Rect {
   const width = Math.min(58, Math.max(34, Math.round(visual.width * 0.46)));
   const height = Math.max(74, Math.round(visual.height * 0.82));
 
   return {
     x: Math.round(frameWidth / 2 - width / 2),
-    y: Math.round(230 - height),
+    y: Math.round(frameHeight - 26 - height),
     width,
     height
   };
@@ -274,11 +279,11 @@ function collisionBounds(visual: Rect, frameWidth = FRAME_WIDTH): Rect {
  * Derive a slightly padded hurtbox from a visual box.
  * @param visual - The visual bounding box.
  */
-function hitBounds(visual: Rect, frameWidth = FRAME_WIDTH): Rect {
+function hitBounds(visual: Rect, frameWidth = FRAME_WIDTH, frameHeight = FRAME_HEIGHT): Rect {
   return {
     x: Math.max(0, visual.x - 4),
     y: Math.max(0, visual.y + 2),
     width: Math.min(frameWidth, visual.width + 8),
-    height: Math.min(FRAME_HEIGHT, visual.height)
+    height: Math.min(frameHeight, visual.height)
   };
 }

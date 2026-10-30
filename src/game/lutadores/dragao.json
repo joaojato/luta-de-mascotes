@@ -1,0 +1,617 @@
+{
+  "id": "dragao",
+  "label": "Dragão",
+  "assetRoot": "/assets/lutadores/dragao",
+  "torcida": {
+    "estampa": "listras-verticais",
+    "cores": [
+      "#C8102E",
+      "#141414"
+    ]
+  },
+  "anchorUsage": "Dragão vermelho de asas em guarda, voltado para a esquerda",
+  "selecionavel": true,
+  "stats": {},
+  "combat": {
+    "highDamage": 8,
+    "lowKickDamage": 16,
+    "kickDamage": 22,
+    "lowDamage": 28,
+    "specialDamage": 34
+  },
+  "skins": [
+    {
+      "id": "jogo-v1",
+      "label": "Cicatriz",
+      "pasta": "jogo-v1"
+    }
+  ],
+  "moves": {
+    "kick": {
+      "kind": "strike",
+      "action": "heavy-kick",
+      "effect": "fire-short",
+      "effectFrame": 2,
+      "effectAt": {
+        "x": 166,
+        "y": 199
+      }
+    },
+    "special": {
+      "kind": "sopro",
+      "sopro": {
+        "efeito": "fire-beam",
+        "origemEfeito": [
+          1000,
+          128
+        ],
+        "comprimentoEfeito": 920,
+        "boca": [
+          [
+            148,
+            239
+          ],
+          [
+            145,
+            231
+          ],
+          [
+            146,
+            229
+          ],
+          [
+            148,
+            212
+          ],
+          [
+            153,
+            198
+          ],
+          [
+            156,
+            180
+          ],
+          [
+            160,
+            186
+          ],
+          [
+            173,
+            159
+          ],
+          [
+            193,
+            144
+          ],
+          [
+            204,
+            121
+          ],
+          [
+            228,
+            119
+          ],
+          [
+            265,
+            146
+          ]
+        ],
+        "angulos": [
+          30,
+          45,
+          60,
+          75,
+          90,
+          105,
+          120,
+          135,
+          150,
+          165,
+          180,
+          190
+        ],
+        "altura": 170,
+        "subidaSegundos": 0.3,
+        "espessura": 40,
+        "alcance": 1600
+      }
+    },
+    "effects": {
+      "fire-short": {
+        "file": "fire-short.png",
+        "frames": 6,
+        "frameRate": 12,
+        "frameWidth": 256,
+        "frameHeight": 192
+      },
+      "fire-beam": {
+        "file": "fire-beam.png",
+        "frames": 6,
+        "frameRate": 14,
+        "repeat": -1,
+        "frameWidth": 1024,
+        "frameHeight": 256
+      }
+    }
+  },
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Guarda",
+      "file": "idle.png",
+      "frames": 4,
+      "frameRate": 8,
+      "repeat": -1,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 169,
+        "y": 155,
+        "width": 207,
+        "height": 201
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Andar para frente",
+      "file": "walk-forward.png",
+      "frames": 8,
+      "frameRate": 8,
+      "repeat": -1,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 155,
+        "y": 148,
+        "width": 258,
+        "height": 208
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Andar para trás",
+      "file": "walk-backward.png",
+      "frames": 8,
+      "frameRate": 8,
+      "repeat": -1,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 156,
+        "y": 155,
+        "width": 247,
+        "height": 201
+      }
+    },
+    {
+      "action": "dash-forward",
+      "label": "Avanço com as asas",
+      "file": "dash-forward.png",
+      "frames": 5,
+      "frameRate": 18,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 120,
+        "y": 142,
+        "width": 321,
+        "height": 214
+      }
+    },
+    {
+      "action": "dash-back",
+      "label": "Recuo com as asas",
+      "file": "dash-back.png",
+      "frames": 4,
+      "frameRate": 18,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 160,
+        "y": 156,
+        "width": 228,
+        "height": 200
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Agachar",
+      "file": "crouch.png",
+      "frames": 5,
+      "frameRate": 20,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 162,
+        "y": 156,
+        "width": 241,
+        "height": 200
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Saltar",
+      "file": "jump.png",
+      "frames": 8,
+      "frameRate": 10,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 155,
+        "y": 156,
+        "width": 247,
+        "height": 200
+      }
+    },
+    {
+      "action": "jump-punch",
+      "label": "Soco no ar",
+      "file": "jump-punch.png",
+      "frames": 5,
+      "frameRate": 14,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 76,
+        "y": 156,
+        "width": 330,
+        "height": 199
+      },
+      "attack": {
+        "frames": [
+          1,
+          2
+        ],
+        "bounds": {
+          "x": 76,
+          "y": 210,
+          "width": 90,
+          "height": 40
+        }
+      }
+    },
+    {
+      "action": "jump-kick",
+      "label": "Voadora",
+      "file": "jump-kick.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 107,
+        "y": 156,
+        "width": 282,
+        "height": 199
+      },
+      "attack": {
+        "frames": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 107,
+          "y": 291,
+          "width": 59,
+          "height": 64
+        }
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Defesa alta",
+      "file": "block-high.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 170,
+        "y": 156,
+        "width": 206,
+        "height": 200
+      },
+      "guard": {
+        "x": 165,
+        "y": 170,
+        "width": 110,
+        "height": 130
+      }
+    },
+    {
+      "action": "block-low",
+      "label": "Defesa baixa",
+      "file": "block-low.png",
+      "frames": 4,
+      "frameRate": 10,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 162,
+        "y": 231,
+        "width": 239,
+        "height": 125
+      },
+      "guard": {
+        "x": 160,
+        "y": 235,
+        "width": 120,
+        "height": 115
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Receber golpe",
+      "file": "hit-high.png",
+      "frames": 6,
+      "frameRate": 12,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 165,
+        "y": 156,
+        "width": 214,
+        "height": 200
+      }
+    },
+    {
+      "action": "stunned",
+      "label": "Atordoado",
+      "file": "stunned.png",
+      "frames": 4,
+      "frameRate": 6,
+      "repeat": -1,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 187,
+        "y": 170,
+        "width": 198,
+        "height": 186
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Dois socos",
+      "file": "light-punch.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 93,
+        "y": 155,
+        "width": 328,
+        "height": 201
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            1
+          ],
+          "bounds": {
+            "x": 94,
+            "y": 200,
+            "width": 70,
+            "height": 32
+          }
+        },
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 106,
+            "y": 204,
+            "width": 58,
+            "height": 30
+          }
+        }
+      ]
+    },
+    {
+      "action": "heavy-punch",
+      "label": "Soco no estômago",
+      "file": "heavy-punch.png",
+      "frames": 8,
+      "frameRate": 14,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 105,
+        "y": 231,
+        "width": 296,
+        "height": 125
+      },
+      "attack": {
+        "frames": [
+          3,
+          4
+        ],
+        "bounds": {
+          "x": 105,
+          "y": 280,
+          "width": 60,
+          "height": 30
+        }
+      },
+      "travel": {
+        "frames": [
+          2,
+          4
+        ],
+        "distance": 16
+      }
+    },
+    {
+      "action": "heavy-kick",
+      "label": "Cuspida de fogo",
+      "file": "heavy-kick.png",
+      "frames": 6,
+      "frameRate": 12,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 158,
+        "y": 156,
+        "width": 252,
+        "height": 200
+      },
+      "attack": {
+        "frames": [
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 62,
+          "y": 182,
+          "width": 124,
+          "height": 60
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          2
+        ],
+        "distance": 12
+      }
+    },
+    {
+      "action": "low-kick",
+      "label": "Rabada giratória",
+      "file": "low-kick.png",
+      "frames": 16,
+      "frameRate": 18,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 103,
+        "y": 214,
+        "width": 298,
+        "height": 142
+      },
+      "attack": {
+        "frames": [
+          6,
+          7
+        ],
+        "bounds": {
+          "x": 103,
+          "y": 291,
+          "width": 63,
+          "height": 38
+        }
+      },
+      "travel": {
+        "frames": [
+          2,
+          5
+        ],
+        "distance": 15
+      },
+      "timing": [
+        {
+          "frames": [
+            0,
+            3
+          ],
+          "ms": 80
+        },
+        {
+          "frames": [
+            4,
+            11
+          ],
+          "ms": 40
+        },
+        {
+          "frames": [
+            12,
+            15
+          ],
+          "ms": 60
+        }
+      ]
+    },
+    {
+      "action": "special-charge",
+      "label": "Decolagem",
+      "file": "special-charge.png",
+      "frames": 6,
+      "frameRate": 14,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 98,
+        "y": 124,
+        "width": 346,
+        "height": 232
+      }
+    },
+    {
+      "action": "special",
+      "label": "Sopro de fogo",
+      "file": "special.png",
+      "frames": 12,
+      "frameRate": 10,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 121,
+        "y": 83,
+        "width": 281,
+        "height": 273
+      }
+    },
+    {
+      "action": "special-return",
+      "label": "Pouso",
+      "file": "special-return.png",
+      "frames": 6,
+      "frameRate": 12,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 137,
+        "y": 156,
+        "width": 248,
+        "height": 200
+      }
+    },
+    {
+      "action": "knockdown",
+      "label": "Queda",
+      "file": "knockdown.png",
+      "frames": 10,
+      "frameRate": 10,
+      "repeat": 0,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "defaultVisual": {
+        "x": 115,
+        "y": 156,
+        "width": 302,
+        "height": 200
+      }
+    }
+  ]
+}

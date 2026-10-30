@@ -1,5 +1,6 @@
 import type { GolpeId } from './golpes';
 import type { EsquadraoConfig } from './esquadrao';
+import type { SoproConfig } from './sopro';
 import type { AttackProfile } from './types';
 
 export interface FighterMoveConfig {
@@ -77,6 +78,8 @@ export interface ProjectileMoveConfig {
   kind: string;
   /** `esquadrao`: aliados que atacam no lugar do mascote (src/game/esquadrao.ts). */
   esquadrao?: EsquadraoConfig;
+  /** `sopro`: sobe, paira e varre com um jato contínuo pela boca (src/game/sopro.ts). */
+  sopro?: SoproConfig;
   startFrame?: number;
   endFrame?: number;
   releaseFrame?: number;

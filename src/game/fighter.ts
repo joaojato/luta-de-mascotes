@@ -14,6 +14,7 @@ import {
 import { spawnChargeAura } from './vfx';
 import { somDoEvento, tocarSom } from './sons';
 import { Esquadrao } from './esquadrao';
+import { acertoDoSopro, amostraDoSopro, direcaoDoSopro, type SoproConfig } from './sopro';
 import {
   passedDropPoint,
   projectileGrowthProgress,
@@ -283,6 +284,15 @@ export class Fighter {
 
   /** Aliados do especial `esquadrao` (os Gaviões do Mosqueteiro), se o mascote tiver. */
   private esquadrao: Esquadrao | null = null;
+  /** Especial `sopro` em andamento (o Dragão): fase, relógio, o jato e o ponto que encosta no oponente. */
+  private sopro: {
+    cfg: SoproConfig;
+    fase: 'subida' | 'varredura' | 'descida';
+    relogio: number;
+    lado: 1 | -1;
+    jato: Phaser.GameObjects.Sprite | null;
+    contato: Phaser.Geom.Rectangle | null;
+  } | null = null;
   private previousX = 0;
   private lastDx = 0;
   /** Effect sprites that live while a phase lasts (thermal column, dive trail). */
@@ -639,6 +649,13 @@ export class Fighter {
         projectile: true, unblockable: !contato.bloqueavel
       };
     }
+    if (this.sopro?.contato && !this.attackConnected && !this.defeated) {
+      // O jato não tem guarda que segure: escapa quem foi para baixo do mascote.
+      return {
+        rect: this.sopro.contato, profile: getAttackProfile(this.combat(), 'special'), signature: this.attackId,
+        move: 'especial', finisher: true, facing: this.sopro.lado, projectile: true, unblockable: true
+      };
+    }
     const shot = this.projectiles.find(projectile => !projectile.connected && !projectile.carrier);
     if (shot && !this.defeated) {
       const sweep = sweptInterval(shot.previousX, shot.x, shot.width/2);
@@ -793,6 +810,8 @@ export class Fighter {
     this.diveVelX = 0;
     this.jumpPhase = null;
     this.sprite.anims.resume();
+    // Hit mid-air during the sopro: the jet goes out and he falls.
+    this.cancelarSopro();
     // Cancel pending action completion callbacks when a move is interrupted.
     this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.specialCharge}`);
     this.sprite.removeAllListeners(`animationcomplete-${this.actionKeys.special}`);
@@ -849,6 +868,7 @@ export class Fighter {
   resetForRound(x: number, facing: 1 | -1): void {
     this.clearProjectile();
     this.esquadrao?.reset();
+    this.cancelarSopro();
     this.jumpPhase = null;
     this.diveVelX = 0;
     this.strike = null;
@@ -935,6 +955,12 @@ export class Fighter {
       return;
     }
 
+    if (this.sopro) {
+      this.updateSopro(seconds);
+      this.drawBoundsOverlay();
+      return;
+    }
+
     if (this.jumpPhase === 'prepare' && (input.light || input.heavy)) {
       this.bufferedAirAttack = input.light ? 'light' : 'heavy';
     }
@@ -967,6 +993,7 @@ export class Fighter {
   destroy(): void {
     this.clearProjectile();
     this.esquadrao?.destroy();
+    this.cancelarSopro();
     this.endAdvanceEffects();
     this.sprite?.removeAllListeners();
     this.sprite?.destroy();
@@ -1572,6 +1599,102 @@ export class Fighter {
     this.trailFx = null;
   }
 
+  /**
+   * Especial `sopro`: segura o último quadro da carga subindo até a altura do
+   * JSON, varre com o jato pela sheet `special` e desce com `special-return`.
+   * O lado fica travado: cruzar por baixo não vira o jato.
+   */
+  private iniciarSopro(cfg: SoproConfig): void {
+    this.chargeFx?.destroy();
+    this.chargeFx = null;
+    this.sopro = { cfg, fase: 'subida', relogio: 0, lado: this.facing, jato: null, contato: null };
+    this.currentAnimKey = this.actionKeys.specialCharge;
+    this.sprite.anims.pause();
+  }
+
+  private updateSopro(seconds: number): void {
+    const s = this.sopro!;
+    s.relogio += seconds;
+    const altura = s.cfg.altura * this.appliedScale;
+    if (s.fase === 'subida') {
+      const t = Phaser.Math.Clamp(s.relogio / (s.cfg.subidaSegundos ?? 0.3), 0, 1);
+      this.sprite.y = this.groundY - altura * (1 - (1 - t) * (1 - t));
+      if (t >= 1) {
+        // Só sopra na altura segura.
+        s.fase = 'varredura';
+        s.relogio = 0;
+        this.currentAnimKey = this.actionKeys.special;
+        this.sprite.play({ key: this.actionKeys.special, repeat: 0 }, true);
+        const chave = findCharacterAnimationKeyByAction(this.character.id, `fx-${s.cfg.efeito}`);
+        if (chave) {
+          const quadro = this.scene.textures.get(chave).get(0);
+          s.jato = this.scene.add.sprite(0, 0, chave, 0)
+            .setOrigin(s.cfg.origemEfeito[0] / quadro.width, s.cfg.origemEfeito[1] / quadro.height)
+            .setDepth(this.depthBase - 0.5)
+            .play(chave);
+        }
+        this.som('especial', null);
+      }
+    } else if (s.fase === 'varredura') {
+      const animation = this.currentAnimation();
+      const total = animation ? animation.bounds.length / animation.frameRate : 1.2;
+      const progresso = s.relogio / total;
+      const { boca, angulo } = amostraDoSopro(s.cfg, progresso);
+      // Boca do quadro para o mundo: a célula gira no pé de baixo (âncora) e vira com o lado.
+      const pivoX = (animation?.sheet.frameWidth ?? 512) / 2;
+      const pivoY = (animation?.sheet.frameHeight ?? 384) * this.character.anchor.y;
+      const origem = new Phaser.Math.Vector2(
+        this.posX - s.lado * (boca.x - pivoX) * this.appliedScale,
+        this.sprite.y + (boca.y - pivoY) * this.appliedScale
+      );
+      const direcao = direcaoDoSopro(angulo, s.lado);
+      const alcance = s.cfg.alcance ?? 1600;
+      s.jato
+        ?.setPosition(origem.x, origem.y)
+        .setRotation(Math.atan2(direcao.y, direcao.x) - Math.PI)
+        .setScale(alcance / s.cfg.comprimentoEfeito, this.appliedScale)
+        .setFlipY(s.lado === 1);
+      const corpo = this.opponent?.getHurtRect();
+      const espessura = (s.cfg.espessura ?? 36) * this.appliedScale;
+      const ponto = corpo ? acertoDoSopro(origem, direcao, alcance, espessura, corpo) : null;
+      s.contato = ponto ? new Phaser.Geom.Rectangle(ponto.x - espessura / 2, ponto.y - espessura / 2, espessura, espessura) : null;
+      if (progresso >= 1) {
+        // Desliga o fogo antes de descer.
+        s.jato?.destroy();
+        s.jato = null;
+        s.contato = null;
+        s.fase = 'descida';
+        s.relogio = 0;
+        const retorno = findCharacterAnimationKeyByAction(this.character.id, 'special-return');
+        if (retorno) {
+          this.currentAnimKey = retorno;
+          this.sprite.play({ key: retorno, repeat: 0 }, true);
+        }
+      }
+    } else {
+      // special-return: quadros 0 a 2 no ar, toca o chão no 3.
+      const descer = 3 / (this.currentAnimation()?.frameRate ?? 12);
+      const t = Phaser.Math.Clamp(s.relogio / descer, 0, 1);
+      this.sprite.y = this.groundY - altura * (1 - t * t);
+      if (s.relogio >= descer && !this.sprite.anims.isPlaying) {
+        this.sprite.y = this.groundY;
+        this.sopro = null;
+        this.locked = false;
+        this.currentAnimKey = '';
+        this.playState(this.actionKeys.idle, true);
+      }
+    }
+    this.sprite.x = this.posX;
+    this.updateShadow();
+  }
+
+  /** Apaga o jato e solta o mascote (apanhou no ar, fim de round): a queda é a da gravidade. */
+  private cancelarSopro(): void {
+    if (!this.sopro) return;
+    this.sopro.jato?.destroy();
+    this.sopro = null;
+  }
+
   /** Top edge of what the camera shows, in world space (meteor leaves above it). */
   private cameraTop(): number {
     return this.scene.cameras?.main?.worldView?.y ?? 0;
@@ -1736,6 +1859,10 @@ export class Fighter {
     this.esquadrao?.atacar();
     if (move && ADVANCE_KINDS.includes(move.kind)) {
       this.startAdvance(move);
+      return;
+    }
+    if (move?.kind === 'sopro' && move.sopro) {
+      this.iniciarSopro(move.sopro);
       return;
     }
     this.chargeFx?.destroy();

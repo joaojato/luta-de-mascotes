@@ -23,7 +23,6 @@ import { BaseScene } from './BaseScene';
  * remapeia os botões da luta. O JSON do lutador é editado na mão.
  */
 
-const FRAME_SIZE = 256;
 const SPRITE_SCALE = 2;
 const FLOOR_Y = 640;
 const LEFT_COLUMN_X = 24;
@@ -244,13 +243,14 @@ export class AcademiaScene extends BaseScene {
   }
 
   /**
-   * Converte um retângulo no espaço do quadro (256x256, virado para a
-   * esquerda, como o Spriterrific entrega) para a tela.
+   * Converte um retângulo no espaço do quadro (256x256, ou a célula maior da
+   * ação, virado para a esquerda) para a tela.
    */
   private frameRectToScreen(rect: Rect): Rect {
     const { anchor } = this.character();
-    const left = this.sprite.x - anchor.x * FRAME_SIZE * SPRITE_SCALE;
-    const top = this.sprite.y - anchor.y * FRAME_SIZE * SPRITE_SCALE;
+    const { frameWidth, frameHeight } = this.animation().sheet;
+    const left = this.sprite.x - anchor.x * frameWidth * SPRITE_SCALE;
+    const top = this.sprite.y - anchor.y * frameHeight * SPRITE_SCALE;
 
     return {
       x: left + rect.x * SPRITE_SCALE,
@@ -266,8 +266,9 @@ export class AcademiaScene extends BaseScene {
     const animation = this.animation();
     const boundsFrame = resolveHeroBoundsFrame(animation, this.frame, {});
 
-    // Moldura do quadro inteiro, para o olho saber onde o 256x256 termina.
-    const frameRect = this.frameRectToScreen({ x: 0, y: 0, width: FRAME_SIZE, height: FRAME_SIZE });
+    // Moldura do quadro inteiro, para o olho saber onde a célula termina.
+    const { frameWidth, frameHeight } = animation.sheet;
+    const frameRect = this.frameRectToScreen({ x: 0, y: 0, width: frameWidth, height: frameHeight });
     this.boxes.lineStyle(1, 0x334155, 0.8);
     this.boxes.strokeRect(frameRect.x, frameRect.y, frameRect.width, frameRect.height);
 

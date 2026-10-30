@@ -2325,3 +2325,26 @@ no ar, mas sem o pacote da pausa e da CPU, que estava commitado e não
 publicado; publiquei.
 **Em aberto:** Dragão (motor de célula alta e sopro em andamento); chão,
 sombra e tela de vitória.
+
+## 2026-10-30: Dragão (Atlético Goianiense) jogável, com o sopro de fogo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** colocar o Dragão no jogo quando o Codex terminasse, com o sopro
+de fogo, commitar e publicar.
+**Feito:** motor aceita célula alta por ação (`frameHeight`; o lutador gira no
+pé da célula, então o chão não muda), Academia desenha caixas na célula
+certa. Folhas convertidas para `jogo-v1/` (512×384, pé em 356; o sopro, todo
+no ar, em 336). Especial novo `sopro` (`src/game/sopro.ts`, com teste): sobe
+170 px de quadro, varre com o jato da boca de 30 a 190 graus interpolando
+boca e ângulo a cada quadro de física, lado travado, sem guarda; desce com
+`special-return`. Cuspida como golpe com efeito. `dragao.json`, retrato e
+âncora. Entrega bruta `base-v1/` fora do git.
+**Verificado:** 218 testes; no navegador contra o Almirante: cuspida 22,
+sopro de longe 34, oponente embaixo do Dragão escapou (0), volta ao chão;
+console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** voando a 200 px a cabeça saía da tela no fim da varredura; ficou
+170. O navegador de teste estava lento (10 a 17 quadros/s).
+**Em aberto:** chão do campo, sombra, tela de vitória.

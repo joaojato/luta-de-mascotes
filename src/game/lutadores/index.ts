@@ -12,6 +12,7 @@ import galo from './galo.json';
 import bahia from './bahia.json';
 import porco from './porco.json';
 import mosqueteiro from './mosqueteiro.json';
+import dragao from './dragao.json';
 
 /**
  * Regra do JSON: lutador é dado, não classe. Um arquivo por mascote aqui
@@ -148,7 +149,7 @@ export function expandirSkins(lutador: LutadorJson): LutadorJson[] {
 }
 
 /** Ordem de registro = ordem na seleção. O primeiro é o padrão dos debugs. */
-export const LUTADORES: LutadorJson[] = [urubu, almirante, saci, cartola, cachorro, galo, bahia, porco, mosqueteiro].flatMap(
+export const LUTADORES: LutadorJson[] = [urubu, almirante, saci, cartola, cachorro, galo, bahia, porco, mosqueteiro, dragao].flatMap(
   expandirSkins
 );
 
