@@ -483,10 +483,10 @@ export class MatchScene extends BaseScene {
     this.p1.setOpponent(this.p2);
     this.p2.setOpponent(this.p1);
     if (this.p1.characterId === 'cachorro') {
-      this.biribas.push(new BiribaCena(this, this.p1, groundY, -130));
+      this.biribas.push(new BiribaCena(this, this.p1, groundY, -130, () => this.som('latido')));
     }
     if (this.p2.characterId === 'cachorro') {
-      this.biribas.push(new BiribaCena(this, this.p2, groundY, 130));
+      this.biribas.push(new BiribaCena(this, this.p2, groundY, 130, () => this.som('latido')));
     }
   }
 

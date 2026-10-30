@@ -12,7 +12,15 @@ const SONS: [chave: string, volume: number, loop?: boolean][] = [
   ['passo', 0.12], ['pulo', 0.25], ['aterrissar', 0.3], ['dash', 0.3], ['queda', 0.55], ['tontura', 0.35],
   ['ar-leve', 0.22], ['ar-pesado', 0.3], ['impacto-leve', 0.45], ['impacto-pesado', 0.55], ['impacto-baixo', 0.5],
   ['impacto-especial', 0.65], ['defesa', 0.4], ['defesa-quebrada', 0.5], ['defesa-perfeita', 0.45],
-  ['projetil-lancar', 0.3], ['especial-carga', 0.4]
+  ['projetil-lancar', 0.3], ['especial-carga', 0.4],
+  // Camada 5: de cada mascote (bloco `sons` do JSON).
+  ['tiro-garrucha', 0.55], ['caravela', 0.5], ['sino-navio', 0.35],
+  ['bicada', 0.4], ['asas', 0.4], ['termica', 0.35], ['meteoro', 0.55],
+  ['cachimbo', 0.35], ['tornado', 0.45], ['po-de-arroz', 0.4],
+  ['garra', 0.4], ['bote', 0.45], ['assobio-dedos', 0.3], ['coco', 0.45], ['latido', 0.2],
+  ['giro', 0.35], ['ovo-arremesso', 0.3], ['ovo-quebra', 0.45], ['cacarejo', 0.35],
+  ['laser', 0.4], ['corte', 0.35], ['bora-bahea', 0.55],
+  ['mordida', 0.45], ['coice', 0.5], ['enjoo', 0.35], ['vomito', 0.45]
 ];
 
 export const SOM_ASSETS: StarterAudioAsset[] = SONS.map(([chave, volume, loop]) => ({

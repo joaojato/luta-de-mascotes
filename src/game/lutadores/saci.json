@@ -2,6 +2,7 @@
   "id": "saci",
   "label": "Saci",
   "assetRoot": "/assets/lutadores/saci",
+  "sons": {"projetil": "cachimbo", "especial": "tornado"},
   "torcida": { "estampa": "lisa", "cores": ["#E81810", "#F0F0F0"] },
   "anchorUsage": "Saci, uma única perna, guarda voltada para esquerda",
   "stats": {},

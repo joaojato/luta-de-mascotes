@@ -2,6 +2,7 @@
   "id": "bahia",
   "label": "Esquadrão",
   "assetRoot": "/assets/lutadores/bahia",
+  "sons": {"passo": null, "chute": null, "projetil": "laser", "soco-forte": "corte", "projetil-especial": "bora-bahea"},
   "torcida": {
     "estampa": "lisa",
     "cores": [

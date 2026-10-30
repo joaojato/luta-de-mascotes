@@ -2,6 +2,7 @@
   "id": "urubu",
   "label": "Urubu",
   "assetRoot": "/assets/lutadores/urubu",
+  "sons": {"chute": "bicada", "soco-forte": "asas", "carga": "termica", "especial": "meteoro"},
   "torcida": {
     "estampa": "listras-horizontais",
     "cores": [

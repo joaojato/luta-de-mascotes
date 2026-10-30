@@ -668,6 +668,7 @@ export class Fighter {
       shot.connected = true;
       if (shot.hitEffect) this.spawnEffect(shot.hitEffect, shot.x, shot.y + shot.height / 2);
       if (shot.hitParticles) this.burstParticles(shot.x, shot.y + shot.height / 2, shot.hitParticles);
+      this.som('projetil-acerto', null);
       if (!shot.persistOnHit) {
         shot.visual.destroy();
         this.projectiles = this.projectiles.filter(projectile => projectile !== shot);
@@ -1637,6 +1638,8 @@ export class Fighter {
    * window so the move lands a combo.
    */
   private executeSpecial(): void {
+    // The special itself (the dive, the pounce, the tornado); projectile ones sound at the release.
+    this.som('especial', null);
     this.specialClock = 0;
     this.shotReleased = false;
     this.dashFrom = this.posX;
@@ -2017,6 +2020,7 @@ export class Fighter {
     shot.visual.y = shot.gravity > 0 ? shot.y : shot.visual.y;
     const landed = shot.gravity > 0 && shot.y >= shot.floorY;
     if (landed && shot.hitEffect) this.spawnEffect(shot.hitEffect, shot.x, shot.y + shot.height / 2);
+    if (landed) this.som('projetil-acerto', null);
     if (landed && shot.mine && !shot.mine.armed) {
       this.armMine(shot as TravelingProjectile & { mine: NonNullable<TravelingProjectile['mine']> });
       return true;

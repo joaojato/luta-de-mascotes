@@ -2,6 +2,7 @@
   "id": "cachorro",
   "label": "Bira",
   "assetRoot": "/assets/lutadores/cachorro",
+  "sons": {"soco-forte": "garra", "especial": "bote", "chute": "assobio-dedos", "projetil": "latido", "projetil-acerto": "coco"},
   "torcida": {
     "estampa": "listras-verticais",
     "cores": [

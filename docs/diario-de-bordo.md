@@ -2096,3 +2096,24 @@ em loop; console sem erro. Eu não ouço o resultado: o aceite é do João.
 **Atrito:** `audio.ts` e `sons.ts` se importavam; lista separada em
 `sonsLista.ts`. O lutador de teste não tem ajustes de volume; som tolerante.
 **Em aberto:** camada 5, os sons de cada mascote.
+
+## 2026-10-30: Sons de cada mascote (entrega 2)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** depois dos gerais, os sons específicos (tiro da garrucha,
+caravela com água) e o resto, do geral ao específico.
+**Feito:** 26 sons novos em `scripts/sons.py` (garrucha, caravela com mar e
+madeira, sino do navio, bicada, asas, térmica, meteoro, cachimbo girando,
+tornado, pó de arroz, garra, bote, assobio de dedos, cocô, latido, giro,
+ovo e ovo quebrando, cacarejo, laser, corte, Bora Bahêa, mordida, coice,
+enjoo, vômito) e o bloco `sons` nos oito JSONs. Motor: eventos `especial`
+e `projetil-acerto`; o Biriba de cenário late com som. Questionário de
+mascote ganhou a parte de sons.
+**Verificado:** `npm run check` com 175 testes. No navegador, cada mascote
+tocou os próprios sons nos golpes certos; console sem erro. Não ouvi.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** o primeiro teste apertava o chute ainda travado no golpe
+anterior e acusou falta do tiro e do assobio; isolado, tocaram.
+**Em aberto:** aceite de ouvido do João; vozes ficam para gravação.

@@ -29,8 +29,15 @@ evento, e o JSON do mascote pode trocá-lo pelo **específico** num bloco
 `sons` (evento → chave do som, ou `null` para calar):
 
 ```json
-"sons": { "chute": "tiro-garrucha", "especial": "caravela", "passo": null }
+"sons": { "projetil": "tiro-garrucha", "projetil-especial": "caravela", "passo": null }
 ```
+
+Eventos que o JSON pode trocar: `passo`, `pulo`, `aterrissar`, `dash`,
+`queda`, `tontura`, `soco-rapido`, `soco-forte`, `chute`, `chute-baixo`,
+`soco-no-ar`, `voadora` (começo do golpe), `carga` (preparação do especial),
+`especial` (o especial sai; mergulho, bote, tornado), `projetil` e
+`projetil-especial` (algo é lançado), `projetil-acerto` (o lançado acerta ou
+cai no chão). O latido do Biriba de cenário é a chave `latido`.
 
 Mascote novo nasce com todos os sons gerais. Trocar um som é dado.
 
@@ -122,8 +129,11 @@ médio, especial e K.O. alto, torcida bem baixa por baixo de tudo.
 
 ## Entregas
 
-1. **Camadas 1 a 4** (gerais e golpes de forma geral): 31 sons, ligados no
-   motor e nas cenas, com o bloco `sons` já funcionando.
-2. **Camada 5**, mascote por mascote, só som e JSON.
+1. **Camadas 1 a 4** (gerais e golpes de forma geral): feita em
+   30/10/2026, 28 sons ligados no motor e nas cenas.
+2. **Camada 5**, mascote por mascote: feita em 30/10/2026, 26 sons e o
+   bloco `sons` nos oito JSONs. Na tabela acima, onde diz "chute (tiro)" o
+   evento real é `projetil` (o som sai quando o tiro sai, não quando o braço
+   se mexe); o mapeamento exato está em cada JSON.
 
 Cada entrega roda `npm run check` e é ouvida no navegador antes do commit.

@@ -30,7 +30,9 @@ export class BiribaCena {
     private readonly scene: Phaser.Scene,
     private readonly bira: Fighter,
     groundY: number,
-    private readonly offsetX: number
+    private readonly offsetX: number,
+    /** Toca o latido (som da Luta, que tem os ajustes de volume). */
+    private readonly latir: () => void = () => {}
   ) {
     for (const action of Object.keys(ACOES) as BiribaAction[]) {
       const key = `biriba-${action}`;
@@ -81,6 +83,7 @@ export class BiribaCena {
     this.shadow.setVisible(!voando);
     this.sprite.setX(Math.round(this.motion.x)).setFlipX(this.motion.facing === 1);
     if (this.renderedAction !== this.motion.action) {
+      if (this.motion.action === 'bark' && !voando) this.latir();
       this.sprite.play(`biriba-${this.motion.action}`);
       this.renderedAction = this.motion.action;
     }
