@@ -364,3 +364,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   variedade (torcedores de camisa lisa em cada cor do time), detalhes na
   mesma regra e sinalizador coeso com o clube, nunca preto. As cores da
   torcida viram parte do procedimento de todo lutador novo. (2026-10-29)
+- **Lutador com arte em produção: reler o manifesto antes do commit.** O
+  Porco foi commitado com a queda apontando para o quebra-galho, embora o
+  Codex tivesse entregado a sheet minutos antes; o João notou que ele não
+  caía. Conferir `pending` de novo logo antes de commitar. (2026-10-29)

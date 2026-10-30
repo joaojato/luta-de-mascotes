@@ -2002,3 +2002,20 @@ px com tontura; arquibancada verde e branca; console sem erro.
 altura. A corrida antes do coice depende de motor novo.
 **Em aberto:** `stunned`, `knockdown`, retrato; jato que se descola da boca
 enquanto anda; corrida do coice.
+
+## 2026-10-29: Porco cai e fica tonto com as sheets próprias
+
+**Marco:** 2, segue em andamento.
+**Pedido:** o Porco estava sem a animação de queda.
+**Feito:** o Codex entregou `stunned` e `knockdown` às 22:27 e 22:30, depois
+de eu montar o JSON, que seguia com a reação de apanhar como quebra-galho.
+Ligadas as duas sheets próprias.
+**Verificado:** `npm run check` verde. No navegador: tonto com a pose de
+enjoo e as estrelas do jogo; no nocaute, toca a queda até o último quadro,
+deitado; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** integrei o Porco com o manifesto ainda marcando as duas como
+pendentes e não conferi de novo antes do commit.
+**Em aberto:** soco de asas do Urubu, em produção no Codex.

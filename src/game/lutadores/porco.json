@@ -219,6 +219,20 @@
       }
     },
     {
+      "action": "stunned",
+      "label": "Atordoado",
+      "file": "stunned.png",
+      "frames": 4,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 46,
+        "y": 41,
+        "width": 164,
+        "height": 187
+      }
+    },
+    {
       "action": "light-punch",
       "label": "Dois socos",
       "file": "light-punch.png",
@@ -383,8 +397,8 @@
     },
     {
       "action": "knockdown",
-      "label": "Queda (quebra-galho: apanhar)",
-      "file": "hit-high.png",
+      "label": "Queda",
+      "file": "knockdown.png",
       "frames": 10,
       "frameRate": 10,
       "repeat": 0,
