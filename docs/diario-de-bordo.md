@@ -2304,3 +2304,24 @@ pausa do celular) e apagou o botão de pausa que eu tinha posto lá; a pausa
 no toque fica com ela. A CPU antiga era o sorteio herdado do jogo-base.
 **Em aberto:** Dragão (entrega pronta, integrando agora); nível do chão,
 sombra e tela de vitória pedidos em seguida.
+
+## 2026-10-30: escolher o adversário da CPU
+
+**Marco:** 2, segue em andamento.
+**Pedido:** no 1 VS CPU, o jogador escolhe o adversário da CPU.
+**Feito:** a Seleção em 1 VS CPU tem duas etapas: o jogador trava o próprio
+lutador e o mesmo direcional (ou o mouse e o toque) passa a mover o cursor
+da CPU, que não para no lutador do jogador; travar o adversário começa a
+luta. Esc na segunda etapa destrava o lutador do jogador em vez de sair. A
+frase sob o título diz a etapa. O sorteio da CPU saiu.
+**Verificado:** no navegador, travar, voltar com Esc, travar de novo, mover
+a CPU e travar: a luta começou com Almirante contra o Mosqueteiro escolhido;
+console sem erro. `npm run check` no clone limpo do commit.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o sorteio do adversário da CPU.
+**Aprovado explicitamente:** nada.
+**Atrito:** antes disso ele avisou que "não rodava na build": o site estava
+no ar, mas sem o pacote da pausa e da CPU, que estava commitado e não
+publicado; publiquei.
+**Em aberto:** Dragão (motor de célula alta e sopro em andamento); chão,
+sombra e tela de vitória.

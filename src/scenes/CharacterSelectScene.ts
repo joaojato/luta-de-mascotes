@@ -49,7 +49,8 @@ interface PlayerCursor {
  * Seleção no modelo Mortal Kombat: o elenco inteiro numa grade de quadrados
  * pequenos no centro, e cada jogador vê o lutador escolhido animado na sua
  * lateral. Em 1v1 cada jogador tem o próprio cursor (P1 = WASD, P2 = setas) e
- * os dois não podem parar no mesmo lutador. Em 1vCPU a CPU sorteia outro.
+ * os dois não podem parar no mesmo lutador. Em 1vCPU o jogador trava o dele e,
+ * com o mesmo direcional, escolhe o adversário da CPU (João, 30/10/2026).
  */
 export class CharacterSelectScene extends BaseScene {
   private mode: MatchMode = '1v1';
@@ -59,6 +60,8 @@ export class CharacterSelectScene extends BaseScene {
   private p1!: PlayerCursor;
   private p2!: PlayerCursor;
   private transitioning = false;
+  /** Em 1vCPU, a etapa: o lutador do jogador ou o adversário da CPU. */
+  private etapa!: Phaser.GameObjects.Text;
 
   constructor() {
     super(SCENE_KEYS.CharacterSelect);
@@ -88,10 +91,16 @@ export class CharacterSelectScene extends BaseScene {
     this.refreshCursor(this.p2);
     this.registerInput();
 
+    this.etapa = this.add
+      .text(this.cameras.main.centerX, 118, '', { color: colorToCss(P1_COLOR), fontFamily: FONTE_TITULO, fontSize: '26px', stroke: '#000000', strokeThickness: 5 })
+      .setOrigin(0.5)
+      .setDepth(12);
+    this.mostrarEtapa();
+
     this.createFooterHint(
       this.mode === '1v1'
         ? 'P1: WASD + Espaço   •   P2: Setas + Enter   •   Esc volta'
-        : 'WASD ou Setas para escolher   •   Enter confirma   •   Esc volta'
+        : 'WASD ou Setas para escolher   •   Enter confirma   •   Esc volta um passo'
     );
   }
 
@@ -251,15 +260,16 @@ export class CharacterSelectScene extends BaseScene {
       keyboard.on('keydown-F', () => this.confirmPlayer(this.p1));
       keyboard.on('keydown-ENTER', () => this.confirmPlayer(this.p2));
     } else {
+      // Um direcional só: primeiro escolhe o próprio lutador, depois o da CPU.
       const bind = (keys: string[], dx: number, dy: number): void =>
-        keys.forEach((key) => keyboard.on(`keydown-${key}`, () => this.movePlayer(this.p1, dx, dy)));
+        keys.forEach((key) => keyboard.on(`keydown-${key}`, () => this.movePlayer(this.cursorDaVez(), dx, dy)));
       bind(['A', 'LEFT'], -1, 0);
       bind(['D', 'RIGHT'], 1, 0);
       bind(['W', 'UP'], 0, -1);
       bind(['S', 'DOWN'], 0, 1);
-      keyboard.on('keydown-SPACE', () => this.confirmPlayer(this.p1));
-      keyboard.on('keydown-F', () => this.confirmPlayer(this.p1));
-      keyboard.on('keydown-ENTER', () => this.confirmPlayer(this.p1));
+      keyboard.on('keydown-SPACE', () => this.confirmPlayer(this.cursorDaVez()));
+      keyboard.on('keydown-F', () => this.confirmPlayer(this.cursorDaVez()));
+      keyboard.on('keydown-ENTER', () => this.confirmPlayer(this.cursorDaVez()));
     }
 
     keyboard.on('keydown-ESC', () => this.goBack());
@@ -276,7 +286,8 @@ export class CharacterSelectScene extends BaseScene {
       return;
     }
 
-    const blocked = this.mode === '1v1' ? this.otherCursor(cursor).index : -1;
+    // Ninguém para no lutador do outro (em 1vCPU, a CPU não repete o do jogador).
+    const blocked = this.mode === '1v1' || cursor === this.p2 ? this.otherCursor(cursor).index : -1;
     let next = this.step(cursor.index, dx, dy);
     if (next === blocked) {
       next = this.step(next, dx, dy);
@@ -306,29 +317,46 @@ export class CharacterSelectScene extends BaseScene {
     return cursor === this.p1 ? this.p2 : this.p1;
   }
 
+  /** Em 1vCPU: o cursor do jogador até ele travar, depois o da CPU. */
+  private cursorDaVez(): PlayerCursor {
+    return this.mode === '1vcpu' && this.p1.locked ? this.p2 : this.p1;
+  }
+
+  private mostrarEtapa(): void {
+    if (this.mode !== '1vcpu') {
+      this.etapa.setVisible(false);
+      return;
+    }
+    const cpu = this.p1.locked;
+    this.etapa.setText(cpu ? 'Agora escolha o adversário (CPU)' : 'Escolha o seu lutador').setColor(colorToCss(cpu ? P2_COLOR : P1_COLOR));
+  }
+
   private hoverTile(index: number): void {
-    if (this.transitioning || this.mode !== '1vcpu' || this.p1.locked || this.p1.index === index) {
+    const cursor = this.cursorDaVez();
+    const outro = cursor === this.p2 ? this.p1.index : -1;
+    if (this.transitioning || this.mode !== '1vcpu' || cursor.locked || cursor.index === index || index === outro) {
       return;
     }
 
-    this.p1.index = index;
-    this.refreshCursor(this.p1);
+    cursor.index = index;
+    this.refreshCursor(cursor);
   }
 
   private clickTile(index: number): void {
-    if (this.transitioning || this.mode !== '1vcpu') {
+    const cursor = this.cursorDaVez();
+    if (this.transitioning || this.mode !== '1vcpu' || (cursor === this.p2 && index === this.p1.index)) {
       return;
     }
 
-    this.p1.index = index;
-    this.refreshCursor(this.p1);
-    this.confirmPlayer(this.p1);
+    cursor.index = index;
+    this.refreshCursor(cursor);
+    this.confirmPlayer(cursor);
   }
 
   /**
    * Trava a escolha: borda dourada, piscada no quadro e o lutador da lateral
    * solta um soco. Em 1v1 a luta começa quando os dois travam; em 1vCPU,
-   * travar o jogador dispara o sorteio da CPU.
+   * travar o jogador abre a escolha do adversário, e travar este começa a luta.
    */
   private confirmPlayer(cursor: PlayerCursor): void {
     if (this.transitioning || cursor.locked) {
@@ -340,9 +368,13 @@ export class CharacterSelectScene extends BaseScene {
     this.showPreview(cursor, 'light-punch');
     playAudioCue(this, 'ui-travar', this.app.settingsStore.getState());
 
+    if (this.mode === '1vcpu' && cursor === this.p1) {
+      this.abrirEscolhaDaCpu();
+    }
+
     this.flashTile(cursor.index, () => {
       if (this.mode === '1vcpu') {
-        this.runCpuSelection();
+        if (cursor === this.p2) this.time.delayedCall(250, () => this.startMatch());
         return;
       }
 
@@ -363,31 +395,18 @@ export class CharacterSelectScene extends BaseScene {
     });
   }
 
-  private runCpuSelection(): void {
-    if (this.transitioning) {
-      return;
-    }
-
-    this.transitioning = true;
-
-    const choices = this.tiles.map((_, index) => index).filter((index) => index !== this.p1.index);
-    const cpuIndex = choices.length > 0 ? Phaser.Math.RND.pick(choices) : this.p1.index;
-
-    this.p2.index = cpuIndex;
+  /** O cursor da CPU aparece no primeiro lutador livre e passa a andar com o direcional. */
+  private abrirEscolhaDaCpu(): void {
+    const livre = this.tiles.findIndex((_, index) => index !== this.p1.index);
+    this.p2.index = livre >= 0 ? livre : this.p1.index;
+    this.p2.locked = false;
     this.setCursorVisible(this.p2, true);
     this.refreshCursor(this.p2);
-
-    this.time.delayedCall(450, () => {
-      this.p2.locked = true;
-      this.refreshCursor(this.p2);
-      this.showPreview(this.p2, 'light-punch');
-      playAudioCue(this, 'ui-travar', this.app.settingsStore.getState());
-      this.flashTile(cpuIndex, () => this.time.delayedCall(350, () => this.startMatch()));
-    });
+    this.mostrarEtapa();
   }
 
   private startMatch(): void {
-    if (this.transitioning && this.mode === '1v1') {
+    if (this.transitioning) {
       return;
     }
 
@@ -403,6 +422,15 @@ export class CharacterSelectScene extends BaseScene {
 
   private goBack(): void {
     if (this.transitioning) {
+      return;
+    }
+    // Escolhendo o adversário: Esc destrava o próprio lutador em vez de sair.
+    if (this.mode === '1vcpu' && this.p1.locked && !this.p2.locked) {
+      this.p1.locked = false;
+      this.setCursorVisible(this.p2, false);
+      this.refreshCursor(this.p1);
+      this.refreshCursor(this.p2);
+      this.mostrarEtapa();
       return;
     }
 
