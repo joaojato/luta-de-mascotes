@@ -99,10 +99,10 @@ export const MODE_CARD_IMAGE_ASSETS: ImageAsset[] = [
 export const LOGO_IMAGE_ASSET: ImageAsset = {
   kind: 'image',
   key: 'logo',
-  url: '/assets/branding/luta-de-mascotes-logo.png',
+  url: '/assets/branding/falta-de-respeito-logo.png',
   width: 1200,
   height: 400,
-  usage: 'logo Luta de Mascotes na abertura e no menu'
+  usage: 'logo Falta de Respeito FC na abertura e no menu'
 };
 
 /** Effects of the game itself, the same for every fighter (docs/biriba-ovo-tontura.md). */

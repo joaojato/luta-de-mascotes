@@ -2019,3 +2019,23 @@ deitado; console sem erro.
 **Atrito:** integrei o Porco com o manifesto ainda marcando as duas como
 pendentes e não conferi de novo antes do commit.
 **Em aberto:** soco de asas do Urubu, em produção no Codex.
+
+## 2026-10-29: O jogo vira Falta de Respeito FC
+
+**Marco:** 2, segue em andamento.
+**Pedido:** novo nome, Falta de Respeito FC, com logo de título nova ("FC"
+pequenininho) e endereço da Vercel novo, sem o FC.
+**Feito:** logo do Codex pela linha de comando, no estilo de rua da antiga
+(`public/assets/branding/falta-de-respeito-logo.png`; a antiga fica no
+disco). `GAME_TITLE`, título da aba e do controle trocados. A chave de
+armazenamento continua `luta-de-mascotes-settings`, para não apagar os
+ajustes salvos. Vercel: `falta-de-respeito.vercel.app` adicionado ao projeto
+`luta-de-mascotes`; o endereço antigo segue funcionando.
+**Verificado:** recorte do commit com `npm run check` isolado; endereço novo
+responde 200; republicado e conferido no navegador.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o nome Luta de Mascotes.
+**Aprovado explicitamente:** nada.
+**Atrito:** o teste de golpes quebra no disco por causa do soco de asas do
+Urubu, que o Codex integra agora; publicado só o commit.
+**Em aberto:** soco de asas do Urubu; renomear o projeto na Vercel e o repo.
