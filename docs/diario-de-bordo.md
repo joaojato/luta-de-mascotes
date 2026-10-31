@@ -2348,3 +2348,23 @@ console sem erro.
 **Atrito:** voando a 200 px a cabeça saía da tela no fim da varredura; ficou
 170. O navegador de teste estava lento (10 a 17 quadros/s).
 **Em aberto:** chão do campo, sombra, tela de vitória.
+
+## 2026-10-31: recapitulação das pendências e sete mascotes novos nas ideias
+
+**Marco:** 2, segue em andamento.
+**Pedido:** recapitular tudo que está pendente; perguntou se dá para
+adiantar o multiplayer; pediu para pôr nas ideias Coritiba (Vovô Coxa),
+Chapecoense (Índio), Cruzeiro (Raposa), Remo (Leão), Grêmio (Mosqueteiro
+azul), Santa Cruz (Cobra) e América Mineiro (Coelho).
+**Feito:** recapitulação a partir do roteiro, das lições, do diário e dos
+pedidos ao Codex. No `docs/gdd.md`, a tabela de candidatos separa o
+Mosqueteiro do Corinthians (jogável) e ganha os seis pedidos novos sem
+arquétipo, com dois alertas: Vovô Coxa encosta no Vozão, e o Índio precisa
+de reinterpretação sem caricatura étnica. A Raposa já estava na tabela.
+**Verificado:** só documento; `npm run check` rodado antes do commit.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** multiplayer ficou na primeira pergunta (como seria a primeira
+partida online); mudanças de outra sessão na tela de toque seguem sem commit.

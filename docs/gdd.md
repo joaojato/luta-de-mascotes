@@ -44,10 +44,21 @@ os dois rendem golpe especial óbvio. Decisão é do João.
 | Manequinho | Botafogo | pequeno e irritante, trapaceiro | esguicho (manter cômico, não vulgar) |
 | Galo | Atlético-MG | agressivo, curta distância | bicada em sequência, canto que atordoa |
 | Saci | Internacional | teleporte, trapaça | redemoinho, some e aparece atrás |
-| Mosqueteiro | Corinthians ou Grêmio | espada, alcance médio | estocada |
-| Raposa | Cruzeiro | finta, esquiva | rasteira, ataque por trás |
+| Mosqueteiro | Corinthians | espada, alcance médio | estocada (jogável desde 30/10) |
+| Raposa | Cruzeiro | finta, esquiva | rasteira, ataque por trás (pedido do João, 31/10) |
 | Baleia | Santos | gigante lento, dano alto | jato d'água, pulo sísmico |
 | Vozão | Ceará | velho mestre, contra-golpe | bengalada, "no meu tempo" |
+
+Pedidos do João em 31/10/2026, ainda sem arquétipo nem ultimate:
+
+| Mascote | Clube de origem | Observação |
+|---|---|---|
+| Vovô Coxa (velhinho) | Coritiba | encosta no arquétipo do Vozão; se os dois entrarem, precisam de jogo diferente |
+| Índio | Chapecoense | reinterpretar sem caricatura étnica: pesa mais aqui, numa matéria de Comunicação |
+| Leão | Remo | |
+| Mosqueteiro azul | Grêmio | não pode ser o do Corinthians recolorido: silhueta e golpes próprios |
+| Cobra | Santa Cruz | |
+| Coelho | América Mineiro | |
 
 Se o João quiser outro clube na v1, entra aqui primeiro, com arquétipo e
 semente de ultimate, antes de qualquer sprite.
