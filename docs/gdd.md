@@ -46,7 +46,7 @@ os dois rendem golpe especial óbvio. Decisão é do João.
 | Saci | Internacional | teleporte, trapaça | redemoinho, some e aparece atrás |
 | Mosqueteiro | Corinthians | espada, alcance médio | estocada (jogável desde 30/10) |
 | Raposa | Cruzeiro | finta, esquiva | rasteira, ataque por trás (pedido do João, 31/10) |
-| Baleia | Santos | gigante lento, dano alto | jato d'água, pulo sísmico |
+| Baleia (o Peixe; arte de orca) | Santos | gigante lento, dano alto | **rajada de AK-47**: 8 tiros, quem bloqueia o 1º fica livre, quem não bloqueia leva os 8; cospe água como golpe (João, 31/10). Na arte, fuzil de bandoleira nas costas. Referência: `referencia/santos/referencia-joao-v1.png` |
 | Vozão | Ceará | velho mestre, contra-golpe | bengalada, "no meu tempo" |
 
 Pedidos do João em 31/10/2026, ainda sem arquétipo nem ultimate:
@@ -59,6 +59,13 @@ Pedidos do João em 31/10/2026, ainda sem arquétipo nem ultimate:
 | Mosqueteiro azul | Grêmio | não pode ser o do Corinthians recolorido: silhueta e golpes próprios |
 | Cobra | Santa Cruz | |
 | Coelho | América Mineiro | |
+| São Paulo (o santo, quase um Zeus) | São Paulo | especial: levanta voo e dispara **dois raios rápidos**, o rival precisa bloquear. Referência: `referencia/sao-paulo/referencia-joao-v1.png` (arte da NEO Design, só referência, não asset) |
+| Gorilão | Ponte Preta | |
+| Poseidon | Água Santa | dois pontos de atenção: divindade como o São Paulo e água como o Santos; precisa de jogo próprio |
+| Lobo | Paysandu | especial: uiva e chama uma matilha. Encosta na caravela do Vasco (invocação que atravessa a tela); decidir o que separa os dois |
+
+Ponto a levar ao Barbato: o fuzil do Santos é arma de fogo real em jogo de
+clube, numa matéria de Comunicação. Vale confirmar que cabe antes de gerar arte.
 
 Se o João quiser outro clube na v1, entra aqui primeiro, com arquétipo e
 semente de ultimate, antes de qualquer sprite.

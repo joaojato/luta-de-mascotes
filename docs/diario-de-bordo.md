@@ -2368,3 +2368,23 @@ de reinterpretação sem caricatura étnica. A Raposa já estava na tabela.
 **Atrito:** nada.
 **Em aberto:** multiplayer ficou na primeira pergunta (como seria a primeira
 partida online); mudanças de outra sessão na tela de toque seguem sem commit.
+
+## 2026-10-31: São Paulo, Ponte Preta, Água Santa, Paysandu e o especial do Santos
+
+**Marco:** 2, segue em andamento.
+**Pedido:** anotar ideias de mascote. São Paulo como santo quase Zeus, que
+voa e dispara dois raios bloqueáveis; Ponte Preta (Gorilão); Água Santa
+(Poseidon); Paysandu (Lobo que uiva e chama matilha); Santos com rajada de
+AK-47 de 8 tiros, cuspe d'água e fuzil de bandoleira nas costas.
+**Feito:** no `docs/gdd.md`, a linha da Baleia (Santos) ganha o especial e a
+nota de arte; os outros quatro entram na tabela de pedidos de 31/10. Duas
+imagens dele viraram referência: `referencia/sao-paulo/referencia-joao-v1.png`
+(arte da NEO Design) e `referencia/santos/referencia-joao-v1.png` (orca do
+banco APSD, com marca d'água). As duas são só referência, nunca asset.
+**Verificado:** só documento e imagem.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** Lobo encosta na caravela do Vasco; Poseidon encosta no São
+Paulo e no Santos; fuzil do Santos a confirmar com o Barbato.
