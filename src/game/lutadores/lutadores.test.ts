@@ -320,4 +320,11 @@ describe('registro de lutadores (Regra do JSON)', () => {
   it('monta uma definição por JSON, na mesma ordem', () => {
     expect(LUTADOR_CHARACTERS.map((character) => character.id)).toEqual(LUTADORES.map((lutador) => lutador.id));
   });
+
+  it('o sopro voa alto o bastante para o maior oponente passar em pé por baixo (31/10/2026)', () => {
+    const maisAlto = Math.max(...LUTADORES.map((l) => l.actions.find((a) => a.action === 'idle')!.defaultVisual!.height));
+    const sopros = LUTADORES.flatMap((l) => Object.values(l.moves ?? {})).filter((m) => m?.kind === 'sopro');
+    expect(sopros.length).toBeGreaterThan(0);
+    sopros.forEach((m) => expect(m!.sopro!.altura).toBeGreaterThanOrEqual(maisAlto + 30));
+  });
 });

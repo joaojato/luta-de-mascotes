@@ -2388,3 +2388,26 @@ banco APSD, com marca d'água). As duas são só referência, nunca asset.
 **Atrito:** nada.
 **Em aberto:** Lobo encosta na caravela do Vasco; Poseidon encosta no São
 Paulo e no Santos; fuzil do Santos a confirmar com o Barbato.
+
+## 2026-10-31: Dragão voa mais alto e ninguém mais fica em pé no ar
+
+**Marco:** 2, segue em andamento.
+**Pedido:** o voo do Dragão estava baixo demais para o oponente passar por
+baixo; quem apanhava durante um voo (Urubu, Galo, Dragão) ficava em pé no ar.
+**Feito:** `altura` do sopro de 170 para 240 em `dragao.json` (o Saci, o
+mais alto, tem a cabeça a 316 px do chão; o Dragão passa a ficar a 336).
+Em `fighter.ts`, `applyHit` tira o lutador do estado de chão quando o
+desenho está acima do piso, e a gravidade termina a queda depois do
+atordoamento. Testes novos: queda com golpe rápido no sopro e no meteoro;
+altura do sopro contra o maior idle.
+**Verificado:** `npm run check` com 220 testes. No navegador, Dragão contra
+Saci: no alto, pé do Dragão em y 335 contra a cabeça do Saci em 346; Saci
+posto debaixo dele durante o sopro, em pé e sem perder vida; soco rápido no
+alto e o Dragão volta ao chão (662). Console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a altura de 170 do sopro.
+**Aprovado explicitamente:** nada.
+**Atrito:** no primeiro quadro do sopro, o alto da cabeça e das asas passa
+da borda de cima da tela, atrás da barra de vida.
+**Em aberto:** multiplayer na primeira pergunta; chão, sombra e tela de
+vitória.

@@ -820,6 +820,9 @@ export class Fighter {
     this.endAdvanceEffects();
     this.advance = null;
     this.dash = null;
+    // Specials that fly (sopro, meteor, hop) lift the sprite without leaving the
+    // ground state: hit up there, gravity must keep pulling after the stun ends.
+    if (this.sprite.y < this.groundY) this.grounded = false;
 
     if (blocked) {
       this.knockbackVel = attackerFacing * profile.knockback * BLOCK_PUSHBACK;

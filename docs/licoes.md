@@ -404,3 +404,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   Pedido de mascote ao Codex lista `hit-high`, `stunned` e `knockdown` desde
   o começo; se faltarem, `codex exec --enable image_generation` pede só elas
   e volta em uns 10 minutos, sem esperar o João. (2026-10-30)
+- **Altura de voo se mede contra o maior oponente, não contra a tela.** O
+  sopro do Dragão ficou em 170 para a cabeça dele não sair da tela, e a
+  cabeça do oponente ficava dentro do corpo dele; o João pediu "bem mais
+  alto". Agora 240, cobrado por teste (maior idle + 30). A borda da tela
+  cede antes da passagem por baixo. (2026-10-31)
+- **Especial que voa precisa soltar o lutador no ar ao apanhar.** Sopro,
+  meteoro e voo do Galo sobem o desenho sem tirar o lutador do estado de
+  chão; golpe rápido acabava o atordoamento antes da queda e ele ficava em
+  pé no ar. O teste antigo usava atordoamento de 3 s e escondia isso: teste
+  de queda usa golpe rápido. (2026-10-31)

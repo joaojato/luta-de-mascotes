@@ -345,6 +345,17 @@ describe('fighter move integration', () => {
     for (let i=0; i<60; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
     expect(sprite.y).toBe(500);
   });
+  it('a quick hit during a flying special still drops him to the floor (30/10/2026)', () => {
+    for (const id of ['dragao', 'urubu']) {
+      const {fighter, sprite, special} = setup(id);
+      special();
+      for (let i=0; i<12 && sprite.y >= 480; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+      expect(sprite.y, id).toBeLessThan(480);
+      fighter.applyHit({kind:'high', height:'high', damage:5, knockback:0, hitstun:100}, -1, false);
+      for (let i=0; i<120; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+      expect(sprite.y, id).toBe(500);
+    }
+  });
   it('moves Saci continuously to either far boundary during the tornado', () => {
     for (const facing of [1, -1] as const) {
       const {fighter, special} = setup('saci', facing);
