@@ -226,3 +226,20 @@ export function preencherCartao(
   // Abaixo do brilho da trava (último filho), por cima do fundo.
   card.container.addAt(objetos, card.container.length - 1);
 }
+
+/**
+ * Escala a imagem para cobrir um quadrado e recorta o excesso, mantendo o topo
+ * (onde fica a cara) quando o retrato é mais alto que largo.
+ */
+export function coverCrop(image: Phaser.GameObjects.Image, size: number, x: number, y: number): void {
+  const scale = size / Math.min(image.width, image.height);
+  const cropWidth = size / scale;
+  const cropHeight = size / scale;
+  const cropX = (image.width - cropWidth) / 2;
+  const cropY = image.height > image.width ? 0 : (image.height - cropHeight) / 2;
+
+  image.setScale(scale);
+  image.setCrop(cropX, cropY, cropWidth, cropHeight);
+  // Com crop, o centro visível sai do centro da textura; reposiciona.
+  image.setPosition(x - (cropX + cropWidth / 2 - image.width / 2) * scale, y - (cropY + cropHeight / 2 - image.height / 2) * scale);
+}

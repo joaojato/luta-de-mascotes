@@ -1,9 +1,11 @@
 import * as Phaser from 'phaser';
 
 import { playAudioCue } from '../game/core/audio';
-import { FIGHTER_CHARACTER_DEFINITIONS, findCharacterAnimationKeyByAction, type CharacterDefinition } from '../game/hero';
-import { LUTADORES } from '../game/lutadores';
-import { COR_DESTAQUE, COR_P1, COR_P2, FONTE_TITULO } from '../game/estilo';
+import { ELENCO_SELECIONAVEL } from '../game/elenco';
+import { findCharacterAnimationKeyByAction, type CharacterDefinition } from '../game/hero';
+import { COR_DESTAQUE, COR_P1, COR_P2, FONTE_TITULO, TEXTO_DESTAQUE } from '../game/estilo';
+import { sortearIndice } from '../game/sorteio';
+import { coverCrop } from '../game/ui';
 import { SCENE_KEYS, type MatchMode } from '../game/types';
 import { BaseScene } from './BaseScene';
 
@@ -20,17 +22,15 @@ const TILE_GAP = 10;
 const MAX_COLUMNS = 6;
 const PREVIEW_BODY_HEIGHT = 250;
 
-// Regra do JSON: quem entra na seleção é decidido no JSON do lutador
-// (`selecionavel`), nunca por lista de ids aqui.
-const SELECTABLE_ROSTER = FIGHTER_CHARACTER_DEFINITIONS.filter(
-  (character) => LUTADORES.find((lutador) => lutador.id === character.id)?.selecionavel !== false
-);
+const SELECTABLE_ROSTER = ELENCO_SELECIONAVEL;
+/** A última casa da grade é o "?": trava num lutador sorteado (João, 31/10/2026). */
+const CASA_ALEATORIA = SELECTABLE_ROSTER.length;
 
 interface Tile {
   x: number;
   y: number;
   frame: Phaser.GameObjects.Rectangle;
-  portrait: Phaser.GameObjects.Image | null;
+  portrait: Phaser.GameObjects.Image | Phaser.GameObjects.Text | null;
   flash: Phaser.GameObjects.Rectangle;
 }
 
@@ -104,10 +104,10 @@ export class CharacterSelectScene extends BaseScene {
     );
   }
 
-  /** Grade centralizada de quadrados com o retrato recortado de cada lutador. */
+  /** Grade centralizada de quadrados com o retrato recortado de cada lutador, e o "?" no fim. */
   private buildGrid(): void {
     const { width, height } = this.cameras.main;
-    const roster = SELECTABLE_ROSTER;
+    const roster: (CharacterDefinition | null)[] = [...SELECTABLE_ROSTER, null];
     const sideRoom = Math.max(180, width * 0.24);
     const fit = Math.floor((width - sideRoom * 2 + TILE_GAP) / (TILE_SIZE + TILE_GAP));
     this.columns = Phaser.Math.Clamp(Math.min(fit, roster.length), 1, MAX_COLUMNS);
@@ -129,14 +129,20 @@ export class CharacterSelectScene extends BaseScene {
     });
   }
 
-  private createTile(character: CharacterDefinition, index: number, x: number, y: number): Tile {
+  private createTile(character: CharacterDefinition | null, index: number, x: number, y: number): Tile {
     const frame = this.add
       .rectangle(x, y, TILE_SIZE, TILE_SIZE, 0x1e1b2e, 1)
       .setStrokeStyle(3, 0x4c4566, 1)
       .setDepth(5);
 
-    let portrait: Phaser.GameObjects.Image | null = null;
-    if (this.textures.exists(character.portrait.key)) {
+    let portrait: Phaser.GameObjects.Image | Phaser.GameObjects.Text | null = null;
+    if (!character) {
+      portrait = this.add
+        .text(x, y, '?', { color: TEXTO_DESTAQUE, fontFamily: FONTE_TITULO, fontSize: '84px', stroke: '#000000', strokeThickness: 8 })
+        .setShadow(0, 4, '#f00000', 0, true, true)
+        .setOrigin(0.5)
+        .setDepth(6);
+    } else if (this.textures.exists(character.portrait.key)) {
       portrait = this.add.image(x, y, character.portrait.key).setDepth(6);
       coverCrop(portrait, TILE_SIZE - 6, x, y);
     }
@@ -215,7 +221,7 @@ export class CharacterSelectScene extends BaseScene {
       candidate.portrait?.setAlpha(chosen ? 1 : 0.55);
     });
 
-    if (cursor.preview.visible) {
+    if (cursor.outline.visible) {
       this.showPreview(cursor);
     }
   }
@@ -223,6 +229,12 @@ export class CharacterSelectScene extends BaseScene {
   /** Mostra o lutador do cursor parado em guarda, na escala da lateral. */
   private showPreview(cursor: PlayerCursor, action = 'idle'): void {
     const character = SELECTABLE_ROSTER[cursor.index];
+    // No "?" ninguém aparece na lateral até o sorteio.
+    cursor.preview.setVisible(Boolean(character));
+    if (!character) {
+      cursor.name.setText('?');
+      return;
+    }
     const key = findCharacterAnimationKeyByAction(character.id, action);
     const idleKey = findCharacterAnimationKeyByAction(character.id, 'idle');
     const visual = character.animations.find((animation) => animation.key === idleKey)?.bounds[0]?.visual;
@@ -286,8 +298,8 @@ export class CharacterSelectScene extends BaseScene {
       return;
     }
 
-    // Ninguém para no lutador do outro (em 1vCPU, a CPU não repete o do jogador).
-    const blocked = this.mode === '1v1' || cursor === this.p2 ? this.otherCursor(cursor).index : -1;
+    // Ninguém para no lutador do outro (em 1vCPU, a CPU não repete o do jogador); no "?" cabem os dois.
+    const blocked = this.lutadorBloqueado(cursor);
     let next = this.step(cursor.index, dx, dy);
     if (next === blocked) {
       next = this.step(next, dx, dy);
@@ -317,6 +329,13 @@ export class CharacterSelectScene extends BaseScene {
     return cursor === this.p1 ? this.p2 : this.p1;
   }
 
+  /** O lutador em que este cursor não pode parar nem cair no sorteio (-1 se nenhum). */
+  private lutadorBloqueado(cursor: PlayerCursor): number {
+    const outro = this.otherCursor(cursor).index;
+    const proibido = this.mode === '1v1' || cursor === this.p2;
+    return proibido && outro !== CASA_ALEATORIA ? outro : -1;
+  }
+
   /** Em 1vCPU: o cursor do jogador até ele travar, depois o da CPU. */
   private cursorDaVez(): PlayerCursor {
     return this.mode === '1vcpu' && this.p1.locked ? this.p2 : this.p1;
@@ -333,8 +352,7 @@ export class CharacterSelectScene extends BaseScene {
 
   private hoverTile(index: number): void {
     const cursor = this.cursorDaVez();
-    const outro = cursor === this.p2 ? this.p1.index : -1;
-    if (this.transitioning || this.mode !== '1vcpu' || cursor.locked || cursor.index === index || index === outro) {
+    if (this.transitioning || this.mode !== '1vcpu' || cursor.locked || cursor.index === index || index === this.lutadorBloqueado(cursor)) {
       return;
     }
 
@@ -344,7 +362,7 @@ export class CharacterSelectScene extends BaseScene {
 
   private clickTile(index: number): void {
     const cursor = this.cursorDaVez();
-    if (this.transitioning || this.mode !== '1vcpu' || (cursor === this.p2 && index === this.p1.index)) {
+    if (this.transitioning || this.mode !== '1vcpu' || index === this.lutadorBloqueado(cursor)) {
       return;
     }
 
@@ -363,6 +381,10 @@ export class CharacterSelectScene extends BaseScene {
       return;
     }
 
+    if (cursor.index === CASA_ALEATORIA) {
+      const bloqueado = this.lutadorBloqueado(cursor);
+      cursor.index = sortearIndice(SELECTABLE_ROSTER.length, bloqueado >= 0 ? [bloqueado] : []);
+    }
     cursor.locked = true;
     this.refreshCursor(cursor);
     this.showPreview(cursor, 'light-punch');
@@ -436,23 +458,6 @@ export class CharacterSelectScene extends BaseScene {
 
     this.scene.start(SCENE_KEYS.LevelSelect, { mode: this.mode });
   }
-}
-
-/**
- * Escala a imagem para cobrir um quadrado e recorta o excesso, mantendo o topo
- * (onde fica a cara) quando o retrato é mais alto que largo.
- */
-function coverCrop(image: Phaser.GameObjects.Image, size: number, x: number, y: number): void {
-  const scale = size / Math.min(image.width, image.height);
-  const cropWidth = size / scale;
-  const cropHeight = size / scale;
-  const cropX = (image.width - cropWidth) / 2;
-  const cropY = image.height > image.width ? 0 : (image.height - cropHeight) / 2;
-
-  image.setScale(scale);
-  image.setCrop(cropX, cropY, cropWidth, cropHeight);
-  // Com crop, o centro visível sai do centro da textura; reposiciona.
-  image.setPosition(x - (cropX + cropWidth / 2 - image.width / 2) * scale, y - (cropY + cropHeight / 2 - image.height / 2) * scale);
 }
 
 /**
