@@ -76,6 +76,17 @@ Prioridade: `low-kick`, `beer-throw` e a lata primeiro; depois `idle`,
 `walk-forward`, `walk-backward`, `light-punch`, `heavy-punch`, as defesas e
 o resto.
 
+## Situação em 01/11/2026 (revisão v4 entregue)
+
+A `revisao-v4` já está no jogo local, menos três pontos deste pedido:
+
+- **`low-kick`:** a folha entregue é a mesma da v3 (hash igual). O jogo
+  segue com a provisória da mão presa. O salto do guia continua pedido.
+- **Lata:** voltou com 8×14 px. O pedido é uns 20×35 px; até lá o jogo
+  amplia 3,5×.
+- **Gotas (`beer-drops`):** arte recebida, sem uso: o motor ainda não tem
+  emissor preso ao projétil.
+
 ## Ainda depende do João
 
 - O pesado e o rasteiro do maromba. Hoje eles usam a estocada e o chute

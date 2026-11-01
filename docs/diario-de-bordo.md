@@ -2575,3 +2575,29 @@ console sem erro.
 **Atrito:** ele esperava ver quadros, e eu tinha entregado só documento.
 **Em aberto:** braço ainda dobrado e pés a ~70 px; o salto completo do guia
 pede desenho novo.
+
+## 2026-11-01: revisão v4 do Coxa no jogo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Adicione as novas animações que o codex fez."
+**Feito:** o `coxa.json` e o `coxa-maromba.json` locais passaram a usar
+`revisao-v4` (20 ações normais, 16 maromba, lata nova de 8 quadros 32×32).
+Caixas de acerto medidas de novo quadro a quadro: o rápido normal virou
+duas estocadas com os pés do andador (quadros 3 e 5, 10 quadros); a
+cabeçada alcança 175; o maromba estoca no quadro 2, chuta nos 3 e 4, e a
+voadora dele tem uma caixa por quadro. Retrato e âncora refeitos do idle
+novo. A voadora normal **ficou na provisória**: a da v4 é a mesma da v3
+(hash igual), a que o João criticou. As gotas de cerveja
+(`beer-drops.png`) não entraram: o motor ainda não tem emissor de
+partícula preso ao projétil.
+**Verificado:** 262 testes, build sem o Coxa no `dist`; luta Coxa x Saci:
+estocadas 7 + 7, lata nova visível no voo, especial vira maromba com o
+andador de lado e cronômetro, estocada maromba 9, console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a arte do Coxa inteira, trocada pela v4.
+**Aprovado explicitamente:** nada.
+**Atrito:** o primeiro teste mediu só 7 nas estocadas porque o jogo estava
+congelado no meio do golpe; sem congelar, as duas acertam.
+**Em aberto:** voadora com desenho novo; lata ainda 8×14 px (o pedido era
+~20×35, segue ampliada 3,5× no jogo); gotas; pesado e rasteiro do maromba;
+volta ao normal.
