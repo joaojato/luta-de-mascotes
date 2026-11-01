@@ -15,6 +15,7 @@ import { spawnChargeAura } from './vfx';
 import { somDoEvento, tocarSom } from './sons';
 import { Esquadrao } from './esquadrao';
 import { acertoDoSopro, amostraDoSopro, direcaoDoSopro, type SoproConfig } from './sopro';
+import { danoNaForma, RelogioDaForma, type FormaConfig } from './forma';
 import {
   passedDropPoint,
   projectileGrowthProgress,
@@ -252,8 +253,12 @@ export interface FighterOptions {
 export class Fighter {
   private readonly scene: Phaser.Scene;
   private readonly app: AppContext;
-  private readonly character: CharacterDefinition;
-  private readonly actionKeys: FighterActionKeys;
+  /** Troca enquanto ele está numa `forma` (o maromba): é o lutador dela. */
+  private character: CharacterDefinition;
+  private actionKeys: FighterActionKeys;
+  /** O lutador escolhido, para onde ele volta quando a forma acaba. */
+  private readonly baseCharacterId: string;
+  private forma: { config: FormaConfig; relogio: RelogioDaForma } | null = null;
   private facing: 1 | -1;
   private minX: number;
   private maxX: number;
@@ -355,7 +360,7 @@ export class Fighter {
   private appliedScale = 0;
   private readonly hasSpecial: boolean;
   /** Crouch poses that duck under high strikes (only actions the sheet really has). */
-  private readonly duckKeys: Set<string>;
+  private duckKeys: Set<string>;
   private readonly onSpecialStart?: (fighter: Fighter) => void;
 
   constructor(options: FighterOptions) {
@@ -363,6 +368,7 @@ export class Fighter {
     this.app = options.app;
     this.onSpecialStart = options.onSpecialStart;
     this.character = getCharacterDefinition(options.characterId);
+    this.baseCharacterId = this.character.id;
     this.facing = options.facing;
     this.minX = options.minX;
     this.maxX = options.maxX;
@@ -372,11 +378,7 @@ export class Fighter {
     this.posX = Phaser.Math.Clamp(options.x, options.minX, options.maxX);
     this.actionKeys = this.resolveActionKeys();
     this.hasSpecial = findCharacterAnimationKeyByAction(this.character.id, 'special') !== null;
-    this.duckKeys = new Set(
-      ['crouch', 'block-low']
-        .map((action) => findCharacterAnimationKeyByAction(this.character.id, action))
-        .filter((key): key is string => key !== null)
-    );
+    this.duckKeys = this.resolveDuckKeys();
     this.maxHealth = this.combat().maxHealth;
     this.health = this.maxHealth;
     this.build(options.depth ?? 5);
@@ -490,7 +492,14 @@ export class Fighter {
 
   /** Whether the special meter is full and a special can be performed. */
   get isMeterReady(): boolean {
-    return this.hasSpecial && this.meter >= METER_MAX;
+    return this.hasSpecial && this.meter >= METER_MAX && !this.forma;
+  }
+
+  /** O cronômetro da `forma` para o HUD, ou null quando ele está normal. */
+  get formaHud(): { fracao: number; segundos: number; piscando: boolean; rotulo: string } | null {
+    if (!this.forma) return null;
+    const { relogio, config } = this.forma;
+    return { fracao: relogio.fracao, segundos: relogio.segundosRestantes, piscando: relogio.piscando, rotulo: config.rotulo ?? '' };
   }
 
   /**
@@ -499,7 +508,8 @@ export class Fighter {
    * @param amount - Meter points to add.
    */
   gainMeter(amount: number): void {
-    if (this.defeated) {
+    // Na forma, a barra é o cronômetro dela: não carrega.
+    if (this.defeated || this.forma) {
       return;
     }
 
@@ -644,7 +654,7 @@ export class Fighter {
         rect: contato.rect,
         // Contato baixo e curto. Os seguidores (sem guarda) atordoam pouco: o
         // oponente volta a andar e pular entre um e outro, e eles vão atrás.
-        profile: { ...getAttackProfile(this.combat(), 'special'), damage: especial?.dano ?? 8, knockback: 40, hitstun: contato.bloqueavel ? 650 : 220 },
+        profile: { ...this.ataque('special'), damage: especial?.dano ?? 8, knockback: 40, hitstun: contato.bloqueavel ? 650 : 220 },
         signature: contato.assinatura, move: 'especial', finisher: contato.ultimo, facing: contato.lado,
         projectile: true, unblockable: !contato.bloqueavel
       };
@@ -652,7 +662,7 @@ export class Fighter {
     if (this.sopro?.contato && !this.attackConnected && !this.defeated) {
       // O jato não tem guarda que segure: escapa quem foi para baixo do mascote.
       return {
-        rect: this.sopro.contato, profile: getAttackProfile(this.combat(), 'special'), signature: this.attackId,
+        rect: this.sopro.contato, profile: this.ataque('special'), signature: this.attackId,
         move: 'especial', finisher: true, facing: this.sopro.lado, projectile: true, unblockable: true
       };
     }
@@ -699,7 +709,7 @@ export class Fighter {
     return {
       rect: attackRect,
       profile: {
-        ...getAttackProfile(this.combat(), kind),
+        ...this.ataque(kind),
         stunMs: kind === 'special' ? this.character.moves?.special?.stunMs : undefined
       },
       signature: this.attackId,
@@ -803,8 +813,9 @@ export class Fighter {
     if (this.defeated) {
       return;
     }
-    if (armored && !blocked && this.health > profile.damage) {
-      this.health -= profile.damage;
+    const damage = danoNaForma(profile.damage, this.forma?.config.danoRecebido);
+    if (armored && !blocked && this.health > damage) {
+      this.health -= damage;
       return;
     }
     this.diveVelX = 0;
@@ -833,7 +844,7 @@ export class Fighter {
       return;
     }
 
-    this.health = Math.max(0, this.health - profile.damage);
+    this.health = Math.max(0, this.health - damage);
     this.knockbackVel = attackerFacing * profile.knockback;
 
     if (this.health <= 0) {
@@ -897,6 +908,9 @@ export class Fighter {
     this.attackConnected = true;
     this.attackActiveLast = false;
     this.meter = 0;
+    // Rodada nova: quem estava na forma volta ao normal, sem animação.
+    this.forma = null;
+    if (this.character.id !== this.baseCharacterId) this.trocarDeLutador(this.baseCharacterId);
     this.currentAnimKey = '';
     this.currentReverse = false;
 
@@ -934,6 +948,9 @@ export class Fighter {
       return;
     }
 
+    // O cronômetro da forma corre até apanhando; a volta espera ele ficar livre.
+    this.forma?.relogio.avancar(seconds);
+
     if (this.hitstunTimer > 0) {
       this.hitstunTimer = Math.max(0, this.hitstunTimer - seconds);
       this.applyKnockback(seconds);
@@ -962,6 +979,10 @@ export class Fighter {
       this.updateSopro(seconds);
       this.drawBoundsOverlay();
       return;
+    }
+
+    if (this.forma && this.forma.relogio.fracao === 0 && this.grounded && !this.locked && this.strike === null && this.jumpPhase === null) {
+      this.sairDaForma();
     }
 
     if (this.jumpPhase === 'prepare' && (input.light || input.heavy)) {
@@ -1040,6 +1061,21 @@ export class Fighter {
       dashForward: find('dash-forward') ?? key('walk-forward'),
       dashBack: find('dash-back') ?? key('walk-backward')
     };
+  }
+
+  /** Crouch poses that duck under high strikes, from the sheets this character really has. */
+  private resolveDuckKeys(): Set<string> {
+    return new Set(
+      ['crouch', 'block-low']
+        .map((action) => findCharacterAnimationKeyByAction(this.character.id, action))
+        .filter((key): key is string => key !== null)
+    );
+  }
+
+  /** Perfil de um golpe dele, com o dano da `forma` quando está nela. */
+  private ataque(kind: AttackKind): AttackProfile {
+    const profile = getAttackProfile(this.combat(), kind);
+    return { ...profile, damage: danoNaForma(profile.damage, this.forma?.config.danoCausado) };
   }
 
   /** Current persisted stats for this fighter. */
@@ -1874,11 +1910,54 @@ export class Fighter {
     this.sprite.once(`animationcomplete-${this.actionKeys.special}`, () => {
       this.locked = false;
       this.currentAnimKey = '';
+      if (move?.kind === 'forma' && move.forma) this.entrarNaForma(move.forma);
 
       if (this.grounded) {
         this.playState(this.actionKeys.idle, true);
       }
     });
+  }
+
+  /**
+   * Especial `forma`: no fim da transformação ele passa a ser o lutador dela
+   * (sheets, caixas e golpes próprios) até o cronômetro acabar.
+   * @param config - A forma do JSON do especial.
+   */
+  private entrarNaForma(config: FormaConfig): void {
+    this.trocarDeLutador(config.lutador);
+    this.forma = { config, relogio: new RelogioDaForma(config) };
+  }
+
+  /**
+   * Fim do cronômetro: volta ao lutador escolhido. A volta é a sheet
+   * `special-return` dele; sem ela, a transformação de trás para a frente.
+   */
+  private sairDaForma(): void {
+    this.forma = null;
+    this.trocarDeLutador(this.baseCharacterId);
+    const volta = findCharacterAnimationKeyByAction(this.character.id, 'special-return');
+    const key = volta ?? this.actionKeys.special;
+    this.locked = true;
+    this.playState(key, false, volta === null);
+    this.sprite.once(`animationcomplete-${key}`, () => {
+      // Apanhou no meio da volta: o golpe já assumiu o corpo.
+      if (this.currentAnimKey !== key) return;
+      this.locked = false;
+      this.currentAnimKey = '';
+      this.playState(this.actionKeys.idle, true);
+    });
+  }
+
+  /**
+   * Passa a usar as sheets e os golpes de outro lutador registrado (o da
+   * forma, ou o escolhido de volta). Vida, medidor e posição continuam.
+   * @param id - Id do lutador: o da forma, ou o escolhido.
+   */
+  private trocarDeLutador(id: string): void {
+    this.character = getCharacterDefinition(id);
+    this.actionKeys = this.resolveActionKeys();
+    this.duckKeys = this.resolveDuckKeys();
+    this.currentAnimKey = '';
   }
 
   /**
@@ -2111,12 +2190,12 @@ export class Fighter {
     this.projectiles.push({x, previousX:x, y, vy: -(move.launchVy ?? 0), gravity: move.gravity ?? 0,
       floorY: this.groundY - 24 * this.appliedScale, facing:this.facing, life,
       signature:this.attackId, visual, width, height, speed,
-      profile:{...getAttackProfile(this.combat(), kind), height:'high', stunMs: move.stunMs}, connected:false,
+      profile:{...this.ataque(kind), height:'high', stunMs: move.stunMs}, connected:false,
       move: (move.move as AttackMove | undefined) ?? (kind === 'special' ? 'onda' : 'tiro'),
       persistOnHit:move.persistOnHit ?? false, rangeAfterHit: move.rangeAfterHit ?? 0,
       growth: move.growth, travelled: 0,
       initial: { width, height, scale: visual.scaleX,
-        damage: getAttackProfile(this.combat(), kind).damage, stunMs: move.stunMs ?? 0 },
+        damage: this.ataque(kind).damage, stunMs: move.stunMs ?? 0 },
       carrier: move.drop ? { drop: move.drop, targetX: this.dropTargetX ?? this.posX, dropped: false } : undefined,
       hitEffect: move.hitEffect, hitParticles: move.hitParticles});
   }
@@ -2149,7 +2228,7 @@ export class Fighter {
     const visual = key
       ? this.scene.add.sprite(x, y, key, 0).setOrigin(.5, .5).setScale(this.appliedScale).setDepth(this.depthBase + 2).play(key)
       : this.scene.add.rectangle(x, y, width, height, 0x6b4423).setDepth(this.depthBase + 2);
-    const profile = { ...getAttackProfile(this.combat(), 'kick'), height: 'high' as const, stunMs: drop.stunMs };
+    const profile = { ...this.ataque('kick'), height: 'high' as const, stunMs: drop.stunMs };
     // Lands on the drawn floor (where the shadows sit), so a mine is under the feet.
     return { x, previousX: x, y, vy: 0, gravity: drop.gravity ?? 1600, floorY: this.groundY - SHADOW_FOOT_OFFSET * this.appliedScale - height / 2,
       facing: carrier.facing, life: 5, signature: carrier.signature, visual, width, height, speed: 0,

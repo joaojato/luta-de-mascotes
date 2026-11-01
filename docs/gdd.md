@@ -453,3 +453,35 @@ asas (`frameHeight` no JSON). Torcida em listras verticais vermelho e preto.
 | Chute | cuspida curta de fogo (efeito `fire-short`) | 22 |
 | Baixo + Chute | rabada giratória de 360 graus, a cauda acerta uma vez | 16 |
 | Especial | sopro de fogo (tipo `sopro`): sobe, paira e varre com um jato contínuo do chão à frente até o alto; sem guarda que segure; escapa quem vai para baixo dele | 34 |
+
+## Vovô Coxa (Coritiba): ficha (01/11/2026)
+
+Só na máquina do João (`src/game/lutadores/locais/`, fora do git e da
+Vercel). Arte do Codex em camadas (`docs/coxa-producao-rigida-v1.md`),
+células 512×320. Torcida em listras horizontais verde e branco.
+
+| Botão | Golpe | Dano |
+|---|---|---|
+| Soco | duas batidinhas com o andador | 7 + 7 |
+| Baixo + Soco | cabeçada | 24 |
+| Chute | lata de cerveja em parábola (efeito `lata`) | 18 |
+| Baixo + Chute | voadora apoiada no andador | 14 |
+| Especial | bebe a cerveja e vira maromba (tipo `forma`) | 32 |
+
+**Forma maromba (João, 01/11/2026).** O especial acerta como golpe comum
+e, no fim da transformação, o vovô **fica** maromba por 5 segundos. Valores
+provisórios, decididos pelo Claude até o João mudar:
+
+- Bate 25% mais forte e apanha 25% menos.
+- O cronômetro ocupa o lugar da barra de especial dele: a barra fica laranja,
+  esvazia em tempo real e mostra `MAROMBA` com os segundos que faltam. Pisca
+  no último segundo e meio. A barra de especial não carrega enquanto isso.
+- Apanhar não tira da forma. Acabou a rodada, volta ao normal.
+- Sem especial enquanto maromba.
+- Volta ao normal: a transformação tocada de trás para a frente, até chegar
+  a arte própria (`special-return`), que o João ainda vai definir.
+- O maromba é um lutador local próprio (`coxa-maromba`), fora da seleção e
+  visível na Academia.
+- Golpes do maromba: soco e chute têm arte (`light-punch`, `heavy-kick`).
+  Baixo + soco e baixo + chute usam essas mesmas folhas como quebra-galho
+  até o João definir o pesado e o rasteiro dele.

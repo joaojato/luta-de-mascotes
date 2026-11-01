@@ -24,6 +24,8 @@ const METER_DISP_H = 12;
 const METER_TRACK_COLOR = 0x0b1120;
 const METER_FILL_COLOR = 0x38bdf8;
 const METER_READY_COLOR = 0xfacc15;
+// Cronômetro da `forma` (o maromba): ocupa a barra do especial, que fica vazia.
+const FORMA_COLOR = 0xf97316;
 
 // Health colour thresholds (fraction of max).
 const HEALTH_WARN = 0.5;
@@ -67,6 +69,14 @@ interface MeterGeometry {
   originX: 0 | 1;
 }
 
+/** O cronômetro de uma `forma` como o lutador entrega (Fighter.formaHud). */
+export interface FormaHud {
+  fracao: number;
+  segundos: number;
+  piscando: boolean;
+  rotulo: string;
+}
+
 export interface MatchHudConfig {
   mode: MatchMode;
   p1CharacterId: string;
@@ -100,6 +110,8 @@ export class MatchHud {
   private p2Meter!: Phaser.GameObjects.Rectangle;
   private p1MeterGeom!: MeterGeometry;
   private p2MeterGeom!: MeterGeometry;
+  private p1FormaText!: Phaser.GameObjects.Text;
+  private p2FormaText!: Phaser.GameObjects.Text;
   private p1MeterReady = false;
   private p2MeterReady = false;
   private p1MeterGlow: Phaser.Tweens.Tween | null = null;
@@ -179,12 +191,29 @@ export class MatchHud {
       .setOrigin(originX, 0);
     this.root.add(fill);
 
+    // Rótulo da forma na ponta de dentro da barra, virado para o relógio.
+    const inner = side === 'left' ? edgeX + METER_DISP_W + 8 : edgeX - METER_DISP_W - 8;
+    const label = this.scene.add
+      .text(inner, topY + METER_DISP_H / 2, '', {
+        color: '#fdba74',
+        fontFamily: 'monospace',
+        fontSize: '18px',
+        fontStyle: 'bold',
+        stroke: '#0b1120',
+        strokeThickness: 4
+      })
+      .setOrigin(side === 'left' ? 0 : 1, 0.5)
+      .setVisible(false);
+    this.root.add(label);
+
     if (side === 'left') {
       this.p1Meter = fill;
       this.p1MeterGeom = geometry;
+      this.p1FormaText = label;
     } else {
       this.p2Meter = fill;
       this.p2MeterGeom = geometry;
+      this.p2FormaText = label;
     }
   }
 
@@ -397,6 +426,32 @@ export class MatchHud {
   }
 
   /**
+   * Mostra o cronômetro da `forma` no lugar da barra do especial de quem está
+   * transformado: laranja, esvaziando, com o rótulo e os segundos que faltam.
+   * Chamar depois de {@link setMeter}, que ele sobrepõe.
+   * @param p1 - O cronômetro do jogador 1, ou null quando está normal.
+   * @param p2 - O do jogador 2.
+   */
+  setForma(p1: FormaHud | null, p2: FormaHud | null): void {
+    this.renderForma('left', p1);
+    this.renderForma('right', p2);
+  }
+
+  private renderForma(side: 'left' | 'right', forma: FormaHud | null): void {
+    const label = side === 'left' ? this.p1FormaText : this.p2FormaText;
+    label.setVisible(forma !== null);
+    if (!forma) return;
+
+    const fill = side === 'left' ? this.p1Meter : this.p2Meter;
+    const geometry = side === 'left' ? this.p1MeterGeom : this.p2MeterGeom;
+    // Pisca no fim sem tween: some a cada 120 ms pelo relógio da cena.
+    const apagado = forma.piscando && Math.floor(this.scene.time.now / 120) % 2 === 1;
+    fill.setDisplaySize(Math.max(0, geometry.width * forma.fracao), geometry.height);
+    fill.setFillStyle(FORMA_COLOR, 1).setAlpha(apagado ? 0.3 : 1).setVisible(forma.fracao > 0);
+    label.setText(`${forma.rotulo} ${forma.segundos}`.trim()).setAlpha(apagado ? 0.4 : 1);
+  }
+
+  /**
    * Renders one side's meter: width by fraction, colour + glow when full.
    * @param side - Which meter to render.
    * @param frac - The meter fraction (0..1).
@@ -408,6 +463,8 @@ export class MatchHud {
 
     fill.setDisplaySize(Math.max(0, geometry.width * frac), geometry.height);
     fill.setFillStyle(ready ? METER_READY_COLOR : METER_FILL_COLOR, 1);
+    // O cronômetro da forma pode ter deixado a barra apagada no meio da piscada.
+    if (!ready) fill.setAlpha(1);
     fill.setVisible(frac > 0);
     this.setMeterGlow(side, ready);
   }

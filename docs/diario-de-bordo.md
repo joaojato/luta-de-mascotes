@@ -2507,3 +2507,31 @@ cinco golpes acertam (14, 24, 14, 18 e 32), console sem erro.
 **Em aberto:** estado maromba (5 s, mais dano e menos dano recebido) é
 mecânica nova no motor; o especial hoje volta direto ao vovô. Faltam
 pesado e rasteiro do maromba e a volta ao normal (definição do João).
+
+## 2026-11-01: maromba de verdade, lata maior e pedido de arte v4
+
+**Marco:** 2, segue em andamento.
+**Pedido:** o vovô tem que ficar maromba por um tempo, com cronômetro
+visível para os dois jogadores; a lata quase não aparecia; a mão de apoio
+segura o nada em quase toda ação; refazer as animações partindo do andador.
+**Feito:** especial novo `forma` no motor (`src/game/forma.ts`): o golpe
+acerta e, no fim da sheet, o lutador vira outro registrado (`coxa-maromba`,
+JSON local fora da seleção) por 5 s, batendo 25% mais e apanhando 25% menos.
+O cronômetro ocupa a barra de especial (laranja, `MAROMBA 4`, pisca no
+último segundo e meio); a barra não carrega enquanto isso. A volta espera
+ele ficar livre e toca a transformação de trás para a frente até existir
+`special-return`. Rodada nova volta ao normal. Lata 3,5× (era 8×14 px na
+célula). Ficha do Coxa no GDD, `forma` no criador, pedido de arte em
+`docs/coxa-pedido-v4.md` com a Regra do Andador.
+**Verificado:** 262 testes; luta Coxa x Saci no navegador: soco normal 14,
+estocada maromba 9 (7 × 1,25), cronômetro de 5 a 1 piscando no fim, volta
+para `coxa` sem erro no console; foto da lata em voo, legível.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** as animações normais do Coxa vão ser
+refeitas (pedido v4). Tentei estender skin com `moves` próprios para o
+maromba e desfiz: skin exige pastas irmãs, e a arte do Coxa está espalhada
+em rigido-v1 a v3. Virou JSON local próprio.
+**Aprovado explicitamente:** a voadora apoiada é a melhor animação dele.
+**Atrito:** nenhum.
+**Em aberto:** pesado e rasteiro do maromba, a volta ao normal e os
+multiplicadores de dano (provisórios) são definição do João; arte v4.

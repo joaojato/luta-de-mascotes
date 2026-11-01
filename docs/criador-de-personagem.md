@@ -113,6 +113,7 @@ encolhe (`src/game/planoDeFundo.ts`).
    | `strike` | golpe parado, no lugar | (padrão de golpe comum) |
    | `esquadrao` | chama aliados que ficam de prontidão no fundo, atrás dele: o líder sai pelo alto e mergulha numa hora sorteada (`mergulho`: `segundos`, menos `adiantar` até mais `atrasar`); só se acertar, os outros atacam um por vez de lados alternados, sem guarda que segure, teleguiados (o oponente anda e pula entre um e outro, eles vão atrás) | Gaviões da Fiel do Mosqueteiro |
    | `sopro` | sobe até pairar (`altura`), solta um jato contínuo pela boca e varre do chão à frente até o alto, sem guarda que segure; escapa quem vai para baixo dele. Pede a boca e o ângulo de cada quadro da `special` (`boca`, `angulos`), o efeito do jato e a descida `special-return` | sopro de fogo do Dragão |
+   | `forma` | acerta como golpe parado e, no fim da sheet, ele vira outro lutador registrado (a forma dele, fora da seleção) por `segundos`, batendo (`danoCausado`) e apanhando (`danoRecebido`) diferente. O cronômetro ocupa a barra de especial no HUD com o `rotulo`. A volta é a sheet `special-return`; sem ela, a transformação de trás para a frente. Pede as sheets da forma inteiras, como um mascote | maromba do Vovô Coxa |
 
    Se nenhum serve, é mecânica nova no motor: vira conversa à parte antes
    do mascote.
@@ -199,3 +200,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 30/10/2026: `recuo` (estocada que recua depois de cada contato); seguidores do `esquadrao` teleguiados.
 - 30/10/2026: `stunMs` no `drop` (o que cai na cabeça atordoa).
 - 30/10/2026: especial `sopro` (jato contínuo varrendo do chão ao alto, com `special-return`) e célula alta por ação (`frameHeight`).
+- 01/11/2026: especial `forma` (vira outro lutador por um tempo, com cronômetro no HUD).

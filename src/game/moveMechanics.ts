@@ -1,6 +1,7 @@
 import type { GolpeId } from './golpes';
 import type { EsquadraoConfig } from './esquadrao';
 import type { SoproConfig } from './sopro';
+import type { FormaConfig } from './forma';
 import type { AttackProfile } from './types';
 
 export interface FighterMoveConfig {
@@ -80,6 +81,8 @@ export interface ProjectileMoveConfig {
   esquadrao?: EsquadraoConfig;
   /** `sopro`: sobe, paira e varre com um jato contínuo pela boca (src/game/sopro.ts). */
   sopro?: SoproConfig;
+  /** `forma`: no fim do especial vira outro lutador (a forma dele) por um tempo (src/game/forma.ts). */
+  forma?: FormaConfig;
   startFrame?: number;
   endFrame?: number;
   releaseFrame?: number;

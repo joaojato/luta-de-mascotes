@@ -451,3 +451,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   João supôs que não subir para o git bastava para ficar fora da Vercel;
   aqui a Vercel publica a pasta pela CLI. JSON em `locais/` (fora do git)
   só entra no `npm run dev`, e o build nunca o vê. (2026-11-01)
+- **Personagem com objeto de apoio se desenha a partir do objeto.** O corpo
+  do Coxa foi gerado sem o andador e o andador colado depois: a mão de apoio
+  segurava o nada em quase toda ação e a perna atravessava o tubo. O João
+  mandou refazer partindo do andador (Regra do Andador, `docs/coxa-pedido-v4.md`).
+  Vale para bengala, bandeira, qualquer coisa que o mascote segure. (2026-11-01)
+- **Efeito pequeno some na luta.** A lata de 8×14 px na célula ficou com
+  11×20 px na tela, e o João quase não a via. Objeto arremessado precisa de
+  uns 20×35 px na célula. (2026-11-01)

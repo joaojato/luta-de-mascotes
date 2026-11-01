@@ -217,6 +217,7 @@ export class MatchScene extends BaseScene {
     }
 
     this.hud.setMeter(this.p1.meter01, this.p2.meter01);
+    this.hud.setForma(this.p1.formaHud, this.p2.formaHud);
     this.hud.setTime(Math.ceil(this.roundTimeMs / 1000));
     this.hud.updateWins(this.p1Wins, this.p2Wins);
   }
