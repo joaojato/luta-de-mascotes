@@ -26,22 +26,38 @@ export type Controles = Record<Lado, MapaBotoes>;
 
 export const CONTROLES_PADRAO: Controles = {
   p1: { left: 'A', right: 'D', jump: 'W', crouch: 'S', block: 'C', light: 'E', heavy: 'Q', special: 'SPACE' },
+  // Espelho do P1 na mão direita (ABNT2): O K L Ç andam, I P ; atacam, Shift
+  // direito é o especial. O Ç é a SEMICOLON do navegador e o ; a FORWARD_SLASH.
   p2: {
-    left: 'LEFT',
-    right: 'RIGHT',
-    jump: 'UP',
-    crouch: 'DOWN',
+    left: 'K',
+    right: 'SEMICOLON',
+    jump: 'O',
+    crouch: 'L',
     block: 'FORWARD_SLASH',
-    light: 'COMMA',
-    heavy: 'PERIOD',
-    special: 'L'
+    light: 'P',
+    heavy: 'I',
+    special: 'SHIFT'
   }
 };
+
+/**
+ * Sozinho no teclado (contra a CPU, torneio, treino), o P1 ganha I O P como
+ * opção da outra mão, além do Q E C: I chuta e P soca como no P2, e o O, que
+ * aí não anda, defende.
+ */
+export const EXTRA_SOZINHO: Partial<MapaBotoes> = { heavy: 'I', block: 'O', light: 'P' };
+
+/** As teclas extras do modo sozinho que não batem com nenhuma tecla do P1. */
+export function extrasSozinho(p1: MapaBotoes): Partial<MapaBotoes> {
+  const usadas = new Set(Object.values(p1));
+  return Object.fromEntries(Object.entries(EXTRA_SOZINHO).filter(([, tecla]) => !usadas.has(tecla!))) as Partial<MapaBotoes>;
+}
 
 /** Teclas da própria tela (sair, revanche) que não podem virar botão de luta. */
 export const TECLAS_RESERVADAS = ['ESC', 'BACKSPACE', 'R', 'ENTER', 'TAB'];
 
-const CHAVE_STORAGE = 'luta-de-mascotes:controles';
+// v2: o P2 mudou das setas para O K L Ç; o mapa antigo não vale mais.
+const CHAVE_STORAGE = 'luta-de-mascotes:controles-v2';
 
 /** Junta o salvo com o padrão: comando faltando ou tecla inválida volta ao padrão. */
 export function sanitizarControles(raw: unknown, teclasValidas: ReadonlySet<string>): Controles {
@@ -102,9 +118,10 @@ const NOMES_TECLA: Record<string, string> = {
   DOWN: '↓',
   COMMA: ',',
   PERIOD: '.',
-  FORWARD_SLASH: '/',
+  // Nomes do teclado ABNT2, o do João.
+  FORWARD_SLASH: ';',
   BACK_SLASH: '\\',
-  SEMICOLON: ';',
+  SEMICOLON: 'Ç',
   QUOTES: "'",
   OPEN_BRACKET: '[',
   CLOSED_BRACKET: ']',

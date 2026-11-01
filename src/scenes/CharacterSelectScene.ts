@@ -270,10 +270,16 @@ export class CharacterSelectScene extends BaseScene {
       keyboard.on('keydown-D', () => this.movePlayer(this.p1, 1, 0));
       keyboard.on('keydown-W', () => this.movePlayer(this.p1, 0, -1));
       keyboard.on('keydown-S', () => this.movePlayer(this.p1, 0, 1));
-      keyboard.on('keydown-LEFT', () => this.movePlayer(this.p2, -1, 0));
-      keyboard.on('keydown-RIGHT', () => this.movePlayer(this.p2, 1, 0));
-      keyboard.on('keydown-UP', () => this.movePlayer(this.p2, 0, -1));
-      keyboard.on('keydown-DOWN', () => this.movePlayer(this.p2, 0, 1));
+      // P2: O K L Ç (o padrão da luta) ou as setas; Enter ou Shift direito confirmam.
+      const p2 = (keys: string[], dx: number, dy: number): void =>
+        keys.forEach((key) => keyboard.on(`keydown-${key}`, () => this.movePlayer(this.p2, dx, dy)));
+      p2(['LEFT', 'K'], -1, 0);
+      p2(['RIGHT', 'SEMICOLON'], 1, 0);
+      p2(['UP', 'O'], 0, -1);
+      p2(['DOWN', 'L'], 0, 1);
+      keyboard.on('keydown-SHIFT', (event: KeyboardEvent) => {
+        if (event.location === 2) this.confirmPlayer(this.p2);
+      });
       keyboard.on('keydown-SPACE', () => this.confirmPlayer(this.p1));
       keyboard.on('keydown-F', () => this.confirmPlayer(this.p1));
       keyboard.on('keydown-ENTER', () => this.confirmPlayer(this.p2));

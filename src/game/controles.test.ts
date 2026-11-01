@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { atribuirTecla, CONTROLES_PADRAO, legendaDosBotoes, nomeDaTecla, sanitizarControles } from './controles';
+import { atribuirTecla, CONTROLES_PADRAO, extrasSozinho, legendaDosBotoes, nomeDaTecla, sanitizarControles } from './controles';
 
-const VALIDAS = new Set(['A', 'B', 'C', 'D', 'E', 'Q', 'K', 'L', 'S', 'SPACE', 'W', 'H', 'R', 'LEFT', 'RIGHT', 'UP', 'DOWN', 'COMMA', 'PERIOD', 'FORWARD_SLASH']);
+const VALIDAS = new Set(['A', 'B', 'C', 'D', 'E', 'Q', 'K', 'L', 'S', 'SPACE', 'W', 'H', 'R', 'LEFT', 'RIGHT', 'UP', 'DOWN', 'COMMA', 'PERIOD', 'FORWARD_SLASH', 'O', 'I', 'P', 'SEMICOLON', 'SHIFT']);
 
 describe('botões da luta', () => {
   it('volta ao padrão o que falta, é inválido ou reservado', () => {
@@ -16,21 +16,33 @@ describe('botões da luta', () => {
     const mesmoLado = atribuirTecla(CONTROLES_PADRAO, 'p1', 'light', 'Q');
     expect(mesmoLado.p1.light).toBe('Q');
     expect(mesmoLado.p1.heavy).toBe('E');
-    const outroLado = atribuirTecla(CONTROLES_PADRAO, 'p1', 'special', 'L');
-    expect(outroLado.p1.special).toBe('L');
+    const outroLado = atribuirTecla(CONTROLES_PADRAO, 'p1', 'special', 'SHIFT');
+    expect(outroLado.p1.special).toBe('SHIFT');
     expect(outroLado.p2.special).toBe('SPACE');
     expect(CONTROLES_PADRAO.p1.light).toBe('E');
   });
   it('mostra nomes curtos', () => {
     expect(nomeDaTecla('COMMA')).toBe(',');
+    // ABNT2: o Ç e o ; ficam onde o teclado americano tem ; e /.
+    expect(nomeDaTecla('SEMICOLON')).toBe('Ç');
+    expect(nomeDaTecla('FORWARD_SLASH')).toBe(';');
     expect(nomeDaTecla('LEFT')).toBe('←');
     expect(nomeDaTecla('A')).toBe('A');
     expect(nomeDaTecla('NUMPAD_ONE')).toBe('Num one');
   });
   it('legenda da luta mostra as teclas salvas, em português', () => {
     expect(legendaDosBotoes(CONTROLES_PADRAO.p1)).toBe('E soco · Q chute · C defende · Espaço especial');
-    expect(legendaDosBotoes(CONTROLES_PADRAO.p2)).toBe(', soco · . chute · / defende · L especial');
+    expect(legendaDosBotoes(CONTROLES_PADRAO.p2)).toBe('P soco · I chute · ; defende · Shift especial');
     const remapeado = atribuirTecla(CONTROLES_PADRAO, 'p1', 'light', 'H');
     expect(legendaDosBotoes(remapeado.p1)).toContain('H soco');
+  });
+  it('P2 é o espelho do P1 na mão direita: O K L Ç, I P ; e Shift', () => {
+    expect(CONTROLES_PADRAO.p1).toEqual({ left: 'A', right: 'D', jump: 'W', crouch: 'S', block: 'C', light: 'E', heavy: 'Q', special: 'SPACE' });
+    expect(CONTROLES_PADRAO.p2).toEqual({ left: 'K', right: 'SEMICOLON', jump: 'O', crouch: 'L', block: 'FORWARD_SLASH', light: 'P', heavy: 'I', special: 'SHIFT' });
+  });
+  it('sozinho, I O P somam ao Q E C sem roubar tecla já usada', () => {
+    expect(extrasSozinho(CONTROLES_PADRAO.p1)).toEqual({ heavy: 'I', block: 'O', light: 'P' });
+    const comI = atribuirTecla(CONTROLES_PADRAO, 'p1', 'jump', 'I');
+    expect(extrasSozinho(comI.p1)).toEqual({ block: 'O', light: 'P' });
   });
 });

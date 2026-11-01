@@ -491,3 +491,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   lento; o João quer que ele se mova igual aos outros, com a diferença só
   no desenho. Arte que traz ritmo próprio (root motion, velocidade) se
   adapta ao motor, não o contrário. (2026-11-01)
+- **No celular, A/✕ confirma e B/○ volta, como em console.** Fora da luta o
+  botão de baixo vale Enter e o da direita vale Esc; na luta voltam a ser
+  soco e defesa. O João marcou como muito importante: menu que só anda com
+  o botão de cima (o especial) não serve. (2026-11-01)
+- **Celular troca para Xbox por padrão.** O losango de PlayStation de
+  31/10 virou opção; baixo soco, direita defesa, esquerda chute, cima
+  especial, nas duas caras. Nome do golpe sai do botão por padrão e, quando
+  ligado, é o do golpe que sai agora (de pé, abaixado, no ar). (2026-11-01)

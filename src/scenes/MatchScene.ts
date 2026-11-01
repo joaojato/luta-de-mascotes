@@ -6,7 +6,7 @@ import { Fighter, NEUTRAL_FIGHTER_INPUT, type FighterInput } from '../game/fight
 import { getCharacterDefinition } from '../game/hero';
 import { FERRAMENTAS_DE_DEV } from '../game/constants';
 import { CONTORNO_TITULO, COR_FUNDO, FONTE_TITULO, SOMBRA_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from '../game/estilo';
-import { carregarControles, COMANDOS_LUTA, type ComandoLuta, type Controles, type Lado } from '../game/controles';
+import { carregarControles, COMANDOS_LUTA, extrasSozinho, type ComandoLuta, type Controles, type Lado } from '../game/controles';
 import { CpuLutador, DIFICULDADES, type Dificuldade } from '../game/cpu';
 import { IDS_SELECIONAVEIS } from '../game/elenco';
 import { registrarLutaDoJogador } from '../game/torneio';
@@ -46,7 +46,14 @@ const OVERLAY_DEPTH = 300;
 /** The match's high-level state, driving input gating and the HUD. */
 type MatchPhase = 'intro' | 'fighting' | 'roundEnd' | 'matchOver';
 
-type PlayerKeys = Record<ComandoLuta, Phaser.Input.Keyboard.Key>;
+/** Cada comando pode ter mais de uma tecla (o P1 sozinho soma I O P ao Q E C). */
+type PlayerKeys = { lado: Lado; teclas: Record<ComandoLuta, Phaser.Input.Keyboard.Key[]> };
+
+// Shift, Ctrl e Alt têm um código só para as duas pontas do teclado: cada
+// lado só aceita a sua (o P2 é o Shift direito), para a mão do outro não
+// soltar golpe sem querer.
+const MODIFICADORES = new Set([16, 17, 18]);
+const PONTA_DO_LADO: Record<Lado, number> = { p1: 1, p2: 2 };
 
 /**
  * The versus match: two fighters spawn facing each other and fight a best-of-3
@@ -541,10 +548,17 @@ export class MatchScene extends BaseScene {
     const codes = Phaser.Input.Keyboard.KeyCodes as Record<string, number>;
     const controles = carregarControles(new Set(Object.keys(codes)));
     this.controles = controles;
-    const teclas = (lado: Lado): PlayerKeys =>
-      Object.fromEntries(
-        COMANDOS_LUTA.map(({ id }) => [id, keyboard.addKey(codes[controles[lado][id]])])
-      ) as PlayerKeys;
+    // Sozinho no teclado (o P2 não é gente no teclado), o P1 ganha I O P.
+    const extras = this.config.mode === '1v1' ? {} : extrasSozinho(controles.p1);
+    const teclas = (lado: Lado): PlayerKeys => ({
+      lado,
+      teclas: Object.fromEntries(
+        COMANDOS_LUTA.map(({ id }) => {
+          const nomes = [controles[lado][id], ...(lado === 'p1' && extras[id] ? [extras[id]!] : [])];
+          return [id, nomes.map((nome) => keyboard.addKey(codes[nome]))];
+        })
+      ) as PlayerKeys['teclas']
+    });
     this.p1Keys = teclas('p1');
     this.p2Keys = teclas('p2');
 
@@ -571,15 +585,21 @@ export class MatchScene extends BaseScene {
    * @param keys - The player's resolved keys.
    */
   private readKeys(keys: PlayerKeys): FighterInput {
+    const ponta = PONTA_DO_LADO[keys.lado];
+    const doLado = (key: Phaser.Input.Keyboard.Key): boolean => !MODIFICADORES.has(key.keyCode) || key.location === ponta;
+    const segurada = (comando: ComandoLuta): boolean => keys.teclas[comando].some((key) => key.isDown && doLado(key));
+    // Todas as teclas passam pelo JustDown (ele consome o aperto), depois junta.
+    const apertada = (comando: ComandoLuta): boolean =>
+      keys.teclas[comando].map((key) => Phaser.Input.Keyboard.JustDown(key) && doLado(key)).some(Boolean);
     return {
-      left: keys.left.isDown,
-      right: keys.right.isDown,
-      crouch: keys.crouch.isDown,
-      block: keys.block.isDown,
-      jump: Phaser.Input.Keyboard.JustDown(keys.jump),
-      light: Phaser.Input.Keyboard.JustDown(keys.light),
-      heavy: Phaser.Input.Keyboard.JustDown(keys.heavy),
-      special: Phaser.Input.Keyboard.JustDown(keys.special)
+      left: segurada('left'),
+      right: segurada('right'),
+      crouch: segurada('crouch'),
+      block: segurada('block'),
+      jump: apertada('jump'),
+      light: apertada('light'),
+      heavy: apertada('heavy'),
+      special: apertada('special')
     };
   }
 
@@ -683,7 +703,12 @@ export class MatchScene extends BaseScene {
     this.pausa = new MenuPausa(
       this,
       [
-        { titulo: 'P1', personagemId: this.config.p1CharacterId, botoes: toque ? null : this.controles.p1 },
+        {
+          titulo: 'P1',
+          personagemId: this.config.p1CharacterId,
+          botoes: toque ? null : this.controles.p1,
+          extras: this.config.mode === '1v1' ? undefined : extrasSozinho(this.controles.p1)
+        },
         { titulo: cpu ? `CPU (${dificuldade})` : 'P2', personagemId: this.config.p2CharacterId, botoes: cpu ? null : this.controles.p2 }
       ],
       OVERLAY_DEPTH + 10,

@@ -171,6 +171,12 @@ Ritmo (João, 28/10/2026, contra o spam de soco rápido):
   contato segurado. Bengalada do Cartola sai aos ~370 ms e acerta por
   ~250 ms; varredura acerta nos quadros 8 a 11; giro do Galo sai aos ~400 ms.
 
+Teclado (João, 01/11/2026): P1 em W A S D, E soco, Q chute, C defesa, Espaço
+especial. P2 é o espelho na mão direita: O K L Ç, P soco, I chute, ; defesa,
+Shift direito especial. Sozinho no teclado (CPU, torneio, treino) o P1 soma
+I O P (I chute, O defesa, P soco) ao Q E C. Detalhe em
+`docs/superpowers/specs/2026-11-01-controles-e-treino-design.md`.
+
 Botões são remapeáveis por lado do teclado na Academia (aba Botões) e valem
 na luta. Números exatos (dano, vida, carga do especial) ficam no JSON do
 mascote e podem ser testados na aba Ajustes da Academia. Aqui é a intenção.

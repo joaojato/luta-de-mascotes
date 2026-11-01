@@ -9,6 +9,8 @@ export interface LadoDaPausa {
   titulo: string;
   personagemId: string;
   botoes: MapaBotoes | null;
+  /** Teclas a mais do mesmo lado (o P1 sozinho: I O P). */
+  extras?: Partial<MapaBotoes>;
 }
 
 /** Comandos que valem para todo mascote (docs/gdd.md, "Golpes"). */
@@ -75,7 +77,10 @@ export class MenuPausa {
       const nome = LUTADORES.find((l) => l.id === lado.personagemId)?.label ?? lado.personagemId;
       texto(x, 104, `${lado.titulo}: ${nome}`, 22, TEXTO_DESTAQUE);
       const teclas = lado.botoes
-        ? COMANDOS_LUTA.map(({ id, nome: comando }) => `${comando}: ${nomeDaTecla(lado.botoes![id])}`)
+        ? COMANDOS_LUTA.map(({ id, nome: comando }) => {
+            const extra = lado.extras?.[id];
+            return `${comando}: ${nomeDaTecla(lado.botoes![id])}${extra ? ` / ${nomeDaTecla(extra)}` : ''}`;
+          })
         : [lado.titulo.startsWith('CPU') ? 'Controlado pelo computador' : 'Botões da tela'];
       texto(x, 140, teclas.join('\n'), 16);
       texto(x, 140 + teclas.length * 22 + 18, ['Golpes', ...golpesDoMascote(lado.personagemId)].join('\n'), 16).setWordWrapWidth(larguraColuna);
