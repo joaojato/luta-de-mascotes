@@ -7,6 +7,7 @@ Uso: python scripts/coxa_voadora_presa_v4.py ."""
 import json, sys
 from pathlib import Path
 from PIL import Image
+from coxa_maos_por_cima_v4 import maos_por_cima
 
 ROOT = Path(sys.argv[1] if len(sys.argv) > 1 else '.')
 V3 = ROOT / 'public/assets/lutadores/coxa/rigido-v3'
@@ -35,10 +36,8 @@ for i, mao in enumerate(MAO_V3):
     else:
         cel.alpha_composite(preso)
         cel.alpha_composite(andador, origem)
-    # Dedos por cima do tubo, recortados do próprio corpo (como na v3).
-    y = mao - sobe
-    caixa = (304, y - 5, 314, y + 5)
-    cel.alpha_composite(preso.crop(caixa), caixa[:2])
+    # A mão fica sempre por cima do andador (João, 01/11/2026).
+    cel = maos_por_cima(cel, preso, [(309, mao - sobe)])
     folha.alpha_composite(cel, (c * 512, r * 320))
 DEST.mkdir(parents=True, exist_ok=True)
 folha.save(DEST / 'low-kick-composed.png')

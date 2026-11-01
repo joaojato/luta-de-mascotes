@@ -2601,3 +2601,29 @@ congelado no meio do golpe; sem congelar, as duas acertam.
 **Em aberto:** voadora com desenho novo; lata ainda 8×14 px (o pedido era
 ~20×35, segue ampliada 3,5× no jogo); gotas; pesado e rasteiro do maromba;
 volta ao normal.
+
+## 2026-11-01: maromba antigo de volta e mão por cima do andador
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "As animações do vovô maromba antigas eram melhores. Não tinha
+por que trocar. Volte com elas, inclusive o andador." E: a parte de trás do
+andador estava por cima da mão do velho, e a mão fica por cima sempre.
+**Feito:** o `coxa-maromba.json` local voltou para `rigido-v1/maromba`
+(andador antigo, caixas antigas) e a transformação voltou para a da
+`rigido-v3`, que termina no maromba antigo. `scripts/coxa_maos_por_cima_v4.py`
+repõe por cima da montagem a pele da mão (com contorno) a até 22 px do topo
+do andador e em volta das mãos do rig; no agachamento, 40 px e só no arco
+de trás, para o rosto não passar na frente do arco. Saída em
+`coxa/v4-maos/normal` (local), sem tocar na entrega do Codex. A voadora
+provisória usa a mesma regra no lugar do remendo de dedos.
+**Verificado:** pranchas com os pixels trocados em magenta, quadro a quadro
+das 18 ações: só mãos (e o braço esticado do soco aéreo). 262 testes,
+build; luta Coxa x Saci: estocadas 14, lata no voo, especial vira o maromba
+antigo, estocada maromba 9, console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o maromba da v4 saiu do jogo; a mão
+por cima do andador em todas as ações do normal.
+**Aprovado explicitamente:** nada.
+**Atrito:** troquei arte que ele já tinha aprovado sem perguntar.
+**Em aberto:** os mesmos de antes (voadora desenhada, lata maior, gotas,
+pesado e rasteiro do maromba, volta ao normal).

@@ -470,3 +470,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   Se dá para aproximar com o que já existe (remontar camadas, prender a mão),
   fazer isso primeiro e mostrar no jogo; o pedido de arte vem junto, não no
   lugar. (2026-11-01)
+- **Arte nova não substitui arte aprovada sem perguntar.** Troquei o maromba
+  inteiro pela revisão v4 só porque ela chegou, e o João achou o antigo
+  melhor ("não tinha por que trocar"). Entrega de arte que refaz algo que já
+  estava no jogo e sem queixa entra lado a lado para ele comparar; só troca
+  o que ele pediu para refazer. (2026-11-01)
+- **A mão de apoio fica sempre por cima do andador.** Montagem em camadas
+  pôs as tampas e o arco de trás sobre os dedos. Regra: depois de montar,
+  a pele da mão perto da pegada volta por cima de tudo
+  (`scripts/coxa_maos_por_cima_v4.py`); rosto e joelho continuam atrás do
+  arco da frente. (2026-11-01)

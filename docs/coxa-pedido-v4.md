@@ -86,6 +86,13 @@ A `revisao-v4` já está no jogo local, menos três pontos deste pedido:
   amplia 3,5×.
 - **Gotas (`beer-drops`):** arte recebida, sem uso: o motor ainda não tem
   emissor preso ao projétil.
+- **Maromba:** o João preferiu o antigo (`rigido-v1/maromba`, com o andador
+  dele). O da v4 saiu do jogo, e a transformação voltou à da v3. Não
+  refazer o maromba sem pedido dele.
+- **Mão por cima do andador:** na montagem v4 as tampas e o arco de trás
+  cobrem os dedos. No jogo, `scripts/coxa_maos_por_cima_v4.py` repõe a mão
+  por cima (pasta `v4-maos`). Arte nova já deve sair assim: a mão de apoio
+  fica sempre na camada da frente.
 
 ## Ainda depende do João
 
