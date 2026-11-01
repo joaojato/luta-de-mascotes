@@ -2827,3 +2827,45 @@ distância (O do mosqueteiro está bom".
 **Aprovado explicitamente:** o coice do Mosqueteiro (70 px).
 **Atrito:** nenhum.
 **Em aberto:** os mesmos (especiais na Regra do Tiro, playground).
+
+## 2026-11-01: controles do teclado e do celular, chave do mata-mata, treino livre
+
+**Marco:** 2, segue em andamento; exceção à Regra da v1 aberta pelo João.
+**Pedido:** lista de mudanças estruturais: teclado com coop (P1 W A S D
+Q E C Espaço, P2 O K L Ç I P ; Shift) e solo (P1 ganha I O P); celular com
+nome do golpe escondido por padrão e ligável, nome do golpe da vez (de pé,
+abaixado, no ar), Xbox por padrão e PlayStation como opção, A/X soco, B/O
+defesa, X/□ chute, Y/△ especial; mata-mata com colchetes e close do rosto;
+treino livre na Academia (sem fim, vida volta depois de 2 s, CPU liga e
+desliga, troca rápida de lutador); pontos na barra de vida e número de dano.
+No meio: "Muito Importante o controle mobile precisa funcionar com A/X
+selecionando e B/O voltando" e "a opacidade dos controles do mobile
+precisam poder ser modificadas".
+**Feito:** contrato em `docs/superpowers/specs/2026-11-01-controles-e-treino-design.md`.
+Teclado: P2 novo (ABNT2: Ç é `SEMICOLON`, ; é `FORWARD_SLASH`), Shift só do
+lado do dono, extras I O P fora do 1 VS 1, chave `controles-v2`, Seleção do
+1 VS 1 com O K L Ç. Celular: caras Xbox e PlayStation em SVG, ids do
+arranjo por lugar, ponte `lutaNaTela.ts` (fora da luta A = Enter, B = Esc;
+no fim da partida A = revanche), campo `nomes` em todo JSON, especial
+apagado sem barra, opacidade 100/75/50/30%. Mata-mata: colchetes com o
+caminho do jogador na cor dele, campo `rosto` em todo JSON (`rostoCrop`).
+Exibição: `exibicao.ts`, `150/150` dentro da barra, número de dano (azul
+entre parênteses quando defendido). Treino: `treino: true` na Luta, painel
+lateral (`treinoPainel.ts`), atalhos 1, 2, 3, Tab e Esc; aba Treino no
+painel da Academia com as duas opções de exibição.
+**Verificado:** 282 testes, typecheck, build. Chromium com toque emulado
+(844×390): A avança abertura, menu e modos, B volta; Urubu mostra Socos e
+Bicada de pé, Asas e Chute abaixado, Soco aéreo no pulo; troca para
+PlayStation; opacidade 50% continua depois de recarregar. Desktop: chave de
+8 com colchetes e rostos; treino com 230/230 na barra, número 7 subindo,
+vida do Almirante de volta ao cheio, 2 troca o P2, 3 liga a CPU, Esc volta
+à Academia. O número some rápido no navegador sem tela (12 fps); congelado,
+aparece em vermelho e o defendido em azul.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** losango do PlayStation de 31/10 virou
+opção; mapeamento dos botões do celular mudou (baixo soco, direita defesa,
+esquerda chute, cima especial).
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** publicar no Vercel para testar no iPhone (deploy precisa de
+"pode publicar"); lupa e zoom do iOS só se confirmam no aparelho.

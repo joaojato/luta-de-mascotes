@@ -119,6 +119,9 @@ export class MatchHud {
 
   private p1Frac = 1;
   private p2Frac = 1;
+  /** `150/150` dentro de cada barra, ligado em Exibição (src/game/exibicao.ts). */
+  private p1Pontos!: Phaser.GameObjects.Text;
+  private p2Pontos!: Phaser.GameObjects.Text;
   private p1Blink: Phaser.Tweens.Tween | null = null;
   private p2Blink: Phaser.Tweens.Tween | null = null;
 
@@ -257,12 +260,27 @@ export class MatchHud {
       .setDisplaySize(HEALTH_DISP_W, HEALTH_DISP_H);
     this.root.add(frame);
 
+    const pontos = this.scene.add
+      .text(slotLeft + slotWidth / 2, slotTop + slotHeight / 2, '', {
+        color: '#f8fafc',
+        fontFamily: 'monospace',
+        fontSize: `${Math.round(Math.min(22, slotHeight * 0.7))}px`,
+        fontStyle: 'bold',
+        stroke: '#0b1120',
+        strokeThickness: 4
+      })
+      .setOrigin(0.5)
+      .setVisible(false);
+    this.root.add(pontos);
+
     if (side === 'left') {
       this.p1Fill = fill;
       this.p1FillGeom = geometry;
+      this.p1Pontos = pontos;
     } else {
       this.p2Fill = fill;
       this.p2FillGeom = geometry;
+      this.p2Pontos = pontos;
     }
   }
 
@@ -415,6 +433,20 @@ export class MatchHud {
   }
 
   /**
+   * Escreve os pontos de vida dentro das barras (`150/150`), ou esconde.
+   * @param p1 - Vida agora e máxima do jogador 1; null esconde as duas.
+   * @param p2 - A do jogador 2.
+   */
+  setPontos(p1: [number, number] | null, p2: [number, number] | null): void {
+    const escrever = (texto: Phaser.GameObjects.Text, pontos: [number, number] | null): void => {
+      texto.setVisible(pontos !== null);
+      if (pontos) texto.setText(`${Math.ceil(pontos[0])}/${Math.round(pontos[1])}`);
+    };
+    escrever(this.p1Pontos, p1);
+    escrever(this.p2Pontos, p2);
+  }
+
+  /**
    * Sets both special meters to the given fractions, recolouring and pulsing
    * the bar when it is full (ready to fire).
    * @param p1Frac - Player 1's meter fraction (0..1).
@@ -521,7 +553,12 @@ export class MatchHud {
    * Updates the timer readout and its low-time colour.
    * @param seconds - Whole seconds remaining.
    */
-  setTime(seconds: number): void {
+  setTime(seconds: number | null): void {
+    // Sem relógio (treino livre): dois traços.
+    if (seconds === null) {
+      this.timerText.setText('--').setColor('#f8fafc');
+      return;
+    }
     this.timerText.setText(String(Math.max(0, seconds))).setColor(seconds <= 10 ? '#f87171' : '#f8fafc');
   }
 

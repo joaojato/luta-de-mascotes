@@ -403,6 +403,15 @@ export class Fighter {
     return this.facing;
   }
 
+  /** Pontos de vida agora e no máximo, para o `150/150` na barra e o número de dano. */
+  get healthPoints(): number {
+    return this.health;
+  }
+
+  get maxHealthPoints(): number {
+    return this.maxHealth;
+  }
+
   /** The fighter's current health. */
   get health01(): number {
     return this.maxHealth > 0 ? Phaser.Math.Clamp(this.health / this.maxHealth, 0, 1) : 0;

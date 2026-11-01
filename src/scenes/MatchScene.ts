@@ -9,6 +9,8 @@ import { CONTORNO_TITULO, COR_FUNDO, FONTE_TITULO, SOMBRA_TITULO, TEXTO_CLARO, T
 import { carregarControles, COMANDOS_LUTA, extrasSozinho, type ComandoLuta, type Controles, type Lado } from '../game/controles';
 import { CpuLutador, DIFICULDADES, type Dificuldade } from '../game/cpu';
 import { IDS_SELECIONAVEIS } from '../game/elenco';
+import { proximoLutador, vidaQueVolta } from '../game/treino';
+import { PainelTreino } from './treinoPainel';
 import { registrarLutaDoJogador } from '../game/torneio';
 import { carregarTorneio, salvarTorneio } from '../game/torneioSalvo';
 import { MenuPausa } from '../game/menuPausa';
@@ -16,6 +18,7 @@ import { controlesDeToqueAtivos } from '../toque/telaToque';
 import { publicarLuta } from '../toque/lutaNaTela';
 import { nomesDosBotoes } from '../game/golpes';
 import { MatchHud } from '../game/matchHud';
+import { exibicao } from '../game/exibicao';
 import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STAGGER, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { syncLoopingAudioAsset, stopAudioAsset } from '../game/core/audio';
@@ -83,6 +86,10 @@ export class MatchScene extends BaseScene {
   /** Tela de pausa aberta (Tab): a luta para inteira por baixo. */
   private pausa: MenuPausa | null = null;
   private paineisCelular: { jogador: 1 | 2; painel: PainelCelular }[] = [];
+  /** Treino livre: painel lateral, quando cada um apanhou por último, quem está levantando. */
+  private painelTreino: PainelTreino | null = null;
+  private ultimoGolpe = new Map<Fighter, { ms: number; vida: number }>();
+  private levantando = new Set<Fighter>();
 
   private phase: MatchPhase = 'intro';
   private roundNumber = 1;
@@ -153,6 +160,9 @@ export class MatchScene extends BaseScene {
 
     this.cpu = this.novaCpu();
     this.pausa = null;
+    this.ultimoGolpe = new Map();
+    this.levantando = new Set();
+    this.painelTreino = this.config.treino ? this.montarPainelTreino() : null;
 
     this.startRound();
     syncLoopingAudioAsset(this, 'torcida', this.app.settingsStore.getState());
@@ -168,6 +178,8 @@ export class MatchScene extends BaseScene {
       this.paineisCelular.forEach(({ painel }) => painel.destruir());
       this.paineisCelular = [];
       publicarLuta(null);
+      this.painelTreino?.destroy();
+      this.painelTreino = null;
     });
   }
 
@@ -193,7 +205,9 @@ export class MatchScene extends BaseScene {
     const p2Input = fighting
       ? this.cpu
         ? this.cpu.atualizar(this.leituraDaCpu(time))
-        : juntarInputs(this.readKeys(this.p2Keys), p2Celular)
+        : this.config.treino
+          ? { ...NEUTRAL_FIGHTER_INPUT }
+          : juntarInputs(this.readKeys(this.p2Keys), p2Celular)
       : { ...NEUTRAL_FIGHTER_INPUT };
     this.updatePaineisCelular();
 
@@ -222,14 +236,17 @@ export class MatchScene extends BaseScene {
       this.checkForKnockout();
 
       if (this.phase === 'fighting') {
-        this.tickRoundTimer(delta);
+        if (this.config.treino) this.atualizarTreino(time, seconds);
+        else this.tickRoundTimer(delta);
         this.hud.applyHealth(this.p1.health01, this.p2.health01);
       }
     }
+    const pontos = (lutador: Fighter): [number, number] => [lutador.healthPoints, lutador.maxHealthPoints];
+    this.hud.setPontos(exibicao().pontosNaVida ? pontos(this.p1) : null, exibicao().pontosNaVida ? pontos(this.p2) : null);
 
     this.hud.setMeter(this.p1.meter01, this.p2.meter01);
     this.hud.setForma(this.p1.formaHud, this.p2.formaHud);
-    this.hud.setTime(Math.ceil(this.roundTimeMs / 1000));
+    this.hud.setTime(this.config.treino ? null : Math.ceil(this.roundTimeMs / 1000));
     this.hud.updateWins(this.p1Wins, this.p2Wins);
   }
 
@@ -299,7 +316,9 @@ export class MatchScene extends BaseScene {
     const perfect = !isCpu && isPerfectGuard(blocked, Boolean(attack.projectile), defender.guardHeldSeconds);
 
     return () => {
+      const vidaAntes = defender.healthPoints;
       defender.applyHit(perfect ? { ...profile, knockback: 0 } : profile, facing, blocked, armored);
+      this.mostrarDano(hurt, vidaAntes - defender.healthPoints, blocked ? profile.damage : null);
       defender.flashHit(blocked);
       attacker.markAttackConnected(attack.signature, blocked);
       attacker.registerOffense(blocked, isSpecial);
@@ -323,6 +342,31 @@ export class MatchScene extends BaseScene {
           : 'impacto-pesado'
       );
     };
+  }
+
+  /**
+   * Número de dano subindo de cima de quem apanhou (Exibição, "Dano dos
+   * golpes"). Defendido não tira vida: mostra entre parênteses, em azul, o
+   * que o golpe tiraria.
+   * @param hurt - A caixa de quem apanhou, no mundo.
+   * @param tirou - Vida que saiu de fato.
+   * @param defendido - O dano do golpe, quando foi defendido; senão null.
+   */
+  private mostrarDano(hurt: Phaser.Geom.Rectangle, tirou: number, defendido: number | null): void {
+    if (!exibicao().danoDosGolpes || (tirou <= 0 && defendido === null)) return;
+    const texto = defendido !== null && tirou <= 0 ? `(${Math.round(defendido)})` : String(Math.round(tirou));
+    const x = hurt.centerX + Phaser.Math.Between(-18, 18);
+    const numero = this.add
+      .text(x, hurt.top - 10, texto, {
+        color: defendido !== null && tirou <= 0 ? '#7dd3fc' : '#fca5a5',
+        fontFamily: FONTE_TITULO,
+        fontSize: '34px',
+        stroke: CONTORNO_TITULO,
+        strokeThickness: 6
+      })
+      .setOrigin(0.5, 1)
+      .setDepth(BANNER_DEPTH - 1);
+    this.tweens.add({ targets: numero, y: numero.y - 70, alpha: 0, duration: 900, ease: 'Cubic.Out', onComplete: () => numero.destroy() });
   }
 
   /**
@@ -364,6 +408,10 @@ export class MatchScene extends BaseScene {
 
   /** Ends the round when either fighter is knocked out. */
   private checkForKnockout(): void {
+    if (this.config.treino) {
+      this.levantarNoTreino();
+      return;
+    }
     if (this.p1.isDefeated) {
       this.endRound(2);
     } else if (this.p2.isDefeated) {
@@ -567,9 +615,14 @@ export class MatchScene extends BaseScene {
     this.p2Keys = teclas('p2');
 
     keyboard.addCapture('TAB');
-    keyboard.on('keydown-TAB', () => this.alternarPausa());
-    keyboard.on('keydown-ESC', () => this.goToMenu());
-    keyboard.on('keydown-BACKSPACE', () => this.goToMenu());
+    // No treino, Tab recolhe o painel e Esc volta à Academia.
+    const sair = (): void => {
+      if (this.config.treino) this.scene.start(SCENE_KEYS.Academia);
+      else this.goToMenu();
+    };
+    keyboard.on('keydown-TAB', () => (this.config.treino ? this.painelTreino?.alternar() : this.alternarPausa()));
+    keyboard.on('keydown-ESC', sair);
+    keyboard.on('keydown-BACKSPACE', sair);
     keyboard.on('keydown-R', () => {
       // No torneio não há revanche: o resultado vale.
       if (this.phase === 'matchOver' && !this.config.torneio) {
@@ -642,6 +695,7 @@ export class MatchScene extends BaseScene {
 
   /** CPU do 1 VS CPU, na dificuldade escolhida na tela de dificuldade. */
   private novaCpu(): CpuLutador | undefined {
+    if (this.config.treino && !this.config.treinoCpu) return undefined;
     return this.config.mode === '1vcpu' ? new CpuLutador(this.dificuldadeDaCpu()) : undefined;
   }
 
@@ -679,6 +733,72 @@ export class MatchScene extends BaseScene {
     const nomes = LUTADORES.find((lutador) => lutador.id === this.p1.characterId)?.nomes;
     publicarLuta({ nomes: nomesDosBotoes(nomes, estado), especialPronto: this.p1.isMeterReady && !this.p1.isAirborne });
   }
+
+  /**
+   * Treino livre: quem passou 2 s sem perder vida volta a encher, aos poucos.
+   * @param time - Relógio da cena, em ms.
+   * @param seconds - Duração do quadro.
+   */
+  private atualizarTreino(time: number, seconds: number): void {
+    for (const lutador of [this.p1, this.p2]) {
+      const antes = this.ultimoGolpe.get(lutador);
+      if (!antes || lutador.healthPoints < antes.vida) {
+        this.ultimoGolpe.set(lutador, { ms: time, vida: lutador.healthPoints });
+        continue;
+      }
+      lutador.regenHealth(vidaQueVolta(time - antes.ms, lutador.healthPoints, lutador.maxHealthPoints, seconds));
+      antes.vida = lutador.healthPoints;
+    }
+  }
+
+  /** No treino ninguém perde: quem cai levanta com a vida cheia, onde estava. */
+  private levantarNoTreino(): void {
+    for (const lutador of [this.p1, this.p2]) {
+      if (!lutador.isDefeated || this.levantando.has(lutador)) continue;
+      this.levantando.add(lutador);
+      this.time.delayedCall(1400, () => {
+        this.levantando.delete(lutador);
+        lutador.resetForRound(lutador.x, lutador.facingDirection);
+        lutador.setFrozen(false);
+        this.ultimoGolpe.delete(lutador);
+      });
+    }
+  }
+
+  /** Painel lateral do treino, com os atalhos 1, 2, 3 e Tab. */
+  private montarPainelTreino(): PainelTreino {
+    const trocar = (lado: 'p1' | 'p2', direcao: 1 | -1): void => {
+      const chave = lado === 'p1' ? 'p1CharacterId' : 'p2CharacterId';
+      this.scene.restart({ ...this.config, [chave]: proximoLutador(IDS_SELECIONAVEIS, this.config[chave], direcao) });
+    };
+    const alternarCpu = (): void => {
+      this.config = { ...this.config, treinoCpu: !this.config.treinoCpu };
+      this.cpu = this.novaCpu();
+      this.painelTreino?.destroy();
+      this.painelTreino = this.montarPainelTreino();
+    };
+    const keyboard = this.input.keyboard;
+    if (keyboard && !this.atalhosDoTreino) {
+      this.atalhosDoTreino = true;
+      keyboard.on('keydown-ONE', () => trocar('p1', 1));
+      keyboard.on('keydown-TWO', () => trocar('p2', 1));
+      keyboard.on('keydown-THREE', () => alternarCpu());
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+        this.atalhosDoTreino = false;
+      });
+    }
+    return new PainelTreino({
+      p1: this.config.p1CharacterId,
+      p2: this.config.p2CharacterId,
+      cpu: Boolean(this.config.treinoCpu),
+      recolhido: this.painelTreino?.estaRecolhido ?? controlesDeToqueAtivos(),
+      trocar,
+      alternarCpu,
+      sair: () => this.scene.start(SCENE_KEYS.Academia)
+    });
+  }
+
+  private atalhosDoTreino = false;
 
   /** O que a CPU (P2) enxerga da luta neste quadro. */
   private leituraDaCpu(time: number) {
@@ -760,7 +880,7 @@ export class MatchScene extends BaseScene {
     this.hud.animateFill();
     this.hud.updateWins(this.p1Wins, this.p2Wins);
 
-    this.showBanner(`ROUND ${this.roundNumber}`, '#f8fafc');
+    this.showBanner(this.config.treino ? 'TREINO' : `ROUND ${this.roundNumber}`, '#f8fafc');
     this.som('round');
 
     this.time.delayedCall(900, () => {

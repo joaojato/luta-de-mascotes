@@ -12,6 +12,7 @@ import {
   type Controles,
   type Lado
 } from '../game/controles';
+import { exibicao, mudarExibicao, type Exibicao } from '../game/exibicao';
 import { GOLPES, golpesDoLutador, type SituacaoGolpe } from '../game/golpes';
 import { FIGHTER_CHARACTER_DEFINITIONS, getCharacterDefinition } from '../game/hero';
 import { LUTADORES } from '../game/lutadores';
@@ -23,7 +24,7 @@ import type { FighterCombat } from '../game/types';
  * HTML porque clique, tabela e captura de tecla saem de graça no DOM.
  */
 
-type Aba = 'golpes' | 'botoes' | 'ajustes';
+type Aba = 'golpes' | 'botoes' | 'ajustes' | 'treino';
 
 /** Números que a aba Ajustes deixa mexer (o resto continua no JSON e no shell de debug). */
 const CAMPOS_AJUSTE: { id: keyof FighterCombat; nome: string; dica: string }[] = [
@@ -61,6 +62,8 @@ export interface PainelAcademiaOpcoes {
   ajustarCombate: (characterId: string, campo: keyof FighterCombat, valor: number) => void;
   /** Volta o lutador aos números do JSON. */
   restaurarCombate: (characterId: string) => void;
+  /** Abre o treino livre (a Luta sem relógio nem fim). */
+  abrirTreino: () => void;
 }
 
 export class PainelAcademia {
@@ -162,6 +165,9 @@ export class PainelAcademia {
       this.aviso = 'Botões de volta ao padrão.';
     } else if (acao === 'golpe' && lutador && sheet) {
       this.opcoes.onEscolher(lutador, sheet);
+    } else if (acao === 'treino') {
+      this.opcoes.abrirTreino();
+      return;
     } else if (acao === 'restaurar') {
       this.opcoes.restaurarCombate(this.lutadorAtual());
       this.aviso = 'Números do JSON de volta.';
@@ -170,6 +176,13 @@ export class PainelAcademia {
   }
 
   private aoMudar(evento: Event): void {
+    const exibir = (evento.target as HTMLInputElement).dataset.exibir as keyof Exibicao | undefined;
+    if (exibir) {
+      mudarExibicao({ [exibir]: (evento.target as HTMLInputElement).checked });
+      this.aviso = 'Salvo. Vale em toda luta.';
+      this.render();
+      return;
+    }
     const campo = (evento.target as HTMLInputElement).dataset.campo as keyof FighterCombat | undefined;
     const valor = Number((evento.target as HTMLInputElement).value);
     if (!campo || !Number.isFinite(valor)) {
@@ -190,10 +203,10 @@ export class PainelAcademia {
 
     this.raiz.innerHTML = `
       <div style="display:flex;gap:6px;margin-bottom:10px">
-        ${aba('golpes', 'Golpes')}${aba('botoes', 'Botões')}${aba('ajustes', 'Ajustes')}
+        ${aba('golpes', 'Golpes')}${aba('botoes', 'Botões')}${aba('ajustes', 'Ajustes')}${aba('treino', 'Treino')}
         <span style="margin-left:auto;color:#64748b;align-self:center">Tab esconde</span>
       </div>
-      ${this.aba === 'golpes' ? this.htmlGolpes() : this.aba === 'botoes' ? this.htmlBotoes() : this.htmlAjustes()}
+      ${this.aba === 'golpes' ? this.htmlGolpes() : this.aba === 'botoes' ? this.htmlBotoes() : this.aba === 'ajustes' ? this.htmlAjustes() : this.htmlTreino()}
       ${this.aviso ? `<p style="color:#facc15;margin:10px 0 0">${this.aviso}</p>` : ''}
     `;
   }
@@ -231,6 +244,20 @@ export class PainelAcademia {
       <p style="color:#94a3b8;margin:6px 0">✓ tem · ~ quebra-galho · ✗ falta. Clique para ver o golpe.</p>
       <h4 style="margin:10px 0 4px">${atual.label}</h4>
       <ul style="margin:0;padding-left:18px">${detalhe}</ul>
+    `;
+  }
+
+  /** Treino livre e o que a luta mostra a mais (vale também no treino e nas lutas de verdade). */
+  private htmlTreino(): string {
+    const atual = exibicao();
+    const caixa = (campo: keyof Exibicao, nome: string, dica: string) =>
+      `<label title="${dica}" style="display:flex;gap:8px;align-items:center;margin:4px 0;cursor:pointer"><input type="checkbox" data-exibir="${campo}" ${atual[campo] ? 'checked' : ''} /> ${nome}</label>`;
+    return `
+      <button data-acao="treino" style="${estiloBotao(true)};width:100%">Abrir treino livre (T)</button>
+      <p style="color:#94a3b8;margin:6px 0 10px">1 x 1 sem relógio e sem fim. A vida volta a encher 2 s depois do último golpe. Troque o P1 e o P2 e ligue a CPU no painel do treino.</p>
+      <h4 style="margin:0 0 4px">Mostrar na luta</h4>
+      ${caixa('pontosNaVida', 'Pontos na barra de vida (150/150)', 'escreve a vida que sobra dentro da barra')}
+      ${caixa('danoDosGolpes', 'Dano de cada golpe', 'número subindo de quem apanhou; defendido, entre parênteses')}
     `;
   }
 

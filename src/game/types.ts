@@ -50,6 +50,10 @@ export interface MatchConfig {
   p2CharacterId: string;
   /** Luta do torneio salvo: a CPU usa a dificuldade dele e o fim volta ao chaveamento. */
   torneio?: true;
+  /** Treino livre da Academia: sem relógio, sem fim, a vida volta a encher. */
+  treino?: true;
+  /** No treino: a CPU joga com o P2 (senão ele fica parado). */
+  treinoCpu?: boolean;
 }
 
 export type GameProfile = 'landscape' | 'portrait';

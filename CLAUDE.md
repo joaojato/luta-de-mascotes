@@ -134,6 +134,10 @@ Cada uma tem nome para poder ser cobrada depois.
   como câmera, ADR 0004). Outra em 31/10/2026: Pelada, Torneios
   (mata-mata e pontos corridos contra a CPU), dificuldade em tela própria
   e lutador aleatório (`docs/superpowers/specs/2026-10-31-torneios-design.md`).
+  Outra em 01/11/2026: dois jeitos de jogar no teclado, botões de Xbox e
+  PlayStation no celular, colchetes e rostos no mata-mata, treino livre na
+  Academia e pontos de vida e dano na tela
+  (`docs/superpowers/specs/2026-11-01-controles-e-treino-design.md`).
 
 ## Anti-referência
 

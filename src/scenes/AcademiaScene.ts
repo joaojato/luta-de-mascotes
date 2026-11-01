@@ -3,6 +3,7 @@ import * as Phaser from 'phaser';
 import { carregarAjustes, salvarAjustes } from '../game/ajustesDev';
 import { clampFighterCombat, DEFAULT_FIGHTER_COMBAT, FIGHTER_BOUNDS_FIELDS, getFighterCombat } from '../game/fighterConfig';
 import { LUTADOR_COMBAT_OVERRIDES } from '../game/lutadores';
+import { IDS_SELECIONAVEIS } from '../game/elenco';
 import {
   CHARACTER_DEFINITIONS,
   resolveHeroBoundsFrame,
@@ -103,7 +104,8 @@ export class AcademiaScene extends BaseScene {
         delete ajustes[characterId];
         salvarAjustes(ajustes);
         this.applyCombat(characterId, LUTADOR_COMBAT_OVERRIDES[characterId] ?? {});
-      }
+      },
+      abrirTreino: () => this.abrirTreino()
     });
     this.painel.mostrarLutador(character.id);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.painel.destroy());
@@ -112,7 +114,7 @@ export class AcademiaScene extends BaseScene {
     this.playAction();
 
     this.createFooterHint(
-      'A/D lutador • W/S ação • Espaço toca/pausa • , . quadro • R quadro 1 • 1-5 boxes • Tab painel • Esc menu'
+      'A/D lutador • W/S ação • Espaço toca/pausa • , . quadro • R quadro 1 • 1-5 boxes • T treino • Tab painel • Esc menu'
     );
   }
 
@@ -168,8 +170,24 @@ export class AcademiaScene extends BaseScene {
       this.painel.alternar();
     });
 
+    keyboard.on('keydown-T', () => this.abrirTreino());
+    // No celular o A (Enter) também abre: a Academia não tem outro uso para ele.
+    keyboard.on('keydown-ENTER', () => this.abrirTreino());
+
     keyboard.on('keydown-ESC', () => this.goToMenu());
     keyboard.on('keydown-BACKSPACE', () => this.goToMenu());
+  }
+
+  /**
+   * Treino livre: a própria Luta, sem relógio nem fim. O P1 é o lutador que
+   * a Academia está mostrando (se ele entra na seleção); o P2, o seguinte.
+   */
+  private abrirTreino(): void {
+    if (this.painel.capturando) return;
+    const atual = this.character().id;
+    const p1 = IDS_SELECIONAVEIS.includes(atual) ? atual : IDS_SELECIONAVEIS[0];
+    const p2 = IDS_SELECIONAVEIS[(IDS_SELECIONAVEIS.indexOf(p1) + 1) % IDS_SELECIONAVEIS.length];
+    this.scene.start(SCENE_KEYS.Match, { mode: '1vcpu', stageId: 'estadio', p1CharacterId: p1, p2CharacterId: p2, treino: true, treinoCpu: false });
   }
 
   /** Põe os números na store que a Luta lê (o JSON por baixo, o ajuste por cima). */
