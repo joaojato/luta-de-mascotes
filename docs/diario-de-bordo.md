@@ -2813,3 +2813,17 @@ Almirante +62, Coxa +46, Galo +52, Mosqueteiro -87; console sem erro.
 **Atrito:** nenhum.
 **Em aberto:** se os especiais que soltam algo (Cartola, Porco, Bahia)
 também devem avançar.
+
+## 2026-11-01: passo do tiro pela metade
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "O passo para a frente está muito forte. coloque metade dessa
+distância (O do mosqueteiro está bom".
+**Feito:** `travel` do tiro de 40 para 20 px em Almirante, Bahia, Coxa
+(pelo gerador), Galo e Saci; GDD atualizado. Coice do Mosqueteiro igual.
+**Verificado:** 269 testes, build; medição no navegador abaixo.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a distância do passo do tiro.
+**Aprovado explicitamente:** o coice do Mosqueteiro (70 px).
+**Atrito:** nenhum.
+**Em aberto:** os mesmos (especiais na Regra do Tiro, playground).

@@ -411,7 +411,7 @@
     },
     {
       "action": "shot",
-      "travel": { "frames": [3, 4], "distance": 40 },
+      "travel": { "frames": [3, 4], "distance": 20 },
       "label": "Tiro de garrucha",
       "file": "special-shot.png",
       "frames": 6,
@@ -460,7 +460,7 @@
     "kick": {
       "kind": "projectile",
       "action": "shot",
-      "travel": { "frames": [3, 4], "distance": 40 },
+      "travel": { "frames": [3, 4], "distance": 20 },
       "releaseFrame": 3,
       "speed": 900
     }

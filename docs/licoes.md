@@ -499,3 +499,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   31/10 virou opção; baixo soco, direita defesa, esquerda chute, cima
   especial, nas duas caras. Nome do golpe sai do botão por padrão e, quando
   ligado, é o do golpe que sai agora (de pé, abaixado, no ar). (2026-11-01)
+- **Passo do tiro é curto.** Pus 40 px da sheet (~56 px na tela) e o João
+  achou forte demais: ficou 20 px. O coice do mosquete (70 px) ele aprovou
+  como estava. Deslocamento que tira vantagem de distância é sutil; começar
+  pequeno. (2026-11-01)
