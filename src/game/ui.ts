@@ -243,3 +243,28 @@ export function coverCrop(image: Phaser.GameObjects.Image, size: number, x: numb
   // Com crop, o centro visível sai do centro da textura; reposiciona.
   image.setPosition(x - (cropX + cropWidth / 2 - image.width / 2) * scale, y - (cropY + cropHeight / 2 - image.height / 2) * scale);
 }
+
+/**
+ * Close do rosto: recorta do retrato o quadrado marcado em `rosto` no JSON
+ * do lutador e o escala para `size`. Sem a marcação, cai no {@link coverCrop}.
+ */
+export function rostoCrop(
+  image: Phaser.GameObjects.Image,
+  size: number,
+  x: number,
+  y: number,
+  rosto: { x: number; y: number; lado: number } | undefined
+): void {
+  if (!rosto) {
+    coverCrop(image, size, x, y);
+    return;
+  }
+  const lado = Math.min(rosto.lado * image.width, image.width, image.height);
+  const cropX = Phaser.Math.Clamp(rosto.x * image.width - lado / 2, 0, image.width - lado);
+  const cropY = Phaser.Math.Clamp(rosto.y * image.height - lado / 2, 0, image.height - lado);
+  const scale = size / lado;
+
+  image.setScale(scale);
+  image.setCrop(cropX, cropY, lado, lado);
+  image.setPosition(x - (cropX + lado / 2 - image.width / 2) * scale, y - (cropY + lado / 2 - image.height / 2) * scale);
+}

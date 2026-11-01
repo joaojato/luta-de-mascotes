@@ -352,4 +352,19 @@ describe('registro de lutadores (Regra do JSON)', () => {
     expect(sopros.length).toBeGreaterThan(0);
     sopros.forEach((m) => expect(m!.sopro!.altura).toBeGreaterThanOrEqual(maisAlto + 30));
   });
+
+  // Close da chave do mata-mata: todo lutador da seleção marca o rosto, e o
+  // quadrado cabe no retrato.
+  it('todo lutador da seleção marca o rosto no retrato', () => {
+    for (const lutador of LUTADORES.filter((l) => l.selecionavel !== false)) {
+      const rosto = lutador.rosto;
+      expect(rosto, lutador.id).toBeDefined();
+      expect(rosto!.lado, lutador.id).toBeGreaterThan(0.15);
+      expect(rosto!.lado, lutador.id).toBeLessThanOrEqual(1);
+      for (const valor of [rosto!.x, rosto!.y]) {
+        expect(valor, lutador.id).toBeGreaterThan(0);
+        expect(valor, lutador.id).toBeLessThan(1);
+      }
+    }
+  });
 });

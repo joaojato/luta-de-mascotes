@@ -6,11 +6,14 @@ import { COR_BORDA, COR_P1, COR_PAINEL, FONTE_TEXTO, FONTE_TITULO, TEXTO_APAGADO
 import { getCharacterDefinition } from '../game/hero';
 import { lutaDoJogador, nomeDaRodada, situacao, tabela, vencedor, type Situacao, type Torneio } from '../game/torneio';
 import { apagarTorneio, carregarTorneio } from '../game/torneioSalvo';
-import { coverCrop, createTextButton, type TextButton } from '../game/ui';
+import { LUTADORES } from '../game/lutadores';
+import { createTextButton, rostoCrop, type TextButton } from '../game/ui';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
 
 const COR_JOGADOR_CSS = `#${COR_P1.toString(16).padStart(6, '0')}`;
+
+const rostoDe = (id: string) => LUTADORES.find((lutador) => lutador.id === id)?.rosto;
 
 /**
  * Entre uma luta e outra do torneio: o chaveamento (mata-mata) ou a tabela
@@ -55,7 +58,12 @@ export class TorneioQuadroScene extends BaseScene {
     });
   }
 
-  /** Colunas por rodada, cada luta alimentando a de cima; a última coluna é o campeão. */
+  /**
+   * Colunas por rodada, cada luta alimentando a da coluna seguinte; a última é
+   * o campeão. Entre as colunas, o colchete da chave: as duas caixas de cada
+   * luta se juntam e seguem para a caixa de quem passou. O caminho do jogador
+   * vai na cor dele.
+   */
   private desenharChave(): void {
     const t = this.torneio;
     const rodadas = Math.log2(t.tamanho);
@@ -67,9 +75,12 @@ export class TorneioQuadroScene extends BaseScene {
     const altura = 470;
     const caixa = Math.min(46, (altura / t.tamanho) * 0.82);
 
+    const linhas = this.add.graphics();
+    const xDaColuna = (r: number): number => margem + largura / 2 + r * ((width - margem * 2 - largura) / rodadas);
     let ys = Array.from({ length: t.tamanho }, (_, i) => topo + (i + 0.5) * (altura / t.tamanho));
     for (let r = 0; r <= rodadas; r += 1) {
-      const x = margem + largura / 2 + r * ((width - margem * 2 - largura) / rodadas);
+      const x = xDaColuna(r);
+      const times: (string | null)[] = [];
       const rodada = t.rodadas[r];
       const anterior = t.rodadas[r - 1];
       ys.forEach((y, slot) => {
@@ -90,9 +101,47 @@ export class TorneioQuadroScene extends BaseScene {
           this.add.text(x, y - caixa / 2 - 18, 'CAMPEÃO', { color: TEXTO_DESTAQUE, fontFamily: FONTE_TITULO, fontSize: '18px' }).setOrigin(0.5);
         }
         this.caixaDeTime(x, y, largura, caixa, time, placar, perdeu);
+        times.push(time);
       });
-      ys = ys.reduce<number[]>((pares, y, i) => (i % 2 === 1 ? [...pares, (ys[i - 1] + y) / 2] : pares), []);
+      const proximos = ys.reduce<number[]>((pares, y, i) => (i % 2 === 1 ? [...pares, (ys[i - 1] + y) / 2] : pares), []);
+      if (r < rodadas) {
+        this.colchetes(linhas, r, x + largura / 2, xDaColuna(r + 1) - largura / 2, ys, proximos, times);
+      }
+      ys = proximos;
     }
+  }
+
+  /**
+   * O colchete entre uma coluna e a seguinte: de cada caixa sai um traço até o
+   * meio do vão, os dois traços de uma luta se juntam num vertical, e do meio
+   * dele sai o traço para a caixa da próxima rodada.
+   * @param linhas - Onde desenhar (fica por baixo das caixas).
+   * @param rodada - Índice da rodada desta coluna.
+   * @param xSaida - Borda direita das caixas desta coluna.
+   * @param xChegada - Borda esquerda das caixas da próxima.
+   * @param ys - Centro de cada caixa desta coluna.
+   * @param proximos - Centro de cada caixa da próxima.
+   * @param times - Quem está em cada caixa desta coluna.
+   */
+  private colchetes(linhas: Phaser.GameObjects.Graphics, rodada: number, xSaida: number, xChegada: number, ys: number[], proximos: number[], times: (string | null)[]): void {
+    const meio = (xSaida + xChegada) / 2;
+    const jogador = this.torneio.jogador;
+    const traco = (doJogador: boolean, desenhar: () => void): void => {
+      linhas.lineStyle(doJogador ? 4 : 2, doJogador ? COR_P1 : COR_BORDA, doJogador ? 1 : 0.9);
+      desenhar();
+    };
+    proximos.forEach((yProximo, luta) => {
+      const [ya, yb] = [ys[luta * 2], ys[luta * 2 + 1]];
+      const [a, b] = [times[luta * 2], times[luta * 2 + 1]];
+      const jogo = this.torneio.rodadas[rodada]?.[luta];
+      const passou = jogo?.placar ? vencedor(jogo) === jogador : false;
+      traco(a === jogador, () => linhas.lineBetween(xSaida, ya, meio, ya));
+      traco(b === jogador, () => linhas.lineBetween(xSaida, yb, meio, yb));
+      traco(false, () => linhas.lineBetween(meio, ya, meio, yb));
+      // Caminho do jogador: se ele passou desta luta, o vertical do lado dele e o traço adiante acendem.
+      if (passou) traco(true, () => linhas.lineBetween(meio, a === jogador ? ya : yb, meio, yProximo));
+      traco(passou, () => linhas.lineBetween(meio, yProximo, xChegada, yProximo));
+    });
   }
 
   private caixaDeTime(x: number, y: number, largura: number, altura: number, time: string | null, placar: number | null, perdeu: boolean): void {
@@ -109,7 +158,7 @@ export class TorneioQuadroScene extends BaseScene {
     const lado = altura - 6;
     const xRetrato = x - largura / 2 + 3 + lado / 2;
     if (this.textures.exists(lutador.portrait.key)) {
-      coverCrop(this.add.image(xRetrato, y, lutador.portrait.key).setAlpha(perdeu ? 0.45 : 1), lado, xRetrato, y);
+      rostoCrop(this.add.image(xRetrato, y, lutador.portrait.key).setAlpha(perdeu ? 0.45 : 1), lado, xRetrato, y, rostoDe(time));
     }
     this.add
       .text(xRetrato + lado / 2 + 8, y, lutador.label.toUpperCase(), {
@@ -147,7 +196,7 @@ export class TorneioQuadroScene extends BaseScene {
       this.add.text(95, y, `${i + 1}º`, estilo).setOrigin(0.5);
       const lutador = getCharacterDefinition(linha.time);
       const lado = alturaLinha - 10;
-      if (this.textures.exists(lutador.portrait.key)) coverCrop(this.add.image(140, y, lutador.portrait.key), lado, 140, y);
+      if (this.textures.exists(lutador.portrait.key)) rostoCrop(this.add.image(140, y, lutador.portrait.key), lado, 140, y, rostoDe(linha.time));
       this.add.text(140 + lado / 2 + 10, y, lutador.label.toUpperCase(), estilo).setOrigin(0, 0.5);
       const saldo = linha.roundsPro - linha.roundsContra;
       const valores = [linha.pontos, linha.lutas, linha.vitorias, linha.derrotas, saldo > 0 ? `+${saldo}` : saldo];

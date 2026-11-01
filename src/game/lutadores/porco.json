@@ -2,6 +2,7 @@
   "id": "porco",
   "label": "Porco",
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Mordida", "chute-basico": "Chute", "chute-baixo": "Coice", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Vômito"},
+  "rosto": {"x": 0.32, "y": 0.22, "lado": 0.47},
   "assetRoot": "/assets/lutadores/porco",
   "sons": {"soco-forte": "mordida", "chute-baixo": "coice", "carga": "enjoo", "projetil-especial": "vomito", "dor": "dor-porco", "dor-forte": "dor-forte-porco"},
   "torcida": {

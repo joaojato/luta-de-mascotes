@@ -2,6 +2,7 @@
   "id": "almirante",
   "label": "Almirante",
   "nomes": {"soco-rapido": "Jab", "soco-forte": "Cruzado", "chute-basico": "Garrucha", "chute-baixo": "Chute", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Caravela"},
+  "rosto": {"x": 0.5, "y": 0.32, "lado": 0.34},
   "assetRoot": "/assets/lutadores/almirante",
   "sons": {"chute": null, "projetil": "tiro-garrucha", "projetil-especial": "caravela", "carga": "sino-navio"},
   "torcida": { "estampa": "faixa-diagonal", "cores": ["#181818", "#ECECEC"] },

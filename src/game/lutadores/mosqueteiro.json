@@ -2,6 +2,7 @@
   "id": "mosqueteiro",
   "label": "Mosqueteiro",
   "nomes": {"soco-rapido": "Estocadas", "soco-forte": "Cotovelada", "chute-basico": "Mosquete", "chute-baixo": "Estocada", "soco-no-ar": "Corte", "voadora": "Mergulho", "especial": "Gaviões"},
+  "rosto": {"x": 0.36, "y": 0.37, "lado": 0.36},
   "assetRoot": "/assets/lutadores/mosqueteiro",
   "sons": {
     "soco-rapido": "corte",
