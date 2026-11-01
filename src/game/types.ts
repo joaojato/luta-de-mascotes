@@ -6,6 +6,8 @@ export const SCENE_KEYS = {
   MainMenu: 'MainMenuScene',
   ModeSelect: 'ModeSelectScene',
   Dificuldade: 'DificuldadeScene',
+  Torneio: 'TorneioScene',
+  TorneioQuadro: 'TorneioQuadroScene',
   LevelSelect: 'LevelSelectScene',
   CharacterSelect: 'CharacterSelectScene',
   Match: 'MatchScene',
@@ -46,6 +48,8 @@ export interface MatchConfig {
   stageId: string;
   p1CharacterId: string;
   p2CharacterId: string;
+  /** Luta do torneio salvo: a CPU usa a dificuldade dele e o fim volta ao chaveamento. */
+  torneio?: true;
 }
 
 export type GameProfile = 'landscape' | 'portrait';

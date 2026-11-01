@@ -7,7 +7,10 @@ import { getCharacterDefinition } from '../game/hero';
 import { FERRAMENTAS_DE_DEV } from '../game/constants';
 import { CONTORNO_TITULO, COR_FUNDO, FONTE_TITULO, SOMBRA_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from '../game/estilo';
 import { carregarControles, COMANDOS_LUTA, type ComandoLuta, type Controles, type Lado } from '../game/controles';
-import { CpuLutador, DIFICULDADES } from '../game/cpu';
+import { CpuLutador, DIFICULDADES, type Dificuldade } from '../game/cpu';
+import { IDS_SELECIONAVEIS } from '../game/elenco';
+import { registrarLutaDoJogador } from '../game/torneio';
+import { carregarTorneio, salvarTorneio } from '../game/torneioSalvo';
 import { MenuPausa } from '../game/menuPausa';
 import { controlesDeToqueAtivos } from '../toque/telaToque';
 import { MatchHud } from '../game/matchHud';
@@ -549,8 +552,14 @@ export class MatchScene extends BaseScene {
     keyboard.on('keydown-ESC', () => this.goToMenu());
     keyboard.on('keydown-BACKSPACE', () => this.goToMenu());
     keyboard.on('keydown-R', () => {
-      if (this.phase === 'matchOver') {
+      // No torneio não há revanche: o resultado vale.
+      if (this.phase === 'matchOver' && !this.config.torneio) {
         this.rematch();
+      }
+    });
+    keyboard.on('keydown-ENTER', () => {
+      if (this.phase === 'matchOver' && this.config.torneio) {
+        this.continuarTorneio();
       }
     });
   }
@@ -605,9 +614,28 @@ export class MatchScene extends BaseScene {
     });
   }
 
-  /** CPU do 1 VS CPU, na dificuldade escolhida na tela de modo (docs/cpu.md). */
+  /** CPU do 1 VS CPU, na dificuldade escolhida na tela de dificuldade. */
   private novaCpu(): CpuLutador | undefined {
-    return this.config.mode === '1vcpu' ? new CpuLutador(this.app.settingsStore.getState().cpuDificuldade) : undefined;
+    return this.config.mode === '1vcpu' ? new CpuLutador(this.dificuldadeDaCpu()) : undefined;
+  }
+
+  /** No torneio vale a dificuldade com que ele começou; fora dele, a dos ajustes. */
+  private dificuldadeDaCpu(): Dificuldade {
+    const torneio = this.config.torneio ? carregarTorneio(IDS_SELECIONAVEIS) : null;
+    return torneio?.dificuldade ?? this.app.settingsStore.getState().cpuDificuldade;
+  }
+
+  /** Lança o placar da luta no torneio salvo e volta ao chaveamento ou à tabela. */
+  private continuarTorneio(): void {
+    if (this.phase !== 'matchOver') {
+      return;
+    }
+    this.phase = 'intro';
+    const torneio = carregarTorneio(IDS_SELECIONAVEIS);
+    if (torneio) {
+      salvarTorneio(registrarLutaDoJogador(torneio, [this.p1Wins, this.p2Wins]));
+    }
+    this.scene.start(SCENE_KEYS.TorneioQuadro);
   }
 
   /** O que a CPU (P2) enxerga da luta neste quadro. */
@@ -650,7 +678,7 @@ export class MatchScene extends BaseScene {
     }
     const toque = controlesDeToqueAtivos();
     const cpu = this.config.mode === '1vcpu';
-    const dificuldade = DIFICULDADES.find((d) => d.id === this.app.settingsStore.getState().cpuDificuldade)?.nome;
+    const dificuldade = DIFICULDADES.find((d) => d.id === this.dificuldadeDaCpu())?.nome;
     this.pausa = new MenuPausa(
       this,
       [
@@ -784,7 +812,9 @@ export class MatchScene extends BaseScene {
       .setDepth(OVERLAY_DEPTH)
       .setScrollFactor(0);
 
-    const rematch = this.makeOverlayButton(centerX, centerY + 40, 'REVANCHE  (R)', () => this.rematch());
+    const rematch = this.config.torneio
+      ? this.makeOverlayButton(centerX, centerY + 40, 'CONTINUAR  (Enter)', () => this.continuarTorneio())
+      : this.makeOverlayButton(centerX, centerY + 40, 'REVANCHE  (R)', () => this.rematch());
     const menu = this.makeOverlayButton(centerX, centerY + 96, 'MENU  (Esc)', () => this.goToMenu());
 
     this.overlay = [dim, title, score, rematch, menu];

@@ -124,6 +124,6 @@ export class DificuldadeScene extends BaseScene {
 
   private voltar(): void {
     if (this.dados.destino === 'pelada') this.scene.start(SCENE_KEYS.ModeSelect);
-    else this.scene.start(SCENE_KEYS.MainMenu);
+    else this.scene.start(SCENE_KEYS.Torneio);
   }
 }

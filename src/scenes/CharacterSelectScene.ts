@@ -1,17 +1,21 @@
 import * as Phaser from 'phaser';
 
 import { playAudioCue } from '../game/core/audio';
-import { ELENCO_SELECIONAVEL } from '../game/elenco';
+import { ELENCO_SELECIONAVEL, IDS_SELECIONAVEIS } from '../game/elenco';
 import { findCharacterAnimationKeyByAction, type CharacterDefinition } from '../game/hero';
 import { COR_DESTAQUE, COR_P1, COR_P2, FONTE_TITULO, TEXTO_DESTAQUE } from '../game/estilo';
 import { sortearIndice } from '../game/sorteio';
+import { criarTorneio } from '../game/torneio';
+import { salvarTorneio } from '../game/torneioSalvo';
 import { coverCrop } from '../game/ui';
-import { SCENE_KEYS, type MatchMode } from '../game/types';
+import { SCENE_KEYS, type FormatoTorneio, type MatchMode } from '../game/types';
 import { BaseScene } from './BaseScene';
 
 interface CharacterSelectData {
   mode: MatchMode;
   stageId: string;
+  /** Escolha do time de um torneio novo: só o jogador escolhe. */
+  torneio?: { formato: FormatoTorneio; tamanho: 8 | 16 };
 }
 
 const P1_COLOR = COR_P1;
@@ -55,6 +59,7 @@ interface PlayerCursor {
 export class CharacterSelectScene extends BaseScene {
   private mode: MatchMode = '1v1';
   private stageId = '';
+  private torneio: CharacterSelectData['torneio'] | null = null;
   private tiles: Tile[] = [];
   private columns = 1;
   private p1!: PlayerCursor;
@@ -70,6 +75,7 @@ export class CharacterSelectScene extends BaseScene {
   init(data: CharacterSelectData): void {
     this.mode = data?.mode ?? '1v1';
     this.stageId = data?.stageId ?? '';
+    this.torneio = data?.torneio ?? null;
   }
 
   create(): void {
@@ -78,7 +84,7 @@ export class CharacterSelectScene extends BaseScene {
 
     this.markActiveScene(SCENE_KEYS.CharacterSelect);
     this.createBackdrop(this.stageId);
-    this.createHeading('Escolha seu lutador', '');
+    this.createHeading(this.torneio ? 'Escolha seu time' : 'Escolha seu lutador', '');
     this.buildGrid();
     this.p1 = this.createCursor('P1', P1_COLOR, 0, -1);
     this.p2 = this.createCursor(this.mode === '1v1' ? 'P2' : 'CPU', P2_COLOR, this.mode === '1v1' ? Math.min(1, this.tiles.length - 1) : 0, 1);
@@ -346,8 +352,8 @@ export class CharacterSelectScene extends BaseScene {
       this.etapa.setVisible(false);
       return;
     }
-    const cpu = this.p1.locked;
-    this.etapa.setText(cpu ? 'Agora escolha o adversário (CPU)' : 'Escolha o seu lutador').setColor(colorToCss(cpu ? P2_COLOR : P1_COLOR));
+    const cpu = this.p1.locked && !this.torneio;
+    this.etapa.setText(this.torneio ? 'Os adversários saem no sorteio' : cpu ? 'Agora escolha o adversário (CPU)' : 'Escolha o seu lutador').setColor(colorToCss(cpu ? P2_COLOR : P1_COLOR));
   }
 
   private hoverTile(index: number): void {
@@ -390,11 +396,15 @@ export class CharacterSelectScene extends BaseScene {
     this.showPreview(cursor, 'light-punch');
     playAudioCue(this, 'ui-travar', this.app.settingsStore.getState());
 
-    if (this.mode === '1vcpu' && cursor === this.p1) {
+    if (this.mode === '1vcpu' && cursor === this.p1 && !this.torneio) {
       this.abrirEscolhaDaCpu();
     }
 
     this.flashTile(cursor.index, () => {
+      if (this.torneio) {
+        this.time.delayedCall(250, () => this.comecarTorneio());
+        return;
+      }
       if (this.mode === '1vcpu') {
         if (cursor === this.p2) this.time.delayedCall(250, () => this.startMatch());
         return;
@@ -442,8 +452,24 @@ export class CharacterSelectScene extends BaseScene {
     });
   }
 
+  /** Sorteia os outros times com a dificuldade escolhida, salva e abre o chaveamento ou a tabela. */
+  private comecarTorneio(): void {
+    if (this.transitioning || !this.torneio) {
+      return;
+    }
+    this.transitioning = true;
+    const { formato, tamanho } = this.torneio;
+    const jogador = SELECTABLE_ROSTER[this.p1.index].id;
+    salvarTorneio(criarTorneio(formato, tamanho, jogador, IDS_SELECIONAVEIS, this.app.settingsStore.getState().cpuDificuldade));
+    this.scene.start(SCENE_KEYS.TorneioQuadro);
+  }
+
   private goBack(): void {
     if (this.transitioning) {
+      return;
+    }
+    if (this.torneio) {
+      this.scene.start(SCENE_KEYS.Dificuldade, { destino: 'torneio', ...this.torneio });
       return;
     }
     // Escolhendo o adversário: Esc destrava o próprio lutador em vez de sair.

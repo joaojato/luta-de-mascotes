@@ -7,6 +7,8 @@ import { SplashScene } from '../scenes/SplashScene';
 import { MainMenuScene } from '../scenes/MainMenuScene';
 import { ModeSelectScene } from '../scenes/ModeSelectScene';
 import { DificuldadeScene } from '../scenes/DificuldadeScene';
+import { TorneioScene } from '../scenes/TorneioScene';
+import { TorneioQuadroScene } from '../scenes/TorneioQuadroScene';
 import { LevelSelectScene } from '../scenes/LevelSelectScene';
 import { CharacterSelectScene } from '../scenes/CharacterSelectScene';
 import { MatchScene } from '../scenes/MatchScene';
@@ -47,6 +49,8 @@ export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Ga
       MainMenuScene,
       ModeSelectScene,
       DificuldadeScene,
+      TorneioScene,
+      TorneioQuadroScene,
       LevelSelectScene,
       CharacterSelectScene,
       MatchScene,

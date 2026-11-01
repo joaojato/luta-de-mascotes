@@ -43,11 +43,13 @@ describe('torneio salvo no navegador (31/10/2026)', () => {
     expect(carregarTorneio(ELENCO, storage)).toBeNull();
   });
 
-  it('navegador que recusa gravar não quebra o jogo', () => {
+  it('navegador que recusa gravar não quebra o jogo: o torneio segue na memória da página', () => {
     const storage = memoria();
     storage.setItem = () => { throw new Error('QuotaExceededError'); };
-    expect(() => salvarTorneio(criarTorneio('mata-mata', 8, 'urubu', ELENCO, 'medio', semente()), storage)).not.toThrow();
-    expect(carregarTorneio(ELENCO, storage)).toBeNull();
+    const t = criarTorneio('mata-mata', 8, 'urubu', ELENCO, 'medio', semente());
+    expect(() => salvarTorneio(t, storage)).not.toThrow();
+    expect(carregarTorneio(ELENCO, storage)).toEqual(t);
+    apagarTorneio(storage);
   });
 
   it('recarregar no meio volta à mesma rodada', () => {

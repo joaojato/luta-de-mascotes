@@ -78,12 +78,13 @@ export class MainMenuScene extends BaseScene {
     this.clearButtons();
 
     const playOption: MenuOption = { label: 'Pelada', action: () => this.scene.start(SCENE_KEYS.ModeSelect) };
+    const torneiosOption: MenuOption = { label: 'Torneios', action: () => this.scene.start(SCENE_KEYS.Torneio) };
     const academiaOption: MenuOption = { label: 'Academia', action: () => this.scene.start(SCENE_KEYS.Academia) };
     const celularOption: MenuOption = { label: 'Celular', action: () => this.scene.start(SCENE_KEYS.Conectar) };
     const settingsOption: MenuOption = { label: 'Ajustes', action: () => this.scene.start(SCENE_KEYS.Settings) };
     this.options = FERRAMENTAS_DE_DEV
-      ? [playOption, academiaOption, celularOption, settingsOption]
-      : [playOption, settingsOption];
+      ? [playOption, torneiosOption, academiaOption, celularOption, settingsOption]
+      : [playOption, torneiosOption, settingsOption];
 
     const spacing = 72;
     const startY = this.cameras.main.centerY - (spacing * (this.options.length - 1)) / 2 + 20;
