@@ -1053,7 +1053,11 @@ html.com-toque *::after {
   --toque-borda: rgba(244, 233, 216, 0.5);
   --toque-fundo: rgba(13, 11, 30, 0.42);
   --toque-aceso: rgba(244, 233, 216, 0.28);
-  /* Cores do controle de PlayStation. */
+  /* Cores dos controles: Xbox (padrão) e PlayStation. */
+  --xbox-a: #5cc93b;
+  --xbox-b: #ef4b3f;
+  --xbox-x: #3d8ff0;
+  --xbox-y: #f5c42c;
   --ps-triangulo: #2fd8a0;
   --ps-circulo: #ff4f5e;
   --ps-xis: #6aa8ff;
@@ -1166,7 +1170,8 @@ html.com-toque *::after {
   display: block;
 }
 
-/* Botão de luta: símbolo do PlayStation na cor dele, nome pequeno embaixo. */
+/* Botão de luta: letra do Xbox ou símbolo do PlayStation na cor dele; o nome
+   do golpe embaixo só com "Nomes dos golpes" ligado no menu. */
 .toque__botao {
   --cor: var(--ink);
   display: flex;
@@ -1194,16 +1199,38 @@ html.com-toque *::after {
 }
 
 .toque__nome {
+  display: none;
+  max-width: 92%;
   font-size: max(9px, 0.62em);
   letter-spacing: 0.02em;
+  text-align: center;
   color: var(--ink);
   opacity: 0.85;
 }
 
-.toque__botao--triangulo { --cor: var(--ps-triangulo); }
-.toque__botao--circulo { --cor: var(--ps-circulo); }
-.toque__botao--xis { --cor: var(--ps-xis); }
-.toque__botao--quadrado { --cor: var(--ps-quadrado); }
+.toque.com-nomes .toque__nome:not(:empty) {
+  display: block;
+}
+
+.toque[data-cara='xbox'] .toque__botao--cima { --cor: var(--xbox-y); }
+.toque[data-cara='xbox'] .toque__botao--direita { --cor: var(--xbox-b); }
+.toque[data-cara='xbox'] .toque__botao--baixo { --cor: var(--xbox-a); }
+.toque[data-cara='xbox'] .toque__botao--esquerda { --cor: var(--xbox-x); }
+.toque[data-cara='playstation'] .toque__botao--cima { --cor: var(--ps-triangulo); }
+.toque[data-cara='playstation'] .toque__botao--direita { --cor: var(--ps-circulo); }
+.toque[data-cara='playstation'] .toque__botao--baixo { --cor: var(--ps-xis); }
+.toque[data-cara='playstation'] .toque__botao--esquerda { --cor: var(--ps-quadrado); }
+
+/* Letra do Xbox fica maior que o símbolo do PlayStation, como no controle. */
+.toque[data-cara='xbox'] .toque__botao svg {
+  width: 50%;
+  height: 50%;
+}
+
+/* Especial sem barra (ou no ar): apagado, mas ainda aperta. */
+.toque__botao.is-apagado {
+  opacity: 0.45;
+}
 
 .toque__botao.is-on {
   background: color-mix(in srgb, var(--cor) 38%, transparent);

@@ -42,18 +42,18 @@ describe('layout de fábrica', () => {
     }
   });
 
-  it('põe os quatro botões no losango do PlayStation', () => {
+  it('põe os quatro botões no losango', () => {
     const l = layoutPadrao(IPHONE);
-    expect(l.triangulo.y).toBeLessThan(l.circulo.y);
-    expect(l.xis.y).toBeGreaterThan(l.circulo.y);
-    expect(l.quadrado.x).toBeLessThan(l.triangulo.x);
-    expect(l.circulo.x).toBeGreaterThan(l.triangulo.x);
-    expect(l.triangulo.x).toBeCloseTo(l.xis.x);
+    expect(l.cima.y).toBeLessThan(l.direita.y);
+    expect(l.baixo.y).toBeGreaterThan(l.direita.y);
+    expect(l.esquerda.x).toBeLessThan(l.cima.x);
+    expect(l.direita.x).toBeGreaterThan(l.cima.x);
+    expect(l.cima.x).toBeCloseTo(l.baixo.x);
   });
 
   it('nenhum botão do losango encosta no outro', () => {
     const l = layoutPadrao(IPHONE);
-    const [t, c, x, q] = (['triangulo', 'circulo', 'xis', 'quadrado'] as const).map((id) => caixaEmPixels(l[id], IPHONE));
+    const [t, c, x, q] = (['cima', 'direita', 'baixo', 'esquerda'] as const).map((id) => caixaEmPixels(l[id], IPHONE));
     const centro = (k: { esquerda: number; topo: number; lado: number }) => [k.esquerda + k.lado / 2, k.topo + k.lado / 2];
     for (const [a, b] of [[t, c], [c, x], [x, q], [q, t]]) {
       const [ax, ay] = centro(a);
@@ -72,7 +72,7 @@ describe('editar', () => {
   });
 
   it('o tamanho tem piso e teto', () => {
-    const botao = layoutPadrao(IPHONE).xis;
+    const botao = layoutPadrao(IPHONE).baixo;
     expect(redimensionar(botao, 0.001).tamanho).toBe(0.07);
     expect(redimensionar(botao, 1000).tamanho).toBe(0.6);
   });
@@ -80,18 +80,18 @@ describe('editar', () => {
   it('salva, recarrega e volta ao de fábrica', () => {
     const storage = memoria();
     const padrao = layoutPadrao(IPHONE);
-    const movido = { ...padrao, xis: { x: 0.5, y: 0.5, tamanho: 0.2 } };
+    const movido = { ...padrao, baixo: { x: 0.5, y: 0.5, tamanho: 0.2 } };
     salvarLayout(movido, storage);
-    expect(juntarLayout(padrao, carregarLayout(storage)).xis).toEqual({ x: 0.5, y: 0.5, tamanho: 0.2 });
+    expect(juntarLayout(padrao, carregarLayout(storage)).baixo).toEqual({ x: 0.5, y: 0.5, tamanho: 0.2 });
     apagarLayout(storage);
     expect(juntarLayout(padrao, carregarLayout(storage))).toEqual(padrao);
   });
 
   it('salvo com lixo cai no de fábrica, controle a controle', () => {
     const padrao = layoutPadrao(IPHONE);
-    const juntado = juntarLayout(padrao, { xis: { x: 'a', y: 1, tamanho: 1 }, circulo: { x: 0.9, y: 0.4, tamanho: 0.15 } });
-    expect(juntado.xis).toEqual(padrao.xis);
-    expect(juntado.circulo).toEqual({ x: 0.9, y: 0.4, tamanho: 0.15 });
+    const juntado = juntarLayout(padrao, { baixo: { x: 'a', y: 1, tamanho: 1 }, direita: { x: 0.9, y: 0.4, tamanho: 0.15 } });
+    expect(juntado.baixo).toEqual(padrao.baixo);
+    expect(juntado.direita).toEqual({ x: 0.9, y: 0.4, tamanho: 0.15 });
     expect(juntarLayout(padrao, 'quebrado')).toEqual(padrao);
   });
 });

@@ -1,6 +1,7 @@
 {
   "id": "cartola",
   "label": "Cartola",
+  "nomes": {"soco-rapido": "Socos", "soco-forte": "Bengalada", "chute-basico": "Chute", "chute-baixo": "Varredura", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Pó de Arroz"},
   "assetRoot": "/assets/lutadores/cartola",
   "sons": {"projetil-especial": "po-de-arroz"},
   "torcida": { "estampa": "listras-verticais", "cores": ["#A80018", "#006048", "#F0F0F0"] },

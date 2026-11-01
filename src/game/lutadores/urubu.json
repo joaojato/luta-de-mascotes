@@ -1,6 +1,7 @@
 {
   "id": "urubu",
   "label": "Urubu",
+  "nomes": {"soco-rapido": "Socos", "soco-forte": "Asas", "chute-basico": "Bicada", "chute-baixo": "Chute", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Meteoro"},
   "assetRoot": "/assets/lutadores/urubu",
   "sons": {"chute": "bicada", "soco-forte": "asas", "carga": "termica", "especial": "meteoro", "especial-mergulho": "mergulho", "especial-pouso": "meteoro-pouso", "dor": "dor-urubu", "dor-forte": "dor-forte-urubu"},
   "torcida": {

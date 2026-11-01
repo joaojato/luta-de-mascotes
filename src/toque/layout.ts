@@ -6,9 +6,10 @@
  * arranjo serve com e sem a barra do navegador, e depois de girar o aparelho.
  */
 
-export type IdControle = 'menu' | 'direcional' | 'triangulo' | 'circulo' | 'xis' | 'quadrado';
+/** Os quatro botões de luta pelo lugar no losango; a cara (Xbox ou PlayStation) muda por cima. */
+export type IdControle = 'menu' | 'direcional' | 'cima' | 'direita' | 'baixo' | 'esquerda';
 
-export const IDS_CONTROLE: readonly IdControle[] = ['menu', 'direcional', 'triangulo', 'circulo', 'xis', 'quadrado'];
+export const IDS_CONTROLE: readonly IdControle[] = ['menu', 'direcional', 'cima', 'direita', 'baixo', 'esquerda'];
 
 /** Centro em fração da largura (`x`) e da altura (`y`); `tamanho` em fração da altura. */
 export interface Posicao {
@@ -39,8 +40,7 @@ const limitar = (valor: number, minimo: number, maximo: number): number => Math.
 
 /**
  * O arranjo de fábrica: menu no canto de cima à esquerda, direcional embaixo
- * à esquerda, e à direita o losango do controle de PlayStation (triângulo em
- * cima, bola à direita, xis embaixo, quadrado à esquerda).
+ * à esquerda, e à direita o losango de quatro botões, como num controle.
  */
 export function layoutPadrao(tela: Tela): Layout {
   const { largura: w, altura: h, seguro } = tela;
@@ -57,10 +57,10 @@ export function layoutPadrao(tela: Tela): Layout {
   return {
     menu: emFracao(seguro.esquerda + 10 + menu / 2, seguro.topo + 10 + menu / 2, menu),
     direcional: emFracao(seguro.esquerda + 16 + direcional / 2, h - seguro.baixo - 12 - direcional / 2, direcional),
-    triangulo: emFracao(lx, ly - braco, botao),
-    circulo: emFracao(lx + braco, ly, botao),
-    xis: emFracao(lx, ly + braco, botao),
-    quadrado: emFracao(lx - braco, ly, botao)
+    cima: emFracao(lx, ly - braco, botao),
+    direita: emFracao(lx + braco, ly, botao),
+    baixo: emFracao(lx, ly + braco, botao),
+    esquerda: emFracao(lx - braco, ly, botao)
   };
 }
 

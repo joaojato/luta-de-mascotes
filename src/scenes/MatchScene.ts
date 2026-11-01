@@ -13,6 +13,8 @@ import { registrarLutaDoJogador } from '../game/torneio';
 import { carregarTorneio, salvarTorneio } from '../game/torneioSalvo';
 import { MenuPausa } from '../game/menuPausa';
 import { controlesDeToqueAtivos } from '../toque/telaToque';
+import { publicarLuta } from '../toque/lutaNaTela';
+import { nomesDosBotoes } from '../game/golpes';
 import { MatchHud } from '../game/matchHud';
 import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STAGGER, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
@@ -165,6 +167,7 @@ export class MatchScene extends BaseScene {
       this.hud?.destroy();
       this.paineisCelular.forEach(({ painel }) => painel.destruir());
       this.paineisCelular = [];
+      publicarLuta(null);
     });
   }
 
@@ -209,6 +212,7 @@ export class MatchScene extends BaseScene {
 
     this.p1.update(seconds, p1Input);
     this.p2.update(seconds, p2Input);
+    this.publicarBotoesDaTela(p1Input);
 
     this.updateCamera(false);
     this.biribas.forEach((biriba) => biriba.update(seconds));
@@ -572,10 +576,11 @@ export class MatchScene extends BaseScene {
         this.rematch();
       }
     });
+    // Enter no fim: segue o torneio, ou revanche (o A / ✕ do celular aperta Enter).
     keyboard.on('keydown-ENTER', () => {
-      if (this.phase === 'matchOver' && this.config.torneio) {
-        this.continuarTorneio();
-      }
+      if (this.phase !== 'matchOver') return;
+      if (this.config.torneio) this.continuarTorneio();
+      else this.rematch();
     });
   }
 
@@ -657,6 +662,22 @@ export class MatchScene extends BaseScene {
       salvarTorneio(registrarLutaDoJogador(torneio, [this.p1Wins, this.p2Wins]));
     }
     this.scene.start(SCENE_KEYS.TorneioQuadro);
+  }
+
+  /**
+   * Conta aos botões do celular o golpe que cada um solta agora (de pé,
+   * abaixado, no ar). Partida acabada: nada, e os botões viram OK e Voltar.
+   * @param input - O que o P1 está apertando neste quadro.
+   */
+  private publicarBotoesDaTela(input: FighterInput): void {
+    if (!controlesDeToqueAtivos()) return;
+    if (this.phase === 'matchOver') {
+      publicarLuta(null);
+      return;
+    }
+    const estado = this.p1.isAirborne ? 'ar' : input.crouch ? 'abaixado' : 'pe';
+    const nomes = LUTADORES.find((lutador) => lutador.id === this.p1.characterId)?.nomes;
+    publicarLuta({ nomes: nomesDosBotoes(nomes, estado), especialPronto: this.p1.isMeterReady && !this.p1.isAirborne });
   }
 
   /** O que a CPU (P2) enxerga da luta neste quadro. */
@@ -840,7 +861,7 @@ export class MatchScene extends BaseScene {
 
     const rematch = this.config.torneio
       ? this.makeOverlayButton(centerX, centerY + 40, 'CONTINUAR  (Enter)', () => this.continuarTorneio())
-      : this.makeOverlayButton(centerX, centerY + 40, 'REVANCHE  (R)', () => this.rematch());
+      : this.makeOverlayButton(centerX, centerY + 40, 'REVANCHE  (R / Enter)', () => this.rematch());
     const menu = this.makeOverlayButton(centerX, centerY + 96, 'MENU  (Esc)', () => this.goToMenu());
 
     this.overlay = [dim, title, score, rematch, menu];

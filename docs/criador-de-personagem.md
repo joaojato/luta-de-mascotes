@@ -171,6 +171,15 @@ faltar usa o dash comum (180 px em 0,28 s; para trás, 120 px em 0,22 s).
 
 E ainda: retrato (`portrait.png`, busto) e âncora (`anchor-w.png`).
 
+No retrato, onde fica o rosto? Vira o campo `rosto` do JSON (centro `x`,
+`y` em fração do retrato, `lado` em fração da largura): é o close da chave
+do mata-mata e da tabela.
+
+Nome curto de cada golpe, até 11 letras, para o botão do celular: campo
+`nomes`, um por golpe do catálogo (`soco-rapido`, `soco-forte`,
+`chute-basico`, `chute-baixo`, `soco-no-ar`, `voadora`, `especial`). Ex. do
+Saci: Jab, Direto, Cachimbo, Chute, Soco aéreo, Voadora, Furacão.
+
 ## 6b. Sons
 
 Todo mascote nasce com os sons gerais (`docs/sons.md`). Perguntar só o que
@@ -212,3 +221,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 01/11/2026: especial `forma` (vira outro lutador por um tempo, com cronômetro no HUD).
 - 01/11/2026: `imparavel` no especial que avança (golpe só tira vida) e `moves.dash` por lutador.
 - 01/11/2026: Regra do Tiro (quem atira anda para a frente; arma pesada dá coice com `recuo`).
+- 01/11/2026: `nomes` (nome curto de cada golpe nos botões do celular) e `rosto` (close do retrato na chave).

@@ -2,12 +2,15 @@
  * Controles na tela para jogar no celular deitado (docs/mobile.md).
  *
  * Os botões apertam as teclas do P1 (as mesmas do teclado), então menus,
- * seleção e luta funcionam sem código novo nas cenas: o direcional anda nos
- * menus e o triângulo (Especial, Espaço) confirma.
+ * seleção e luta funcionam sem código novo nas cenas. Fora da luta o botão
+ * de baixo (A / ✕) aperta Enter e o da direita (B / ○) aperta Esc: confirma
+ * e volta, como em console.
  */
 import * as Phaser from 'phaser';
 
 import { carregarControles, type ComandoLuta } from '../game/controles';
+import { aoMudarLuta, lutaNaTela, type LutaNaTela } from './lutaNaTela';
+import { carregarPreferencias, salvarPreferencias, type Cara } from './preferencias';
 import { carregarModo, diferencaDeTeclas, direcoesDoPonto, salvarModo, type Direcao, type ModoDirecional } from './direcao';
 import {
   apagarLayout,
@@ -95,19 +98,32 @@ function abertoComoApp(): boolean {
 // Símbolos desenhados, nunca texto: o iPhone trata texto segurado como seleção
 // (lupa e zoom), e ◀ ▶ viram emoji em alguns aparelhos.
 const SETA = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1.5 9 8H1z"/></svg>';
-const SIMBOLO: Record<'triangulo' | 'circulo' | 'xis' | 'quadrado', string> = {
-  triangulo: '<path d="M20 6 34 31H6z"/>',
-  circulo: '<circle cx="20" cy="20" r="13"/>',
-  xis: '<path d="M8 8 32 32M32 8 8 32"/>',
-  quadrado: '<rect x="8" y="8" width="24" height="24"/>'
+// As letras do Xbox também são traço, pelo mesmo motivo.
+type PosicaoDoBotao = 'cima' | 'direita' | 'baixo' | 'esquerda';
+const CARAS: Record<Cara, Record<PosicaoDoBotao, { simbolo: string; nome: string }>> = {
+  xbox: {
+    cima: { simbolo: '<path d="M12 9 20 20 28 9M20 20v11"/>', nome: 'Y' },
+    direita: { simbolo: '<path d="M14 9v22M14 9h7a5.5 5.5 0 0 1 0 11h-7M14 20h8a5.5 5.5 0 0 1 0 11h-8"/>', nome: 'B' },
+    baixo: { simbolo: '<path d="M12 31 20 9 28 31M15 23h10"/>', nome: 'A' },
+    esquerda: { simbolo: '<path d="M12 9 28 31M28 9 12 31"/>', nome: 'X' }
+  },
+  playstation: {
+    cima: { simbolo: '<path d="M20 6 34 31H6z"/>', nome: 'Triângulo' },
+    direita: { simbolo: '<circle cx="20" cy="20" r="13"/>', nome: 'Bola' },
+    baixo: { simbolo: '<path d="M8 8 32 32M32 8 8 32"/>', nome: 'Xis' },
+    esquerda: { simbolo: '<rect x="8" y="8" width="24" height="24"/>', nome: 'Quadrado' }
+  }
 };
 
-/** Botões de luta no losango do PlayStation (docs/mobile.md). */
-const BOTOES: { id: keyof typeof SIMBOLO; comando: ComandoLuta; nome: string }[] = [
-  { id: 'triangulo', comando: 'special', nome: 'Especial' },
-  { id: 'circulo', comando: 'light', nome: 'Soco' },
-  { id: 'xis', comando: 'heavy', nome: 'Chute' },
-  { id: 'quadrado', comando: 'block', nome: 'Defesa' }
+/**
+ * O comando de cada lugar do losango, igual nas duas caras (docs/mobile.md),
+ * e a tecla que ele aperta fora da luta, nos menus.
+ */
+const BOTOES: { id: PosicaoDoBotao; comando: ComandoLuta; noMenu?: { tecla: string; nome: string } }[] = [
+  { id: 'cima', comando: 'special' },
+  { id: 'direita', comando: 'block', noMenu: { tecla: 'ESC', nome: 'Voltar' } },
+  { id: 'baixo', comando: 'light', noMenu: { tecla: 'ENTER', nome: 'OK' } },
+  { id: 'esquerda', comando: 'heavy' }
 ];
 
 /**
@@ -144,10 +160,10 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
       <span class="toque__pino"></span>
     </div>
     ${BOTOES.map(
-      ({ id, comando, nome }) => `
-    <button class="toque__controle toque__botao toque__botao--${id}" data-id="${id}" data-comando="${comando}" type="button" aria-label="${nome}">
-      <svg viewBox="0 0 40 40" aria-hidden="true">${SIMBOLO[id]}</svg>
-      <span class="toque__nome">${nome}</span>
+      ({ id, comando }) => `
+    <button class="toque__controle toque__botao toque__botao--${id}" data-id="${id}" data-comando="${comando}" type="button">
+      <svg viewBox="0 0 40 40" aria-hidden="true"></svg>
+      <span class="toque__nome"></span>
     </button>`
     ).join('')}
     <div class="toque__painel" hidden>
@@ -156,6 +172,8 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
         <button class="toque__item" data-acao="voltar" type="button">Voltar / sair da luta</button>
         <button class="toque__item" data-acao="tela-cheia" type="button">Tela cheia</button>
         <button class="toque__item" data-acao="modo" type="button"></button>
+        <button class="toque__item" data-acao="cara" type="button"></button>
+        <button class="toque__item" data-acao="nomes" type="button"></button>
         <button class="toque__item" data-acao="editar" type="button">Ajustar botões</button>
       </div>
     </div>
@@ -193,6 +211,35 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   };
   mostrarModo();
   itemTelaCheia.hidden = abertoComoApp();
+
+  // ---------------------------------------------------------------- cara e nomes
+  let preferencias = carregarPreferencias();
+  const itemCara = pegar<HTMLButtonElement>('[data-acao="cara"]');
+  const itemNomes = pegar<HTMLButtonElement>('[data-acao="nomes"]');
+
+  const mostrarNomes = (luta: LutaNaTela | null): void => {
+    for (const { id, comando, noMenu } of BOTOES) {
+      const botao = controles[id];
+      const nome = luta ? luta.nomes[comando as keyof LutaNaTela['nomes']] : (noMenu?.nome ?? '');
+      botao.querySelector('.toque__nome')!.textContent = nome;
+      botao.setAttribute('aria-label', [CARAS[preferencias.cara][id].nome, nome].filter(Boolean).join(': '));
+    }
+    // O especial apaga enquanto não pode sair (barra vazia ou no ar).
+    controles.cima.classList.toggle('is-apagado', luta !== null && !luta.especialPronto);
+  };
+
+  const mostrarPreferencias = (): void => {
+    camada.dataset.cara = preferencias.cara;
+    camada.classList.toggle('com-nomes', preferencias.nomes);
+    for (const { id } of BOTOES) {
+      controles[id].querySelector('svg')!.innerHTML = CARAS[preferencias.cara][id].simbolo;
+    }
+    itemCara.textContent = preferencias.cara === 'xbox' ? 'Botões: Xbox (trocar para PlayStation)' : 'Botões: PlayStation (trocar para Xbox)';
+    itemNomes.textContent = preferencias.nomes ? 'Nomes dos golpes: mostrando (esconder)' : 'Nomes dos golpes: escondidos (mostrar)';
+    mostrarNomes(lutaNaTela());
+  };
+  mostrarPreferencias();
+  aoMudarLuta(mostrarNomes);
 
   // ---------------------------------------------------------------- posição
   const medir = (): Tela => {
@@ -306,9 +353,11 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   // ---------------------------------------------------------------- botões
   const soltadores: (() => void)[] = [soltarDirecional];
 
-  camada.querySelectorAll<HTMLElement>('[data-comando]').forEach((botao) => {
-    const tecla = teclaDe(botao.dataset.comando as ComandoLuta);
+  for (const { id, comando, noMenu } of BOTOES) {
+    const botao = controles[id];
     let dono: number | null = null;
+    // A tecla é escolhida no aperto e a mesma é solta, mesmo se a luta acabar no meio.
+    let tecla = teclaDe(comando);
     const largar = (): void => {
       if (dono === null) return;
       dono = null;
@@ -323,6 +372,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
       capturar(botao, evento);
       botao.classList.add('is-on');
       vibrar();
+      tecla = lutaNaTela() === null && noMenu ? noMenu.tecla : teclaDe(comando);
       teclaEvento('keydown', tecla);
     });
     const fim = (evento: PointerEvent): void => {
@@ -330,7 +380,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     };
     botao.addEventListener('pointerup', fim);
     botao.addEventListener('pointercancel', fim);
-  });
+  }
 
   /** Nada fica apertado quando o jogo para (menu aberto, app em segundo plano). */
   const soltarTudo = (): void => soltadores.forEach((soltar) => soltar());
@@ -394,6 +444,16 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
       salvarModo(modo);
       mostrarModo();
     },
+    cara: () => {
+      preferencias = { ...preferencias, cara: preferencias.cara === 'xbox' ? 'playstation' : 'xbox' };
+      salvarPreferencias(preferencias);
+      mostrarPreferencias();
+    },
+    nomes: () => {
+      preferencias = { ...preferencias, nomes: !preferencias.nomes };
+      salvarPreferencias(preferencias);
+      mostrarPreferencias();
+    },
     editar: () => {
       painel.hidden = true;
       comecarEdicao();
@@ -415,7 +475,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   });
 
   // ---------------------------------------------------------------- edição
-  let selecionado: IdControle = 'xis';
+  let selecionado: IdControle = 'baixo';
   let arraste: { id: IdControle; dedo: number; x: number; y: number } | null = null;
 
   const marcarSelecionado = (): void => {

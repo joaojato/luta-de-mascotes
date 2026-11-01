@@ -1,6 +1,7 @@
 {
   "id": "bahia",
   "label": "Esquadrão",
+  "nomes": {"soco-rapido": "Socos", "soco-forte": "Corte", "chute-basico": "Laser", "chute-baixo": "Rasteira", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Bora Bahêa"},
   "assetRoot": "/assets/lutadores/bahia",
   "sons": {"passo": null, "chute": null, "projetil": "laser", "soco-forte": "corte", "projetil-especial": "bora-bahea"},
   "torcida": {

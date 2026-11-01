@@ -2,6 +2,7 @@ import type { CharacterDefinition } from '../hero';
 import { buildFighterCharacter, type FighterActionSpec } from '../fighterCharacter';
 import type { FighterCombat, FighterStats } from '../types';
 import type { FighterMoveConfig } from '../moveMechanics';
+import type { GolpeId } from '../golpes';
 
 import urubu from './urubu.json';
 import almirante from './almirante.json';
@@ -27,6 +28,10 @@ export interface LutadorJson {
   sons?: Record<string, string | null>;
   id: string;
   label: string;
+  /** Nome curto de cada golpe (até 11 letras), para os botões do celular. */
+  nomes?: Partial<Record<GolpeId, string>>;
+  /** Close do rosto no retrato: centro em fração (`x`, `y`) e lado em fração da largura. */
+  rosto?: { x: number; y: number; lado: number };
   /** Pasta pública das sheets, ex. `/assets/lutadores/urubu`. */
   assetRoot: string;
   anchorUsage?: string;

@@ -118,3 +118,47 @@ export function golpesDoLutador(character: CharacterDefinition): GolpeDoLutador[
       : { golpe, situacao: 'faltando', acao: null };
   });
 }
+
+/** Como o lutador está agora: decide qual golpe cada botão solta. */
+export type EstadoDoLutador = 'pe' | 'abaixado' | 'ar';
+
+export interface NomesDosBotoes {
+  light: string;
+  heavy: string;
+  block: string;
+  special: string;
+}
+
+/** Quando o JSON não tem `nomes`: o nome do catálogo, curto. */
+const NOME_GENERICO: Record<GolpeId, string> = {
+  'soco-rapido': 'Soco',
+  'soco-forte': 'Soco forte',
+  'chute-basico': 'Chute',
+  'chute-baixo': 'Rasteira',
+  'soco-no-ar': 'Soco aéreo',
+  voadora: 'Voadora',
+  especial: 'Especial'
+};
+
+/** Qual golpe cada botão de ataque solta em cada estado (fighter.ts, updateGrounded e updateAirborne). */
+const GOLPE_DO_BOTAO: Record<EstadoDoLutador, { light: GolpeId; heavy: GolpeId }> = {
+  pe: { light: 'soco-rapido', heavy: 'chute-basico' },
+  abaixado: { light: 'soco-forte', heavy: 'chute-baixo' },
+  ar: { light: 'soco-no-ar', heavy: 'voadora' }
+};
+
+/**
+ * O nome do golpe que cada botão solta agora, para escrever no botão do celular.
+ * @param nomes - O campo `nomes` do JSON do lutador (pode faltar).
+ * @param estado - De pé, abaixado ou no ar.
+ */
+export function nomesDosBotoes(nomes: Partial<Record<GolpeId, string>> | undefined, estado: EstadoDoLutador): NomesDosBotoes {
+  const nome = (id: GolpeId): string => nomes?.[id] ?? NOME_GENERICO[id];
+  const { light, heavy } = GOLPE_DO_BOTAO[estado];
+  return {
+    light: nome(light),
+    heavy: nome(heavy),
+    block: estado === 'abaixado' ? 'Defesa baixa' : 'Defesa',
+    special: nome('especial')
+  };
+}

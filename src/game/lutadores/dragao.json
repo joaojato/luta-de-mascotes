@@ -1,6 +1,7 @@
 {
   "id": "dragao",
   "label": "Dragão",
+  "nomes": {"soco-rapido": "Socos", "soco-forte": "Estômago", "chute-basico": "Cuspida", "chute-baixo": "Rabada", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Sopro"},
   "assetRoot": "/assets/lutadores/dragao",
   "torcida": {
     "estampa": "listras-verticais",

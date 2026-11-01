@@ -91,3 +91,26 @@ retoma; botão arrastado e aumentado continua no lugar depois de recarregar.
 O WebKit do Playwright no Windows não carrega as ~400 imagens do jogo
 (erro de "access control checks" dele), então lupa e zoom do iOS só se
 confirmam no iPhone de verdade.
+
+## Rodada 3 (01/11/2026): Xbox por padrão, OK e Voltar, nome do golpe da vez
+
+- **Xbox é o padrão, PlayStation é opção.** Menu hambúrguer: "Botões: Xbox /
+  PlayStation". Mesmo comando nas duas caras, pelo lugar no losango: baixo
+  (A verde / ✕ azul) soco, direita (B vermelho / ○ vermelho) defesa,
+  esquerda (X azul / □ rosa) chute, cima (Y amarelo / △ verde) especial.
+  Letras e símbolos em SVG. Os ids do arranjo salvo viraram lugar (`cima`,
+  `direita`, `baixo`, `esquerda`): o ajuste da rodada 2 voltou ao de fábrica.
+- **Fora da luta, A / ✕ confirma e B / ○ volta** (Enter e Esc). Na luta voltam
+  a ser soco e defesa. No fim da partida o A é revanche (ou segue o torneio)
+  e o B volta ao menu. Quem decide é `src/toque/lutaNaTela.ts`: a Luta publica
+  o estado todo quadro; sem luta, `null`.
+- **Nome do golpe escondido por padrão.** "Nomes dos golpes" no menu liga.
+  Ligado, cada botão mostra o golpe que sai agora, de pé, abaixado ou no ar
+  (Saci: Jab, Direto, Soco aéreo), lido do campo `nomes` do JSON. Nos menus,
+  OK e Voltar. O especial fica apagado sem barra ou no ar.
+- Preferências em `luta-de-mascotes:toque-botoes` (`src/toque/preferencias.ts`).
+
+Verificado em Chromium com toque emulado (844×390): A avança da abertura ao
+menu e do menu aos modos, B volta; na luta (Urubu) os nomes mudam de
+Socos/Bicada de pé para Asas/Chute abaixado e Soco aéreo no pulo; troca para
+PlayStation com as cores certas.

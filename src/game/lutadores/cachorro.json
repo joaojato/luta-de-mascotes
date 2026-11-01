@@ -1,6 +1,7 @@
 {
   "id": "cachorro",
   "label": "Bira",
+  "nomes": {"soco-rapido": "Socos", "soco-forte": "Patada", "chute-basico": "Biriba", "chute-baixo": "Carrinho", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Mordida"},
   "assetRoot": "/assets/lutadores/cachorro",
   "sons": {"soco-forte": "garra", "especial": "bote", "chute": "assobio-dedos", "projetil": "latido-voo", "projetil-acerto": "coco", "dor": "dor-cao", "dor-forte": "dor-forte-cao"},
   "torcida": {

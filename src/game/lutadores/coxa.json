@@ -1,6 +1,7 @@
 {
   "id": "coxa",
   "label": "Vovô Coxa",
+  "nomes": {"soco-rapido": "Estocadas", "soco-forte": "Cabeçada", "chute-basico": "Cerveja", "chute-baixo": "Apoiada", "soco-no-ar": "Andador", "voadora": "Voadora", "especial": "Maromba"},
   "assetRoot": "/assets/lutadores/coxa",
   "torcida": {
     "estampa": "listras-horizontais",

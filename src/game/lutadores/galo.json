@@ -11,6 +11,7 @@
   },
   "selecionavel": true,
   "label": "Galo",
+  "nomes": {"soco-rapido": "Socos", "soco-forte": "Cruzado", "chute-basico": "Ovo", "chute-baixo": "Giro", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Bicada"},
   "anchorUsage": "Galo, padrão Urubu, guarda voltada para a esquerda",
   "actions": [
     {
