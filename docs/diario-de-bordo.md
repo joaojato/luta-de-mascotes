@@ -2975,3 +2975,38 @@ Impact e Arial ("fontes simples de texto de word").
 a música do menu só começa no primeiro toque/tecla (regra do navegador, que
 a splash escondia); outra sessão em paralelo mexe no guerreiro
 (`reforco.ts` ficou com o ajuste de câmera, fora deste commit).
+
+## 2026-11-01: Guerreiro, o NPC de Guarda do Cartola
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Adicione o novo npc do fluminense." No meio, a correção: "tem
+que ser parecido com o modelo que eu falei de npc que fica no fundo
+observando. [...] assim que o cartola use a ult, o npc que está no fundo
+comece a correr para fora da tela. Apareça já correndo dentro do campo,
+chute e volte [...] para fora do campo, e já fora do campo volte correndo e
+pare [...] e volta para a posição de guarda." E o nome: NPC de Guarda.
+**Feito:** mecânica `reforco` no especial (`src/game/reforco.ts`, conta pura
+em `reforcoRota.ts`): guarda no fundo atrás do dono (Regra do Fundo), sai
+pelo fundo no especial, entra no campo pelo lado oposto ao dono, freia no
+quadro 4 da corrida, chuta (contato nos quadros 3 e 4, caixa na bota, 10 de
+dano, empurrão 340, sem guarda que segure), sai do campo e volta pelo fundo
+até o posto. O especial só sai de novo com ele de guarda. Arte do Guerreiro
+(`public/assets/npcs/guerreiro/base-v1`) como efeitos do Cartola; as
+animações de volta e de parada que o Codex está fazendo entram trocando o
+nome em `reforco.animacoes` (por ora, a corrida). Primeira versão (entrar só
+quando o pó atordoava) refeita a pedido dele. NPC de Guarda na Regra do
+Fundo, no criador e nas lições.
+**Verificado:** testes da conta (lado, passo sem passar do ponto, caixa da
+bota); `npm run check` numa cópia limpa do último commit com só estes
+arquivos (a pasta principal tem trabalho de outra sessão em andamento).
+Navegador, Cartola x Urubu no treino: guarda no fundo (escala 0,84, pé 60 px
+acima, atrás dos lutadores); especial: sai pelo fundo, entra no campo
+(escala 1,4, na frente), chuta no quadro 3 (227 para 217) e empurra o Urubu
+para o Cartola, sai e volta ao posto.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o gatilho (do atordoamento para o uso
+do especial) e o NPC passou a morar no fundo.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** as duas animações do Codex (volta para fora do campo, chegada
+com freada); publicar no Vercel (precisa de "pode publicar").

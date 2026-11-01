@@ -1,5 +1,6 @@
 import type { GolpeId } from './golpes';
 import type { EsquadraoConfig } from './esquadrao';
+import type { ReforcoConfig } from './reforco';
 import type { SoproConfig } from './sopro';
 import type { FormaConfig } from './forma';
 import type { AttackProfile } from './types';
@@ -81,6 +82,8 @@ export interface ProjectileMoveConfig {
   kind: string;
   /** `esquadrao`: aliados que atacam no lugar do mascote (src/game/esquadrao.ts). */
   esquadrao?: EsquadraoConfig;
+  /** NPC de Guarda: sai do fundo no especial, golpeia uma vez e volta ao posto (src/game/reforco.ts). */
+  reforco?: ReforcoConfig;
   /** `sopro`: sobe, paira e varre com um jato contínuo pela boca (src/game/sopro.ts). */
   sopro?: SoproConfig;
   /** `forma`: no fim do especial vira outro lutador (a forma dele) por um tempo (src/game/forma.ts). */

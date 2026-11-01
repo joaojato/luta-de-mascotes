@@ -525,3 +525,9 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   (2026-11-01)
 - **Abriu o navegador, está no menu.** Nada de "aperte qualquer tecla".
   (2026-11-01)
+- **NPC novo de mascote é NPC de Guarda: mora no fundo e sai quando o dono
+  chama.** Integrei o Guerreiro do Cartola aparecendo só quando o Pó de
+  Arroz atordoava; o João corrigiu: ele fica no fundo observando, como os
+  Gaviões, e sai assim que o Cartola usa a ult (corre para fora da tela,
+  volta correndo no campo, chuta, sai e volta pelo fundo até o posto).
+  "NPC de Guarda" é o nome que ele dá a esse tipo. (2026-11-01)

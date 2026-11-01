@@ -1,0 +1,436 @@
+{
+  "character": "Guerreiro",
+  "role": "NPC do Cartola / Fluminense",
+  "base": "referencia/fluminense/base-guerreiro-v2.png",
+  "baseSha256": "8ea2b911b82538817da22268b647e1e1d68152545fb4b37c5699e72af058d8ee",
+  "animations": [
+    {
+      "file": "public\\assets\\npcs\\guerreiro\\base-v1\\idle.png",
+      "sha256": "0dd5fdca0c2236c628024796625826b2eafd0f76732d0d3ea90b590adb030b9e",
+      "sourceSha256": "2547e2959ef2d5ca6e224def48e17bbee1162029e85fef627410ae216d0afeff",
+      "frames": 4,
+      "fps": 6,
+      "loop": true,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "columns": 5,
+      "origin": [
+        256,
+        296
+      ],
+      "supportFoot": [
+        294,
+        296
+      ],
+      "scale": 0.31446540880503143,
+      "contactFrames": [],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            80,
+            0,
+            565,
+            724
+          ],
+          "supportFootSource": [
+            438,
+            696
+          ],
+          "visualBounds": [
+            186,
+            81,
+            328,
+            297
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            605,
+            0,
+            1095,
+            724
+          ],
+          "supportFootSource": [
+            965,
+            696
+          ],
+          "visualBounds": [
+            186,
+            81,
+            329,
+            297
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            1135,
+            0,
+            1627,
+            724
+          ],
+          "supportFootSource": [
+            1498,
+            696
+          ],
+          "visualBounds": [
+            185,
+            81,
+            330,
+            297
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1680,
+            0,
+            2150,
+            724
+          ],
+          "supportFootSource": [
+            2038,
+            696
+          ],
+          "visualBounds": [
+            186,
+            81,
+            324,
+            297
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public\\assets\\npcs\\guerreiro\\base-v1\\war-run.png",
+      "sha256": "47ae720e15e0169e738dd441c4d37ab38169d2005bf2f842b9afe5f729b510e5",
+      "sourceSha256": "0284ca550718765d945482757ce0aa41724028daa955f073f73fb80d6d02fd2b",
+      "frames": 6,
+      "fps": 14,
+      "loop": true,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "columns": 5,
+      "origin": [
+        256,
+        296
+      ],
+      "scale": 0.44,
+      "contactFrames": [],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            30,
+            0,
+            545,
+            512
+          ],
+          "sourceAnchor": [
+            310,
+            500
+          ],
+          "visualBounds": [
+            177,
+            83,
+            394,
+            294
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            545,
+            512,
+            1055,
+            1024
+          ],
+          "sourceAnchor": [
+            832,
+            1012
+          ],
+          "visualBounds": [
+            174,
+            81,
+            387,
+            292
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            1000,
+            512,
+            1536,
+            1024
+          ],
+          "sourceAnchor": [
+            1336,
+            1012
+          ],
+          "visualBounds": [
+            159,
+            81,
+            377,
+            279
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            20,
+            512,
+            545,
+            1024
+          ],
+          "sourceAnchor": [
+            314,
+            1012
+          ],
+          "visualBounds": [
+            172,
+            81,
+            393,
+            292
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            545,
+            0,
+            1055,
+            512
+          ],
+          "sourceAnchor": [
+            821,
+            500
+          ],
+          "visualBounds": [
+            177,
+            82,
+            383,
+            294
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            1000,
+            0,
+            1536,
+            512
+          ],
+          "sourceAnchor": [
+            1333,
+            500
+          ],
+          "visualBounds": [
+            150,
+            83,
+            378,
+            276
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public\\assets\\npcs\\guerreiro\\base-v1\\sparta-kick.png",
+      "sha256": "3a78026617b743178e974097d018b689d382d596cc7a01f7b853b433c29ac108",
+      "sourceSha256": "ea0a6b8f1d28c9c30a63639ef96ffb6b0e18fa2e8990dc6111bd33dfa797ba16",
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "columns": 5,
+      "origin": [
+        256,
+        296
+      ],
+      "scale": 0.5,
+      "contactFrames": [
+        3,
+        4
+      ],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            50,
+            0,
+            440,
+            443
+          ],
+          "sourceAnchor": [
+            304,
+            432
+          ],
+          "visualBounds": [
+            175,
+            83,
+            355,
+            298
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            530,
+            0,
+            894,
+            443
+          ],
+          "sourceAnchor": [
+            746,
+            432
+          ],
+          "visualBounds": [
+            192,
+            82,
+            360,
+            298
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            950,
+            0,
+            1338,
+            443
+          ],
+          "sourceAnchor": [
+            1181,
+            432
+          ],
+          "visualBounds": [
+            185,
+            81,
+            363,
+            298
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1338,
+            0,
+            1774,
+            443
+          ],
+          "sourceAnchor": [
+            1663,
+            432
+          ],
+          "visualBounds": [
+            138,
+            81,
+            350,
+            298
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            8,
+            443,
+            448,
+            887
+          ],
+          "sourceAnchor": [
+            309,
+            878
+          ],
+          "visualBounds": [
+            151,
+            81,
+            360,
+            297
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            540,
+            443,
+            898,
+            887
+          ],
+          "sourceAnchor": [
+            746,
+            878
+          ],
+          "visualBounds": [
+            196,
+            81,
+            363,
+            297
+          ]
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            950,
+            443,
+            1340,
+            887
+          ],
+          "sourceAnchor": [
+            1189,
+            878
+          ],
+          "visualBounds": [
+            181,
+            81,
+            364,
+            297
+          ]
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1384,
+            443,
+            1774,
+            887
+          ],
+          "sourceAnchor": [
+            1628,
+            878
+          ],
+          "visualBounds": [
+            179,
+            81,
+            362,
+            297
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "Fontes e quadros revistos; aprovação visual do usuário e integração pendentes",
+  "anatomy": {
+    "armA": "direito, lança",
+    "armB": "esquerdo, escudo",
+    "legA": "direita, executa chute",
+    "legB": "esquerda, apoio"
+  },
+  "trigger": "Somente acerto confirmado do pó de arroz que aplique stun; erro/esquiva/bloqueio não invoca chute",
+  "placement": "Começa no lado oposto ao Cartola, atrás do alvo à distância; CORRE até perto; não aparece já colado ao alvo",
+  "sound": "Nenhum áudio ou texto; boca aberta nos quadros de golpe",
+  "singleHit": true,
+  "revision": 3,
+  "transition": {
+    "runToKick": "Ao entrar no alcance, completar fase de apoio B esquerdo (corrida quadro 4) e iniciar chute quadro 0",
+    "kickLeg": "Direita A próxima da câmera em TODOS os quadros; esquerda B distante apoia",
+    "worldMotion": "Motor desloca a corrida, não os atlas; parar antes do chute",
+    "singleHitFrames": [
+      3,
+      4
+    ]
+  },
+  "rejected": "Chute v2 trocava leitura da perna; primeiras corridas v3 repetiam passadas sem alternância. Não reutilizar."
+}

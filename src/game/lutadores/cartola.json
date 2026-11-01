@@ -493,14 +493,30 @@
       "stunMs": 1500,
       "move": "nuvem",
       "persistOnHit": true,
-      "rangeAfterHit": 220
+      "rangeAfterHit": 220,
+      "reforco": {
+        "animacoes": {"guarda": "guerreiro-guarda", "corrida": "guerreiro-corrida", "chute": "guerreiro-chute"},
+        "posto": 200,
+        "velocidade": 1100,
+        "velocidadeNoFundo": 1300,
+        "alcance": 105,
+        "quadroDeApoio": 4,
+        "contato": [3, 4],
+        "caixa": {"x": 136, "y": 155, "largura": 70, "altura": 60},
+        "origem": {"x": 256, "y": 296},
+        "dano": 10,
+        "empurrao": 340
+      }
     },
     "effects": {
       "rice": {
         "file": "rice-powder-cloud-v3.png",
         "frames": 8,
         "frameRate": 16
-      }
+      },
+      "guerreiro-guarda": {"file": "../../../npcs/guerreiro/base-v1/idle.png", "frames": 4, "frameRate": 6, "repeat": -1, "frameWidth": 512, "frameHeight": 320},
+      "guerreiro-corrida": {"file": "../../../npcs/guerreiro/base-v1/war-run.png", "frames": 6, "frameRate": 14, "repeat": -1, "frameWidth": 512, "frameHeight": 320},
+      "guerreiro-chute": {"file": "../../../npcs/guerreiro/base-v1/sparta-kick.png", "frames": 8, "frameRate": 12, "frameWidth": 512, "frameHeight": 320}
     }
   }
 }

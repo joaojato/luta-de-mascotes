@@ -94,6 +94,15 @@ chamado. O que cai é o golpe `queda`: nenhuma guarda segura, só sair do
 lugar. Se acertar ainda caindo, pode deixar o oponente tonto (`stunMs` no
 `drop`, como o cocô do Biriba). Enquanto quem veio está atravessando, o golpe não sai de novo.
 
+NPC de Guarda que golpeia uma vez (o Guerreiro do Cartola): `reforco` no
+especial do JSON. Fica de guarda no fundo; quando o mascote solta o especial,
+sai correndo pelo fundo para fora da tela, volta já correndo dentro do campo
+por trás do adversário, dá um golpe só (sem guarda que segure) e sai pelo
+mesmo lado, depois volta pelo fundo e para no posto. Perguntar: que golpe,
+quanto tira e empurra, onde fica de guarda (`posto`), e a arte de cada fase
+(`animacoes`: `guarda`, `corrida`, `chute`, e se tiver `volta`, `retorno` e
+`parada`; o que faltar usa a corrida).
+
 NPC do mascote (o Biriba, os Gaviões) segue a Regra do Fundo: fica atrás
 dos dois lutadores, entre eles e a torcida, e só sai do fundo para atacar.
 Perguntar se ele acompanha o dono (o Biriba anda com o Bira) ou fica parado
@@ -222,3 +231,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 01/11/2026: `imparavel` no especial que avança (golpe só tira vida) e `moves.dash` por lutador.
 - 01/11/2026: Regra do Tiro (quem atira anda para a frente; arma pesada dá coice com `recuo`).
 - 01/11/2026: `nomes` (nome curto de cada golpe nos botões do celular) e `rosto` (close do retrato na chave).
+- 01/11/2026: `reforco` (NPC de Guarda que sai do fundo no especial, golpeia uma vez e volta ao posto).

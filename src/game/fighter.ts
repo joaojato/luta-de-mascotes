@@ -14,6 +14,7 @@ import {
 import { spawnChargeAura } from './vfx';
 import { somDoEvento, tocarSom } from './sons';
 import { Esquadrao } from './esquadrao';
+import { Reforco } from './reforco';
 import { acertoDoSopro, amostraDoSopro, direcaoDoSopro, type SoproConfig } from './sopro';
 import { danoNaForma, RelogioDaForma, type FormaConfig } from './forma';
 import {
@@ -288,6 +289,8 @@ export class Fighter {
 
   /** Aliados do especial `esquadrao` (os Gaviões do Mosqueteiro), se o mascote tiver. */
   private esquadrao: Esquadrao | null = null;
+  /** NPC de Guarda que sai do fundo e golpeia no especial (o Guerreiro do Cartola), se o mascote tiver. */
+  private reforco: Reforco | null = null;
   /** Especial `sopro` em andamento (o Dragão): fase, relógio, o jato e o ponto que encosta no oponente. */
   private sopro: {
     cfg: SoproConfig;
@@ -660,6 +663,17 @@ export class Fighter {
    * animation is on an attack-active frame and the swing hasn't connected yet.
    */
   getActiveAttack(): ActiveAttack | null {
+    const reforco = this.reforco?.contato();
+    const cfgReforco = this.character.moves?.special?.reforco;
+    if (reforco && cfgReforco) {
+      // Vem por trás do alvo: sem guarda que segure, e não atordoa.
+      return {
+        rect: reforco.rect,
+        profile: { ...this.ataque('special'), damage: cfgReforco.dano, knockback: cfgReforco.empurrao, stunMs: undefined },
+        signature: reforco.assinatura, move: 'especial', finisher: true, facing: reforco.lado,
+        projectile: true, unblockable: true
+      };
+    }
     const contato = this.defeated ? null : this.esquadrao?.contato();
     if (contato) {
       const especial = this.character.moves?.special?.esquadrao;
@@ -736,6 +750,7 @@ export class Fighter {
   /** Marks the current swing as having connected so it can't hit again. */
   markAttackConnected(signature?: number, blocked = false): void {
     if (signature !== undefined && this.esquadrao?.confirmar(signature, blocked)) return;
+    if (signature !== undefined && this.reforco?.confirmar(signature)) return;
     const shot = this.projectiles.find(projectile => !projectile.connected && !projectile.carrier && (signature === undefined || projectile.signature === signature));
     if (shot) {
       shot.connected = true;
@@ -895,6 +910,7 @@ export class Fighter {
   resetForRound(x: number, facing: 1 | -1): void {
     this.clearProjectile();
     this.esquadrao?.reset();
+    this.reforco?.reset();
     this.cancelarSopro();
     this.jumpPhase = null;
     this.diveVelX = 0;
@@ -945,6 +961,7 @@ export class Fighter {
     this.previousX = this.posX;
     if (!this.frozen) this.updateProjectile(seconds);
     this.esquadrao?.update(seconds);
+    this.reforco?.update(seconds);
     this.updateTontura();
     if (this.defeated) {
       this.playState(this.actionKeys.knockdown, false);
@@ -1030,6 +1047,7 @@ export class Fighter {
   destroy(): void {
     this.clearProjectile();
     this.esquadrao?.destroy();
+    this.reforco?.destroy();
     this.cancelarSopro();
     this.endAdvanceEffects();
     this.sprite?.removeAllListeners();
@@ -1205,6 +1223,18 @@ export class Fighter {
         animacao: (efeito) => findCharacterAnimationKeyByAction(this.character.id, `fx-${efeito}`)
       }, especial.esquadrao);
     }
+    if (especial?.reforco) {
+      this.reforco = new Reforco({
+        scene: this.scene,
+        x: () => this.posX,
+        // A linha do pé dos lutadores (onde fica a sombra), não a base da célula.
+        chao: () => this.groundY - SHADOW_FOOT_OFFSET * this.appliedScale,
+        lado: () => this.facing,
+        escala: () => this.appliedScale,
+        alvo: () => (this.opponent ? { x: this.opponent.x, caido: this.opponent.isDefeated } : null),
+        animacao: (efeito) => findCharacterAnimationKeyByAction(this.character.id, `fx-${efeito}`)
+      }, especial.reforco);
+    }
 
     this.playState(this.actionKeys.idle, true);
   }
@@ -1279,7 +1309,7 @@ export class Fighter {
       this.updateDash(seconds);
       return;
     }
-    if (input.special && this.isMeterReady && (this.esquadrao?.pronto ?? true)) {
+    if (input.special && this.isMeterReady && (this.esquadrao?.pronto ?? true) && (this.reforco?.pronto ?? true)) {
       this.startSpecial();
       return;
     }
@@ -1909,6 +1939,8 @@ export class Fighter {
     const move = this.character.moves?.special;
     // Esquadrão: o mascote dá o sinal (a sheet do especial) e os aliados atacam.
     this.esquadrao?.atacar();
+    // NPC de Guarda: sai do fundo assim que o mascote solta o especial.
+    this.reforco?.chamar();
     if (move && ADVANCE_KINDS.includes(move.kind)) {
       this.startAdvance(move);
       return;
