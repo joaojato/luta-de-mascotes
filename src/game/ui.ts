@@ -14,6 +14,8 @@ interface TextButtonConfig {
   width: number;
   height: number;
   label: string;
+  /** Tamanho do rótulo em px (padrão 26). */
+  fontSize?: number;
   onClick(): void;
   onHover?(): void;
 }
@@ -23,7 +25,7 @@ export function createTextButton(scene: Phaser.Scene, config: TextButtonConfig):
   const label = scene.add.text(config.x, config.y, config.label.toUpperCase(), {
     color: TEXTO_CLARO,
     fontFamily: FONTE_TITULO,
-    fontSize: '26px',
+    fontSize: `${config.fontSize ?? 26}px`,
     stroke: '#000000',
     strokeThickness: 4
   });

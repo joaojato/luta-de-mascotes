@@ -4,8 +4,21 @@ import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { createTextButton, type TextButton } from '../game/ui';
 import { DEFAULT_SETTINGS } from '../game/settings';
 import { COR_BORDA, COR_PAINEL, FONTE_TEXTO, TEXTO_CLARO } from '../game/estilo';
-import { SCENE_KEYS } from '../game/types';
+import { SCENE_KEYS, type SceneKey } from '../game/types';
 import { BaseScene } from './BaseScene';
+
+/** Aberta pela pausa da Luta: volta para ela em vez de ir ao menu. */
+export interface SettingsSceneData {
+  voltarPara?: SceneKey;
+}
+
+/** Uma linha da tela: os botões dela e o que ←, → e Enter fazem nela. */
+interface Linha {
+  botoes: TextButton[];
+  esquerda?: () => void;
+  direita?: () => void;
+  confirmar?: () => void;
+}
 
 export class SettingsScene extends BaseScene {
   private sfxValue!: Phaser.GameObjects.Text;
@@ -14,24 +27,18 @@ export class SettingsScene extends BaseScene {
 
   private muteValue!: Phaser.GameObjects.Text;
 
-  private sfxDownButton!: TextButton;
-
-  private sfxUpButton!: TextButton;
-
-  private musicDownButton!: TextButton;
-
-  private musicUpButton!: TextButton;
-
-  private muteButton!: TextButton;
-
-  private resetButton!: TextButton;
-
-  private backButton!: TextButton;
+  private linhas: Linha[] = [];
 
   private selectedRow = 0;
 
+  private voltarPara: SceneKey | null = null;
+
   constructor() {
     super(SCENE_KEYS.Settings);
+  }
+
+  init(data: SettingsSceneData): void {
+    this.voltarPara = data?.voltarPara ?? null;
   }
 
   create(): void {
@@ -39,10 +46,15 @@ export class SettingsScene extends BaseScene {
     this.createBackdrop();
     this.createHeading('Ajustes', '');
 
+    const painelDebug = this.app.painelDebug;
+    const quantas = painelDebug ? 6 : 5;
+    const espaco = painelDebug ? 52 : 60;
+    const buttonHeight = painelDebug ? 46 : 52;
+
     const centerX = this.cameras.main.centerX;
     const centerY = this.cameras.main.centerY;
     this.add
-      .rectangle(centerX, centerY + 30, 560, 440, COR_PAINEL, 0.85)
+      .rectangle(centerX, centerY + (painelDebug ? 40 : 30), 560, painelDebug ? 460 : 440, COR_PAINEL, 0.85)
       .setStrokeStyle(2, COR_BORDA, 1);
 
     const valueStyle = {
@@ -56,80 +68,62 @@ export class SettingsScene extends BaseScene {
     this.musicValue = this.add.text(centerX, centerY - 120, '', valueStyle).setOrigin(0.5);
     this.muteValue = this.add.text(centerX, centerY - 85, '', valueStyle).setOrigin(0.5);
 
-    const buttonY = [0, 1, 2, 3, 4].map((row) => centerY - 35 + row * 60);
     const wideButtonWidth = 340;
     const halfButtonWidth = 165;
-    const buttonHeight = 52;
+    const botao = (linha: number, x: number, width: number, label: string, onClick: () => void): TextButton =>
+      createTextButton(this, {
+        x: centerX + x,
+        y: centerY - 35 + linha * espaco,
+        width,
+        height: buttonHeight,
+        label,
+        onClick,
+        onHover: () => this.setSelection(linha)
+      });
 
-    this.sfxDownButton = createTextButton(this, {
-      x: centerX - 88,
-      y: buttonY[0],
-      width: halfButtonWidth,
-      height: buttonHeight,
-      label: 'Efeitos −',
-      onClick: () => this.changeVolume('sfx', -0.1),
-      onHover: () => this.setSelection(0)
-    });
+    const efeitos = { esquerda: () => this.changeVolume('sfx', -0.1), direita: () => this.changeVolume('sfx', 0.1) };
+    const musica = { esquerda: () => this.changeVolume('music', -0.1), direita: () => this.changeVolume('music', 0.1) };
+    const mudo = () => this.toggleMute();
+    const restaurar = () => this.app.settingsStore.setState(DEFAULT_SETTINGS);
+    const voltar = () => this.voltar();
 
-    this.sfxUpButton = createTextButton(this, {
-      x: centerX + 88,
-      y: buttonY[0],
-      width: halfButtonWidth,
-      height: buttonHeight,
-      label: 'Efeitos +',
-      onClick: () => this.changeVolume('sfx', 0.1),
-      onHover: () => this.setSelection(0)
-    });
+    this.linhas = [
+      {
+        ...efeitos,
+        botoes: [
+          botao(0, -88, halfButtonWidth, 'Efeitos −', efeitos.esquerda),
+          botao(0, 88, halfButtonWidth, 'Efeitos +', efeitos.direita)
+        ]
+      },
+      {
+        ...musica,
+        botoes: [
+          botao(1, -88, halfButtonWidth, 'Música −', musica.esquerda),
+          botao(1, 88, halfButtonWidth, 'Música +', musica.direita)
+        ]
+      },
+      { esquerda: mudo, direita: mudo, confirmar: mudo, botoes: [botao(2, 0, wideButtonWidth, 'Ligar ou tirar o som', mudo)] },
+      { confirmar: restaurar, botoes: [botao(3, 0, wideButtonWidth, 'Restaurar padrão', restaurar)] }
+    ];
 
-    this.musicDownButton = createTextButton(this, {
-      x: centerX - 88,
-      y: buttonY[1],
-      width: halfButtonWidth,
-      height: buttonHeight,
-      label: 'Música −',
-      onClick: () => this.changeVolume('music', -0.1),
-      onHover: () => this.setSelection(1)
-    });
+    // Só em dev: mostra ou esconde a gaveta do console de debug do lado.
+    if (painelDebug) {
+      let debugBotao: TextButton | null = null;
+      const rotuloDebug = () => `Painel de debug: ${painelDebug.aberto() ? 'aberto' : 'fechado'}`;
+      const alternarDebug = () => {
+        painelDebug.alternar();
+        playAudioCue(this, AUDIO_KEYS.uiConfirm, this.app.settingsStore.getState());
+        debugBotao?.destroy();
+        debugBotao = botao(4, 0, wideButtonWidth, rotuloDebug(), alternarDebug);
+        this.linhas[4].botoes = [debugBotao];
+        this.setSelection(this.selectedRow);
+      };
+      debugBotao = botao(4, 0, wideButtonWidth, rotuloDebug(), alternarDebug);
+      this.linhas.push({ esquerda: alternarDebug, direita: alternarDebug, confirmar: alternarDebug, botoes: [debugBotao] });
+    }
 
-    this.musicUpButton = createTextButton(this, {
-      x: centerX + 88,
-      y: buttonY[1],
-      width: halfButtonWidth,
-      height: buttonHeight,
-      label: 'Música +',
-      onClick: () => this.changeVolume('music', 0.1),
-      onHover: () => this.setSelection(1)
-    });
-
-    this.muteButton = createTextButton(this, {
-      x: centerX,
-      y: buttonY[2],
-      width: wideButtonWidth,
-      height: buttonHeight,
-      label: 'Ligar ou tirar o som',
-      onClick: () => this.toggleMute(),
-      onHover: () => this.setSelection(2)
-    });
-
-    this.resetButton = createTextButton(this, {
-      x: centerX,
-      y: buttonY[3],
-      width: wideButtonWidth,
-      height: buttonHeight,
-      label: 'Restaurar padrão',
-      onClick: () => this.app.settingsStore.setState(DEFAULT_SETTINGS),
-      onHover: () => this.setSelection(3)
-    });
-
-    this.backButton = createTextButton(this, {
-      x: centerX,
-      y: buttonY[4],
-      width: wideButtonWidth,
-      height: buttonHeight,
-      label: 'Voltar ao menu',
-      onClick: () => this.goToMenu(),
-      onHover: () => this.setSelection(4)
-    });
+    const rotuloVoltar = this.voltarPara ? 'Voltar à pausa' : 'Voltar ao menu';
+    this.linhas.push({ confirmar: voltar, botoes: [botao(quantas - 1, 0, wideButtonWidth, rotuloVoltar, voltar)] });
 
     this.setSelection(0);
 
@@ -137,11 +131,19 @@ export class SettingsScene extends BaseScene {
     this.input.keyboard?.on('keydown-W', () => this.moveSelection(-1));
     this.input.keyboard?.on('keydown-DOWN', () => this.moveSelection(1));
     this.input.keyboard?.on('keydown-S', () => this.moveSelection(1));
-    this.input.keyboard?.on('keydown-LEFT', () => this.handleLeft());
-    this.input.keyboard?.on('keydown-RIGHT', () => this.handleRight());
-    this.input.keyboard?.on('keydown-ESC', () => this.goToMenu());
-    this.input.keyboard?.on('keydown-ENTER', () => this.activateSelection());
-    this.input.keyboard?.on('keydown-SPACE', () => this.activateSelection());
+    this.input.keyboard?.on('keydown-LEFT', () => this.linhas[this.selectedRow].esquerda?.());
+    this.input.keyboard?.on('keydown-RIGHT', () => this.linhas[this.selectedRow].direita?.());
+    // A tecla que fecha os Ajustes não chega à Luta que volta no mesmo quadro.
+    const confirmar = (event: KeyboardEvent) => {
+      event.stopPropagation();
+      this.linhas[this.selectedRow].confirmar?.();
+    };
+    this.input.keyboard?.on('keydown-ESC', (event: KeyboardEvent) => {
+      event.stopPropagation();
+      voltar();
+    });
+    this.input.keyboard?.on('keydown-ENTER', confirmar);
+    this.input.keyboard?.on('keydown-SPACE', confirmar);
 
     const unsubscribe = this.app.settingsStore.subscribe((settings) => {
       this.sfxValue.setText(`Efeitos: ${Math.round(settings.sfxVolume * 100)}%`);
@@ -152,6 +154,16 @@ export class SettingsScene extends BaseScene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubscribe);
 
     this.createFooterHint('↑ ↓ escolhe   •   ← → ajusta   •   Enter confirma   •   Esc volta');
+  }
+
+  /** Sai dos Ajustes: para a cena que abriu (a Luta pausada) ou para o menu. */
+  private voltar(): void {
+    if (!this.voltarPara) {
+      this.goToMenu();
+      return;
+    }
+    this.scene.resume(this.voltarPara);
+    this.scene.stop();
   }
 
   private changeVolume(kind: 'sfx' | 'music', delta: number): void {
@@ -170,66 +182,12 @@ export class SettingsScene extends BaseScene {
   }
 
   private moveSelection(direction: number): void {
-    const nextIndex = Phaser.Math.Wrap(this.selectedRow + direction, 0, 5);
+    const nextIndex = Phaser.Math.Wrap(this.selectedRow + direction, 0, this.linhas.length);
     this.setSelection(nextIndex);
   }
 
   private setSelection(index: number): void {
     this.selectedRow = index;
-    this.sfxDownButton.setSelected(index === 0);
-    this.sfxUpButton.setSelected(index === 0);
-    this.musicDownButton.setSelected(index === 1);
-    this.musicUpButton.setSelected(index === 1);
-    this.muteButton.setSelected(index === 2);
-    this.resetButton.setSelected(index === 3);
-    this.backButton.setSelected(index === 4);
-  }
-
-  private activateSelection(): void {
-    if (this.selectedRow === 2) {
-      this.toggleMute();
-      return;
-    }
-
-    if (this.selectedRow === 3) {
-      this.app.settingsStore.setState(DEFAULT_SETTINGS);
-      return;
-    }
-
-    if (this.selectedRow === 4) {
-      this.goToMenu();
-    }
-  }
-
-  private handleLeft(): void {
-    if (this.selectedRow === 0) {
-      this.changeVolume('sfx', -0.1);
-      return;
-    }
-
-    if (this.selectedRow === 1) {
-      this.changeVolume('music', -0.1);
-      return;
-    }
-
-    if (this.selectedRow === 2) {
-      this.toggleMute();
-    }
-  }
-
-  private handleRight(): void {
-    if (this.selectedRow === 0) {
-      this.changeVolume('sfx', 0.1);
-      return;
-    }
-
-    if (this.selectedRow === 1) {
-      this.changeVolume('music', 0.1);
-      return;
-    }
-
-    if (this.selectedRow === 2) {
-      this.toggleMute();
-    }
+    this.linhas.forEach((linha, i) => linha.botoes.forEach((botao) => botao.setSelected(i === index)));
   }
 }

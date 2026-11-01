@@ -507,3 +507,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   defesa copiando o P2; o João corrigiu: "qec está para iop", então I chute,
   O soco, P defesa. Tecla extra de um lado segue a ordem das teclas desse
   mesmo lado. (2026-11-01)
+- **Debug não pode emoldurar o jogo.** O shell herdado (cabeçalho, botão
+  Play, console fixo ao lado) deixava a luta pequena dentro de outra tela, e
+  o João se incomodou. Em dev o jogo ocupa a tela como no build; ferramenta
+  de debug entra como gaveta por cima, escondida até ser chamada. (2026-11-01)
+- **Esc pausa, não sai.** Esc na luta levava direto ao menu; o João quer
+  pausa com Continuar, Recomeçar, Configurações e Sair da partida, e Tab sem
+  função. Sair de uma partida sempre passa por uma escolha explícita.
+  (2026-11-01)

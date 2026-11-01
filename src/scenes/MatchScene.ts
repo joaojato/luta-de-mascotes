@@ -83,7 +83,7 @@ export class MatchScene extends BaseScene {
   private p2Keys!: PlayerKeys;
   private controles!: Controles;
   private cpu?: CpuLutador;
-  /** Tela de pausa aberta (Tab): a luta para inteira por baixo. */
+  /** Tela de pausa aberta (Esc): a luta para inteira por baixo. */
   private pausa: MenuPausa | null = null;
   private paineisCelular: { jogador: 1 | 2; painel: PainelCelular }[] = [];
   /** Treino livre: painel lateral, quando cada um apanhou por último, quem está levantando. */
@@ -168,7 +168,13 @@ export class MatchScene extends BaseScene {
     syncLoopingAudioAsset(this, 'torcida', this.app.settingsStore.getState());
     this.agendarTorcida(null);
 
+    // Volta dos Ajustes abertos pela pausa.
+    const aoVoltar = (): void => this.markActiveScene(SCENE_KEYS.Match);
+    this.events.on(Phaser.Scenes.Events.RESUME, aoVoltar);
+
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.events.off(Phaser.Scenes.Events.RESUME, aoVoltar);
+      this.fecharPausa();
       stopAudioAsset(this, 'torcida');
       this.p1?.destroy();
       this.p2?.destroy();
@@ -614,15 +620,13 @@ export class MatchScene extends BaseScene {
     this.p1Keys = teclas('p1');
     this.p2Keys = teclas('p2');
 
+    // Tab não faz nada na luta; a captura só impede o navegador de pular o foco.
     keyboard.addCapture('TAB');
-    // No treino, Tab recolhe o painel e Esc volta à Academia.
-    const sair = (): void => {
-      if (this.config.treino) this.scene.start(SCENE_KEYS.Academia);
-      else this.goToMenu();
-    };
-    keyboard.on('keydown-TAB', () => (this.config.treino ? this.painelTreino?.alternar() : this.alternarPausa()));
-    keyboard.on('keydown-ESC', sair);
-    keyboard.on('keydown-BACKSPACE', sair);
+    // Esc pausa e despausa. Só na tela de fim ele leva ao menu, como diz o botão.
+    keyboard.on('keydown-ESC', () => {
+      if (this.phase === 'matchOver') this.goToMenu();
+      else this.alternarPausa();
+    });
     keyboard.on('keydown-R', () => {
       // No torneio não há revanche: o resultado vale.
       if (this.phase === 'matchOver' && !this.config.torneio) {
@@ -765,7 +769,7 @@ export class MatchScene extends BaseScene {
     }
   }
 
-  /** Painel lateral do treino, com os atalhos 1, 2, 3 e Tab. */
+  /** Painel lateral do treino, com os atalhos 1, 2 e 3. */
   private montarPainelTreino(): PainelTreino {
     const trocar = (lado: 'p1' | 'p2', direcao: 1 | -1): void => {
       const chave = lado === 'p1' ? 'p1CharacterId' : 'p2CharacterId';
@@ -824,15 +828,24 @@ export class MatchScene extends BaseScene {
     };
   }
 
-  /** Tab abre e fecha a pausa: teclas, golpes de cada mascote e comandos. */
+  /** Fecha a pausa e solta a luta. Tecla apertada no menu não vira golpe depois. */
+  private fecharPausa(): void {
+    if (!this.pausa) {
+      return;
+    }
+    this.pausa.destroy();
+    this.pausa = null;
+    this.input.keyboard?.resetKeys();
+    this.anims.resumeAll();
+    this.tweens.resumeAll();
+    this.time.paused = false;
+    this.sound.resumeAll();
+  }
+
+  /** Esc abre e fecha a pausa: teclas, golpes de cada mascote, comandos e as opções. */
   private alternarPausa(): void {
     if (this.pausa) {
-      this.pausa.destroy();
-      this.pausa = null;
-      this.anims.resumeAll();
-      this.tweens.resumeAll();
-      this.time.paused = false;
-      this.sound.resumeAll();
+      this.fecharPausa();
       return;
     }
     if (this.phase === 'matchOver') {
@@ -853,7 +866,24 @@ export class MatchScene extends BaseScene {
         { titulo: cpu ? `CPU (${dificuldade})` : 'P2', personagemId: this.config.p2CharacterId, botoes: cpu ? null : this.controles.p2 }
       ],
       OVERLAY_DEPTH + 10,
-      { continuar: () => this.alternarPausa(), menu: () => this.goToMenu() }
+      {
+        continuar: () => this.fecharPausa(),
+        recomecar: () => {
+          this.fecharPausa();
+          this.scene.restart(this.config);
+        },
+        // Os Ajustes abrem por cima da luta parada e devolvem para a pausa.
+        configuracoes: () => {
+          this.scene.launch(SCENE_KEYS.Settings, { voltarPara: SCENE_KEYS.Match });
+          this.scene.pause();
+        },
+        sair: () => {
+          this.fecharPausa();
+          // No treino, sair é voltar à Academia.
+          if (this.config.treino) this.scene.start(SCENE_KEYS.Academia);
+          else this.goToMenu();
+        }
+      }
     );
     this.anims.pauseAll();
     this.tweens.pauseAll();

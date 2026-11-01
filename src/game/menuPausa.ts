@@ -1,8 +1,21 @@
 import * as Phaser from 'phaser';
 
+import { getAppContext } from './context';
+import { AUDIO_KEYS, playAudioCue } from './core/audio';
 import { COMANDOS_LUTA, nomeDaTecla, type MapaBotoes } from './controles';
-import { CONTORNO_TITULO, COR_FUNDO, FONTE_TEXTO, FONTE_TITULO, SOMBRA_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from './estilo';
+import {
+  CONTORNO_TITULO,
+  COR_FUNDO,
+  FONTE_TEXTO,
+  FONTE_TITULO,
+  SOMBRA_TITULO,
+  TEXTO_APAGADO,
+  TEXTO_CLARO,
+  TEXTO_DESTAQUE
+} from './estilo';
 import { LUTADORES } from './lutadores';
+import { createTextButton, type TextButton } from './ui';
+import { controlesDeToqueAtivos } from '../toque/telaToque';
 
 /** Um lado da pausa: quem joga, com que teclas (null: CPU ou celular). */
 export interface LadoDaPausa {
@@ -40,18 +53,38 @@ export function golpesDoMascote(personagemId: string): string[] {
   return linhas.filter(([, nome]) => nome).map(([botao, nome]) => `${botao}: ${nome}`);
 }
 
+/** O que cada opção da pausa faz; a ordem aqui é a ordem na tela. */
+export interface AcoesDaPausa {
+  continuar: () => void;
+  recomecar: () => void;
+  configuracoes: () => void;
+  sair: () => void;
+}
+
+export const OPCOES_DA_PAUSA: { id: keyof AcoesDaPausa; rotulo: string }[] = [
+  { id: 'continuar', rotulo: 'Continuar' },
+  { id: 'recomecar', rotulo: 'Recomeçar' },
+  { id: 'configuracoes', rotulo: 'Configurações' },
+  { id: 'sair', rotulo: 'Sair da partida' }
+];
+
 /**
- * Tela de pausa da Luta (Tab): teclas de cada lado, golpes de cada mascote e
- * os comandos gerais. Fica por cima de tudo e não depende do estado da luta.
+ * Tela de pausa da Luta (Esc): teclas de cada lado, golpes de cada mascote, os
+ * comandos gerais e as quatro opções embaixo. Setas ou WASD escolhem, Enter ou
+ * Espaço confirmam; o Esc de fechar é da Luta. Fica por cima de tudo e não
+ * depende do estado da luta.
  */
 export class MenuPausa {
   private readonly objetos: Phaser.GameObjects.GameObject[] = [];
+  private readonly botoes: TextButton[] = [];
+  private readonly teclas: [string, () => void][] = [];
+  private escolhida = 0;
 
   constructor(
-    scene: Phaser.Scene,
+    private readonly scene: Phaser.Scene,
     lados: LadoDaPausa[],
     profundidade: number,
-    acoes: { continuar: () => void; menu: () => void }
+    private readonly acoes: AcoesDaPausa
   ) {
     const { centerX, width, height } = scene.cameras.main;
     const fixo = <T extends Phaser.GameObjects.Components.ScrollFactor & Phaser.GameObjects.Components.Depth>(o: T): T => {
@@ -90,22 +123,61 @@ export class MenuPausa {
     texto(xGeral, 104, 'Comandos', 22, TEXTO_DESTAQUE);
     texto(xGeral, 140, COMANDOS_GERAIS.join('\n'), 16).setWordWrapWidth(width - xGeral - 40);
 
-    const botao = (x: number, rotulo: string, aoClicar: () => void) => {
-      const b = fixo(
-        scene.add
-          .text(x, height - 64, rotulo, { color: TEXTO_CLARO, fontFamily: FONTE_TITULO, fontSize: '26px', backgroundColor: 'rgba(11, 7, 22, 0.9)', padding: { x: 22, y: 10 } })
-          .setOrigin(0.5)
-          .setInteractive({ useHandCursor: true })
-      );
-      b.on('pointerover', () => b.setColor(TEXTO_DESTAQUE));
-      b.on('pointerout', () => b.setColor(TEXTO_CLARO));
-      b.on('pointerdown', aoClicar);
+    // As quatro opções numa fileira embaixo (duas por linha na tela em pé).
+    const porLinha = width >= 1000 ? OPCOES_DA_PAUSA.length : 2;
+    const largura = Math.min(280, (width - 40) / porLinha - 16);
+    const linhas = Math.ceil(OPCOES_DA_PAUSA.length / porLinha);
+    OPCOES_DA_PAUSA.forEach(({ rotulo }, i) => {
+      const coluna = i % porLinha;
+      const linha = Math.floor(i / porLinha);
+      const botao = createTextButton(scene, {
+        x: centerX + (coluna - (porLinha - 1) / 2) * (largura + 16),
+        y: height - 84 - (linhas - 1 - linha) * 68,
+        width: largura,
+        height: 54,
+        label: rotulo,
+        fontSize: 22,
+        onClick: () => this.confirmar(i),
+        onHover: () => this.escolher(i)
+      });
+      botao.group.setScrollFactor(0, 0, true).setDepth(profundidade);
+      this.botoes.push(botao);
+    });
+    if (!controlesDeToqueAtivos()) {
+      texto(centerX, height - 32, '← → escolhe   •   Enter confirma   •   Esc continua', 14, TEXTO_APAGADO).setOrigin(0.5);
+    }
+    this.escolher(0);
+
+    const keyboard = scene.input.keyboard;
+    const ligar = (evento: string, fazer: () => void): void => {
+      keyboard?.on(evento, fazer);
+      this.teclas.push([evento, fazer]);
     };
-    botao(centerX - 170, 'CONTINUAR  (Tab)', acoes.continuar);
-    botao(centerX + 170, 'MENU  (Esc)', acoes.menu);
+    for (const tecla of ['LEFT', 'UP', 'A', 'W']) ligar(`keydown-${tecla}`, () => this.mover(-1));
+    for (const tecla of ['RIGHT', 'DOWN', 'D', 'S']) ligar(`keydown-${tecla}`, () => this.mover(1));
+    for (const tecla of ['ENTER', 'SPACE']) ligar(`keydown-${tecla}`, () => this.confirmar(this.escolhida));
+  }
+
+  private mover(direcao: number): void {
+    const proxima = Phaser.Math.Wrap(this.escolhida + direcao, 0, this.botoes.length);
+    if (proxima !== this.escolhida) playAudioCue(this.scene, 'ui-mover', getAppContext().settingsStore.getState());
+    this.escolher(proxima);
+  }
+
+  private escolher(indice: number): void {
+    this.escolhida = indice;
+    this.botoes.forEach((botao, i) => botao.setSelected(i === indice));
+  }
+
+  private confirmar(indice: number): void {
+    playAudioCue(this.scene, AUDIO_KEYS.uiConfirm, getAppContext().settingsStore.getState());
+    this.acoes[OPCOES_DA_PAUSA[indice].id]();
   }
 
   destroy(): void {
+    const keyboard = this.scene.input.keyboard;
+    this.teclas.forEach(([evento, fazer]) => keyboard?.off(evento, fazer));
+    this.botoes.forEach((botao) => botao.destroy());
     this.objetos.forEach((o) => o.destroy());
   }
 }

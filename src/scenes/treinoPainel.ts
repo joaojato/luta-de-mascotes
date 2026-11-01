@@ -5,7 +5,7 @@ import { getCharacterDefinition } from '../game/hero';
  * Painel lateral do treino livre (docs/superpowers/specs/2026-11-01-controles-e-treino-design.md):
  * troca o P1 e o P2 na hora, liga e desliga a CPU, e as opções de exibição.
  * HTML por cima do canvas, como o painel da Academia: clique e toque saem
- * de graça no DOM. Recolhe num botão pequeno (Tab, ou o − no celular).
+ * de graça no DOM. Recolhe num botão pequeno (o −).
  */
 
 export interface PainelTreinoOpcoes {
@@ -104,7 +104,7 @@ export class PainelTreino {
     this.raiz.innerHTML = `
       <div style="display:flex;align-items:center;margin-bottom:6px">
         <b>Treino livre</b>
-        <button data-acao="recolher" style="${estiloBotao(false)};margin-left:auto" title="Tab">−</button>
+        <button data-acao="recolher" style="${estiloBotao(false)};margin-left:auto" title="Recolher">−</button>
       </div>
       ${lado('p1', 'P1', this.opcoes.p1, '1')}
       ${lado('p2', 'P2', this.opcoes.p2, '2')}

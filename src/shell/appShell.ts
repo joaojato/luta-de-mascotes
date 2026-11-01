@@ -39,7 +39,6 @@ import {
 import { formatInputSnapshot } from '../game/core/input';
 import { saveJsonToPublicAsset } from '../game/core/saveJson';
 import { setAppContext, type AppContext } from '../game/context';
-import { GAME_TAGLINE, GAME_TITLE } from '../game/constants';
 import { createDebugStore } from '../game/debug';
 import { createGame } from '../game/createGame';
 import {
@@ -120,50 +119,28 @@ export function createApp(root: HTMLElement): void {
   const isLocalDevHost = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
   const isDebugShell = !isGameShellForced && !isMobileShell && import.meta.env.DEV && isLocalDevHost;
 
+  // Em dev o jogo também ocupa a tela inteira; o console de debug é uma gaveta
+  // que entra pela direita (aba no canto ou Ajustes ▸ Painel de debug).
   root.innerHTML = `
-    <div class="app-shell${isDebugShell ? '' : ' app-shell--game-only'}" data-profile="landscape">
-      ${isDebugShell ? `
-        <header class="app-shell__header">
-          <div class="app-shell__brand">
-            <p class="eyebrow">PHASER 4 ▸ VITE ▸ TYPESCRIPT</p>
-            <h1>${GAME_TITLE.toUpperCase()}</h1>
-            ${GAME_TAGLINE ? `<p class="subtitle">${GAME_TAGLINE}</p>` : ''}
-          </div>
-          <div class="app-shell__header-action">
-            <button id="play-toggle" class="shell-button" data-variant="primary" type="button">Play</button>
-          </div>
-          <div class="app-shell__status">
-            <button id="profile-toggle" class="status-chip" type="button" title="Toggle layout">Landscape</button>
-            <span id="scene-badge" class="status-chip" data-tone="muted">BootScene</span>
-          </div>
-        </header>
-      ` : ''}
+    <div class="app-shell app-shell--game-only" data-profile="landscape">
       <div class="app-shell__workspace">
         <section class="game-host">
-          ${isDebugShell ? `
-            <div class="game-host__bezel-label">
-              <span>${GAME_TITLE.toUpperCase()} ▸ GAME</span>
-              <span class="dots"><i></i><i></i><i></i></span>
-            </div>
-          ` : ''}
           <div id="game-root" class="game-root"></div>
         </section>
-        ${isDebugShell ? `
-          <aside id="debug-panel" class="debug-panel">
-            <div class="debug-panel__header">
-              <h2 class="debug-panel__title">Debug Console</h2>
-              <button id="debug-collapse" class="shell-button" type="button">Collapse</button>
-            </div>
-            <div class="debug-panel__body">
-              <div id="debug-controls" class="debug-panel__controls"></div>
-            </div>
-          </aside>
-        ` : ''}
       </div>
       ${isDebugShell ? `
-        <div id="play-toast" class="play-toast" role="status" aria-live="polite">
-          Press ESC to leave play mode
-        </div>
+        <button id="debug-aba" class="debug-aba" type="button" title="Painel de debug">Debug</button>
+        <aside id="debug-panel" class="debug-panel debug-gaveta" aria-hidden="true">
+          <div class="debug-panel__header">
+            <h2 class="debug-panel__title">Debug Console</h2>
+            <span id="scene-badge" class="status-chip" data-tone="muted">BootScene</span>
+            <button id="profile-toggle" class="status-chip" type="button" title="Toggle layout">Landscape</button>
+            <button id="debug-collapse" class="shell-button" type="button">Fechar</button>
+          </div>
+          <div class="debug-panel__body">
+            <div id="debug-controls" class="debug-panel__controls"></div>
+          </div>
+        </aside>
       ` : ''}
     </div>
   `;
@@ -173,8 +150,7 @@ export function createApp(root: HTMLElement): void {
   const debugPanel = root.querySelector<HTMLElement>('#debug-panel');
   const debugControls = root.querySelector<HTMLElement>('#debug-controls');
   const collapseButton = root.querySelector<HTMLButtonElement>('#debug-collapse');
-  const playToggle = root.querySelector<HTMLButtonElement>('#play-toggle');
-  const playToast = root.querySelector<HTMLElement>('#play-toast');
+  const debugAba = root.querySelector<HTMLButtonElement>('#debug-aba');
   const profileToggle = root.querySelector<HTMLButtonElement>('#profile-toggle');
   const sceneBadge = root.querySelector<HTMLElement>('#scene-badge');
 
@@ -187,7 +163,31 @@ export function createApp(root: HTMLElement): void {
   const gameConfigStore = createGameConfigStore();
   let currentProfile = resolveStartupProfile(window.location.search);
   let game: Phaser.Game | null = null;
-  let playToastTimeout: number | null = null;
+
+  // Gaveta do debug: fechada por padrão, lembrada entre recargas.
+  const CHAVE_GAVETA = 'luta-de-mascotes:painel-debug';
+  const lerGaveta = (): boolean => {
+    try {
+      return window.localStorage.getItem(CHAVE_GAVETA) === 'aberto';
+    } catch {
+      return false;
+    }
+  };
+  let gavetaAberta = isDebugShell && lerGaveta();
+  const mostrarGaveta = (): void => {
+    debugPanel?.classList.toggle('is-aberto', gavetaAberta);
+    debugPanel?.setAttribute('aria-hidden', String(!gavetaAberta));
+    debugAba?.classList.toggle('is-aberto', gavetaAberta);
+  };
+  const alternarGaveta = (): void => {
+    gavetaAberta = !gavetaAberta;
+    try {
+      window.localStorage.setItem(CHAVE_GAVETA, gavetaAberta ? 'aberto' : 'fechado');
+    } catch {
+      // Sem storage a gaveta só não é lembrada.
+    }
+    mostrarGaveta();
+  };
 
   const context: AppContext = {
     debugStore,
@@ -195,6 +195,7 @@ export function createApp(root: HTMLElement): void {
     gameConfigStore,
     isDebugShell,
     isMobileShell,
+    painelDebug: isDebugShell ? { aberto: () => gavetaAberta, alternar: alternarGaveta } : null,
     getProfile: () => currentProfile
   };
 
@@ -279,48 +280,6 @@ export function createApp(root: HTMLElement): void {
   });
   // Editor de fases e tile gym do starter de RPG: os arquivos saíram do build em 29/10/2026.
 
-  const showPlayToast = (): void => {
-    if (!playToast) {
-      return;
-    }
-
-    playToast.classList.add('is-visible');
-
-    if (playToastTimeout !== null) {
-      window.clearTimeout(playToastTimeout);
-    }
-
-    playToastTimeout = window.setTimeout(() => {
-      playToast.classList.remove('is-visible');
-      playToastTimeout = null;
-    }, 2200);
-  };
-
-  const enterPlayMode = (): void => {
-    if (!isDebugShell || !playToggle || appShell.classList.contains('is-play-mode')) {
-      return;
-    }
-
-    appShell.classList.add('is-play-mode');
-    playToggle.textContent = 'Playing';
-    showPlayToast();
-  };
-
-  const exitPlayMode = (): void => {
-    if (!isDebugShell || !playToggle || !playToast || !appShell.classList.contains('is-play-mode')) {
-      return;
-    }
-
-    appShell.classList.remove('is-play-mode');
-    playToggle.textContent = 'Play';
-    playToast.classList.remove('is-visible');
-
-    if (playToastTimeout !== null) {
-      window.clearTimeout(playToastTimeout);
-      playToastTimeout = null;
-    }
-  };
-
   const remountGame = (profile: GameProfile): void => {
     currentProfile = profile;
     const profileConfig = GAME_PROFILES[profile];
@@ -348,7 +307,7 @@ export function createApp(root: HTMLElement): void {
       !debugPanel ||
       !debugControls ||
       !collapseButton ||
-      !playToggle ||
+      !debugAba ||
       !profileToggle ||
       !sceneBadge
     ) {
@@ -1175,25 +1134,12 @@ export function createApp(root: HTMLElement): void {
       });
     });
 
-    collapseButton.addEventListener('click', () => {
-      debugPanel.classList.toggle('is-collapsed');
-      collapseButton.textContent = debugPanel.classList.contains('is-collapsed') ? 'Expand' : 'Collapse';
-    });
-    playToggle.addEventListener('click', () => {
-      if (appShell.classList.contains('is-play-mode')) {
-        exitPlayMode();
-      } else {
-        enterPlayMode();
-      }
-    });
+    collapseButton.addEventListener('click', alternarGaveta);
+    debugAba.addEventListener('click', alternarGaveta);
+    mostrarGaveta();
     profileToggle.addEventListener('click', () => {
       const next: GameProfile = currentProfile === 'landscape' ? 'portrait' : 'landscape';
       remountGame(next);
-    });
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        exitPlayMode();
-      }
     });
 
     let renderedCharacterAnimationOptionsKey = '';

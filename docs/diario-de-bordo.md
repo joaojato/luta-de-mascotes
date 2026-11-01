@@ -2903,3 +2903,38 @@ P soco). P2 do 1 VS 1 igual (lá o O é pular). Spec, GDD e lição.
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** publicar no Vercel (precisa de "pode publicar").
+
+## 2026-11-01: jogo em tela cheia no dev e Esc vira pausa
+
+**Marco:** 2, segue em andamento.
+**Pedido:** tirar o modo de debug herdado do Chong-U (botão Play, tela
+pequena dentro de outra) e deixar o console numa aba retrátil, com opção no
+menu do jogo para mostrar ou esconder, só na versão que não vai para o
+Vercel. Esc passa a pausar a luta, com Continuar, Recomeçar, Configurações e
+Sair da partida; Tab não faz mais nada.
+**Feito:** `src/shell/appShell.ts`: em dev o jogo ocupa a tela inteira, como
+no build; o Debug Console virou gaveta pela direita (fechada por padrão,
+lembrada no navegador), aberta pela aba "Debug" discreta no canto ou por
+Ajustes ▸ Painel de debug (linha que só existe em dev, via
+`AppContext.painelDebug`). Saíram o botão Play, o aviso de play mode e o
+cabeçalho; cena e Landscape/Portrait foram para o topo da gaveta.
+`src/game/menuPausa.ts`: as quatro opções numa fileira, setas/WASD e Enter
+ou clique. `MatchScene`: Esc abre e fecha a pausa (no fim da partida
+continua levando ao menu, como diz o botão), Tab e Backspace sem função;
+Recomeçar reinicia a partida, Configurações abre os Ajustes por cima da
+luta parada e "Voltar à pausa" devolve para ela; Sair vai ao menu (no treino,
+à Academia). Ajustes reorganizados em linhas para caber a do debug.
+**Verificado:** `npm run check` (285 testes, build). Navegador (Playwright no
+servidor de dev): aba aparece e abre a gaveta; menu → luta → Esc mostra a
+pausa → Configurações → Esc volta à pausa → Esc continua; Tab não muda nada;
+Recomeçar e Sair funcionam; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** Esc saindo direto para o menu e Tab
+abrindo a pausa ("a função de apertar esc e voltar direto para a homescreen
+não dá"); o shell de debug em moldura ("tela pequena dentro de outra me deixa
+bastante incomodado").
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** botão definitivo para abrir a gaveta (ele vai pensar);
+`public/configs/fighter-playground.json` já estava alterado antes da sessão e
+ficou fora do commit; publicar no Vercel (precisa de "pode publicar").

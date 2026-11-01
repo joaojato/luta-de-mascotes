@@ -8,6 +8,8 @@ export interface AppContext {
   gameConfigStore: Store<StarterGameConfig>;
   isDebugShell: boolean;
   isMobileShell: boolean;
+  /** Gaveta do console de debug; só existe em dev, no localhost (null no build). */
+  painelDebug: { aberto(): boolean; alternar(): void } | null;
   getProfile(): GameProfile;
 }
 
