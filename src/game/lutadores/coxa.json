@@ -1,0 +1,501 @@
+{
+  "id": "coxa",
+  "label": "Vovô Coxa",
+  "assetRoot": "/assets/lutadores/coxa",
+  "torcida": {
+    "estampa": "listras-horizontais",
+    "cores": [
+      "#2E6A40",
+      "#F0F0F0"
+    ]
+  },
+  "anchorUsage": "Vovô Coxa no andador, guarda voltada para a esquerda",
+  "stats": {},
+  "combat": {
+    "specialDamage": 32
+  },
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Guarda no andador, duas mãos nas manoplas",
+      "file": "maos-por-cima/revisao-v5/normal/idle-composed.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 217,
+        "y": 95,
+        "width": 143,
+        "height": 198
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Avançar: planta o andador e dá os passos",
+      "file": "maos-por-cima/revisao-v6/normal/walk-forward-composed.png",
+      "frames": 12,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 12,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 178,
+        "y": 93,
+        "width": 175,
+        "height": 200
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Recuar: dá os passos e puxa o andador",
+      "file": "maos-por-cima/revisao-v6/normal/walk-backward-composed.png",
+      "frames": 12,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 12,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 178,
+        "y": 93,
+        "width": 175,
+        "height": 200
+      }
+    },
+    {
+      "action": "dash-forward",
+      "label": "Dash para a frente",
+      "file": "maos-por-cima/revisao-v4/normal/dash-forward-composed.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 186,
+        "y": 92,
+        "width": 183,
+        "height": 201
+      }
+    },
+    {
+      "action": "dash-back",
+      "label": "Dash para trás",
+      "file": "maos-por-cima/revisao-v4/normal/dash-back-composed.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 208,
+        "y": 92,
+        "width": 161,
+        "height": 201
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Agachar com dor nas costas",
+      "file": "maos-por-cima/revisao-v4/normal/crouch-composed.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 20,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 219,
+        "y": 92,
+        "width": 150,
+        "height": 201
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Pular com o andador",
+      "file": "maos-por-cima/revisao-v4/normal/jump-composed.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 197,
+        "y": 60,
+        "width": 171,
+        "height": 233
+      }
+    },
+    {
+      "action": "jump-kick",
+      "label": "Voadora",
+      "file": "maos-por-cima/revisao-v4/normal/jump-kick-composed.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 184,
+        "y": 60,
+        "width": 184,
+        "height": 199
+      },
+      "attack": {
+        "frames": [
+          1,
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 189,
+          "y": 215,
+          "width": 50,
+          "height": 44
+        }
+      }
+    },
+    {
+      "action": "jump-punch",
+      "label": "Andador no ar",
+      "file": "maos-por-cima/revisao-v4/normal/jump-punch-composed.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 155,
+        "y": 92,
+        "width": 214,
+        "height": 201
+      },
+      "attack": {
+        "frames": [
+          1,
+          2
+        ],
+        "bounds": {
+          "x": 155,
+          "y": 150,
+          "width": 60,
+          "height": 100
+        }
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Bloqueio alto",
+      "file": "maos-por-cima/revisao-v4/normal/block-high-composed.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 210,
+        "y": 92,
+        "width": 159,
+        "height": 201
+      },
+      "guard": {
+        "x": 210,
+        "y": 93,
+        "width": 100,
+        "height": 110
+      }
+    },
+    {
+      "action": "block-low",
+      "label": "Bloqueio baixo atrás do andador",
+      "file": "maos-por-cima/revisao-v4/normal/block-low-composed.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 225,
+        "y": 157,
+        "width": 179,
+        "height": 136
+      },
+      "guard": {
+        "x": 225,
+        "y": 170,
+        "width": 110,
+        "height": 122
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Receber golpe",
+      "file": "maos-por-cima/revisao-v4/normal/hit-high-composed.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 177,
+        "y": 92,
+        "width": 192,
+        "height": 201
+      }
+    },
+    {
+      "action": "stunned",
+      "label": "Atordoado",
+      "file": "maos-por-cima/revisao-v4/normal/stunned-composed.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 210,
+        "y": 92,
+        "width": 159,
+        "height": 201
+      }
+    },
+    {
+      "action": "knockdown",
+      "label": "Queda",
+      "file": "maos-por-cima/revisao-v4/normal/knockdown-composed.png",
+      "frames": 10,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 64,
+        "y": 92,
+        "width": 305,
+        "height": 201
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Duas estocadas com os pés do andador",
+      "file": "maos-por-cima/revisao-v4/normal/light-punch-composed.png",
+      "frames": 10,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 16,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 84,
+        "y": 92,
+        "width": 284,
+        "height": 201
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 103,
+            "y": 140,
+            "width": 75,
+            "height": 110
+          }
+        },
+        {
+          "frames": [
+            5
+          ],
+          "bounds": {
+            "x": 84,
+            "y": 120,
+            "width": 75,
+            "height": 130
+          }
+        }
+      ]
+    },
+    {
+      "action": "heavy-punch",
+      "label": "Cabeçada",
+      "file": "maos-por-cima/revisao-v4/normal/heavy-punch-composed.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 175,
+        "y": 92,
+        "width": 194,
+        "height": 201
+      },
+      "attack": {
+        "frames": [
+          3
+        ],
+        "bounds": {
+          "x": 175,
+          "y": 126,
+          "width": 55,
+          "height": 64
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 25
+      }
+    },
+    {
+      "action": "low-kick",
+      "label": "Voadora apoiada no andador",
+      "file": "rigido-v4-provisorio/normal/low-kick-composed.png",
+      "frames": 12,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 105,
+        "y": 80,
+        "width": 266,
+        "height": 213
+      },
+      "attack": {
+        "frames": [
+          7,
+          8
+        ],
+        "bounds": {
+          "x": 105,
+          "y": 119,
+          "width": 75,
+          "height": 70
+        }
+      },
+      "travel": {
+        "frames": [
+          5,
+          8
+        ],
+        "distance": 30
+      }
+    },
+    {
+      "action": "beer-throw",
+      "label": "Lata de cerveja",
+      "file": "maos-por-cima/revisao-v4/normal/beer-throw-composed.png",
+      "frames": 10,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 163,
+        "y": 82,
+        "width": 212,
+        "height": 211
+      }
+    },
+    {
+      "action": "special-charge",
+      "label": "Bebe a cerveja",
+      "file": "maos-por-cima/revisao-v4/normal/special-charge-composed.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 16,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 216,
+        "y": 92,
+        "width": 153,
+        "height": 201
+      }
+    },
+    {
+      "action": "special",
+      "label": "Vira maromba",
+      "file": "maos-por-cima/rigido-v3/normal/special-transform-composed.png",
+      "frames": 12,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 190,
+        "y": 93,
+        "width": 228,
+        "height": 199
+      },
+      "attack": {
+        "frames": [
+          9,
+          10
+        ],
+        "bounds": {
+          "x": 194,
+          "y": 128,
+          "width": 60,
+          "height": 125
+        }
+      }
+    }
+  ],
+  "moves": {
+    "jump": {
+      "takeoff": 3,
+      "airEnd": 6,
+      "land": 7
+    },
+    "kick": {
+      "kind": "projectile",
+      "action": "beer-throw",
+      "releaseFrame": 6,
+      "speed": 420,
+      "launchVy": 320,
+      "gravity": 600,
+      "visualEffect": "lata",
+      "visualScale": 3.5,
+      "launchHeight": 150,
+      "launchForward": 86,
+      "hitWidth": 36,
+      "hitHeight": 44,
+      "move": "cachimbo",
+      "hitParticles": [
+        {
+          "colors": [
+            "#F2C94C",
+            "#FFF4D6",
+            "#E0A526"
+          ],
+          "count": 14
+        }
+      ]
+    },
+    "special": {
+      "kind": "forma",
+      "forma": {
+        "lutador": "coxa-maromba",
+        "segundos": 5,
+        "danoCausado": 1.25,
+        "danoRecebido": 0.75,
+        "rotulo": "MAROMBA"
+      }
+    },
+    "effects": {
+      "lata": {
+        "file": "revisao-v4/efeitos/beer-can.png",
+        "frames": 8,
+        "frameRate": 16,
+        "repeat": -1,
+        "frameWidth": 32,
+        "frameHeight": 32
+      }
+    }
+  }
+}

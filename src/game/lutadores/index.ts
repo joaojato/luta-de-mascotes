@@ -13,6 +13,8 @@ import bahia from './bahia.json';
 import porco from './porco.json';
 import mosqueteiro from './mosqueteiro.json';
 import dragao from './dragao.json';
+import coxa from './coxa.json';
+import coxaMaromba from './coxa-maromba.json';
 
 /**
  * Regra do JSON: lutador é dado, não classe. Um arquivo por mascote aqui
@@ -159,7 +161,7 @@ const LOCAIS: LutadorJson[] = import.meta.env.DEV
 
 /** Ordem de registro = ordem na seleção. O primeiro é o padrão dos debugs. */
 export const LUTADORES: LutadorJson[] = [
-  urubu, almirante, saci, cartola, cachorro, galo, bahia, porco, mosqueteiro, dragao, ...LOCAIS
+  urubu, almirante, saci, cartola, cachorro, galo, bahia, porco, mosqueteiro, dragao, coxa, coxaMaromba, ...LOCAIS
 ].flatMap(expandirSkins);
 
 export const LUTADOR_CHARACTERS: CharacterDefinition[] = LUTADORES.map(buildLutador);

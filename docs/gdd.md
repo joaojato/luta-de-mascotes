@@ -456,8 +456,8 @@ asas (`frameHeight` no JSON). Torcida em listras verticais vermelho e preto.
 
 ## Vovô Coxa (Coritiba): ficha (01/11/2026)
 
-Só na máquina do João (`src/game/lutadores/locais/`, fora do git e da
-Vercel). Arte do Codex em camadas (`docs/coxa-producao-rigida-v1.md`),
+No elenco desde 01/11/2026 (antes só na máquina do João). No git vão só
+as folhas que o JSON usa; as rodadas da pasta `coxa/` seguem fora. Arte do Codex em camadas (`docs/coxa-producao-rigida-v1.md`),
 células 512×320. Torcida em listras horizontais verde e branco.
 
 **Movimento igual ao do elenco (João, 01/11/2026).** O vovô anda na mesma
@@ -485,7 +485,7 @@ provisórios, decididos pelo Claude até o João mudar:
 - Sem especial enquanto maromba.
 - Volta ao normal: a transformação tocada de trás para a frente, até chegar
   a arte própria (`special-return`), que o João ainda vai definir.
-- O maromba é um lutador local próprio (`coxa-maromba`), fora da seleção e
+- O maromba é um lutador próprio (`coxa-maromba`), fora da seleção e
   visível na Academia.
 - Golpes do maromba: soco e chute têm arte (`light-punch`, `heavy-kick`).
   Baixo + soco e baixo + chute usam essas mesmas folhas como quebra-galho

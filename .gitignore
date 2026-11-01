@@ -60,4 +60,6 @@ public/assets/lutadores/dragao/base-v1/
 
 # Lutadores locais: só no npm run dev, nunca no git nem na Vercel (01/11/2026).
 src/game/lutadores/locais/
+# Coxa: rodadas da arte fora do git; as folhas que o coxa.json usa entram
+# com git add -f (01/11/2026).
 public/assets/lutadores/coxa/
