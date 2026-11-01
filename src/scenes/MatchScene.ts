@@ -120,7 +120,8 @@ export class MatchScene extends BaseScene {
       p1CharacterId: this.config.p1CharacterId,
       p2CharacterId: this.config.p2CharacterId,
       roundsToWin: ROUNDS_TO_WIN,
-      depth: HUD_DEPTH
+      depth: HUD_DEPTH,
+      espacoParaMenu: controlesDeToqueAtivos()
     });
     this.hud.slideIn();
 

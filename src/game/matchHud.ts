@@ -7,7 +7,7 @@ import type { MatchMode } from './types';
 const KEY = FIGHTING_UI_ATLAS_TEXTURE_KEY;
 
 // Display sizing (screen pixels) for each atlas element.
-const PAD = 20;
+const MARGEM = 20;
 const TOP = 16;
 const PORTRAIT_DISP = 96;
 const HEALTH_DISP_W = 468;
@@ -28,6 +28,23 @@ const METER_READY_COLOR = 0xfacc15;
 // Health colour thresholds (fraction of max).
 const HEALTH_WARN = 0.5;
 const HEALTH_DANGER = 0.25;
+
+// Celular: o menu (40 px de tela no canto) pede uns 90 px de jogo de folga.
+const MARGEM_COM_MENU = 92;
+// Folga mínima entre cada barra de vida e o relógio.
+const FOLGA_DO_RELOGIO = 8;
+
+/**
+ * HUD com o menu do celular no canto: margem larga dos dois lados e, se a tela
+ * não comporta (16:9), o HUD inteiro encolhe até caber em vez de ficar por
+ * baixo do botão. Devolve a largura em que o HUD é montado e a escala dele.
+ * @param camWidth - Largura da câmera.
+ */
+export function encaixeComMenu(camWidth: number): { largura: number; escala: number } {
+  const necessario = 2 * (MARGEM_COM_MENU + PORTRAIT_DISP + 6 + HEALTH_DISP_W) + TIMER_DISP_W + 2 * FOLGA_DO_RELOGIO;
+  const escala = Math.min(1, camWidth / necessario);
+  return { largura: camWidth / escala, escala };
+}
 
 // How far above its resting position the HUD starts before the intro slide.
 const SLIDE_OFFSET = 170;
@@ -56,6 +73,8 @@ export interface MatchHudConfig {
   p2CharacterId: string;
   roundsToWin: number;
   depth: number;
+  /** Abre espaço nos cantos de cima para o menu do celular (docs/mobile.md). */
+  espacoParaMenu?: boolean;
 }
 
 /**
@@ -105,21 +124,24 @@ export class MatchHud {
 
   /** Constructs every HUD element into the root container. */
   private build(): void {
-    const camWidth = this.scene.cameras.main.width;
+    const encaixe = this.config.espacoParaMenu ? encaixeComMenu(this.scene.cameras.main.width) : null;
+    const camWidth = encaixe?.largura ?? this.scene.cameras.main.width;
+    const pad = encaixe ? MARGEM_COM_MENU : MARGEM;
+    this.root.setScale(encaixe?.escala ?? 1);
 
     // --- Player 1 (left) ---
-    const p1HealthX = PAD + PORTRAIT_DISP + 6;
+    const p1HealthX = pad + PORTRAIT_DISP + 6;
     const healthY = TOP + 8;
     this.buildHealth('left', p1HealthX, healthY);
-    this.buildPortrait('portrait-frame-gold-left', this.config.p1CharacterId, PAD + PORTRAIT_DISP / 2, true);
+    this.buildPortrait('portrait-frame-gold-left', this.config.p1CharacterId, pad + PORTRAIT_DISP / 2, true);
     this.buildNameplate('nameplate-gold-left', this.config.p1CharacterId, p1HealthX, healthY, false);
     const pipsY = healthY + HEALTH_DISP_H + NAME_DISP_H + 8;
     this.p1Pips = this.buildPips(p1HealthX, pipsY, false);
 
     // --- Player 2 (right) ---
-    const p2HealthX = camWidth - PAD - PORTRAIT_DISP - 6 - HEALTH_DISP_W;
+    const p2HealthX = camWidth - pad - PORTRAIT_DISP - 6 - HEALTH_DISP_W;
     this.buildHealth('right', p2HealthX, healthY);
-    this.buildPortrait('portrait-frame-blue-right', this.config.p2CharacterId, camWidth - PAD - PORTRAIT_DISP / 2, false);
+    this.buildPortrait('portrait-frame-blue-right', this.config.p2CharacterId, camWidth - pad - PORTRAIT_DISP / 2, false);
     this.buildNameplate('nameplate-gold-right', this.config.p2CharacterId, p2HealthX, healthY, true);
     this.p2Pips = this.buildPips(p2HealthX + HEALTH_DISP_W, pipsY, true);
 

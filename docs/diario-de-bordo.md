@@ -2411,3 +2411,42 @@ alto e o Dragão volta ao chão (662). Console sem erro.
 da borda de cima da tela, atrás da barra de vida.
 **Em aberto:** multiplayer na primeira pergunta; chão, sombra e tela de
 vitória.
+
+## 2026-10-31: Versão mobile, rodada 2: tela inteira, botões de PlayStation e menu hambúrguer
+
+**Marco:** 2, segue em andamento (item da versão jogável no celular).
+**Pedido:** depois de testar no iPhone como web app: formatação de acordo
+com a tela (elementos cortados; cenário pode cortar, HUD nunca); botões nas
+cores e posições do PlayStation (quadrado defesa, xis chute, bola soco,
+triângulo especial); bug do iPhone que abria seleção de texto e zoom ao
+segurar o direcional; menu hambúrguer no lugar da coluna de canto; cada
+jogador poder mover e redimensionar os botões e guardar.
+**Feito:** `src/toque/layout.ts` (arranjo de fábrica, arrastar, tamanho,
+salvar no `localStorage`, largura do jogo pela proporção) com 16 testes;
+`src/toque/tamanhoDoJogo.ts` ajusta a largura do jogo (1280 a 1680, altura
+720) a cada cena que abre; `telaToque.ts` reescrito com losango PS em SVG,
+setas em SVG, toque cru cancelado nos controles, menu hambúrguer que pausa
+o jogo e modo "Ajustar botões"; canvas na área segura; `matchHud.ts` abre
+margem para o menu e encolhe no 16:9 (`encaixeComMenu`); dicas de teclado
+somem no toque; splash diz "Toque na tela para começar". Contrato em
+`docs/mobile.md`, rodada 2.
+**Verificado:** typecheck, 213 testes (fora `cpu.test.ts`) e build. O
+`npm run check` completo falha em 6 testes de `cpu.test.ts`, arquivo que
+outra sessão está editando agora sem commitar; não mexi nele. No Chromium
+com toque emulado: 844×390 (jogo 1558 de largura), 667×375 (1280, HUD
+encolhido ao lado do menu) e 740×330 (1614); HUD inteiro nas três; menu
+pausa e retoma; xis arrastado e aumentado continua no lugar depois de
+recarregar. WebKit do Playwright no Windows não carrega as imagens do jogo,
+então lupa e zoom do iOS ficam para o iPhone de verdade.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a coluna de canto (voltar, tela
+cheia, setas/joystick) virou menu hambúrguer; os botões de cor própria
+viraram o losango do PlayStation; as setas em texto viraram SVG.
+**Aprovado explicitamente:** "adorei a recomendação de adicionar o jogo
+como web app".
+**Atrito:** a primeira sessão caiu no meio da verificação; retomada em
+seguida. O servidor de dev da porta 5199 era desta pasta, de sessão antiga.
+**Em aberto:** o João confirmar no iPhone (lupa, zoom, tela cheia); no
+iPhone o ajuste dos botões salvo no Safari não aparece no ícone da Tela de
+Início e vice-versa; em menus, o xis não confirma (quem confirma é o
+triângulo, que aperta Espaço).

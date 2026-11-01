@@ -414,3 +414,17 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   chão; golpe rápido acabava o atordoamento antes da queda e ele ficava em
   pé no ar. O teste antigo usava atordoamento de 3 s e escondia isso: teste
   de queda usa golpe rápido. (2026-10-31)
+- **Aprovado: jogar como web app pela Tela de Início.** "Adorei a
+  recomendação de adicionar o jogo como web app." (2026-10-31)
+- **Controle de toque nunca é texto.** As setas do direcional eram
+  caracteres (▲◀); no iPhone, segurar abria a lupa de seleção e dava zoom
+  na página, o que cortava a tela. O iOS ignora `user-scalable=no`: o
+  remédio é símbolo em SVG, `user-select: none` em tudo e cancelar o
+  `touchstart` cru nos controles. (2026-10-31)
+- **Botões de luta seguem o controle de PlayStation**, cores e posições:
+  quadrado rosa defende, xis azul chuta, bola vermelha soca, triângulo verde
+  é o especial. Botão genérico com nome escrito não serviu. (2026-10-31)
+- **No celular, tela cheia vale mais que cenário inteiro; HUD vale mais que
+  os dois.** O João aceitou cortar cenário, nunca barra de vida e relógio.
+  Encher a tela pela largura e encolher o HUD quando falta espaço resolveu
+  sem cortar nada. (2026-10-31)

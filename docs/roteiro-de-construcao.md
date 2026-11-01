@@ -81,7 +81,10 @@ ele é quebrado em dois, não esticado.
 - [ ] **Versão jogável no celular** (pedida em 29/10, feita em 30/10/2026):
   deitado, sem rolagem, tela cheia, setas ou joystick à esquerda e soco,
   chute, bloqueio e especial à direita; só 1 VS CPU no toque. Contrato em
-  `docs/mobile.md`. Falta: teste num celular de verdade.
+  `docs/mobile.md`. Testado no iPhone pelo João; rodada 2 (31/10/2026)
+  corrigiu tela cheia com HUD visível, losango do PlayStation, lupa e zoom
+  do iPhone, menu hambúrguer e botões ajustáveis. Falta: o João confirmar
+  a rodada 2 no iPhone.
 - [ ] Tarefa futura, pedida pelo João em 29/10/2026: **multiplayer** (dois
   jogadores em máquinas diferentes). A luta com celular como câmera não
   pareceu funcionar na prática; o caminho de multiplayer será estudado à

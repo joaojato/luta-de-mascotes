@@ -1011,11 +1011,33 @@ body.is-number-dragging * {
   min-height: 0;
 }
 
+/* No celular o jogo ocupa a área segura (fora do notch e da barra de início).
+   O host é fixo em toda a tela; a altura vem dele, não de vh, que no iPhone
+   mente quando a barra do Safari aparece. */
+html.com-toque .app-shell--game-only .game-host {
+  box-sizing: border-box;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+html.com-toque .app-shell--game-only .game-root {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
 html.com-toque,
 html.com-toque body {
   overflow: hidden;
   overscroll-behavior: none;
   touch-action: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Nada na tela é texto selecionável: segurar o dedo não abre lupa nem menu. */
+html.com-toque *,
+html.com-toque *::before,
+html.com-toque *::after {
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
@@ -1028,9 +1050,22 @@ html.com-toque body {
   z-index: 20;
   pointer-events: none;
   font-family: var(--font-display);
-  --toque-borda: rgba(244, 233, 216, 0.55);
-  --toque-fundo: rgba(13, 11, 30, 0.38);
-  --toque-aceso: rgba(57, 255, 122, 0.45);
+  --toque-borda: rgba(244, 233, 216, 0.5);
+  --toque-fundo: rgba(13, 11, 30, 0.42);
+  --toque-aceso: rgba(244, 233, 216, 0.28);
+  /* Cores do controle de PlayStation. */
+  --ps-triangulo: #2fd8a0;
+  --ps-circulo: #ff4f5e;
+  --ps-xis: #6aa8ff;
+  --ps-quadrado: #ff7ad9;
+}
+
+/* Régua invisível: a camada lê dela o tamanho do notch e da barra de início. */
+.toque__seguro {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .toque button,
@@ -1039,44 +1074,33 @@ html.com-toque body {
   touch-action: none;
 }
 
-/* Voltar, tela cheia e setas/joystick: coluna estreita na borda esquerda, longe da vida e do relógio. */
-.toque__topo {
+/* Cada controle é posto pela camada (left, top, lado) a partir de layout.ts. */
+.toque__controle {
   position: absolute;
-  top: 50%;
-  left: max(8px, env(safe-area-inset-left));
-  transform: translateY(-100%);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
-.toque__mini {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  font-family: system-ui, sans-serif;
-  font-size: 18px;
-  line-height: 1;
+.toque__menu {
+  display: grid;
+  place-items: center;
   color: var(--ink);
   background: var(--toque-fundo);
   border: 2px solid var(--toque-borda);
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
-.toque__mini.is-on {
-  background: var(--toque-aceso);
-}
-
-.toque__esquerda {
-  position: absolute;
-  left: max(18px, env(safe-area-inset-left));
-  bottom: max(18px, env(safe-area-inset-bottom));
+.toque__menu svg {
+  width: 60%;
+  height: 60%;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  fill: none;
 }
 
 .toque__direcional {
-  position: relative;
-  width: min(36vh, 168px);
-  height: min(36vh, 168px);
   border-radius: 50%;
   background: var(--toque-fundo);
   border: 2px solid var(--toque-borda);
@@ -1088,10 +1112,14 @@ html.com-toque body {
   height: 34%;
   display: grid;
   place-items: center;
-  color: var(--ink);
-  font-size: 14px;
   border-radius: 8px;
   background: rgba(244, 233, 216, 0.1);
+}
+
+.toque__seta svg {
+  width: 38%;
+  height: 38%;
+  fill: var(--ink);
 }
 
 .toque__seta.is-on {
@@ -1102,6 +1130,9 @@ html.com-toque body {
 .toque__seta--baixo { left: 33%; bottom: 2%; }
 .toque__seta--esq { left: 2%; top: 33%; }
 .toque__seta--dir { right: 2%; top: 33%; }
+.toque__seta--baixo svg { transform: rotate(180deg); }
+.toque__seta--esq svg { transform: rotate(-90deg); }
+.toque__seta--dir svg { transform: rotate(90deg); }
 
 .toque__pino {
   position: absolute;
@@ -1119,52 +1150,168 @@ html.com-toque body {
 /* Joystick: some a cruz de setas, aparece o pino que segue o dedo. */
 .toque__direcional[data-modo='joystick'] .toque__seta {
   background: none;
-  font-size: 9px;
   opacity: 0.45;
+}
+
+.toque__direcional[data-modo='joystick'] .toque__seta svg {
+  width: 26%;
+  height: 26%;
 }
 
 .toque__direcional[data-modo='joystick'] .toque__seta.is-on {
   opacity: 1;
-  background: none;
-  color: var(--accent);
 }
 
 .toque__direcional[data-modo='joystick'] .toque__pino {
   display: block;
 }
 
-/* Losango à direita: Soco à esquerda, Chute em cima, Especial à direita, Bloqueio embaixo. */
-.toque__direita {
-  position: absolute;
-  right: max(18px, env(safe-area-inset-right));
-  bottom: max(18px, env(safe-area-inset-bottom));
-  width: min(44vh, 204px);
-  height: min(44vh, 204px);
+/* Botão de luta: símbolo do PlayStation na cor dele, nome pequeno embaixo. */
+.toque__botao {
+  --cor: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2%;
+  border-radius: 50%;
+  color: var(--cor);
+  background: var(--toque-fundo);
+  border: 3px solid var(--cor);
+  font-family: var(--font-readout);
+  font-size: calc(var(--lado, 76px) * 0.17);
+  line-height: 1;
 }
 
-.toque__botao {
-  position: absolute;
-  width: 37%;
-  height: 37%;
-  border-radius: 50%;
-  padding: 0;
-  font-family: var(--font-readout);
-  font-size: 17px;
+.toque__botao svg {
+  width: 44%;
+  height: 44%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.toque__nome {
+  font-size: max(9px, 0.62em);
   letter-spacing: 0.02em;
   color: var(--ink);
-  background: var(--toque-fundo);
-  border: 3px solid var(--toque-borda);
+  opacity: 0.85;
 }
 
+.toque__botao--triangulo { --cor: var(--ps-triangulo); }
+.toque__botao--circulo { --cor: var(--ps-circulo); }
+.toque__botao--xis { --cor: var(--ps-xis); }
+.toque__botao--quadrado { --cor: var(--ps-quadrado); }
+
 .toque__botao.is-on {
-  background: var(--toque-aceso);
+  background: color-mix(in srgb, var(--cor) 38%, transparent);
   transform: scale(0.94);
 }
 
-.toque__botao--chute { left: 31.5%; top: 0; border-color: #ffd447; }
-.toque__botao--soco { left: 0; top: 31.5%; border-color: #ff3c78; }
-.toque__botao--especial { right: 0; top: 31.5%; border-color: #39ff7a; }
-.toque__botao--bloqueio { left: 31.5%; bottom: 0; border-color: #7fb7ff; }
+/* Menu hambúrguer: lista no meio da tela, o jogo parado por baixo. */
+.toque__painel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(7, 6, 19, 0.72);
+  pointer-events: auto;
+}
+
+.toque__painel[hidden],
+.toque__editor[hidden] {
+  display: none;
+}
+
+.toque__caixa {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(340px, 80vw);
+  max-height: 90%;
+  overflow: auto;
+  padding: 14px;
+  background: rgba(13, 11, 30, 0.96);
+  border: 2px solid var(--toque-borda);
+  border-radius: 12px;
+}
+
+.toque__item {
+  min-height: 42px;
+  padding: 8px 14px;
+  font-family: var(--font-readout);
+  font-size: 16px;
+  color: var(--ink);
+  background: rgba(244, 233, 216, 0.08);
+  border: 2px solid var(--toque-borda);
+  border-radius: 8px;
+  touch-action: manipulation;
+}
+
+.toque__item[hidden] {
+  display: none;
+}
+
+.toque__item:active,
+.toque__item--forte {
+  background: rgba(57, 255, 122, 0.25);
+}
+
+/* Ajustar botões: barra em cima; cada controle ganha contorno e pode ser arrastado. */
+.toque__editor {
+  position: absolute;
+  top: max(8px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 140px);
+  padding: 8px 10px;
+  text-align: center;
+  font-family: var(--font-readout);
+  font-size: 13px;
+  color: var(--ink);
+  background: rgba(13, 11, 30, 0.92);
+  border: 2px solid var(--toque-borda);
+  border-radius: 10px;
+  pointer-events: auto;
+}
+
+.toque__editor p {
+  margin: 0;
+}
+
+.toque__ferramentas {
+  display: flex;
+  gap: 6px;
+}
+
+.toque__ferramentas .toque__item {
+  min-width: 44px;
+  min-height: 36px;
+  padding: 4px 10px;
+}
+
+.toque.is-editando::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 6, 19, 0.45);
+}
+
+.toque.is-editando .toque__controle {
+  outline: 2px dashed rgba(244, 233, 216, 0.7);
+  outline-offset: 3px;
+  cursor: grab;
+}
+
+.toque.is-editando .toque__controle.is-selecionado {
+  outline: 3px solid #39ff7a;
+}
 
 .toque__girar,
 .toque__aviso {

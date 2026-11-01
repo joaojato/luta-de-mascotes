@@ -2,6 +2,7 @@ import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { GAME_TAGLINE, GAME_TITLE } from '../game/constants';
 import { CONTORNO_TITULO, SOMBRA_TITULO, FONTE_TEXTO, FONTE_TITULO, TEXTO_CLARO, TEXTO_DESTAQUE } from '../game/estilo';
 import { SCENE_KEYS } from '../game/types';
+import { controlesDeToqueAtivos } from '../toque/telaToque';
 import { BaseScene } from './BaseScene';
 
 export class SplashScene extends BaseScene {
@@ -46,7 +47,7 @@ export class SplashScene extends BaseScene {
     }
 
     const chamada = this.add
-      .text(camera.centerX, camera.height - 110, this.app.isMobileShell ? 'TOQUE NA TELA PARA COMEÇAR' : 'APERTE QUALQUER TECLA', {
+      .text(camera.centerX, camera.height - 110, this.app.isMobileShell || controlesDeToqueAtivos() ? 'TOQUE NA TELA PARA COMEÇAR' : 'APERTE QUALQUER TECLA', {
         color: TEXTO_CLARO,
         fontFamily: FONTE_TITULO,
         fontSize: '28px',

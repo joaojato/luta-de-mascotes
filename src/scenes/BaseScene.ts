@@ -15,6 +15,7 @@ import {
 } from '../game/estilo';
 import { getStageDefinition } from '../game/stageConfig';
 import { SCENE_KEYS, type SceneKey } from '../game/types';
+import { controlesDeToqueAtivos } from '../toque/telaToque';
 
 export abstract class BaseScene extends Phaser.Scene {
   protected get app(): AppContext {
@@ -83,6 +84,10 @@ export abstract class BaseScene extends Phaser.Scene {
   }
 
   protected createFooterHint(text: string): void {
+    // No celular as teclas não existem: a dica só ocuparia o lugar dos dedos.
+    if (controlesDeToqueAtivos()) {
+      return;
+    }
     const { centerX, height } = this.cameras.main;
 
     this.add

@@ -105,7 +105,8 @@ import {
   type TileGymDebugState
 } from '../game/types';
 import { renderDebugPanels } from './debugPanels';
-import { montarControlesDeToque, querControlesDeToque } from '../toque/telaToque';
+import { acompanharProporcaoDaTela } from '../toque/tamanhoDoJogo';
+import { controlesDeToqueAtivos, montarControlesDeToque, querControlesDeToque } from '../toque/telaToque';
 
 type LevelEditorObjectDefinition = LevelEditorDebugState['level']['objects'][number];
 
@@ -201,7 +202,7 @@ export function createApp(root: HTMLElement): void {
 
   // Celular deitado: botões na tela no lugar do teclado (docs/mobile.md).
   if (!isDebugShell && querControlesDeToque()) {
-    montarControlesDeToque(appShell);
+    montarControlesDeToque(appShell, { pausar: () => game?.pause(), retomar: () => game?.resume() });
   }
 
   const loadEditorLevelIntoStore = async (levelId: string, updateActiveLevel: boolean): Promise<void> => {
@@ -337,6 +338,9 @@ export function createApp(root: HTMLElement): void {
       worldBounds: null
     });
     game = createGame(gameRoot, profile);
+    if (controlesDeToqueAtivos() && profile === 'landscape') {
+      acompanharProporcaoDaTela(game, gameRoot);
+    }
   };
 
   if (isDebugShell) {
