@@ -4,8 +4,10 @@ import type { FighterInput } from './fighter';
  * CPU do 1 VS CPU (docs/cpu.md). Lê a luta a cada quadro (distância, golpe do
  * oponente, projétil no ar, barra cheia) e decide como um jogador: chega
  * perto, ataca com mistura de golpes, defende quando o oponente bate, pune
- * quem ficou tonto e usa o especial. A dificuldade só muda os números: tempo
- * de reação, frequência de ataque, chance de defender e de usar o especial.
+ * quem ficou tonto e usa o especial. A dificuldade muda os números (reação,
+ * frequência de ataque, defesa, especial) e liga comportamentos que o Médio
+ * não tem: o Fácil faz bobagem, o Difícil agacha na guarda certa, pune o
+ * golpe que terminou, corta pulo e guarda o especial para a hora (31/10/2026).
  * Não depende do Phaser: o teste chama `atualizar` com uma leitura montada.
  */
 
@@ -31,12 +33,27 @@ export interface PerfilCpu {
   agressividade: number;
   /** Chance de punir o oponente tonto. */
   punicao: number;
+  /** Chance, a cada decisão, de uma bobagem: soco no ar ou recuar sem motivo. */
+  erro: number;
+  /** Defende agachado contra golpe de chão (a guarda baixa segura todos) e em pé contra o aéreo. */
+  guardaCerta: boolean;
+  /** Chance de bater assim que o golpe do oponente termina perto (errou ou foi defendido). */
+  punirRecuperacao: number;
+  /** Chance de chutar o oponente que pula perto. */
+  antiAereo: number;
+  /** Só solta o especial com o oponente tonto ou saindo de um golpe, perto. */
+  especialNaHora: boolean;
 }
 
+const SEM_EXTRAS = { erro: 0, guardaCerta: false, punirRecuperacao: 0, antiAereo: 0, especialNaHora: false };
+
 export const PERFIS: Record<Dificuldade, PerfilCpu> = {
-  facil: { reacaoMs: 520, intervaloAtaqueMs: 950, defesa: 0.2, especial: 0.08, agressividade: 0.45, punicao: 0.3 },
-  medio: { reacaoMs: 300, intervaloAtaqueMs: 520, defesa: 0.5, especial: 0.3, agressividade: 0.7, punicao: 0.7 },
-  dificil: { reacaoMs: 150, intervaloAtaqueMs: 260, defesa: 0.8, especial: 0.6, agressividade: 0.9, punicao: 1 }
+  facil: { reacaoMs: 800, intervaloAtaqueMs: 1600, defesa: 0.08, especial: 0.03, agressividade: 0.3, punicao: 0.1, ...SEM_EXTRAS, erro: 0.35 },
+  medio: { reacaoMs: 300, intervaloAtaqueMs: 520, defesa: 0.5, especial: 0.3, agressividade: 0.7, punicao: 0.7, ...SEM_EXTRAS },
+  dificil: {
+    reacaoMs: 110, intervaloAtaqueMs: 220, defesa: 0.9, especial: 0.8, agressividade: 0.85, punicao: 1,
+    erro: 0, guardaCerta: true, punirRecuperacao: 0.9, antiAereo: 0.7, especialNaHora: true
+  }
 };
 
 /** O que a CPU enxerga da luta neste quadro. */
@@ -79,6 +96,8 @@ export class CpuLutador {
   private proximaDecisao = 0;
   /** Quando o oponente começou o golpe que a CPU ainda vai perceber. */
   private viuAtaqueEm: number | null = null;
+  /** O oponente estava no meio de um golpe no quadro anterior. */
+  private oponenteAtacava = false;
 
   constructor(dificuldade: Dificuldade = 'medio', private readonly aleatorio: () => number = Math.random) {
     this.perfil = PERFIS[dificuldade];
@@ -92,8 +111,19 @@ export class CpuLutador {
     const frente = lado > 0 ? 'right' : 'left';
     const tras = lado > 0 ? 'left' : 'right';
 
+    // O golpe do oponente acabou de terminar: a janela de punição.
+    const recuperando = this.oponenteAtacava && !l.oponente.atacando;
+    this.oponenteAtacava = l.oponente.atacando;
+
     if (l.oponente.caido || l.eu.atordoado) {
       this.segurarAte = 0;
+      return input;
+    }
+
+    if (recuperando && !l.eu.noAr && distancia <= PERTO * 1.1 && this.chance(this.perfil.punirRecuperacao)) {
+      this.segurarAte = 0;
+      this.viuAtaqueEm = null;
+      this.atacar(t, input, this.aleatorio() < 0.5 ? 'cotovelo' : 'chute');
       return input;
     }
 
@@ -111,7 +141,9 @@ export class CpuLutador {
           input[frente] = true;
           return input;
         }
-        this.segurar(t, 380, { block: true }, input);
+        // A guarda baixa segura todo golpe de chão; só a voadora passa por ela.
+        const agachar = this.perfil.guardaCerta && !l.oponente.noAr;
+        this.segurar(t, 380, agachar ? { block: true, crouch: true } : { block: true }, input);
         return input;
       }
     }
@@ -124,9 +156,23 @@ export class CpuLutador {
     if (t < this.proximaDecisao || l.eu.noAr) return input;
     this.proximaDecisao = t + this.perfil.reacaoMs * 0.5;
 
-    // Barra cheia: especial.
-    if (l.eu.barraCheia && distancia < MEIO * 1.3 && this.aleatorio() < this.perfil.especial) {
+    // Fácil: às vezes uma bobagem no lugar da decisão certa (soco no ar de longe, ou recuar).
+    if (this.chance(this.perfil.erro)) {
+      if (distancia > PERTO && this.aleatorio() < 0.5) this.atacar(t, input, 'soco');
+      else this.segurar(t, 500, { [tras]: true }, input);
+      return input;
+    }
+
+    // Barra cheia: especial (o Difícil espera o oponente vulnerável e perto).
+    const hora = this.perfil.especialNaHora ? (l.oponente.atordoado || recuperando) && distancia < PERTO * 1.3 : distancia < MEIO * 1.3;
+    if (l.eu.barraCheia && hora && this.aleatorio() < this.perfil.especial) {
       input.special = true;
+      return input;
+    }
+
+    // Oponente pulando perto: chuta antes de ele cair em cima.
+    if (l.oponente.noAr && distancia < PERTO * 1.3 && t >= this.proximoAtaque && this.chance(this.perfil.antiAereo)) {
+      this.atacar(t, input, 'chute');
       return input;
     }
 
@@ -172,6 +218,11 @@ export class CpuLutador {
     }
     this.segurar(t, 400, { [frente]: true }, input);
     return input;
+  }
+
+  /** Sorteia só quando o comportamento está ligado: o Médio não gasta sorteio com o que não tem. */
+  private chance(p: number): boolean {
+    return p > 0 && this.aleatorio() < p;
   }
 
   /** Segura as entradas por `ms`, já valendo neste quadro. */
