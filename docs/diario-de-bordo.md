@@ -2648,3 +2648,27 @@ pé no chão nas três; console sem erro.
 **Atrito:** nenhum.
 **Em aberto:** se o João quiser outro tamanho, o valor fica em `stats.scale`
 (ou no painel de debug, campo Scale).
+
+## 2026-11-01: guarda e caminhadas v5 do Coxa
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Coloque as novas animações feitas."
+**Feito:** a entrega nova é a `revisao-v5` (`docs/coxa-apoio-caminhadas-v5.md`),
+que refaz só `idle`, `walk-forward` e `walk-backward` do normal: as duas
+mãos fechadas nas manoplas e passos curtos com troca de perna. O
+`coxa.json` local aponta as três para a v5; retrato e âncora refeitos da
+guarda nova. As mãos da v5 já saem por cima do andador, então não passaram
+pelo `coxa_maos_por_cima_v4.py`. O resto continua como estava (v4 com a mão
+por cima, voadora provisória, maromba antigo).
+**Verificado:** 262 testes, build; no navegador, guarda e andar para a
+frente congelados em quadros diferentes: andador no chão, pé do vovô junto
+da sombra, console sem erro. Medido na folha: nas caminhadas a bota fica 6
+a 10 px acima das ponteiras do andador (na guarda, no chão); no jogo some
+debaixo da sombra.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** guarda e caminhadas do vovô.
+**Aprovado explicitamente:** nada.
+**Atrito:** a folha `walk-backward` não aparece na luta: `reverseWalk: true`
+no `fighter-playground.json` faz todo lutador recuar tocando o andar para a
+frente ao contrário. Vale para o elenco inteiro; não mexi sem ele pedir.
+**Em aberto:** decidir o `reverseWalk`; as pendências do pedido v4.
