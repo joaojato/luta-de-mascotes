@@ -42,10 +42,10 @@ export const CONTROLES_PADRAO: Controles = {
 
 /**
  * Sozinho no teclado (contra a CPU, torneio, treino), o P1 ganha I O P como
- * opção da outra mão, além do Q E C: I chuta e P soca como no P2, e o O, que
- * aí não anda, defende.
+ * opção da outra mão, além do Q E C e na mesma ordem: I chuta como o Q, O
+ * soca como o E, P defende como o C (João, 01/11/2026).
  */
-export const EXTRA_SOZINHO: Partial<MapaBotoes> = { heavy: 'I', block: 'O', light: 'P' };
+export const EXTRA_SOZINHO: Partial<MapaBotoes> = { heavy: 'I', light: 'O', block: 'P' };
 
 /** As teclas extras do modo sozinho que não batem com nenhuma tecla do P1. */
 export function extrasSozinho(p1: MapaBotoes): Partial<MapaBotoes> {

@@ -40,9 +40,9 @@ describe('botões da luta', () => {
     expect(CONTROLES_PADRAO.p1).toEqual({ left: 'A', right: 'D', jump: 'W', crouch: 'S', block: 'C', light: 'E', heavy: 'Q', special: 'SPACE' });
     expect(CONTROLES_PADRAO.p2).toEqual({ left: 'K', right: 'SEMICOLON', jump: 'O', crouch: 'L', block: 'FORWARD_SLASH', light: 'P', heavy: 'I', special: 'SHIFT' });
   });
-  it('sozinho, I O P somam ao Q E C sem roubar tecla já usada', () => {
-    expect(extrasSozinho(CONTROLES_PADRAO.p1)).toEqual({ heavy: 'I', block: 'O', light: 'P' });
+  it('sozinho, I O P somam ao Q E C na mesma ordem, sem roubar tecla já usada', () => {
+    expect(extrasSozinho(CONTROLES_PADRAO.p1)).toEqual({ heavy: 'I', light: 'O', block: 'P' });
     const comI = atribuirTecla(CONTROLES_PADRAO, 'p1', 'jump', 'I');
-    expect(extrasSozinho(comI.p1)).toEqual({ block: 'O', light: 'P' });
+    expect(extrasSozinho(comI.p1)).toEqual({ light: 'O', block: 'P' });
   });
 });

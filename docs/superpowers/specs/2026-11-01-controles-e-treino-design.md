@@ -9,13 +9,13 @@ por ele no mesmo dia.
 |---|---|---|---|---|---|
 | P1 | W A S D | E | Q | C | Espaço |
 | P2 (dois no teclado) | O K L Ç | P | I | ; | Shift direito |
-| P1 sozinho (extra) | W A S D | P | I | O | Espaço |
+| P1 sozinho (extra) | W A S D | O | I | P | Espaço |
 
 - Coop é o 1 VS 1. Sozinho é todo modo em que o P2 não está no teclado
   (contra a CPU, torneio, treino livre).
-- No modo sozinho, Q E C continuam valendo; I O P são a opção da outra mão.
-  A posição espelha o P2: I no lugar do Q (chute), P no lugar do E (soco), e o O,
-  que no sozinho não anda, fica com a defesa.
+- No modo sozinho, Q E C continuam valendo; I O P são a opção da outra mão,
+  na mesma ordem: I = Q (chute), O = E (soco), P = C (defesa). Correção do
+  João no mesmo dia; a primeira versão espelhava o P2 (P soco, O defesa).
 - Teclado ABNT2: o Ç é a tecla `SEMICOLON` do navegador e o `;` é a
   `FORWARD_SLASH`. Os nomes na tela seguem o ABNT2.
 - Shift só vale do lado do dono: no P2, só o direito. O esquerdo fica livre,

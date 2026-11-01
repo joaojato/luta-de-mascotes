@@ -2889,3 +2889,17 @@ voltando, a sombra acompanha.
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** publicar no Vercel (precisa de "pode publicar").
+
+## 2026-11-01: I O P na ordem do Q E C
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Mude os controles que eu falei o p é bloqueio e o O é soco ou
+seja "qec" está para iop, faz sentido?"
+**Feito:** modo sozinho do P1 com I chute, O soco, P defesa (antes O defesa,
+P soco). P2 do 1 VS 1 igual (lá o O é pular). Spec, GDD e lição.
+**Verificado:** teste de `controles.test.ts` atualizado; `npm run check`.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** ordem de I O P no modo sozinho.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** publicar no Vercel (precisa de "pode publicar").

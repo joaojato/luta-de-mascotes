@@ -503,3 +503,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   achou forte demais: ficou 20 px. O coice do mosquete (70 px) ele aprovou
   como estava. Deslocamento que tira vantagem de distância é sutil; começar
   pequeno. (2026-11-01)
+- **I O P é o Q E C na mesma ordem, não espelho do P2.** Pus P soco e O
+  defesa copiando o P2; o João corrigiu: "qec está para iop", então I chute,
+  O soco, P defesa. Tecla extra de um lado segue a ordem das teclas desse
+  mesmo lado. (2026-11-01)
