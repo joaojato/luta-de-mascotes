@@ -4,6 +4,6 @@ export const GAME_TAGLINE = 'Mascotes de clube em luta 2D';
 
 /**
  * Academia e controle pelo celular só existem no `npm run dev`. O build
- * publicado (Vercel) é o jogo de teclado: Jogar e Ajustes.
+ * publicado (Vercel) é o jogo de teclado: Pelada, Torneios e Ajustes.
  */
 export const FERRAMENTAS_DE_DEV = import.meta.env.DEV;

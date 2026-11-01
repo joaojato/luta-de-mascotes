@@ -77,7 +77,7 @@ export class MainMenuScene extends BaseScene {
   private renderMenu(): void {
     this.clearButtons();
 
-    const playOption: MenuOption = { label: 'Jogar', action: () => this.scene.start(SCENE_KEYS.ModeSelect) };
+    const playOption: MenuOption = { label: 'Pelada', action: () => this.scene.start(SCENE_KEYS.ModeSelect) };
     const academiaOption: MenuOption = { label: 'Academia', action: () => this.scene.start(SCENE_KEYS.Academia) };
     const celularOption: MenuOption = { label: 'Celular', action: () => this.scene.start(SCENE_KEYS.Conectar) };
     const settingsOption: MenuOption = { label: 'Ajustes', action: () => this.scene.start(SCENE_KEYS.Settings) };

@@ -5,6 +5,7 @@ export const SCENE_KEYS = {
   Splash: 'SplashScene',
   MainMenu: 'MainMenuScene',
   ModeSelect: 'ModeSelectScene',
+  Dificuldade: 'DificuldadeScene',
   LevelSelect: 'LevelSelectScene',
   CharacterSelect: 'CharacterSelectScene',
   Match: 'MatchScene',
@@ -27,6 +28,14 @@ export type SceneKey = (typeof SCENE_KEYS)[keyof typeof SCENE_KEYS];
  * single human player against a CPU-controlled opponent.
  */
 export type MatchMode = '1v1' | '1vcpu';
+
+/** Formatos de torneio: chaveamento eliminatório ou todos contra todos. */
+export type FormatoTorneio = 'mata-mata' | 'pontos-corridos';
+
+/** De onde a tela de dificuldade foi aberta, e para onde ela segue. */
+export type DificuldadeData =
+  | { destino: 'pelada' }
+  | { destino: 'torneio'; formato: FormatoTorneio; tamanho: 8 | 16 };
 
 /**
  * The accumulated selections produced by the Play flow (mode -> level ->

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CpuLutador, type Dificuldade, type LeituraDaLuta } from './cpu';
+import { CpuLutador, DIFICULDADES, type Dificuldade, type LeituraDaLuta } from './cpu';
 
 function leitura(tempoMs: number, distancia: number, extra: Partial<LeituraDaLuta['oponente']> = {}, eu: Partial<LeituraDaLuta['eu']> = {}): LeituraDaLuta {
   return {
@@ -60,5 +60,10 @@ describe('CPU do 1 VS CPU (30/10/2026)', () => {
     const cpu = new CpuLutador('dificil', () => 0);
     const input = cpu.atualizar(leitura(0, 200, { caido: true }));
     expect(Object.values(input).some(Boolean)).toBe(false);
+  });
+
+  it('cada dificuldade explica o que a CPU faz (31/10/2026)', () => {
+    expect(DIFICULDADES.map((d) => d.id)).toEqual(['facil', 'medio', 'dificil']);
+    expect(DIFICULDADES.every((d) => d.descricao.length > 20)).toBe(true);
   });
 });

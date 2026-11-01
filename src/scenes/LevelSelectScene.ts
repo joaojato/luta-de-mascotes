@@ -87,8 +87,14 @@ export class LevelSelectScene extends BaseScene {
     keyboard.on('keydown-D', () => this.moveSelection(1));
     keyboard.on('keydown-ENTER', () => this.confirm(this.selectedIndex));
     keyboard.on('keydown-SPACE', () => this.confirm(this.selectedIndex));
-    keyboard.on('keydown-ESC', () => this.scene.start(SCENE_KEYS.ModeSelect));
-    keyboard.on('keydown-BACKSPACE', () => this.scene.start(SCENE_KEYS.ModeSelect));
+    keyboard.on('keydown-ESC', () => this.voltar());
+    keyboard.on('keydown-BACKSPACE', () => this.voltar());
+  }
+
+  /** No 1 VS CPU, Esc volta para a dificuldade, que veio antes do estádio. */
+  private voltar(): void {
+    if (this.mode === '1vcpu') this.scene.start(SCENE_KEYS.Dificuldade, { destino: 'pelada' });
+    else this.scene.start(SCENE_KEYS.ModeSelect);
   }
 
   private moveSelection(direction: number): void {

@@ -181,3 +181,48 @@ export function createSelectionCard(scene: Phaser.Scene, config: SelectionCardCo
     }
   };
 }
+
+/**
+ * Cartão provisório enquanto a ilustração não chega: título grande com a
+ * sombra vermelha dos letreiros, um marcador opcional e o texto quebrado em
+ * linhas. Vai por cima de um cartão criado sem título nem imagem.
+ */
+export function preencherCartao(
+  scene: Phaser.Scene,
+  card: SelectionCard,
+  conteudo: { titulo: string; marcador?: string; texto: string; largura: number }
+): void {
+  const titulo = scene.add
+    .text(0, -70, conteudo.titulo.toUpperCase(), {
+      color: TEXTO_CLARO,
+      fontFamily: FONTE_TITULO,
+      fontSize: '44px',
+      align: 'center',
+      stroke: '#000000',
+      strokeThickness: 6
+    })
+    .setShadow(0, 4, '#f00000', 0, true, true)
+    .setOrigin(0.5);
+  const objetos: Phaser.GameObjects.GameObject[] = [titulo];
+  if (conteudo.marcador) {
+    objetos.push(
+      scene.add
+        .text(0, -130, conteudo.marcador, { color: TEXTO_DESTAQUE, fontFamily: FONTE_TEXTO, fontSize: '30px' })
+        .setOrigin(0.5)
+    );
+  }
+  objetos.push(
+    scene.add
+      .text(0, 10, conteudo.texto, {
+        color: TEXTO_APAGADO,
+        fontFamily: FONTE_TEXTO,
+        fontSize: '17px',
+        fontStyle: 'bold',
+        align: 'center',
+        wordWrap: { width: conteudo.largura - 40 }
+      })
+      .setOrigin(0.5, 0)
+  );
+  // Abaixo do brilho da trava (último filho), por cima do fundo.
+  card.container.addAt(objetos, card.container.length - 1);
+}

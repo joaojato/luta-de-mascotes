@@ -11,10 +11,11 @@ import type { FighterInput } from './fighter';
 
 export type Dificuldade = 'facil' | 'medio' | 'dificil';
 
-export const DIFICULDADES: { id: Dificuldade; nome: string }[] = [
-  { id: 'facil', nome: 'Fácil' },
-  { id: 'medio', nome: 'Médio' },
-  { id: 'dificil', nome: 'Difícil' }
+/** Nome e o que a CPU faz, como aparecem nos cartões da tela de dificuldade. */
+export const DIFICULDADES: { id: Dificuldade; nome: string; descricao: string }[] = [
+  { id: 'facil', nome: 'Fácil', descricao: 'A CPU demora para reagir e quase não defende. Para aprender os golpes.' },
+  { id: 'medio', nome: 'Médio', descricao: 'Defende metade dos golpes e pune erro. Luta de igual para igual.' },
+  { id: 'dificil', nome: 'Difícil', descricao: 'Lê seus golpes, defende quase tudo e não perdoa. Para quem já sabe jogar.' }
 ];
 
 export interface PerfilCpu {
