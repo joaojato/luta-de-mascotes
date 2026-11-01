@@ -486,3 +486,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   João teve de repetir o pedido. Toda folha do Coxa que entra no jogo passa
   por `scripts/coxa_maos_por_cima_v4.py` (pasta `maos-por-cima/`), e a
   varredura de pele coberta roda antes de dizer que terminou. (2026-11-01)
+- **Personagem diferente na arte não é diferente no controle.** Propus
+  seguir a curva de deslocamento da caminhada v6 e deixar o vovô mais
+  lento; o João quer que ele se mova igual aos outros, com a diferença só
+  no desenho. Arte que traz ritmo próprio (root motion, velocidade) se
+  adapta ao motor, não o contrário. (2026-11-01)

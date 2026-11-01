@@ -2720,3 +2720,18 @@ quadros 2, 8 e 11, console sem erro.
 33 px por ciclo, ~38 px/s na tela). Seguida pelo motor, o andador fica
 parado no chão; com a velocidade constante de hoje (230 px/s) ele desliza
 nos passos. Decisão do João.
+
+## 2026-11-01: vovô anda igual aos outros
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "A ideia é ele se mover igual aos outros no sentido de
+movimentação, apenas na arte que é para ser diferente."
+**Feito:** nada no motor: ele já andava a 230 px/s como o elenco. A curva
+da v6 fica de fora. A caminhada subiu de 10 para 12 fps (ciclo de 1,0 s,
+como a maioria). Decisão anotada na ficha do GDD e em `licoes.md`.
+**Verificado:** 262 testes, build.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a proposta de deixar o vovô lento.
+**Aprovado explicitamente:** nada.
+**Atrito:** eu tinha suposto que o ritmo da arte mandava no movimento.
+**Em aberto:** nenhum novo.

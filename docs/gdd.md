@@ -460,6 +460,11 @@ Só na máquina do João (`src/game/lutadores/locais/`, fora do git e da
 Vercel). Arte do Codex em camadas (`docs/coxa-producao-rigida-v1.md`),
 células 512×320. Torcida em listras horizontais verde e branco.
 
+**Movimento igual ao do elenco (João, 01/11/2026).** O vovô anda na mesma
+velocidade dos outros; só a arte é diferente. A caminhada v6 (andador
+plantado, passos curtos) toca a 12 fps, ciclo de 1,0 s como o resto, e a
+curva de deslocamento que veio com ela (`motion.json`) não é usada.
+
 | Botão | Golpe | Dano |
 |---|---|---|
 | Soco | duas batidinhas com o andador | 7 + 7 |
