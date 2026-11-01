@@ -92,7 +92,11 @@ A `revisao-v4` já está no jogo local, menos três pontos deste pedido:
 - **Mão por cima do andador:** na montagem v4 as tampas e o arco de trás
   cobrem os dedos. No jogo, `scripts/coxa_maos_por_cima_v4.py` repõe a mão
   por cima (pasta `v4-maos`). Arte nova já deve sair assim: a mão de apoio
-  fica sempre na camada da frente.
+  fica sempre na camada da frente. Desde a v5 o script cobre todas as
+  folhas em uso (`maos-por-cima/`). O maromba antigo foi montado com
+  `handOcclusion: true`: em arte nova, a mão que segura nunca fica atrás do
+  tubo. Na defesa alta do maromba o punho da frente, colado no rosto, ainda
+  fica atrás do arco: pede redesenho.
 
 ## Ainda depende do João
 

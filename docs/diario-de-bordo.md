@@ -2672,3 +2672,29 @@ debaixo da sombra.
 no `fighter-playground.json` faz todo lutador recuar tocando o andar para a
 frente ao contrário. Vale para o elenco inteiro; não mexi sem ele pedir.
 **Em aberto:** decidir o `reverseWalk`; as pendências do pedido v4.
+
+## 2026-11-01: mão por cima do andador em todas as folhas
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Corrija o bug de camadas que eu falei do andador, ele não pode
+ficar por cima da mão."
+**Feito:** varri as 38 folhas em uso (pele do corpo coberta pela montagem,
+quadro a quadro). A correção anterior só tinha ido para a v4; faltavam a
+guarda e as caminhadas v5 (a tampa da manopla cortava os dedos), as 16
+ações do maromba (o Codex montou com `handOcclusion: true`, tubo sobre o
+pulso) e a transformação (o braço que desce até o andador ficava atrás dos
+tubos). `scripts/coxa_maos_por_cima_v4.py` agora trata as quatro origens:
+faixa sob o topo do andador no normal, círculo no ponto de pegada do Codex
+no maromba e linha braço|perna quadro a quadro na transformação. Tudo sai em
+`coxa/maos-por-cima/<origem>/` (local); a pasta `v4-maos` saiu.
+**Verificado:** pranchas com a pele ainda coberta em magenta: sobram só
+joelho e coxa atrás do arco da frente (certo) e, na defesa alta do
+maromba, o punho da frente colado no rosto. 262 testes, build; luta Coxa x
+Saci: estocadas 14, especial vira maromba, estocada maromba 9, console sem
+erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a mão por cima do andador, agora em
+todas as folhas.
+**Aprovado explicitamente:** nada.
+**Atrito:** ele teve de pedir de novo: eu tinha corrigido só a v4.
+**Em aberto:** punho da frente na defesa alta do maromba (pede desenho).

@@ -480,3 +480,9 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   a pele da mão perto da pegada volta por cima de tudo
   (`scripts/coxa_maos_por_cima_v4.py`); rosto e joelho continuam atrás do
   arco da frente. (2026-11-01)
+- **Correção de camada vale para toda folha do lutador, inclusive as que
+  chegam depois.** Corrigi a mão por cima só nas ações da v4; a guarda e as
+  caminhadas v5, o maromba e a transformação entraram sem a correção, e o
+  João teve de repetir o pedido. Toda folha do Coxa que entra no jogo passa
+  por `scripts/coxa_maos_por_cima_v4.py` (pasta `maos-por-cima/`), e a
+  varredura de pele coberta roda antes de dizer que terminou. (2026-11-01)
