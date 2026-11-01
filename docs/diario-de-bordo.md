@@ -2450,3 +2450,34 @@ seguida. O servidor de dev da porta 5199 era desta pasta, de sessão antiga.
 iPhone o ajuste dos botões salvo no Safari não aparece no ícone da Tela de
 Início e vice-versa; em menus, o xis não confirma (quem confirma é o
 triângulo, que aperta Espaço).
+
+## 2026-10-31: Pelada, Torneios, dificuldade clara e lutador aleatório
+
+**Marco:** 2, segue em andamento (exceção à Regra da v1 aberta pelo João).
+**Pedido:** dificuldade que não fique escondida, Fácil mais burra e
+Difícil mais esperta; "?" para sortear lutador; menu com Pelada no lugar de
+Jogar e Torneios, com mata-mata e pontos corridos de 8 e 16 times contra a
+CPU; salvar o progresso.
+**Feito:** design aprovado no navegador (esboços das telas) e plano em
+`docs/superpowers/`. Menu Pelada e Torneios; `DificuldadeScene` com três
+cartões explicados; CPU com perfis novos (Fácil erra e quase não defende;
+Difícil agacha na guarda certa, pune golpe que terminou, corta pulo e
+guarda o especial; Médio intacto); casa "?" na seleção (`sorteio.ts`);
+`torneio.ts` (chave, todos contra todos pelo método do círculo, pontos,
+desempate) e `torneioSalvo.ts` (localStorage, com cópia na memória);
+`TorneioScene` e `TorneioQuadroScene` (chaveamento, tabela, campeão,
+eliminado, vice, posição); a luta do torneio troca revanche por continuar.
+Pedido de arte ao Codex: cartões dos formatos, da dificuldade e troféu.
+**Verificado:** 246 testes. No navegador: CPU contra CPU, Difícil 3x0 Médio
+e Médio 3x0 Fácil; P1 parado aguenta 30 s contra o Fácil (81 de dano) e cai
+em ~15 s contra Médio e Difícil. Mata-mata até campeão, eliminado nas
+quartas, pontos corridos com recarga da página e Esc no meio da luta
+voltando à mesma rodada; "?" sorteou pares diferentes três vezes; console
+sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o seletor de dificuldade da tela de
+modo; o nome Jogar.
+**Aprovado explicitamente:** a estrutura do menu ("é exatamente isso").
+**Atrito:** o primeiro esboço confundiu; a estimativa de um fim de semana
+pareceu longa a ele. Vitest estourando tempo com a máquina carregada.
+**Em aberto:** arte dos cartões e do troféu; teste no celular; publicar.

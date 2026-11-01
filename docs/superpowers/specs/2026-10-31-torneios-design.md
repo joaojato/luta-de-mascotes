@@ -29,8 +29,7 @@ distantes do Médio.
 ## Fora do escopo
 
 - Torneio com dois jogadores humanos.
-- Salvar o torneio entre sessões: recarregou a página, perdeu (chamada
-  minha; um torneio de 8 é curto o bastante).
+- Salvar o torneio em outro aparelho (exigiria conta e banco).
 - Arte final dos cartões novos: é pedido ao Codex, em paralelo (ver Arte).
 - Lutas entre duas CPUs jogadas na tela: são decididas por sorteio.
 
@@ -154,8 +153,16 @@ chegar a 16, sem mudar código.
 
 A tela de fim de luta de hoje oferece revanche e menu. No torneio ela
 oferece **continuar** (volta ao chaveamento ou à tabela, com o resultado
-já lançado) em vez de revanche. Esc na luta (pausa) continua levando ao
-menu; sair no meio abandona o torneio.
+já lançado) em vez de revanche. Esc na luta continua levando ao menu; o
+torneio fica salvo no estado de antes da luta, e "Continuar torneio"
+repete essa luta.
+
+### Salvamento (pedido do João depois da aprovação, 31/10/2026)
+
+O torneio fica no localStorage do navegador, salvo a cada luta. A tela de
+Torneios mostra "Continuar torneio" quando há um salvo. Vale só naquele
+navegador e aparelho; navegador que recusa gravar mantém o torneio na
+memória da página. A tela final apaga o salvo.
 
 ## Arte
 

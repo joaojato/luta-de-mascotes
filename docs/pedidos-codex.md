@@ -160,3 +160,21 @@ enquanto o corte descendente não for redesenhado e inspecionado.
 Arquibancada vazia, torcedores com camisa em cor chave, bandeira, fumaça,
 chama e as fileiras medidas. Contrato completo, com formatos e tamanhos, em
 [torcida-dividida.md](torcida-dividida.md), seção Arte.
+
+## Aberto em 31/10/2026: cartões dos torneios, da dificuldade e troféu
+
+O jogo já funciona com cartões provisórios (moldura e texto). Cada arte que
+chegar entra no lugar sem mudar a tela; o Claude registra a textura no Boot.
+Identidade de rua de [identidade-ui-v1.md](identidade-ui-v1.md): moldura
+clara sobre carvão, cores chapadas, texto grande com sombra vermelha, sem
+metálico e sem dourado ornamental. Molde e proporção de
+`public/assets/mode-cards/mode-1vcpu-card.png` (1392×1130), texto embutido.
+
+| Arquivo | Texto no cartão | Ideia |
+|---|---|---|
+| `mode-cards/torneio-mata-mata.png` | MATA-MATA | chaveamento pintado no muro da quadra, dois mascotes se encarando |
+| `mode-cards/torneio-pontos-corridos.png` | PONTOS CORRIDOS | tabela riscada a giz no muro, vários mascotes na arquibancada |
+| `mode-cards/dificuldade-facil.png` | FÁCIL | o mesmo mascote tranquilo, quadra vazia |
+| `mode-cards/dificuldade-medio.png` | MÉDIO | o mesmo mascote em guarda, quadra com gente |
+| `mode-cards/dificuldade-dificil.png` | DIFÍCIL | o mesmo mascote furioso, quadra lotada |
+| `ui/trofeu.png` | sem texto | taça de várzea, transparente, 512×512; pode ser prateada ou pintada, nunca dourada brilhante |

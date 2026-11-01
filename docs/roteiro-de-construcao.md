@@ -78,6 +78,12 @@ ele é quebrado em dois, não esticado.
 - [ ] Porco (29/10/2026): na seleção com a arte do Codex (mordida, coice,
   vômito). Falta: `stunned`, `knockdown`, retrato, corrida antes do coice
   (motor), falas e rival.
+- [x] **Pelada e Torneios** (31/10/2026, pedido do João): menu com Pelada
+  (o amistoso de antes) e Torneios; dificuldade numa tela própria, com
+  Fácil bem mais burra e Difícil bem mais esperta; casa "?" na seleção;
+  mata-mata e pontos corridos de 8 contra a CPU (16 travado até haver 16
+  lutadores), salvos no navegador. Falta: arte dos cartões e do troféu
+  (pedido ao Codex), teste no celular.
 - [ ] **Versão jogável no celular** (pedida em 29/10, feita em 30/10/2026):
   deitado, sem rolagem, tela cheia, setas ou joystick à esquerda e soco,
   chute, bloqueio e especial à direita; só 1 VS CPU no toque. Contrato em

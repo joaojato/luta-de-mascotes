@@ -126,7 +126,9 @@ Cada uma tem nome para poder ser cobrada depois.
   jogadores no mesmo teclado. A CPU veio de brinde no motor herdado e pode
   ficar. Nada além disso é construído antes de a v1 rodar de ponta a ponta.
   Exceção aberta pelo João em 01/10/2026: o controle pelo corpo (celular
-  como câmera, ADR 0004).
+  como câmera, ADR 0004). Outra em 31/10/2026: Pelada, Torneios
+  (mata-mata e pontos corridos contra a CPU), dificuldade em tela própria
+  e lutador aleatório (`docs/superpowers/specs/2026-10-31-torneios-design.md`).
 
 ## Anti-referência
 

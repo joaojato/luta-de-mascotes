@@ -428,3 +428,22 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   os dois.** O João aceitou cortar cenário, nunca barra de vida e relógio.
   Encher a tela pela largura e encolher o HUD quando falta espaço resolveu
   sem cortar nada. (2026-10-31)
+- **Opção que só aparece com uma tecla é opção escondida.** A dificuldade
+  existia desde 30/10, mas só surgia com o 1 VS CPU selecionado e trocava
+  no ↑ ↓; o João não a achou e pediu "não pode ser escondida". Escolha que
+  muda a partida ganha tela ou cartão próprio, com texto do que ela faz.
+  (2026-10-31)
+- **Esboço de navegação mostra as telas, não o caminho em texto.** O
+  primeiro esboço dos torneios trazia o fluxo numa linha de setas e o João
+  respondeu "acho que você não entendeu"; com uma maquete de cada tela
+  (menu, Pelada, Torneios) veio "é exatamente isso". (2026-10-31)
+- **Aprovado: menu com Pelada e Torneios, torneio em mata-mata ou pontos
+  corridos**, "de acordo com a arte do jogo". (2026-10-31)
+- **Estimativa de esforço conta o teste do João, não o código.** Estimei
+  um fim de semana para os torneios pela janela dele, e ele estranhou o
+  tempo; o código saiu numa sessão. O que pede janela é ele jogar e
+  aprovar cada etapa. (2026-10-31)
+- **Vitest com a máquina carregada: `--pool=threads`.** Com o Chrome e
+  outros servidores abertos, os processos do Vitest estouraram "Timeout
+  starting forks runner": todos os testes passavam e o comando saía com
+  erro. Em threads roda limpo. (2026-10-31)

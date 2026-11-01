@@ -278,6 +278,21 @@ luta acontece. Sem placa de patrocínio legível.
    "K.O.").
 4. Vitória (retrato do vencedor, fala de vitória, "de novo?").
 
+## Modos de jogo (João, 31/10/2026)
+
+- **Pelada:** o amistoso. 1 VS 1 no mesmo teclado ou 1 VS CPU.
+- **Torneios**, sempre contra a CPU, com 8 ou 16 times (cada time é um
+  lutador; o de 16 só abre com 16 no elenco):
+  - **Mata-mata:** chaveamento, quartas, semifinal e final. Perdeu, caiu.
+  - **Pontos corridos:** todos contra todos, turno único. Vitória por 2x0
+    vale 2 pontos, por 2x1 vale 1, derrota vale 0. Desempate: saldo de
+    rounds, rounds pró, confronto direto, ordem do sorteio.
+- **Dificuldade** em tela própria: Fácil, Médio e Difícil, cada cartão
+  dizendo o que a CPU faz.
+- **"?"** na seleção sorteia o lutador.
+
+Design completo: `docs/superpowers/specs/2026-10-31-torneios-design.md`.
+
 ## Fora da v1 (parqueado, não descartado)
 
 - Ultimates com medidor (ver seção acima). Primeiro item do Marco 4.
