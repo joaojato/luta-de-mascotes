@@ -74,6 +74,9 @@ como o carrinho do Bira, ou fica no lugar (golpe de longe, tiro)? Ou é
 estocada, que recua um passo depois de cada contato (`recuo`, uma janela
 por estocada, como o Mosqueteiro)? Ritmo do golpe: lento para sair e para
 voltar com o contato ligeiro, ou rápido para sair (`timing` por quadro)?
+Se o golpe é um tiro, ele anda para a frente ao soltar (Regra do Tiro,
+`travel` nos quadros da soltura). Arma pesada que dá coice, como o mosquete
+do Mosqueteiro, recua (`recuo`) em vez de avançar: é o caso dele?
 
 Golpe próprio no lugar de um padrão (já existem: bicada do Urubu
 `beak-pull`, cachimbo do Saci `pipe-throw`, lata de cerveja do Vovô Coxa
@@ -208,3 +211,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 30/10/2026: especial `sopro` (jato contínuo varrendo do chão ao alto, com `special-return`) e célula alta por ação (`frameHeight`).
 - 01/11/2026: especial `forma` (vira outro lutador por um tempo, com cronômetro no HUD).
 - 01/11/2026: `imparavel` no especial que avança (golpe só tira vida) e `moves.dash` por lutador.
+- 01/11/2026: Regra do Tiro (quem atira anda para a frente; arma pesada dá coice com `recuo`).

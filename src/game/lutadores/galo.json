@@ -463,6 +463,7 @@
     },
     {
       "action": "egg-throw",
+      "travel": { "frames": [4, 5], "distance": 40 },
       "label": "Arremesso do ovo",
       "file": "egg-throw.png",
       "frames": 8,
@@ -502,6 +503,7 @@
     "kick": {
       "kind": "projectile",
       "action": "egg-throw",
+      "travel": { "frames": [4, 5], "distance": 40 },
       "releaseFrame": 4,
       "speed": 780,
       "launchVy": 120,

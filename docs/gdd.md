@@ -161,6 +161,12 @@ Ritmo (João, 28/10/2026, contra o spam de soco rápido):
 - Regra do Passo (João, 29/10/2026): chute e soco forte de chão avançam um
   pouco. Chute anda 47 a 64 px da sheet (a inclinação do tronco mais ~15),
   soco forte 25 a 40. O passo para a 70 px do oponente e soma ao alcance.
+- Regra do Tiro (João, 01/11/2026): quem atira anda 40 px da sheet para a
+  frente no quadro em que solta e no seguinte (tiro do Almirante, laser do
+  Esquadrão, lata do Vovô Coxa, ovo do Galo, cachimbo do Saci), para tirar a
+  vantagem de distância. O mosquete do Mosqueteiro dá coice: 70 px para
+  trás nos quadros 9 a 11. Não vale para o que entra pela borda (caravela,
+  Biriba) nem para os especiais.
 - Golpe longo pode ter `timing` no JSON: preparação rápida e quadro de
   contato segurado. Bengalada do Cartola sai aos ~370 ms e acerta por
   ~250 ms; varredura acerta nos quadros 8 a 11; giro do Galo sai aos ~400 ms.

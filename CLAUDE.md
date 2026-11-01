@@ -107,6 +107,11 @@ Cada uma tem nome para poder ser cobrada depois.
   trás; o passo cobre a inclinação e ainda avança uns 15 px. Exceção: a
   estocada (o Mosqueteiro) recua um passo depois de cada contato (`recuo`
   no JSON). Cobrada por teste em `lutadores.test.ts`.
+- **Regra do Tiro.** Quem atira um projétil (o golpe de tiro, não o que
+  entra pela borda da tela) anda para a frente ao soltar (`travel` na ação
+  do tiro), para o tiro não render vantagem de distância. Exceção: o
+  mosquete do Mosqueteiro é grande e lento e o coice joga ele para trás
+  (`recuo`). Cobrada por teste em `lutadores.test.ts`.
 - **Regra do Criador.** `docs/criador-de-personagem.md` é o questionário de
   mascote novo e acompanha o motor: ação, golpe, tipo de especial ou mecânica
   que muda o que um mascote precisa entra lá no mesmo commit. Pedido de

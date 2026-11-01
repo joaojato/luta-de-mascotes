@@ -358,6 +358,7 @@
     },
     {
       "action": "pipe-throw",
+      "travel": { "frames": [3, 4], "distance": 40 },
       "label": "Troca e arremesso do cachimbo",
       "file": "kick-pipe-swap-throw-v3.png",
       "frames": 8,
@@ -461,6 +462,7 @@
     "kick": {
       "kind": "projectile",
       "action": "pipe-throw",
+      "travel": { "frames": [3, 4], "distance": 40 },
       "releaseFrame": 3,
       "speed": 420,
       "launchVy": 320,

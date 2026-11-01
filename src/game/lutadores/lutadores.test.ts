@@ -165,6 +165,31 @@ describe('registro de lutadores (Regra do JSON)', () => {
     });
   });
 
+  // Regra do Tiro (João, 01/11/2026): quem atira um projétil anda para a
+  // frente ao soltar, para o tiro não render vantagem de distância. O
+  // mosquete do Mosqueteiro é grande e lento: o coice joga ele para trás
+  // (`recuo`). Fica de fora o que entra pela borda da tela (caravela, Biriba).
+  it('quem atira anda para a frente ao soltar, e o mosquete dá coice (Regra do Tiro)', () => {
+    LUTADORES.forEach((lutador) => {
+      const moves = lutador.moves ?? {};
+      const padrao = { heavy: 'heavy-punch', kick: 'heavy-kick', lowKick: 'low-kick' } as const;
+      (Object.keys(padrao) as (keyof typeof padrao)[]).forEach((slot) => {
+        const move = moves[slot];
+        if (!move || move.kind !== 'projectile' || move.spawnFrom === 'behind') return;
+        const spec = lutador.actions.find((acao) => acao.action === (move.action ?? padrao[slot]));
+        const nome = `${lutador.id} ${spec?.action}`;
+        const solta = move.releaseFrame ?? 0;
+        if (spec?.recuo) {
+          expect(spec.recuo.some((r) => r.frames[0] <= solta + 1 && r.frames[1] >= solta), nome).toBe(true);
+          return;
+        }
+        expect(spec?.travel?.distance ?? 0, nome).toBeGreaterThan(0);
+        expect(spec!.travel!.frames[0], nome).toBeLessThanOrEqual(solta + 1);
+        expect(spec!.travel!.frames[1], nome).toBeGreaterThanOrEqual(solta);
+      });
+    });
+  });
+
   // Regra do Criador: o questionário de personagem novo acompanha o motor. Ação,
   // golpe ou tipo de especial que entra no jogo entra em docs/criador-de-personagem.md.
   it('o criador de personagem cita toda ação, golpe do catálogo e tipo de especial', () => {

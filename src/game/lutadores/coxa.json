@@ -399,6 +399,13 @@
         "y": 82,
         "width": 212,
         "height": 211
+      },
+      "travel": {
+        "frames": [
+          6,
+          7
+        ],
+        "distance": 40
       }
     },
     {

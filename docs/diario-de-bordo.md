@@ -2789,3 +2789,27 @@ dash dele carrega 240/160; console sem erro.
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** nenhum novo.
+
+## 2026-11-01: Regra do Tiro
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Qualquer personagem que dispara um projétil agora, quando atira
+ele tem que se deslocar para frente, para tirar a vantagem de distância.
+Exceto o mosqueteiro, como tem uma arma grande e lenta ele precisa ter
+recuo, ou seja joga ele para trás."
+**Feito:** Regra do Tiro, só com dado de JSON (o tiro pelo chute já passa
+pelo `startStrike`, que aplica `travel` e `recuo`): 40 px da sheet para a
+frente no quadro da soltura e no seguinte para Almirante (`shot`), Bahia
+(`eye-laser`), Coxa (`beer-throw`, pelo gerador), Galo (`egg-throw`) e Saci
+(`pipe-throw`); Mosqueteiro com `recuo` de 70 px nos quadros 9 a 11 do
+`shot`. Fora: caravela e Biriba (entram pela borda) e os especiais. Teste
+novo em `lutadores.test.ts`; regra no CLAUDE.md, GDD e criador.
+**Verificado:** teste falhou antes (almirante shot sem passo) e passa
+depois; 267 testes, build. Navegador, tiro contra o Urubu: Saci +65 px,
+Almirante +62, Coxa +46, Galo +52, Mosqueteiro -87; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** se os especiais que soltam algo (Cartola, Porco, Bahia)
+também devem avançar.
