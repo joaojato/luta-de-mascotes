@@ -1227,9 +1227,23 @@ html.com-toque *::after {
   height: 50%;
 }
 
+/* Opacidade escolhida no menu; apertado, o controle acende por inteiro. */
+.toque__controle {
+  opacity: var(--toque-opacidade, 1);
+}
+
+.toque__controle.is-on {
+  opacity: 1;
+}
+
 /* Especial sem barra (ou no ar): apagado, mas ainda aperta. */
 .toque__botao.is-apagado {
-  opacity: 0.45;
+  opacity: calc(var(--toque-opacidade, 1) * 0.45);
+}
+
+/* Ajustando, todo controle aparece inteiro para dar para mirar. */
+.toque.is-editando .toque__controle {
+  opacity: 1;
 }
 
 .toque__botao.is-on {

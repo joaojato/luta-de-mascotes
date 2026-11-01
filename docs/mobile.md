@@ -108,6 +108,9 @@ confirmam no iPhone de verdade.
   Ligado, cada botão mostra o golpe que sai agora, de pé, abaixado ou no ar
   (Saci: Jab, Direto, Soco aéreo), lido do campo `nomes` do JSON. Nos menus,
   OK e Voltar. O especial fica apagado sem barra ou no ar.
+- **Opacidade dos controles** (pedido do João no mesmo dia): item no menu
+  que alterna 100%, 75%, 50% e 30%. Apertado, o controle acende inteiro; no
+  Ajustar botões, todos aparecem inteiros.
 - Preferências em `luta-de-mascotes:toque-botoes` (`src/toque/preferencias.ts`).
 
 Verificado em Chromium com toque emulado (844×390): A avança da abertura ao

@@ -10,7 +10,7 @@ import * as Phaser from 'phaser';
 
 import { carregarControles, type ComandoLuta } from '../game/controles';
 import { aoMudarLuta, lutaNaTela, type LutaNaTela } from './lutaNaTela';
-import { carregarPreferencias, salvarPreferencias, type Cara } from './preferencias';
+import { carregarPreferencias, proximaOpacidade, salvarPreferencias, type Cara } from './preferencias';
 import { carregarModo, diferencaDeTeclas, direcoesDoPonto, salvarModo, type Direcao, type ModoDirecional } from './direcao';
 import {
   apagarLayout,
@@ -174,6 +174,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
         <button class="toque__item" data-acao="modo" type="button"></button>
         <button class="toque__item" data-acao="cara" type="button"></button>
         <button class="toque__item" data-acao="nomes" type="button"></button>
+        <button class="toque__item" data-acao="opacidade" type="button"></button>
         <button class="toque__item" data-acao="editar" type="button">Ajustar botões</button>
       </div>
     </div>
@@ -216,6 +217,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   let preferencias = carregarPreferencias();
   const itemCara = pegar<HTMLButtonElement>('[data-acao="cara"]');
   const itemNomes = pegar<HTMLButtonElement>('[data-acao="nomes"]');
+  const itemOpacidade = pegar<HTMLButtonElement>('[data-acao="opacidade"]');
 
   const mostrarNomes = (luta: LutaNaTela | null): void => {
     for (const { id, comando, noMenu } of BOTOES) {
@@ -236,6 +238,8 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     }
     itemCara.textContent = preferencias.cara === 'xbox' ? 'Botões: Xbox (trocar para PlayStation)' : 'Botões: PlayStation (trocar para Xbox)';
     itemNomes.textContent = preferencias.nomes ? 'Nomes dos golpes: mostrando (esconder)' : 'Nomes dos golpes: escondidos (mostrar)';
+    camada.style.setProperty('--toque-opacidade', String(preferencias.opacidade));
+    itemOpacidade.textContent = `Opacidade dos controles: ${Math.round(preferencias.opacidade * 100)}% (trocar)`;
     mostrarNomes(lutaNaTela());
   };
   mostrarPreferencias();
@@ -451,6 +455,11 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     },
     nomes: () => {
       preferencias = { ...preferencias, nomes: !preferencias.nomes };
+      salvarPreferencias(preferencias);
+      mostrarPreferencias();
+    },
+    opacidade: () => {
+      preferencias = { ...preferencias, opacidade: proximaOpacidade(preferencias.opacidade) };
       salvarPreferencias(preferencias);
       mostrarPreferencias();
     },
