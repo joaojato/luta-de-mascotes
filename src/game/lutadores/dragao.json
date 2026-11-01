@@ -11,7 +11,9 @@
   },
   "anchorUsage": "Dragão vermelho de asas em guarda, voltado para a esquerda",
   "selecionavel": true,
-  "stats": {},
+  "stats": {
+    "scale": 1.75
+  },
   "combat": {
     "highDamage": 8,
     "lowKickDamage": 16,

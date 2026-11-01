@@ -2627,3 +2627,24 @@ por cima do andador em todas as ações do normal.
 **Atrito:** troquei arte que ele já tinha aprovado sem perguntar.
 **Em aberto:** os mesmos de antes (voadora desenhada, lata maior, gotas,
 pesado e rasteiro do maromba, volta ao normal).
+
+## 2026-11-01: dragão e maromba maiores
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Aumente o tamanho do dragão e do vovô maromba."
+**Feito:** `stats.scale` 1,75 no `dragao.json` (todos estavam em 1,4: +25%)
+e 1,65 no `coxa-maromba.json` local (+18%). O motor só aplicava a escala ao
+criar o lutador; agora a troca de forma (`trocarDeLutador`) reaplica escala
+e âncora, então o vovô cresce ao virar maromba e volta a 1,4 no fim. A
+cópia local de `public/configs/fighter-playground.json` (da outra sessão,
+fora do commit) tinha o dragão em 1,4 e sobrescrevia o JSON: troquei só
+esse valor para 1,75.
+**Verificado:** 262 testes, build; no navegador, dragão x Saci com escala
+1,75 e pé no chão; Coxa 1,4, maromba 1,65 durante a forma e 1,4 depois,
+pé no chão nas três; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** se o João quiser outro tamanho, o valor fica em `stats.scale`
+(ou no painel de debug, campo Scale).

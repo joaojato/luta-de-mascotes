@@ -1950,7 +1950,8 @@ export class Fighter {
 
   /**
    * Passa a usar as sheets e os golpes de outro lutador registrado (o da
-   * forma, ou o escolhido de volta). Vida, medidor e posição continuam.
+   * forma, ou o escolhido de volta). Vida, medidor e posição continuam; o
+   * tamanho e a âncora passam a ser os do lutador novo.
    * @param id - Id do lutador: o da forma, ou o escolhido.
    */
   private trocarDeLutador(id: string): void {
@@ -1958,6 +1959,8 @@ export class Fighter {
     this.actionKeys = this.resolveActionKeys();
     this.duckKeys = this.resolveDuckKeys();
     this.currentAnimKey = '';
+    this.sprite.setOrigin(0.5, this.character.anchor.y);
+    this.setVisualScale(this.stats().scale);
   }
 
   /**
