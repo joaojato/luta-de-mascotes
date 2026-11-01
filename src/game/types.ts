@@ -2,7 +2,6 @@ import type { Dificuldade } from './cpu';
 
 export const SCENE_KEYS = {
   Boot: 'BootScene',
-  Splash: 'SplashScene',
   MainMenu: 'MainMenuScene',
   ModeSelect: 'ModeSelectScene',
   Dificuldade: 'DificuldadeScene',

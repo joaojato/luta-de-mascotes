@@ -13,6 +13,7 @@ import {
   TEXTO_CLARO,
   TEXTO_DESTAQUE
 } from '../game/estilo';
+import { telaDe, type TelaLogica } from '../game/nitidez';
 import { getStageDefinition } from '../game/stageConfig';
 import { SCENE_KEYS, type SceneKey } from '../game/types';
 import { controlesDeToqueAtivos } from '../toque/telaToque';
@@ -22,13 +23,18 @@ export abstract class BaseScene extends Phaser.Scene {
     return getAppContext();
   }
 
+  /** Tamanho lógico da tela (1280x720 deitado): tudo se monta nele (nitidez.ts). */
+  protected get tela(): TelaLogica {
+    return telaDe(this);
+  }
+
   protected markActiveScene(sceneKey: SceneKey): void {
     this.app.debugStore.patchState({ activeScene: sceneKey });
   }
 
   /** Fundo das telas fora da luta: o estádio, escurecido, com vinheta em cima e embaixo. */
   protected createBackdrop(stageId = ''): void {
-    const { width, height } = this.cameras.main;
+    const { width, height } = this.tela;
     const stage = getStageDefinition(stageId);
 
     this.cameras.main.setBackgroundColor(COR_FUNDO);
@@ -49,14 +55,14 @@ export abstract class BaseScene extends Phaser.Scene {
     if (!this.textures.exists(LOGO_IMAGE_ASSET.key)) {
       return false;
     }
-    const { centerX, width } = this.cameras.main;
+    const { centerX, width } = this.tela;
     const logo = this.add.image(centerX, y, LOGO_IMAGE_ASSET.key).setDepth(2);
     logo.setScale(Math.min(maxWidth, width - 32) / logo.width);
     return true;
   }
 
   protected createHeading(title: string, subtitle: string): void {
-    const { centerX } = this.cameras.main;
+    const { centerX } = this.tela;
 
     this.add
       .text(centerX, 54, title.toUpperCase(), {
@@ -88,7 +94,7 @@ export abstract class BaseScene extends Phaser.Scene {
     if (controlesDeToqueAtivos()) {
       return;
     }
-    const { centerX, height } = this.cameras.main;
+    const { centerX, height } = this.tela;
 
     this.add
       .text(centerX, height - 28, text, {

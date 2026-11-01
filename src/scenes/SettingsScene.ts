@@ -51,8 +51,8 @@ export class SettingsScene extends BaseScene {
     const espaco = painelDebug ? 52 : 60;
     const buttonHeight = painelDebug ? 46 : 52;
 
-    const centerX = this.cameras.main.centerX;
-    const centerY = this.cameras.main.centerY;
+    const centerX = this.tela.centerX;
+    const centerY = this.tela.centerY;
     this.add
       .rectangle(centerX, centerY + (painelDebug ? 40 : 30), 560, painelDebug ? 460 : 440, COR_PAINEL, 0.85)
       .setStrokeStyle(2, COR_BORDA, 1);

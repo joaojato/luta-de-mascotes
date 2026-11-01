@@ -3,8 +3,11 @@
  * no fundo, letra creme com contorno preto e sombra vermelha (as cores da logo
  * do Codex, 29/10/2026), P1 azul e P2 vermelho. Sem dourado nem metálico.
  */
-export const FONTE_TITULO = 'Impact, "Arial Black", sans-serif';
-export const FONTE_TEXTO = 'Arial, Helvetica, sans-serif';
+export const FONTE_TITULO = '"Big Shoulders Display", Impact, sans-serif';
+export const FONTE_TEXTO = '"Barlow Semi Condensed", "Arial Narrow", sans-serif';
+
+/** Pesos carregados no index.html; o canvas só desenha a fonte depois de pronta (BootScene). */
+export const FONTES_DO_JOGO = ['900 32px "Big Shoulders Display"', '500 16px "Barlow Semi Condensed"', '700 16px "Barlow Semi Condensed"'];
 
 export const COR_FUNDO = 0x05030a;
 export const COR_PAINEL = 0x0b0716;

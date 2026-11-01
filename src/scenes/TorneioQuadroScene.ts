@@ -68,7 +68,7 @@ export class TorneioQuadroScene extends BaseScene {
     const t = this.torneio;
     const rodadas = Math.log2(t.tamanho);
     const colunas = rodadas + 1;
-    const { width } = this.cameras.main;
+    const { width } = this.tela;
     const margem = 50;
     const largura = Math.min(220, (width - margem * 2) / colunas - 20);
     const topo = 125;
@@ -224,7 +224,7 @@ export class TorneioQuadroScene extends BaseScene {
   private mostrarProximaLuta(): void {
     const luta = lutaDoJogador(this.torneio)!;
     const adversario = luta.a === this.torneio.jogador ? luta.b : luta.a;
-    const { centerX, height } = this.cameras.main;
+    const { centerX, height } = this.tela;
     this.add
       .text(centerX, height - 112, `${getCharacterDefinition(this.torneio.jogador).label.toUpperCase()}  x  ${getCharacterDefinition(adversario).label.toUpperCase()}`, {
         color: TEXTO_DESTAQUE,
@@ -253,7 +253,7 @@ export class TorneioQuadroScene extends BaseScene {
   /** O torneio acabou para o jogador: resultado, e o salvo some. */
   private mostrarFim(fim: Situacao): void {
     apagarTorneio();
-    const { centerX, height } = this.cameras.main;
+    const { centerX, height } = this.tela;
     const texto = textoDoFim(fim);
     if (fim.tipo === 'campeao' && this.textures.exists('trofeu')) {
       this.add.image(centerX - 250, height - 105, 'trofeu').setDisplaySize(90, 90);

@@ -87,12 +87,12 @@ export class MainMenuScene extends BaseScene {
       : [playOption, torneiosOption, settingsOption];
 
     const spacing = 72;
-    const startY = this.cameras.main.centerY - (spacing * (this.options.length - 1)) / 2 + 20;
+    const startY = this.tela.centerY - (spacing * (this.options.length - 1)) / 2 + 20;
     let row = 0;
 
     const layoutButton = (option: MenuOption, optionIndex: number): void => {
       const button = createTextButton(this, {
-        x: this.cameras.main.centerX,
+        x: this.tela.centerX,
         y: startY + row * spacing,
         width: 380,
         height: 58,

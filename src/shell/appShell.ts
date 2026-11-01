@@ -138,6 +138,7 @@ export function createApp(root: HTMLElement): void {
             <button id="debug-collapse" class="shell-button" type="button">Fechar</button>
           </div>
           <div class="debug-panel__body">
+            <section id="debug-slot" class="debug-slot" hidden></section>
             <div id="debug-controls" class="debug-panel__controls"></div>
           </div>
         </aside>
@@ -151,6 +152,7 @@ export function createApp(root: HTMLElement): void {
   const debugControls = root.querySelector<HTMLElement>('#debug-controls');
   const collapseButton = root.querySelector<HTMLButtonElement>('#debug-collapse');
   const debugAba = root.querySelector<HTMLButtonElement>('#debug-aba');
+  const debugSlot = root.querySelector<HTMLElement>('#debug-slot');
   const profileToggle = root.querySelector<HTMLButtonElement>('#profile-toggle');
   const sceneBadge = root.querySelector<HTMLElement>('#scene-badge');
 
@@ -195,7 +197,7 @@ export function createApp(root: HTMLElement): void {
     gameConfigStore,
     isDebugShell,
     isMobileShell,
-    painelDebug: isDebugShell ? { aberto: () => gavetaAberta, alternar: alternarGaveta } : null,
+    painelDebug: isDebugShell && debugSlot ? { aberto: () => gavetaAberta, alternar: alternarGaveta, slot: debugSlot } : null,
     getProfile: () => currentProfile
   };
 

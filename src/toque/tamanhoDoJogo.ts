@@ -6,6 +6,7 @@
  */
 import * as Phaser from 'phaser';
 
+import { escalaDeDesenho } from '../game/nitidez';
 import { ALTURA_DO_JOGO, larguraDoJogo } from './layout';
 
 /**
@@ -17,9 +18,12 @@ import { ALTURA_DO_JOGO, larguraDoJogo } from './layout';
  */
 export function acompanharProporcaoDaTela(game: Phaser.Game, parent: HTMLElement): void {
   const ajustar = (): void => {
-    const largura = larguraDoJogo(parent.clientWidth, parent.clientHeight);
-    if (game.scale.width !== largura || game.scale.height !== ALTURA_DO_JOGO) {
-      game.scale.setGameSize(largura, ALTURA_DO_JOGO);
+    // Em pixels de canvas: a largura lógica vezes a escala de desenho (nitidez.ts).
+    const escala = escalaDeDesenho();
+    const largura = Math.round(larguraDoJogo(parent.clientWidth, parent.clientHeight) * escala);
+    const altura = ALTURA_DO_JOGO * escala;
+    if (game.scale.width !== largura || game.scale.height !== altura) {
+      game.scale.setGameSize(largura, altura);
     }
   };
   const ligar = (): void => {

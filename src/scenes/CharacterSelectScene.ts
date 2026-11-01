@@ -3,7 +3,7 @@ import * as Phaser from 'phaser';
 import { playAudioCue } from '../game/core/audio';
 import { ELENCO_SELECIONAVEL, IDS_SELECIONAVEIS } from '../game/elenco';
 import { findCharacterAnimationKeyByAction, type CharacterDefinition } from '../game/hero';
-import { COR_DESTAQUE, COR_P1, COR_P2, FONTE_TITULO, TEXTO_DESTAQUE } from '../game/estilo';
+import { COR_DESTAQUE, COR_P1, COR_P2, FONTE_TEXTO, FONTE_TITULO, TEXTO_DESTAQUE } from '../game/estilo';
 import { sortearIndice } from '../game/sorteio';
 import { criarTorneio } from '../game/torneio';
 import { salvarTorneio } from '../game/torneioSalvo';
@@ -98,7 +98,7 @@ export class CharacterSelectScene extends BaseScene {
     this.registerInput();
 
     this.etapa = this.add
-      .text(this.cameras.main.centerX, 118, '', { color: colorToCss(P1_COLOR), fontFamily: FONTE_TITULO, fontSize: '26px', stroke: '#000000', strokeThickness: 5 })
+      .text(this.tela.centerX, 118, '', { color: colorToCss(P1_COLOR), fontFamily: FONTE_TITULO, fontSize: '26px', stroke: '#000000', strokeThickness: 5 })
       .setOrigin(0.5)
       .setDepth(12);
     this.mostrarEtapa();
@@ -112,7 +112,7 @@ export class CharacterSelectScene extends BaseScene {
 
   /** Grade centralizada de quadrados com o retrato recortado de cada lutador, e o "?" no fim. */
   private buildGrid(): void {
-    const { width, height } = this.cameras.main;
+    const { width, height } = this.tela;
     const roster: (CharacterDefinition | null)[] = [...SELECTABLE_ROSTER, null];
     const sideRoom = Math.max(180, width * 0.24);
     const fit = Math.floor((width - sideRoom * 2 + TILE_GAP) / (TILE_SIZE + TILE_GAP));
@@ -163,7 +163,7 @@ export class CharacterSelectScene extends BaseScene {
   }
 
   private createCursor(label: string, color: number, index: number, side: -1 | 1): PlayerCursor {
-    const { width, height } = this.cameras.main;
+    const { width, height } = this.tela;
     const previewX = side === -1 ? width * 0.13 : width * 0.87;
     const floorY = height * 0.5 + PREVIEW_BODY_HEIGHT / 2 + 30;
 
@@ -193,8 +193,8 @@ export class CharacterSelectScene extends BaseScene {
       .text(0, 0, label, {
         color: '#05030a',
         backgroundColor: colorToCss(color),
-        fontFamily: 'monospace',
-        fontSize: '14px',
+        fontFamily: FONTE_TEXTO,
+        fontSize: '15px',
         fontStyle: 'bold',
         padding: { x: 6, y: 2 }
       })

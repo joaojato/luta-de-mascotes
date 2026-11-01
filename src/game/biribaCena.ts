@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { BiribaMotion, type BiribaAction } from './biribaMotion';
 import type { Fighter } from './fighter';
+import { telaDe } from './nitidez';
 import { PLANO_DE_FUNDO } from './planoDeFundo';
 
 const PASTA = '/assets/cenarios/biriba';
@@ -61,7 +62,8 @@ export class BiribaCena {
   reset(): void {
     const cam = this.scene.cameras.main;
     const m = PLANO_DE_FUNDO.margem;
-    this.motion.reset(this.bira.x + this.offsetX, cam.scrollX + m, cam.scrollX + cam.width - m);
+    const largura = telaDe(this.scene).width;
+    this.motion.reset(this.bira.x + this.offsetX, cam.scrollX + m, cam.scrollX + largura - m);
     this.motion.facing = this.bira.facingDirection;
     this.renderedAction = undefined;
     this.render();
@@ -70,7 +72,8 @@ export class BiribaCena {
   update(seconds: number): void {
     const cam = this.scene.cameras.main;
     const m = PLANO_DE_FUNDO.margem;
-    this.motion.update(seconds, this.bira.x + this.offsetX, cam.scrollX + m, cam.scrollX + cam.width - m);
+    const largura = telaDe(this.scene).width;
+    this.motion.update(seconds, this.bira.x + this.offsetX, cam.scrollX + m, cam.scrollX + largura - m);
     this.render();
   }
 

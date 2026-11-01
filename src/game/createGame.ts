@@ -1,9 +1,9 @@
 import * as Phaser from 'phaser';
 
+import { decidirEscala, instalarNitidez } from './nitidez';
 import { GAME_PROFILES } from './profiles';
 import type { GameProfile } from './types';
 import { BootScene } from '../scenes/BootScene';
-import { SplashScene } from '../scenes/SplashScene';
 import { MainMenuScene } from '../scenes/MainMenuScene';
 import { ModeSelectScene } from '../scenes/ModeSelectScene';
 import { DificuldadeScene } from '../scenes/DificuldadeScene';
@@ -18,12 +18,14 @@ import { SettingsScene } from '../scenes/SettingsScene';
 
 export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Game {
   const config = GAME_PROFILES[profile];
+  // Canvas na resolução da tela; as cenas seguem em 1280x720 (nitidez.ts).
+  const escala = decidirEscala(config.width, config.height);
 
   const game = new Phaser.Game({
     type: Phaser.WEBGL,
     parent,
-    width: config.width,
-    height: config.height,
+    width: config.width * escala,
+    height: config.height * escala,
     backgroundColor: '#020617',
     transparent: true,
     roundPixels: false,
@@ -33,9 +35,11 @@ export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Ga
       panicMax: 0,
       deltaHistory: 1
     },
+    // Quem centraliza é o CSS (.game-root é flex). Centralizar aqui também
+    // somava as duas margens e empurrava o jogo para a direita.
     scale: {
       mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH
+      autoCenter: Phaser.Scale.NO_CENTER
     },
     physics: {
       default: 'arcade',
@@ -45,7 +49,6 @@ export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Ga
     },
     scene: [
       BootScene,
-      SplashScene,
       MainMenuScene,
       ModeSelectScene,
       DificuldadeScene,
@@ -60,6 +63,7 @@ export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Ga
     ]
   });
 
+  instalarNitidez(game);
   guardKeyboardWhileEditing(game);
 
   if (import.meta.env.DEV) {

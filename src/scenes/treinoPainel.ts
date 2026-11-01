@@ -4,8 +4,9 @@ import { getCharacterDefinition } from '../game/hero';
 /**
  * Painel lateral do treino livre (docs/superpowers/specs/2026-11-01-controles-e-treino-design.md):
  * troca o P1 e o P2 na hora, liga e desliga a CPU, e as opções de exibição.
- * HTML por cima do canvas, como o painel da Academia: clique e toque saem
- * de graça no DOM. Recolhe num botão pequeno (o −).
+ * HTML, para clique e toque saírem de graça no DOM. Em dev mora na gaveta de
+ * debug (`dentro`); sem ela (celular), flutua por cima do canvas e recolhe
+ * num botão pequeno (o −).
  */
 
 export interface PainelTreinoOpcoes {
@@ -16,6 +17,8 @@ export interface PainelTreinoOpcoes {
   trocar: (lado: 'p1' | 'p2', direcao: 1 | -1) => void;
   alternarCpu: () => void;
   sair: () => void;
+  /** Onde montar (a gaveta de debug); sem isso, flutua sobre o jogo. */
+  dentro?: HTMLElement | null;
 }
 
 const OPCOES_EXIBICAO: { campo: keyof Exibicao; nome: string }[] = [
@@ -29,7 +32,7 @@ export class PainelTreino {
   private readonly desligar: () => void;
 
   constructor(private readonly opcoes: PainelTreinoOpcoes) {
-    this.recolhido = opcoes.recolhido;
+    this.recolhido = opcoes.dentro ? false : opcoes.recolhido;
     this.raiz = document.createElement('div');
     Object.assign(this.raiz.style, {
       position: 'fixed',
@@ -52,7 +55,14 @@ export class PainelTreino {
       const campo = (evento.target as HTMLInputElement).dataset.exibir as keyof Exibicao | undefined;
       if (campo) mudarExibicao({ [campo]: (evento.target as HTMLInputElement).checked });
     });
-    document.body.appendChild(this.raiz);
+    if (opcoes.dentro) {
+      // Na gaveta: parte do fluxo dela, sem posição própria nem recolher.
+      Object.assign(this.raiz.style, { position: 'static', top: '', right: '', maxHeight: '', overflowY: 'visible' });
+      opcoes.dentro.hidden = false;
+      opcoes.dentro.appendChild(this.raiz);
+    } else {
+      document.body.appendChild(this.raiz);
+    }
     this.desligar = aoMudarExibicao(() => this.render());
     this.render();
   }
@@ -69,6 +79,7 @@ export class PainelTreino {
   destroy(): void {
     this.desligar();
     this.raiz.remove();
+    if (this.opcoes.dentro && !this.opcoes.dentro.hasChildNodes()) this.opcoes.dentro.hidden = true;
   }
 
   private aoClicar(evento: MouseEvent): void {
@@ -87,7 +98,7 @@ export class PainelTreino {
       this.raiz.innerHTML = `<button data-acao="recolher" style="${estiloBotao(false)}">Treino ▸</button>`;
       return;
     }
-    Object.assign(this.raiz.style, { width: 'min(300px, calc(100vw - 32px))', padding: '10px' });
+    Object.assign(this.raiz.style, { width: this.opcoes.dentro ? 'auto' : 'min(300px, calc(100vw - 32px))', padding: '10px' });
     const lado = (id: 'p1' | 'p2', titulo: string, personagem: string, atalho: string) => `
       <div style="display:flex;align-items:center;gap:6px;margin:4px 0">
         <span style="width:28px;color:#94a3b8">${titulo}</span>
@@ -104,7 +115,7 @@ export class PainelTreino {
     this.raiz.innerHTML = `
       <div style="display:flex;align-items:center;margin-bottom:6px">
         <b>Treino livre</b>
-        <button data-acao="recolher" style="${estiloBotao(false)};margin-left:auto" title="Recolher">−</button>
+        ${this.opcoes.dentro ? '' : `<button data-acao="recolher" style="${estiloBotao(false)};margin-left:auto" title="Recolher">−</button>`}
       </div>
       ${lado('p1', 'P1', this.opcoes.p1, '1')}
       ${lado('p2', 'P2', this.opcoes.p2, '2')}
@@ -113,7 +124,7 @@ export class PainelTreino {
       </button>
       ${caixas}
       <p style="color:#94a3b8;margin:6px 0">Sem relógio e sem fim. A vida volta a encher 2 s depois do último golpe.</p>
-      <button data-acao="sair" style="${estiloBotao(false)};width:100%">Voltar à Academia · Esc</button>
+      <button data-acao="sair" style="${estiloBotao(false)};width:100%">Voltar à Academia</button>
     `;
   }
 }

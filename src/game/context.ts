@@ -9,7 +9,12 @@ export interface AppContext {
   isDebugShell: boolean;
   isMobileShell: boolean;
   /** Gaveta do console de debug; só existe em dev, no localhost (null no build). */
-  painelDebug: { aberto(): boolean; alternar(): void } | null;
+  painelDebug: {
+    aberto(): boolean;
+    alternar(): void;
+    /** Lugar no topo da gaveta onde a cena da vez põe o painel dela (o do treino). */
+    slot: HTMLElement;
+  } | null;
   getProfile(): GameProfile;
 }
 

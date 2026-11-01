@@ -73,7 +73,7 @@ export class TorneioScene extends BaseScene {
             disponivel: torneioDisponivel(tamanho, elenco)
           }));
 
-    const { centerX, centerY } = this.cameras.main;
+    const { centerX, centerY } = this.tela;
     const largura = 340;
     const altura = 330;
     const gap = 60;

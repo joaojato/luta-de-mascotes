@@ -40,7 +40,7 @@ no espírito visual de Street Fighter. É o trabalho do João para a matéria
 Arquitetura real (herdada do Vibe Fighter, nomes em inglês ficam):
 
 ```
-src/scenes/           Boot, Splash, MainMenu, ModeSelect, LevelSelect,
+src/scenes/           Boot, MainMenu, ModeSelect, LevelSelect,
                       CharacterSelect, Match, Academia, Settings
 src/game/fighter.ts   motor: estados, hit/hurt/guard box, hitstun, rounds
 src/game/lutadores/<slug>.json   um JSON por lutador: ações, boxes, stats

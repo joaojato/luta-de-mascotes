@@ -14,6 +14,7 @@ import {
   TEXTO_DESTAQUE
 } from './estilo';
 import { LUTADORES } from './lutadores';
+import { telaDe } from './nitidez';
 import { createTextButton, type TextButton } from './ui';
 import { controlesDeToqueAtivos } from '../toque/telaToque';
 
@@ -86,7 +87,7 @@ export class MenuPausa {
     profundidade: number,
     private readonly acoes: AcoesDaPausa
   ) {
-    const { centerX, width, height } = scene.cameras.main;
+    const { centerX, width, height } = telaDe(scene);
     const fixo = <T extends Phaser.GameObjects.Components.ScrollFactor & Phaser.GameObjects.Components.Depth>(o: T): T => {
       o.setScrollFactor(0).setDepth(profundidade);
       this.objetos.push(o as unknown as Phaser.GameObjects.GameObject);

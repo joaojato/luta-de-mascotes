@@ -3,6 +3,8 @@ import * as Phaser from 'phaser';
 import { FIGHTING_UI_ATLAS_TEXTURE_KEY, getFightingUiAtlasFrame } from './fightingUiAtlas';
 import { getCharacterDefinition } from './hero';
 import { proximaSombra, type Sombra } from './sombraDaVida';
+import { FONTE_TEXTO, FONTE_TITULO } from './estilo';
+import { telaDe } from './nitidez';
 import type { MatchMode } from './types';
 
 const KEY = FIGHTING_UI_ATLAS_TEXTURE_KEY;
@@ -151,8 +153,9 @@ export class MatchHud {
 
   /** Constructs every HUD element into the root container. */
   private build(): void {
-    const encaixe = this.config.espacoParaMenu ? encaixeComMenu(this.scene.cameras.main.width) : null;
-    const camWidth = encaixe?.largura ?? this.scene.cameras.main.width;
+    const largura = telaDe(this.scene).width;
+    const encaixe = this.config.espacoParaMenu ? encaixeComMenu(largura) : null;
+    const camWidth = encaixe?.largura ?? largura;
     const pad = encaixe ? MARGEM_COM_MENU : MARGEM;
     this.root.setScale(encaixe?.escala ?? 1);
 
@@ -211,7 +214,7 @@ export class MatchHud {
     const label = this.scene.add
       .text(inner, topY + METER_DISP_H / 2, '', {
         color: '#fdba74',
-        fontFamily: 'monospace',
+        fontFamily: FONTE_TEXTO,
         fontSize: '18px',
         fontStyle: 'bold',
         stroke: '#0b1120',
@@ -281,7 +284,7 @@ export class MatchHud {
     const pontos = this.scene.add
       .text(slotLeft + slotWidth / 2, slotTop + slotHeight / 2, '', {
         color: '#f8fafc',
-        fontFamily: 'monospace',
+        fontFamily: FONTE_TEXTO,
         fontSize: `${Math.round(Math.min(22, slotHeight * 0.7))}px`,
         fontStyle: 'bold',
         stroke: '#0b1120',
@@ -378,8 +381,8 @@ export class MatchHud {
     const label = this.scene.add
       .text(textCx, textCy, name, {
         color: '#fdf6e3',
-        fontFamily: 'monospace',
-        fontSize: '15px',
+        fontFamily: FONTE_TITULO,
+        fontSize: '19px',
         fontStyle: 'bold'
       })
       .setOrigin(0.5);
@@ -432,8 +435,8 @@ export class MatchHud {
     this.timerText = this.scene.add
       .text(numberCx, numberCy, '0', {
         color: '#f8fafc',
-        fontFamily: 'monospace',
-        fontSize: '34px',
+        fontFamily: FONTE_TITULO,
+        fontSize: '42px',
         fontStyle: 'bold'
       })
       .setOrigin(0.5);

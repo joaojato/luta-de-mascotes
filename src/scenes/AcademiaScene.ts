@@ -59,7 +59,7 @@ export class AcademiaScene extends BaseScene {
 
     const character = this.character();
     this.sprite = this.add
-      .sprite(this.cameras.main.centerX - 40, FLOOR_Y, character.animations[0].sheet.key, 0)
+      .sprite(this.tela.centerX - 40, FLOOR_Y, character.animations[0].sheet.key, 0)
       .setOrigin(character.anchor.x, character.anchor.y)
       .setScale(SPRITE_SCALE);
 
@@ -82,7 +82,7 @@ export class AcademiaScene extends BaseScene {
     // Uma linha de legenda por tipo de box, na cor que o motor usa.
     this.legendTexts = FIGHTER_BOUNDS_FIELDS.map((field, index) =>
       this.add
-        .text(this.cameras.main.width - 24, 120 + index * 22, '', {
+        .text(this.tela.width - 24, 120 + index * 22, '', {
           color: field.color,
           fontFamily: 'monospace',
           fontSize: '14px'
@@ -334,6 +334,6 @@ export class AcademiaScene extends BaseScene {
   private drawFloor(): void {
     const floor = this.add.graphics();
     floor.lineStyle(2, 0x334155, 1);
-    floor.lineBetween(0, FLOOR_Y, this.cameras.main.width, FLOOR_Y);
+    floor.lineBetween(0, FLOOR_Y, this.tela.width, FLOOR_Y);
   }
 }

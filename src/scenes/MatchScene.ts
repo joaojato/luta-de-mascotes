@@ -145,7 +145,7 @@ export class MatchScene extends BaseScene {
     this.hud.slideIn();
 
     this.banner = this.add
-      .text(this.cameras.main.centerX, this.cameras.main.centerY - 40, '', {
+      .text(this.tela.centerX, this.tela.centerY - 40, '', {
         color: TEXTO_DESTAQUE,
         fontFamily: FONTE_TITULO,
         fontSize: '84px',
@@ -476,7 +476,7 @@ export class MatchScene extends BaseScene {
    * stop at the stage ends (producing corners).
    */
   private buildStage(): void {
-    const cam = this.cameras.main;
+    const cam = this.tela;
     const stage = getStageDefinition(this.config.stageId);
     const source = this.textures.get(stage.key).getSourceImage();
     const scale = cam.height / (source.height || stage.height);
@@ -501,7 +501,8 @@ export class MatchScene extends BaseScene {
     if (!temTorcida) {
       this.add.image(0, 0, stage.key).setOrigin(0, 0).setScale(scale).setDepth(0);
     }
-    cam.setBounds(0, 0, this.stageWorldWidth, cam.height);
+    // Sem setBounds: a trava das pontas é do updateCamera, e a do Phaser
+    // supõe zoom pelo centro (aqui o zoom é pelo canto, nitidez.ts).
   }
 
   /** Plays a match sound with the current volume settings (docs/sons.md). */
@@ -524,7 +525,7 @@ export class MatchScene extends BaseScene {
 
   /** Spawns P1 (left, facing right) and P2 (right, facing left). */
   private spawnFighters(): void {
-    const cam = this.cameras.main;
+    const cam = this.tela;
     const stage = getStageDefinition(this.config.stageId);
     const groundY = Math.round(cam.height * (stage.groundFraction ?? DEFAULT_GROUND_FRACTION));
     const minX = EDGE_MARGIN;
@@ -580,7 +581,7 @@ export class MatchScene extends BaseScene {
    */
   private updateCamera(snap: boolean): void {
     const cam = this.cameras.main;
-    const viewWidth = cam.width;
+    const viewWidth = this.tela.width;
     const midpoint = (this.p1.x + this.p2.x) / 2;
     const targetScroll = Phaser.Math.Clamp(midpoint - viewWidth / 2, 0, this.maxScroll);
     const scrollX = snap ? targetScroll : Phaser.Math.Linear(cam.scrollX, targetScroll, CAMERA_LERP);
@@ -672,7 +673,7 @@ export class MatchScene extends BaseScene {
       return;
     }
     celular.iniciar();
-    const { width } = this.cameras.main;
+    const { width } = this.tela;
     const jogadores: (1 | 2)[] = this.config.mode === '1vcpu' ? [1] : [1, 2];
     this.paineisCelular = jogadores.map((jogador) => ({
       jogador,
@@ -798,7 +799,8 @@ export class MatchScene extends BaseScene {
       recolhido: this.painelTreino?.estaRecolhido ?? controlesDeToqueAtivos(),
       trocar,
       alternarCpu,
-      sair: () => this.scene.start(SCENE_KEYS.Academia)
+      sair: () => this.scene.start(SCENE_KEYS.Academia),
+      dentro: this.app.painelDebug?.slot
     });
   }
 
@@ -976,7 +978,7 @@ export class MatchScene extends BaseScene {
     this.hideBanner();
     this.som('vitoria');
 
-    const { centerX, centerY, width, height } = this.cameras.main;
+    const { centerX, centerY, width, height } = this.tela;
 
     const dim = this.add
       .rectangle(centerX, centerY, width, height, COR_FUNDO, 0.66)

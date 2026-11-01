@@ -46,7 +46,7 @@ export class ConectarScene extends BaseScene {
 
     GUIA.forEach((linha, i) => {
       this.add
-        .text(this.cameras.main.centerX, 592 + i * 24, linha, { color: '#cbd5e1', fontFamily: 'monospace', fontSize: '15px' })
+        .text(this.tela.centerX, 592 + i * 24, linha, { color: '#cbd5e1', fontFamily: 'monospace', fontSize: '15px' })
         .setOrigin(0.5);
     });
     this.createFooterHint('Enter: jogar  ·  R: calibrar de novo  ·  Esc: menu  (o teclado continua valendo)');
@@ -90,7 +90,7 @@ export class ConectarScene extends BaseScene {
         host = info.ips[0];
         if (info.ips.length > 1) {
           this.add
-            .text(this.cameras.main.centerX, 540, `QR não abre no celular? Troque o IP no endereço por: ${info.ips.slice(1).join('  ou  ')}`, {
+            .text(this.tela.centerX, 540, `QR não abre no celular? Troque o IP no endereço por: ${info.ips.slice(1).join('  ou  ')}`, {
               color: '#64748b',
               fontFamily: 'monospace',
               fontSize: '12px'
@@ -139,7 +139,7 @@ export class ConectarScene extends BaseScene {
 
   private aviso(texto: string): void {
     this.add
-      .text(this.cameras.main.centerX, 290, texto, {
+      .text(this.tela.centerX, 290, texto, {
         color: '#fca5a5',
         backgroundColor: '#1f0a0a',
         fontFamily: 'monospace',

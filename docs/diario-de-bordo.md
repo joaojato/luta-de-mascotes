@@ -2938,3 +2938,40 @@ bastante incomodado").
 **Em aberto:** botão definitivo para abrir a gaveta (ele vai pensar);
 `public/configs/fighter-playground.json` já estava alterado antes da sessão e
 ficou fora do commit; publicar no Vercel (precisa de "pode publicar").
+
+## 2026-11-01: jogo nítido, centralizado, sem "aperte qualquer tecla"
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "O jogo ainda está muito feio. Ele está descentralizado. As
+fontes principais de títulos estão em má qualidade [...] quando não são
+essas são aquelas fontes simples de texto de word." Tirar o "aperte alguma
+tecla": abriu no navegador, já está no menu. O Treino vai para a gaveta de
+debug.
+**Feito:** causa do descentralizado: CSS (`.game-root` flex) e Phaser
+(`autoCenter`) centralizavam juntos; em tela que não é 16:9 o jogo ia para
+a direita (178 px de sobra de um lado, 60 do outro). Phaser parou de
+centralizar. Causa da letra ruim: canvas de 1280x720 esticado pelo
+navegador. Novo `src/game/nitidez.ts`: o canvas nasce na resolução do
+monitor (até 3x), a câmera de cada cena dá zoom pelo canto e o texto é
+rasterizado na mesma escala; as cenas seguem em 1280x720 por
+`telaDe(scene)` / `this.tela`. `setBounds` da câmera da luta saiu (a do
+Phaser supõe zoom pelo centro; a trava das pontas já era nossa) e o
+reforço deixou de usar `worldView`. Fontes: títulos em Big Shoulders
+Display 900, texto em Barlow Semi Condensed (Google Fonts, sem dependência
+nova); HUD e etiquetas P1/P2 saíram do monospace. Splash apagada: Boot
+espera as fontes (até 3 s) e abre o menu. Painel do treino mora na gaveta
+de debug em dev (`painelDebug.slot`); fora dela segue flutuando.
+**Verificado:** `npm run check`; teste novo `nitidez.test.ts`. Navegador
+1536x730 com zoom 125%: canvas 1600x900 centralizado (119 px de cada lado),
+letras nítidas no menu, seleção, luta, HUD e pausa; câmera para na ponta do
+estádio; treino aparece na gaveta. Celular deitado emulado (844x390, 3x):
+menu aparece; largura do canvas com fração deixava a tela vazia, arredondada.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** tela "aperte qualquer tecla"; fontes
+Impact e Arial ("fontes simples de texto de word").
+**Aprovado explicitamente:** nada.
+**Atrito:** ele achou o jogo "muito feio" depois da sessão anterior.
+**Em aberto:** aprovar as fontes novas (trocar é uma linha em `estilo.ts`);
+a música do menu só começa no primeiro toque/tecla (regra do navegador, que
+a splash escondia); outra sessão em paralelo mexe no guerreiro
+(`reforco.ts` ficou com o ajuste de câmera, fora deste commit).

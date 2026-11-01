@@ -515,3 +515,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   pausa com Continuar, Recomeçar, Configurações e Sair da partida, e Tab sem
   função. Sair de uma partida sempre passa por uma escolha explícita.
   (2026-11-01)
+- **Conferir em tela de notebook, não só em 16:9 exato.** Testei a gaveta e
+  a pausa numa janela 1440x810 e não vi o jogo torto nem a letra serrilhada;
+  na tela do João (proporção e zoom do Windows diferentes) os dois saltavam.
+  Print de verificação visual sai em 1536x730 com zoom 125%. (2026-11-01)
+- **Letra de jogo não é Impact nem Arial.** O João chamou de "fonte de
+  Word". Texto do canvas usa as fontes de `estilo.ts` e é desenhado na
+  resolução da tela (`nitidez.ts`); nada de `monospace` em tela de jogador.
+  (2026-11-01)
+- **Abriu o navegador, está no menu.** Nada de "aperte qualquer tecla".
+  (2026-11-01)

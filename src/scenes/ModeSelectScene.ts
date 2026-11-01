@@ -58,7 +58,7 @@ export class ModeSelectScene extends BaseScene {
   }
 
   private buildCards(): void {
-    const { centerX, centerY } = this.cameras.main;
+    const { centerX, centerY } = this.tela;
     const cardWidth = 380;
     const cardHeight = 390;
     const gap = 60;
