@@ -29,12 +29,27 @@ quadro seguinte mostra a mão voltando para o tubo.
 
 ## O que o João apontou, por ação
 
-- **`low-kick` (voadora apoiada).** É a melhor animação, mas nos quadros 3
-  a 10 a cabeça fica na altura do idle. Por isso a mão próxima atravessa o
-  andador e segura o nada, e a perna do chute passa através do andador.
-  Durante o chute o corpo **sobe** (a cabeça uns 25 a 35 px acima do idle),
-  o braço estica para baixo até o arco, e a perna passa por cima ou ao lado
-  do andador, nunca por dentro.
+- **`low-kick` (voadora apoiada).** É a melhor animação, mas o boneco
+  praticamente não sai do chão. Medido na v3: no pico (quadros 7 e 8) o pé
+  mais baixo fica a só uns 45 px do piso, a cabeça **desce** 15 a 25 px em
+  relação ao idle, e a perna do chute atravessa o andador.
+  A direção do João (01/11/2026): **a mão esquerda fica presa no andador em
+  todo quadro**, no mesmo ponto (topo do arco próximo, (309, 198) na célula,
+  com o andador na origem (217, 192)). O golpe vira um salto apoiado,
+  assim:
+  - quadros 0 a 4: as duas mãos no andador e o corpo flexiona; a direita sobe
+    para a guarda e o braço esquerdo trava esticado;
+  - quadro 5: empurra o andador para baixo e o corpo começa a subir;
+  - quadros 6 a 8: o quadril sobe até a altura da mão e o braço esquerdo fica
+    reto, empurrando para baixo. A perna do chute estende **acima do topo do
+    andador** (y < 192) e a outra fica dobrada no alto. No pico, os dois pés
+    ficam a uns 100 px do chão;
+  - quadros 9 a 11: recolhe, desce e aterrissa com as duas mãos no andador;
+  - a cabeça nunca fica abaixo da linha da cabeça do idle.
+  Guia quadro a quadro com o andador, a pegada e as linhas-alvo:
+  `public/assets/lutadores/coxa/guias/low-kick-guia-v4.png`, gerado por
+  `python scripts/coxa_guia_voadora_v4.py .`. O corpo apagado nele é a v3,
+  só como referência do erro.
 - **`beer-throw` (lata).** A mão de apoio (direita, distante) larga o
   andador no quadro 7. Ela fica presa ao tubo **nos 10 quadros**. A lata na
   mão (quadros 3 a 5) precisa ser bem maior.

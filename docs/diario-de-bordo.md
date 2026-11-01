@@ -2535,3 +2535,22 @@ em rigido-v1 a v3. Virou JSON local próprio.
 **Atrito:** nenhum.
 **Em aberto:** pesado e rasteiro do maromba, a volta ao normal e os
 multiplicadores de dano (provisórios) são definição do João; arte v4.
+
+## 2026-11-01: voadora apoiada, a mão manda no corpo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** na voadora o corpo precisa subir mais, o boneco quase não sai do
+chão; manter a mão dele no andador em cada quadro.
+**Feito:** medi a v3: no pico o pé fica a uns 45 px do piso, a cabeça desce
+15 a 25 px abaixo do idle e a perna atravessa o andador. Reescrevi a
+voadora no `docs/coxa-pedido-v4.md` como salto apoiado: mão esquerda presa
+no mesmo ponto do andador em todo quadro, braço reto empurrando, quadril
+até a mão, perna do chute acima do topo do andador, pés a uns 100 px do
+chão no pico. Guia quadro a quadro com linhas-alvo gerado por
+`scripts/coxa_guia_voadora_v4.py` (imagem local, fora do git).
+**Verificado:** guia gerado e conferido a olho; arte ainda não refeita.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a direção da voadora no pedido v4.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** a sessão de arte refazer a voadora seguindo o guia.

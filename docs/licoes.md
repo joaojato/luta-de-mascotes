@@ -459,3 +459,9 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **Efeito pequeno some na luta.** A lata de 8×14 px na célula ficou com
   11×20 px na tela, e o João quase não a via. Objeto arremessado precisa de
   uns 20×35 px na célula. (2026-11-01)
+- **Golpe apoiado: a pegada fixa decide a altura.** Na voadora do Coxa eu
+  pedi "o corpo sobe uns 25 a 35 px" e ainda era pouco: o João quer o boneco
+  saindo do chão de verdade. O certo é fixar a mão no mesmo ponto do objeto
+  em todo quadro e derivar o resto dela (braço reto, quadril na altura da
+  mão, perna acima do objeto). Pedido de arte com número de altura vem com
+  guia desenhado. (2026-11-01)
