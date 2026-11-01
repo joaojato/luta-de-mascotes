@@ -2761,3 +2761,31 @@ conhecido do `background-gym.json`.
 **Atrito:** nada.
 **Em aberto:** voadora do Coxa segue provisória (`rigido-v4-provisorio`);
 pesado, rasteiro e volta do maromba; conectar o GitHub na Vercel.
+
+## 2026-11-01: maromba mais rápido e corrida do Bira imparável
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "O coxa maromba precisa ficar mais rápido se movimentando
+(pulando, no ar, correndo)" e "O Bira [...] na ult de corrida [...] precisa
+se locomover muito mais rápido e não pode ser interrompida por um golpe,
+apenas se esquivando".
+**Feito:** motor ganhou dois campos de JSON, sem código de mascote:
+`imparavel` no especial que avança (`armorAbsorbs` passa a absorver
+qualquer golpe enquanto `isImparavel`; ele só toma o dano) e `moves.dash`
+por lutador (`dashConfig`). Bira: corrida de 560 para 1120 px/s e
+`imparavel: true`; continua escapável pulando. Maromba: andar 320, ar 280,
+pulo 1150 com gravidade 3000 e dash 240 px em 0,20 s. O Coxa tinha ido para
+o elenco público em outra sessão (99cc92c): as mudanças entraram no
+`coxa-maromba.json` versionado e as cópias de `locais/`, duplicadas e
+ignoradas, foram apagadas.
+**Verificado:** 4 testes novos (armadura imparável, dash por lutador,
+corrida rápida que segue apanhando, especial comum interrompível): 266
+testes, build. Navegador: Bira levou dois golpes do Saci na corrida e no
+bote (230 → 212 → 194) e mordeu mesmo assim (Saci 230 → 196), a ~1075
+px/s; maromba andou 342 px/s, ficou 0,68 s no ar (vovô 0,73 a 0,78) e o
+dash dele carrega 240/160; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** velocidades do maromba e do Bira.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** nenhum novo.

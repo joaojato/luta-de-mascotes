@@ -508,12 +508,13 @@
     "special": {
       "kind": "run",
       "dodge": "pulo",
+      "imparavel": true,
       "approachAction": "special-run",
       "loopFrames": [
         0,
         7
       ],
-      "speed": 560,
+      "speed": 1120,
       "reach": 230,
       "maxSeconds": 1.6,
       "strikeFrame": 0,

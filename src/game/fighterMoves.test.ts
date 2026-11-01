@@ -486,6 +486,26 @@ describe('advance specials', () => {
     expect(sprite.anims.currentAnim.key).toBe('cachorro-idle');
   });
 
+  it('Bira run is fast and unstoppable: a hit only takes health, the run goes on', () => {
+    const {fighter, sprite} = charged('cachorro', opponent(800));
+    for (let i = 0; i < 15; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    // 1120 px/s: a quarter second covers ~280 px (it used to be 140).
+    expect(fighter.x).toBeGreaterThanOrEqual(200 + 270);
+    expect(fighter.isImparavel).toBe(true);
+    const vida = fighter.health01;
+    fighter.applyHit({ damage: 18, knockback: 260, hitstun: 360, kind: 'kick', height: 'high' } as never, -1, false, true);
+    expect(fighter.health01).toBeLessThan(vida);
+    expect(sprite.anims.currentAnim.key).toBe('cachorro-special-run');
+    for (let i = 0; i < 60 && sprite.anims.currentAnim.key === 'cachorro-special-run'; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.x).toBe(800 - 230);
+  });
+
+  it('other specials stay interruptible', () => {
+    const {fighter} = charged('galo', opponent(600));
+    fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.isImparavel).toBe(false);
+  });
+
   it('Galo hops low toward the head, lands, and the peck is ducked', () => {
     const {fighter, sprite} = charged('galo', opponent(600));
     let highest = 500;

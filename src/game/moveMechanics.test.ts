@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { passedDropPoint, projectileGrowthProgress, advanceStop, armorAbsorbs, DoubleTapDetector, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
+import { passedDropPoint, projectileGrowthProgress, advanceStop, armorAbsorbs, dashConfig, DASH_BACK, DASH_FORWARD, DoubleTapDetector, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
 
 describe('special traversal and flight timing', () => {
   it('holds the charge position, traverses continuously and stays at the destination during recovery', () => {
@@ -56,6 +56,19 @@ describe('special traversal and flight timing', () => {
     expect(armorAbsorbs('soco-rapido', true)).toBe(true);
     expect(armorAbsorbs('chute-baixo', true)).toBe(false);
     expect(armorAbsorbs('soco-rapido', false)).toBe(false);
+  });
+  it('lets an unstoppable special absorb any hit (the Bira run: only a dodge escapes it)', () => {
+    expect(armorAbsorbs('chute-baixo', false, true)).toBe(true);
+    expect(armorAbsorbs('especial', false, true)).toBe(true);
+    expect(armorAbsorbs('tiro', false, true)).toBe(true);
+    expect(armorAbsorbs('chute-baixo', false, false)).toBe(false);
+  });
+  it('uses the fighter dash when its JSON has one, the shared dash otherwise', () => {
+    const rapido = { forward: { distance: 230, seconds: 0.22 }, back: { distance: 150, seconds: 0.18 } };
+    expect(dashConfig(rapido, true)).toEqual({ distance: 230, seconds: 0.22 });
+    expect(dashConfig(rapido, false)).toEqual({ distance: 150, seconds: 0.18 });
+    expect(dashConfig(undefined, true)).toEqual(DASH_FORWARD);
+    expect(dashConfig({ forward: { distance: 230, seconds: 0.22 } }, false)).toEqual(DASH_BACK);
   });
   it('escapes each special only the way its JSON says', () => {
     const parado = { airborne: false, ducking: false, movingAway: false };

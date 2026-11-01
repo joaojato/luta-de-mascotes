@@ -26,9 +26,8 @@ import {
   ADVANCE_KINDS,
   BLOCK_PUSHBACK,
   advanceStop,
-  DASH_BACK,
-  DASH_FORWARD,
   DASH_STOP_GAP,
+  dashConfig,
   DoubleTapDetector,
   meteorDiveStart,
   strikeTravelStep,
@@ -448,6 +447,11 @@ export class Fighter {
       return 'baixa';
     }
     return this.currentAnimKey === this.actionKeys.blockHigh ? 'alta' : null;
+  }
+
+  /** In an unstoppable special (the Bira run): every hit only takes health. */
+  get isImparavel(): boolean {
+    return this.advance?.move.imparavel === true;
   }
 
   /** Mid heavy on the ground: the quick punch bounces off (armor). */
@@ -1315,7 +1319,7 @@ export class Fighter {
   private startDash(dir: 1 | -1): void {
     this.som('dash', 'dash');
     const forward = dir === this.facing;
-    this.dash = { dir, elapsed: 0, ...(forward ? DASH_FORWARD : DASH_BACK) };
+    this.dash = { dir, elapsed: 0, ...dashConfig(this.character.moves?.dash, forward) };
     const key = forward ? this.actionKeys.dashForward : this.actionKeys.dashBack;
     const ownSheet = key !== this.actionKeys.walkForward && key !== this.actionKeys.walkBackward;
     this.currentAnimKey = '';

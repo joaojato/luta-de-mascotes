@@ -271,7 +271,7 @@ export class MatchScene extends BaseScene {
     // the standing guard; only the flying kick breaks the crouching one.
     const blocked = !attack.unblockable && guardHolds(attack.move, defender.guardStance);
     const breakStunMs = attack.unblockable ? null : guardBreakStunMs(attack.move, defender.guardStance);
-    const armored = armorAbsorbs(attack.move, defender.isInHeavy);
+    const armored = armorAbsorbs(attack.move, defender.isInHeavy, defender.isImparavel);
     const isSpecial = attack.profile.kind === 'special';
     const finisher = attack.finisher && !blocked;
 

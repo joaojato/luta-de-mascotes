@@ -191,7 +191,7 @@ do JSON (Regra do JSON: o motor não conhece mascote).
 |---|---|---|---|
 | Urubu: meteoro | `meteor` | Térmica sobe, ele sai pelo alto da tela, o ponto de impacto segue o oponente até o mergulho começar e então trava; mergulho a 45 graus. Nenhuma guarda segura. Acerto atordoa 1,5 s, como o Pó de Arroz (vítima tonta, `stunned`). | Só pulando enquanto recua (`pulo-recuando`). |
 | Galo: bicada | `hop` | Voo baixo até 110 px do oponente, bicada na altura da cabeça, pouso. | Agachar (`agachar`). |
-| Bira: bote | `run` | Galope aos saltos (sheet própria, `approachAction`) até 230 px do oponente; bote com salto real até 90 px dele, mordida no ar uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
+| Bira: bote | `run` | Galope aos saltos (sheet própria, `approachAction`), a 1120 px/s, até 230 px do oponente; imparável (`imparavel`, João 01/11/2026): golpe só tira vida, não para a corrida nem o bote; bote com salto real até 90 px dele, mordida no ar uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
 | Saci: tornado | `dash` | Atravessa a tela girando, a uns 1000 px/s; só o funil de baixo acerta (João, 29/10/2026: antes a caixa ia até a cintura e não dava para pular). | Pular (`pulo`): quem está no ar quando ele passa escapa. Pular na carga é cedo demais (pousa antes). |
 
 O soco forte do Bira é a patada, com o efeito de garras no quadro 3.
@@ -483,6 +483,10 @@ provisórios, decididos pelo Claude até o João mudar:
   no último segundo e meio. A barra de especial não carrega enquanto isso.
 - Apanhar não tira da forma. Acabou a rodada, volta ao normal.
 - Sem especial enquanto maromba.
+- Mais rápido em tudo (João, 01/11/2026): anda a 320 px/s (o elenco, 230),
+  controle no ar 280 (190), pulo mais rápido (impulso 1150, gravidade 3000:
+  quase a mesma altura, 0,77 s no ar contra 0,85 s) e dash próprio
+  (`moves.dash`: 240 px em 0,20 s; para trás, 160 px em 0,16 s).
 - Volta ao normal: a transformação tocada de trás para a frente, até chegar
   a arte própria (`special-return`), que o João ainda vai definir.
 - O maromba é um lutador próprio (`coxa-maromba`), fora da seleção e

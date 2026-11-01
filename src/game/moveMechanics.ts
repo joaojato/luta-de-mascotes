@@ -13,6 +13,8 @@ export interface FighterMoveConfig {
   /** Down + kick (chute baixo): sheet and, optionally, an effect (the Galo's talon). */
   lowKick?: ProjectileMoveConfig;
   special?: ProjectileMoveConfig;
+  /** Own dash (the maromba runs faster); a missing side keeps the shared dash. */
+  dash?: DashConfig;
   /** Effect sheets (no hitbox) the moves reference by name, e.g. `"thermal"`. */
   effects?: Record<string, EffectSheetConfig>;
 }
@@ -128,6 +130,8 @@ export interface ProjectileMoveConfig {
   dodge?: SpecialDodge | string;
   /** No guard holds it. */
   unblockable?: boolean;
+  /** Advance special no hit interrupts: it only takes health; only the `dodge` escapes it (the Bira run). */
+  imparavel?: boolean;
   /** Advance (`run`, `hop`, `meteor`): distance from the opponent where it stops and strikes. */
   reach?: number;
   /** `run`: sheet frames repeated while closing in, and the first strike frame. */
@@ -301,6 +305,13 @@ export const DASH_DOUBLE_TAP_SECONDS = 0.3;
 /** Dash travel in world px and its duration; the back dash is a shorter hop. */
 export const DASH_FORWARD = { distance: 180, seconds: 0.28 };
 export const DASH_BACK = { distance: 120, seconds: 0.22 };
+export interface DashMove { distance: number; seconds: number }
+export interface DashConfig { forward?: DashMove; back?: DashMove }
+
+/** The fighter's own dash for that side, or the shared one. */
+export function dashConfig(dash: DashConfig | undefined, forward: boolean): DashMove {
+  return (forward ? dash?.forward : dash?.back) ?? (forward ? DASH_FORWARD : DASH_BACK);
+}
 /** A forward dash stops this far (world px, centre to centre) from the opponent instead of crossing through. */
 export const DASH_STOP_GAP = 120;
 
@@ -358,9 +369,12 @@ export function jumpsOver(move: AttackMove, airborne: boolean): boolean {
   return airborne && (move === 'tiro' || move === 'onda');
 }
 
-/** A heavy punch in progress shrugs off the quick punch (armor); anything else interrupts it. */
-export function armorAbsorbs(move: AttackMove, defenderInHeavy: boolean): boolean {
-  return defenderInHeavy && move === 'soco-rapido';
+/**
+ * A heavy punch in progress shrugs off the quick punch (armor); anything else
+ * interrupts it. An unstoppable special shrugs off every hit.
+ */
+export function armorAbsorbs(move: AttackMove, defenderInHeavy: boolean, defenderImparavel = false): boolean {
+  return defenderImparavel || (defenderInHeavy && move === 'soco-rapido');
 }
 
 /** Swept horizontal interval prevents fast bullets/dashes tunneling through hurtboxes. */

@@ -12,7 +12,11 @@
   },
   "anchorUsage": "Vovô Coxa maromba, guarda voltada para a esquerda",
   "stats": {
-    "scale": 1.65
+    "scale": 1.65,
+    "walkSpeed": 320,
+    "airDrift": 280,
+    "jump": 1150,
+    "gravity": 3000
   },
   "combat": {
     "specialDamage": 32
@@ -414,6 +418,16 @@
       "takeoff": 3,
       "airEnd": 6,
       "land": 7
+    },
+    "dash": {
+      "forward": {
+        "distance": 240,
+        "seconds": 0.2
+      },
+      "back": {
+        "distance": 160,
+        "seconds": 0.16
+      }
     }
   },
   "anchorFile": "maromba-anchor-w.png",
