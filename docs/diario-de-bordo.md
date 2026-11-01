@@ -2554,3 +2554,24 @@ chão no pico. Guia quadro a quadro com linhas-alvo gerado por
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** a sessão de arte refazer a voadora seguindo o guia.
+
+## 2026-11-01: voadora com a mão presa, já no jogo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Cadê as atualizações com os quadros que eu falei?" Eu tinha
+entregado só o pedido de arte e o guia, sem nada novo no jogo.
+**Feito:** `scripts/coxa_voadora_presa_v4.py` remonta a voadora da v3 com a
+mão esquerda presa no topo do andador nos quadros 3 a 10 (na v3 ela
+escorregava 21 px tubo abaixo). O corpo sobe 21 px, a perna do chute passa
+acima do andador e a caixa de acerto subiu junto. Saída em
+`rigido-v4-provisorio` (local, fora do git); o `coxa.json` local aponta
+para ela.
+**Verificado:** 262 testes; luta Coxa x Saci com o jogo congelado no quadro
+8: vovô acima do andador, mão no topo, chute por cima; a voadora acerta (14),
+console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a voadora (provisória até a arte v4).
+**Aprovado explicitamente:** nada.
+**Atrito:** ele esperava ver quadros, e eu tinha entregado só documento.
+**Em aberto:** braço ainda dobrado e pés a ~70 px; o salto completo do guia
+pede desenho novo.

@@ -50,6 +50,11 @@ quadro seguinte mostra a mão voltando para o tubo.
   `public/assets/lutadores/coxa/guias/low-kick-guia-v4.png`, gerado por
   `python scripts/coxa_guia_voadora_v4.py .`. O corpo apagado nele é a v3,
   só como referência do erro.
+  Já no jogo, provisório: `scripts/coxa_voadora_presa_v4.py` remonta a v3
+  com a mão presa no topo (198 px) nos quadros 3 a 10, e o corpo sobe 21 px
+  (pasta `rigido-v4-provisorio`). Os pés saem uns 70 px do chão, ainda
+  longe dos 100 px do guia, e o braço segue dobrado: o desenho novo continua
+  pedido.
 - **`beer-throw` (lata).** A mão de apoio (direita, distante) larga o
   andador no quadro 7. Ela fica presa ao tubo **nos 10 quadros**. A lata na
   mão (quadros 3 a 5) precisa ser bem maior.

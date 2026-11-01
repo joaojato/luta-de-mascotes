@@ -465,3 +465,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   em todo quadro e derivar o resto dela (braço reto, quadril na altura da
   mão, perna acima do objeto). Pedido de arte com número de altura vem com
   guia desenhado. (2026-11-01)
+- **Quando o João fala de quadro, ele quer ver quadro.** Respondi o pedido da
+  voadora com documento e guia para a arte, e ele perguntou cadê os quadros.
+  Se dá para aproximar com o que já existe (remontar camadas, prender a mão),
+  fazer isso primeiro e mostrar no jogo; o pedido de arte vem junto, não no
+  lugar. (2026-11-01)
