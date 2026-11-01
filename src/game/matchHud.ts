@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 
 import { FIGHTING_UI_ATLAS_TEXTURE_KEY, getFightingUiAtlasFrame } from './fightingUiAtlas';
 import { getCharacterDefinition } from './hero';
+import { proximaSombra, type Sombra } from './sombraDaVida';
 import type { MatchMode } from './types';
 
 const KEY = FIGHTING_UI_ATLAS_TEXTURE_KEY;
@@ -28,6 +29,9 @@ const METER_READY_COLOR = 0xfacc15;
 const FORMA_COLOR = 0xf97316;
 
 // Health colour thresholds (fraction of max).
+// Sombra do dano: o pedaço claro do que acabou de sair da barra.
+const SOMBRA_COLOR = 0xfff1d6;
+const SOMBRA_ALPHA = 0.9;
 const HEALTH_WARN = 0.5;
 const HEALTH_DANGER = 0.25;
 
@@ -119,6 +123,13 @@ export class MatchHud {
 
   private p1Frac = 1;
   private p2Frac = 1;
+  /** Sombra do dano de cada lado (src/game/sombraDaVida.ts). */
+  private p1Sombra!: Phaser.GameObjects.Rectangle;
+  private p2Sombra!: Phaser.GameObjects.Rectangle;
+  private sombras: Record<'left' | 'right', Sombra & { vidaAntes: number }> = {
+    left: { fracao: 1, msParada: 0, vidaAntes: 1 },
+    right: { fracao: 1, msParada: 0, vidaAntes: 1 }
+  };
   /** `150/150` dentro de cada barra, ligado em Exibição (src/game/exibicao.ts). */
   private p1Pontos!: Phaser.GameObjects.Text;
   private p2Pontos!: Phaser.GameObjects.Text;
@@ -135,6 +146,7 @@ export class MatchHud {
     this.root = scene.add.container(0, 0).setDepth(config.depth).setScrollFactor(0);
 
     this.build();
+    scene.events.on(Phaser.Scenes.Events.UPDATE, this.atualizarSombras, this);
   }
 
   /** Constructs every HUD element into the root container. */
@@ -249,6 +261,12 @@ export class MatchHud {
       .setOrigin(0, 0);
     this.root.add(track);
 
+    // Entre o fundo e a barra: aparece só onde a barra já desceu.
+    const sombra = this.scene.add
+      .rectangle(geometry.anchorX, geometry.topY, geometry.width, geometry.height, SOMBRA_COLOR, SOMBRA_ALPHA)
+      .setOrigin(geometry.originX, 0);
+    this.root.add(sombra);
+
     const fill = this.scene.add
       .image(geometry.anchorX, geometry.topY, KEY, 'health-fill-green-left')
       .setOrigin(geometry.originX, 0);
@@ -277,10 +295,12 @@ export class MatchHud {
       this.p1Fill = fill;
       this.p1FillGeom = geometry;
       this.p1Pontos = pontos;
+      this.p1Sombra = sombra;
     } else {
       this.p2Fill = fill;
       this.p2FillGeom = geometry;
       this.p2Pontos = pontos;
+      this.p2Sombra = sombra;
     }
   }
 
@@ -598,6 +618,7 @@ export class MatchHud {
 
   /** Removes the HUD and stops its tweens. */
   destroy(): void {
+    this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.atualizarSombras, this);
     this.p1Blink?.stop();
     this.p2Blink?.stop();
     this.p1MeterGlow?.stop();
@@ -621,6 +642,26 @@ export class MatchHud {
 
     const blinking = frac > 0 && frac <= HEALTH_DANGER;
     this.setBlink(side, blinking);
+  }
+
+  /**
+   * A cada quadro, a sombra do dano segue a vida com atraso: parada logo
+   * depois do golpe, escorrendo em seguida. Com a luta pausada, para junto.
+   * @param _time - Relógio da cena.
+   * @param delta - Milissegundos desde o quadro anterior.
+   */
+  private atualizarSombras(_time: number, delta: number): void {
+    if (this.scene.time.paused) return;
+    (['left', 'right'] as const).forEach((side) => {
+      const vida = side === 'left' ? this.p1Frac : this.p2Frac;
+      const antes = this.sombras[side];
+      const proxima = proximaSombra(antes, vida, antes.vidaAntes, delta / 1000);
+      this.sombras[side] = { ...proxima, vidaAntes: vida };
+      const geometry = side === 'left' ? this.p1FillGeom : this.p2FillGeom;
+      const sombra = side === 'left' ? this.p1Sombra : this.p2Sombra;
+      sombra.setSize(Math.max(1, geometry.width * proxima.fracao), geometry.height);
+      sombra.setVisible(proxima.fracao > vida);
+    });
   }
 
   /**

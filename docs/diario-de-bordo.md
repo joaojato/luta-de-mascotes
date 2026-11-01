@@ -2869,3 +2869,23 @@ esquerda chute, cima especial).
 **Atrito:** nenhum.
 **Em aberto:** publicar no Vercel para testar no iPhone (deploy precisa de
 "pode publicar"); lupa e zoom do iOS só se confirmam no aparelho.
+
+## 2026-11-01: sombra do dano na barra de vida
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Adicione uma sombra do dano sofrido. Ao invés da barra de vida
+apenas descer, ela desce, mas uma parte fica e desce depois, para o jogador
+ter uma noção melhor do que foi perdido".
+**Feito:** `src/game/sombraDaVida.ts` (parte pura, com teste): a barra cai
+na hora e um pedaço creme fica no lugar do que saiu por 0,6 s, depois
+escorre a 60% da barra por segundo; golpe em sequência segura a sombra de
+novo; vida subindo leva a sombra junto. No HUD, retângulo entre o fundo e a
+barra, atualizado a cada quadro e parado com a luta pausada.
+**Verificado:** 3 testes novos; navegador, chute no Almirante no treino:
+vida 92%, sombra parada em 100% e depois escorrendo até 92%; com a vida
+voltando, a sombra acompanha.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** publicar no Vercel (precisa de "pode publicar").
