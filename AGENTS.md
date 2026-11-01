@@ -1,5 +1,24 @@
 # Direção de arte e animação
 
+- Dragão do Atlético Goianiense, pedido de 30/10/2026: rosto e físico muito
+  musculoso da primeira referência, asas/cauda da segunda; sem camisa,
+  corpo vermelho com queimadura/cicatriz preta diagonal e shorts pretos.
+  Ler `docs/dragao-animacoes-v1.md`. Dois braços E duas asas membranosas
+  separadas nas costas; cauda única. Duplo soco bruto como Porco, cuspida
+  curta de fogo, soco baixo único com mínimo avanço, giro baixo de 360 graus
+  com a cauda. Avanços usam impulso das asas. Especial decola e varre fogo
+  contínuo da diagonal baixa para cima, deixando livre diretamente abaixo.
+  Produzir por postura e por ação, preservando paleta e escala da base.
+
+- Mosqueteiro, pedido de 30/10/2026: base `referencia/corinthians/base-mosqueteiro-v6.png`.
+  Golpes próprios e quatro acompanhantes em `docs/mosqueteiro-animacoes-v1.md`.
+  Duas estocadas recuando; tiro de mosquete lento; bloqueio já abaixado;
+  cotovelada e estocada baixa terminam em pé; golpes aéreos usam espada.
+  Gavião da Fiel espera parado; três Gaviõezinhos interagem próximos.
+  Especial só libera os três ataques aéreos sequenciais após acerto do maior.
+  Não aplicar as folhas largas/altas como células 256x256 nem registrar o
+  personagem incompleto. Célula e quadros efetivos estão no manifesto de arte.
+
 - Urubu, pedido posterior: pesado deixa de ser o cruzado e passa a abrir os
   dois braços/asas para os lados, com penas longas, alcance maior e fechamento
   gradual demorado, sem envergadura exagerada. Ler `docs/urubu-asas-v1.md`.

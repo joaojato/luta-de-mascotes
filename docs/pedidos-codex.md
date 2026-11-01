@@ -1,5 +1,14 @@
 # Pedidos de arte para o Codex
 
+## Entrega: Urubu ? pesado com abertura das duas asas
+
+Aplicado em `urubu.json`: `frente/heavy-wing-spread-v1.png`, 20 quadros a
+16 FPS, c?lulas 512?256. Asas longas com alcance para os dois lados;
+contato em 6?8 e onze quadros de recolhimento sem acerto. Guarda, escala,
+paleta e dano preservados. Guia: [urubu-asas-v1.md](urubu-asas-v1.md).
+Pr?via: `output/urubu-asas-v1/revisao.html`. Validado no jogo e com
+`npm run check` (172 testes).
+
 ## Entrega: Porco — terno verde e golpes próprios
 
 Conjunto de 21 animações de corpo (134 quadros), produzido uma ação por vez
@@ -160,6 +169,41 @@ enquanto o corte descendente não for redesenhado e inspecionado.
 Arquibancada vazia, torcedores com camisa em cor chave, bandeira, fumaça,
 chama e as fileiras medidas. Contrato completo, com formatos e tamanhos, em
 [torcida-dividida.md](torcida-dividida.md), seção Arte.
+
+## Entrega de artes — Mosqueteiro e Gavioes da Fiel, 30/10/2026
+
+34 folhas finais / 212 quadros em `public/assets/lutadores/mosqueteiro/base-v1/`:
+14 acoes do Mosqueteiro e cinco para cada um dos quatro NPCs. Guia completo:
+[mosqueteiro-animacoes-v1.md](mosqueteiro-animacoes-v1.md). Previa quadro a
+quadro: `output/mosqueteiro-v1/revisao.html`. Fontes, prompts, fichas e
+tentativas rejeitadas ficam na mesma pasta de producao.
+
+Integrar pelo `claude-integration.json` junto dos PNGs. **Ler dimensoes POR
+FOLHA**: Mosqueteiro 640x320, ataques aereos 640x384; NPC principal 512x320,
+gorro/bone 320x256 e boina 256x256; sempre cinco colunas. Nao carregar tudo
+como 256x256. Nao registrar o lutador com reacoes/queda ainda nao desenhadas.
+
+Pontos essenciais: duas estocadas com recuo apos CADA contato; mosquete
+dispara no quadro 9 a 16 FPS (preparo 0,5625 s, sugestao 26 de dano contra
+19 do Almirante). Bloqueio baixo comeca abaixado; cotovelada e estocada baixa
+terminam em pe. Golpes aereos usam a espada. Especial: somente acerto real
+do Gavião maior libera os tres ataques sequenciais imbloqueaveis dos menores;
+nao liberar em erro, bloqueio ou apenas ao terminar animacao. Todos atacam
+no ar e pousam apenas no retorno separado, depois da sequencia.
+
+Artes e previa verificadas; logica, balanceamento, hitboxes e teste em
+combate/Academia ainda pertencem a integracao. Sem alteracoes de runtime
+nesta entrega. Validar PNGs: `python scripts/mosqueteiro_v1.py verify`.
+
+## Entrega de artes — Dragão do Atlético Goianiense, 30/10/2026
+
+23 folhas / 153 quadros em `public/assets/lutadores/dragao/base-v1/`: 21 ações do corpo e dois efeitos de fogo. Produção individual por ação, no padrão arcade do Urubu. Guia e tabela: [dragao-animacoes-v1.md](dragao-animacoes-v1.md).
+
+Prévia quadro a quadro: `output/dragao-v1/revisao.html`; composição dos efeitos: `output/dragao-v1/fogo-preview.html`. Fichas e prompts preservados junto das fontes. Integrar pelo `claude-integration.json` e `emission-guide.json` junto dos PNGs.
+
+Ler células por folha: corpo 512×384, cuspida 256×192, feixe 1024×256, sempre cinco colunas. Soco alterna braços; soco baixo termina abaixado. Giro de cauda: contato 6–7 e tempos absolutos próprios de 880 ms. Especial: decola, mantém altura para o maior oponente passar em pé por baixo, varre fogo contínuo da boca e só então aterrissa. Travar facing, permitir passagem vertical nas pushboxes e interpolar feixe a cada passo de física.
+
+Artes e players verificados; mecânicas, balanceamento, hitboxes e teste em combate/Academia ainda pertencem à integração. Sem alterações de runtime nesta entrega. Validar PNGs: `python scripts/dragao_v1.py verify`.
 
 ## Aberto em 31/10/2026: cartões dos torneios, da dificuldade e troféu
 
