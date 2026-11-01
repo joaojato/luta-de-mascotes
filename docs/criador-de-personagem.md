@@ -76,7 +76,8 @@ por estocada, como o Mosqueteiro)? Ritmo do golpe: lento para sair e para
 voltar com o contato ligeiro, ou rápido para sair (`timing` por quadro)?
 
 Golpe próprio no lugar de um padrão (já existem: bicada do Urubu
-`beak-pull`, cachimbo do Saci `pipe-throw`, tiro do Almirante `shot`, giro
+`beak-pull`, cachimbo do Saci `pipe-throw`, lata de cerveja do Vovô Coxa
+`beer-throw`, tiro do Almirante `shot`, giro
 do Galo `spin-kick` (hoje no chute baixo), laser dos olhos do Esquadrão
 `eye-laser`, ovo do Galo `egg-throw`, chamado do Biriba do Bira
 `summon-biriba`, mordida e coice de costas do Porco, que usam as sheets

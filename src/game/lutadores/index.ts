@@ -148,10 +148,19 @@ export function expandirSkins(lutador: LutadorJson): LutadorJson[] {
   return [definicaoBase, ...definicoesExtras];
 }
 
+/**
+ * Lutadores locais (João, 01/11/2026): JSONs em `locais/`, pasta fora do git,
+ * entram só no `npm run dev`. É onde fica o mascote que ainda não pode ir a
+ * público: o build e a Vercel nunca o veem.
+ */
+const LOCAIS: LutadorJson[] = import.meta.env.DEV
+  ? Object.values(import.meta.glob<LutadorJson>('./locais/*.json', { eager: true, import: 'default' }))
+  : [];
+
 /** Ordem de registro = ordem na seleção. O primeiro é o padrão dos debugs. */
-export const LUTADORES: LutadorJson[] = [urubu, almirante, saci, cartola, cachorro, galo, bahia, porco, mosqueteiro, dragao].flatMap(
-  expandirSkins
-);
+export const LUTADORES: LutadorJson[] = [
+  urubu, almirante, saci, cartola, cachorro, galo, bahia, porco, mosqueteiro, dragao, ...LOCAIS
+].flatMap(expandirSkins);
 
 export const LUTADOR_CHARACTERS: CharacterDefinition[] = LUTADORES.map(buildLutador);
 

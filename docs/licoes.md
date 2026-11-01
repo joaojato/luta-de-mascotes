@@ -447,3 +447,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   outros servidores abertos, os processos do Vitest estouraram "Timeout
   starting forks runner": todos os testes passavam e o comando saía com
   erro. Em threads roda limpo. (2026-10-31)
+- **Mascote que não pode ir a público mora em `lutadores/locais/`.** O
+  João supôs que não subir para o git bastava para ficar fora da Vercel;
+  aqui a Vercel publica a pasta pela CLI. JSON em `locais/` (fora do git)
+  só entra no `npm run dev`, e o build nunca o vê. (2026-11-01)

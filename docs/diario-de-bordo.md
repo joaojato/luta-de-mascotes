@@ -2481,3 +2481,29 @@ modo; o nome Jogar.
 **Atrito:** o primeiro esboço confundiu; a estimativa de um fim de semana
 pareceu longa a ele. Vitest estourando tempo com a máquina carregada.
 **Em aberto:** arte dos cartões e do troféu; teste no celular; publicar.
+
+## 2026-11-01: Vovô Coxa jogável só na máquina do João
+
+**Marco:** 2, segue em andamento.
+**Pedido:** ver como ficou o vovô do Coritiba e colocá-lo no jogo, sem ir
+para a Vercel ("é só não subir pro git?").
+**Feito:** a Vercel daqui não lê o git, publica a pasta pela CLI; o que
+protege é publicar de cópia limpa do commit. Para não depender só disso,
+`lutadores/index.ts` passou a ler `src/game/lutadores/locais/*.json` só no
+`npm run dev`; a pasta e a arte do Coxa estão no `.gitignore`. O
+`coxa.json` local usa as folhas montadas do Codex (512×320, andador
+incluído) sem conversão: o vovô já tem 197 px e o pé a 27 px do fundo,
+como o Saci. Golpes: batidinhas com o andador (soco), lata de cerveja em
+parábola (chute), cabeçada (soco forte), voadora apoiada (chute baixo),
+bebe e vira maromba (especial, só animação). `beer-throw` entrou no
+criador de personagem.
+**Verificado:** typecheck, 252 testes (os do JSON rodaram para o coxa),
+build sem nenhum JS citando o Coxa. Luta Coxa x Saci no navegador: os
+cinco golpes acertam (14, 24, 14, 18 e 32), console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** travei um comando com `cat >` sem entrada de novo.
+**Em aberto:** estado maromba (5 s, mais dano e menos dano recebido) é
+mecânica nova no motor; o especial hoje volta direto ao vovô. Faltam
+pesado e rasteiro do maromba e a volta ao normal (definição do João).

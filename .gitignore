@@ -57,3 +57,7 @@ public/assets/lutadores/dragao/base-v1/
 
 # Esboços do brainstorm (superpowers)
 .superpowers/
+
+# Lutadores locais: só no npm run dev, nunca no git nem na Vercel (01/11/2026).
+src/game/lutadores/locais/
+public/assets/lutadores/coxa/
