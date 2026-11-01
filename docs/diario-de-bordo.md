@@ -2698,3 +2698,25 @@ todas as folhas.
 **Aprovado explicitamente:** nada.
 **Atrito:** ele teve de pedir de novo: eu tinha corrigido só a v4.
 **Em aberto:** punho da frente na defesa alta do maromba (pede desenho).
+
+## 2026-11-01: caminhadas v6 do Coxa (andador como apoio)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Coloque as novas animações."
+**Feito:** a entrega nova é a `revisao-v6` (`docs/coxa-andador-passos-v6.md`):
+só `walk-forward` e `walk-backward`, 12 quadros a 10 fps, com o andador
+levantado, plantado e usado como apoio enquanto as pernas dão os passos.
+Passaram pelo `coxa_maos_por_cima_v4.py` (que agora lê o formato `hands`
+do rig v6) e o `coxa.json` local aponta para `maos-por-cima/revisao-v6`.
+O pé do corpo fica em 292 em todos os quadros: o vão da v5 sumiu.
+**Verificado:** pranchas com a pele coberta em magenta (só joelhos atrás do
+andador); 262 testes, build; luta Coxa x Saci com a caminhada congelada nos
+quadros 2, 8 e 11, console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** caminhadas do vovô.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** a v6 traz uma curva de deslocamento por quadro (`motion.json`,
+33 px por ciclo, ~38 px/s na tela). Seguida pelo motor, o andador fica
+parado no chão; com a velocidade constante de hoje (230 px/s) ele desliza
+nos passos. Decisão do João.

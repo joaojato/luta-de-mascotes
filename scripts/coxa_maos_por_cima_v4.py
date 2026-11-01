@@ -103,6 +103,7 @@ def normal(origem, nome):
         info = quadros[i] if i < len(quadros) else {}
         pontos = [info['hand']] if info.get('hand') and not info.get('released') else []
         pontos += info.get('otherHand') or []
+        pontos += list((info.get('hands') or {}).values())  # formato da v6
         return maos_por_cima(cel, corpo, pontos, faixa, so_tras)
     gravar(origem, nome, q)
 
@@ -118,13 +119,14 @@ def maromba(nome):
 
 
 if __name__ == '__main__':
-    # A voadora segue a provisória, a transformação usa a v3 e a guarda e as
-    # caminhadas vêm da v5.
+    # A voadora segue a provisória, a transformação usa a v3, a guarda vem da
+    # v5 e as caminhadas da v6 (andador como apoio alternado).
     for nome in ['beer-throw', 'block-high', 'block-low', 'crouch', 'dash-back', 'dash-forward', 'heavy-punch',
                  'hit-high', 'jump', 'jump-kick', 'jump-punch', 'knockdown', 'light-punch', 'special-charge', 'stunned']:
         normal('revisao-v4/normal', nome)
-    for nome in ['idle', 'walk-forward', 'walk-backward']:
-        normal('revisao-v5/normal', nome)
+    normal('revisao-v5/normal', 'idle')
+    for nome in ['walk-forward', 'walk-backward']:
+        normal('revisao-v6/normal', nome)
     for pasta in sorted((ROOT / 'output/coxa-rigido-v1/maromba').iterdir()):
         if (pasta / 'attachments.json').exists() and (COXA / 'rigido-v1/maromba' / f'{pasta.name}-body.png').exists():
             maromba(pasta.name)
