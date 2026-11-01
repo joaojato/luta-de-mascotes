@@ -2735,3 +2735,29 @@ como a maioria). Decisão anotada na ficha do GDD e em `licoes.md`.
 **Aprovado explicitamente:** nada.
 **Atrito:** eu tinha suposto que o ritmo da arte mandava no movimento.
 **Em aberto:** nenhum novo.
+
+## 2026-11-01: Coxa, celular e torneios no ar
+
+**Marco:** 2, segue em andamento.
+**Pedido:** colocar no ar a versão nova, com o Coxa e os ajustes de
+controle do celular que faltavam publicar.
+**Feito:** o Coxa deixou de ser lutador local: `coxa.json` e
+`coxa-maromba.json` saíram de `locais/` e entraram no registro (maromba
+segue fora da seleção). A pasta `coxa/` (107 MB de rodadas) continua fora
+do git; só as 41 folhas que os JSONs usam (10,3 MB) entraram com
+`git add -f`. Ficha do GDD atualizada. Publicado de cópia limpa do commit
+99cc92c, que leva também a rodada 2 do celular, Pelada, Torneios,
+dificuldade e lutador aleatório. `fighter-playground.json`, alterado por
+outra sessão, ficou de fora.
+**Verificado:** na cópia limpa, typecheck e 262 testes; build da Vercel ok,
+sem chave no JS. Link de produção responde 200 e serve `main-B70t97pj.js`.
+Chromium em 844×390 com toque: menus com losango do PlayStation, Pelada,
+dificuldade, seleção com o Coxa antes do "?", luta Vovô Coxa x Urubu com
+HUD inteiro e torcida verde e branca contra rubro-negra. Único erro: o 404
+conhecido do `background-gym.json`.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** voadora do Coxa segue provisória (`rigido-v4-provisorio`);
+pesado, rasteiro e volta do maromba; conectar o GitHub na Vercel.
