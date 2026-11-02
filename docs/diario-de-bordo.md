@@ -3092,3 +3092,29 @@ seleciona os cinco botões nos dois estados.
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** visual do menu (aguarda direção); tela preta enquanto carrega.
+
+## 2026-11-02: ataques novos do Coxa maromba (v7 do Codex)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Aplique as novas animações do coxa maromba que o codex fez".
+**Feito:** a entrega `coxa/maromba-ataques-v7/` (manifesto conferido por
+sha256; o Codex refez o chute baixo durante a sessão, com o quadro 0 igual
+à guarda) entrou no `coxa-maromba.json`: chute baixo (8 quadros, 12 fps,
+contato 3-4; antes era quebra-galho com a folha do chute forte), soco no ar
+(5 quadros, 14 fps) e voadora (6 quadros, 14 fps, contato 2-3). As três
+passam por `coxa_maos_por_cima_v4.py` (novo caso `maromba_v7`, pegada do
+`<ação>-rig.json`, raio do maromba); as folhas já no jogo saíram idênticas.
+Caixas de acerto medidas no corpo sem o andador, com o alcance do quadro
+mais curto (nunca passam do desenho). Folhas antigas ficam no disco.
+**Verificado:** `npm run check` (295 testes, inclusive Régua do Idle, Corpo
+e Passo). Academia: quadros de contato com a caixa vermelha no pé e na
+frente do andador. Luta (treino, maromba contra Urubu parado): chute baixo
+230 → 216, voadora 230 → 212; soco no ar só acerta perto (até ~100 px) e no
+meio do pulo: o desenho novo segura o andador ~19 px mais alto que o antigo.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada (o quebra-galho do chute baixo
+saiu da ação, a folha continua).
+**Aprovado explicitamente:** nada; o Codex marcou a entrega como pendente
+de aprovação dele.
+**Atrito:** nenhum.
+**Em aberto:** ele sentir o soco no ar na mão; visual do menu.

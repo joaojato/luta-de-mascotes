@@ -551,3 +551,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **Ferramenta de debug fica ao lado do jogo, não por cima.** A gaveta que
   cobria a tela incomodou; aberta, ela empurra o jogo e o canvas se refaz na
   área que sobra. (2026-11-02)
+- **Entrega do Codex pode estar em andamento.** Ao aplicar a v7 do maromba,
+  o soco e a voadora chegaram e o chute baixo foi refeito durante a sessão.
+  Antes de ligar arte do Codex, conferir o `manifest-art.json` (sha256 dos
+  arquivos e `status`) e só então medir caixas. (2026-11-02)

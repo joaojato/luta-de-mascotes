@@ -7,6 +7,7 @@ joelho e coxa continuam atrás do arco da frente. Três jeitos de achar a mão:
   rig marca; no agachamento a faixa desce e só vale no arco de trás;
 - maromba (rigido-v1): círculo em volta do ponto de pegada que o Codex
   registrou por quadro (`output/coxa-rigido-v1/maromba/<ação>/attachments.json`);
+  nos ataques da v7 o ponto vem do `<ação>-rig.json` ao lado da folha;
 - transformação (rigido-v3): o braço que desce até o andador fica à esquerda
   de uma linha medida quadro a quadro; à direita dela é perna.
 
@@ -118,6 +119,16 @@ def maromba(nome):
     gravar('rigido-v1/maromba', nome, q)
 
 
+def maromba_v7(nome):
+    """Ataques simples do maromba (Codex, 02/11/2026): pegada no rig, mesmo raio."""
+    rig = json.loads((COXA / 'maromba-ataques-v7' / f'{nome}-rig.json').read_text(encoding='utf-8'))
+
+    def q(i, cel, corpo):
+        pontos = [rig[i]['hand']] if i < len(rig) and rig[i].get('hand') else []
+        return maos_por_cima(cel, corpo, pontos, faixa=0, raio=RAIO_MAROMBA)
+    gravar('maromba-ataques-v7', nome, q)
+
+
 if __name__ == '__main__':
     # A voadora segue a provisória, a transformação usa a v3, a guarda vem da
     # v5 e as caminhadas da v6 (andador como apoio alternado).
@@ -131,3 +142,5 @@ if __name__ == '__main__':
         if (pasta / 'attachments.json').exists() and (COXA / 'rigido-v1/maromba' / f'{pasta.name}-body.png').exists():
             maromba(pasta.name)
     gravar('rigido-v3/normal', 'special-transform', lambda i, cel, corpo: por_cima(cel, corpo, zona_transformacao(i)))
+    for rig in sorted((COXA / 'maromba-ataques-v7').glob('*-rig.json')):
+        maromba_v7(rig.name.removesuffix('-rig.json'))
