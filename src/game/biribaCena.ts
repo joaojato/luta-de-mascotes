@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 import { BiribaMotion, type BiribaAction } from './biribaMotion';
 import type { Fighter } from './fighter';
 import { telaDe } from './nitidez';
-import { PLANO_DE_FUNDO } from './planoDeFundo';
+import { chaoDoFundo, PLANO_DE_FUNDO } from './planoDeFundo';
 
 const PASTA = '/assets/cenarios/biriba';
 const ACOES: Record<BiribaAction, { frames: number; fps: number }> = {
@@ -50,7 +50,7 @@ export class BiribaCena {
     }
     // Fighters have transparent space below their drawn feet; place the dog
     // behind the visible contact line, rather than behind the logical origin.
-    const y = groundY - PLANO_DE_FUNDO.recuo;
+    const y = chaoDoFundo(groundY);
     this.shadow = scene.add.ellipse(bira.x, y - 2, 76, 12, 0x000000, 0.2).setDepth(PLANO_DE_FUNDO.profundidade - 1);
     this.sprite = scene.add.sprite(bira.x, y, 'biriba-idle')
       .setOrigin(0.5, 232 / 256)

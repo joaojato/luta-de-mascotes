@@ -126,10 +126,16 @@ Cada uma tem nome para poder ser cobrada depois.
   dois lutadores, entre eles e a torcida, menor e com o pé mais alto que o
   chão da luta. Só sai do fundo para atacar. Se acompanha o dono é decisão
   de cada NPC: o Biriba anda com o Bira; os Gaviões e o Guerreiro ficam
-  parados, só assistindo. Valores em `src/game/planoDeFundo.ts`.
+  parados, só assistindo. Todo NPC no fundo pisa na mesma linha,
+  `chaoDoFundo` (o pé desenhado, não a base da célula): fora do campo,
+  entre a placa e a linha lateral; ninguém flutua nem afunda em relação aos
+  outros. Valores em `src/game/planoDeFundo.ts`.
   O João chama esses NPCs de **NPC de Guarda** (01/11/2026): quando ele
   disser "NPC de guarda", é um NPC que passa a maior parte do tempo no
   fundo e só sai quando o dono chama com alguma ação.
+- **Regra do Gramado.** O pé dos lutadores fica dentro do campo, abaixo da
+  linha lateral, nunca em cima dela (no estádio, `groundFraction` 0,96: pé
+  em y 653, linha em 617). Na linha, parecem estar fora do campo.
 - **Regra da v1.** A v1 é: 2 mascotes, 1 cenário, 4 golpes por mascote, 2
   jogadores no mesmo teclado. A CPU veio de brinde no motor herdado e pode
   ficar. Nada além disso é construído antes de a v1 rodar de ponta a ponta.

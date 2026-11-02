@@ -15,6 +15,7 @@ import { spawnChargeAura } from './vfx';
 import { somDoEvento, tocarSom } from './sons';
 import { Esquadrao } from './esquadrao';
 import { Reforco } from './reforco';
+import { chaoDoFundo } from './planoDeFundo';
 import { acertoDoSopro, amostraDoSopro, direcaoDoSopro, type SoproConfig } from './sopro';
 import { danoNaForma, RelogioDaForma, type FormaConfig } from './forma';
 import {
@@ -1229,6 +1230,7 @@ export class Fighter {
         x: () => this.posX,
         // A linha do pé dos lutadores (onde fica a sombra), não a base da célula.
         chao: () => this.groundY - SHADOW_FOOT_OFFSET * this.appliedScale,
+        chaoDoFundo: () => chaoDoFundo(this.groundY),
         lado: () => this.facing,
         escala: () => this.appliedScale,
         alvo: () => (this.opponent ? { x: this.opponent.x, caido: this.opponent.isDefeated } : null),

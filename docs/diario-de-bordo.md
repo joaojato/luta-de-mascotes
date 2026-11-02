@@ -3010,3 +3010,33 @@ do especial) e o NPC passou a morar no fundo.
 **Atrito:** nenhum.
 **Em aberto:** as duas animações do Codex (volta para fora do campo, chegada
 com freada); publicar no Vercel (precisa de "pode publicar").
+
+## 2026-11-01: chão no gramado, NPCs numa linha só, Guerreiro desviável
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Ele tá voando, faz uma simulação dele com o mosqueteiro para
+ver a altura dos npcs. Defina isso como um todo." / "a linha de onde está
+definido o chão me incomoda [...] Eu prefiro que o chão seja pelo menos
+abaixo/depois da linha de lateral." / "o guerreiro precisa funcionar como o
+biriba funciona, ou seja ele bate na coordenada do oponente, no momento que
+foi chamado a ult."
+**Feito:** simulação Cartola x Mosqueteiro e Bira x Cartola medindo o pé de
+verdade na tela (última linha opaca do quadro). Antes: lutadores 624,
+Gaviões e Biriba 602, Guerreiro 569. `chaoDoFundo` em `planoDeFundo.ts`, usado
+por Biriba, Gaviões e Guerreiro. Chão do estádio 0,92 para 0,96 (pé dos
+lutadores 653, linha lateral 617) e recuo 60 para 89, para o fundo ficar
+onde estava. Guerreiro guarda o x do adversário no especial e chuta ali.
+Ligadas as duas artes novas do Codex: `turn-exit` (vira parado, corre nos
+quadros 4 a 7 até sair) e `run-stop` (freia até o posto, com o motor
+desacelerando; sempre volta pela direita para não espelhar a guarda).
+Regra do Gramado e linha do fundo no CLAUDE.md.
+**Verificado:** depois: lutadores 653, Gaviões, Biriba e Guerreiro 602/603.
+Urubu parado: chute tira 10 (230 para 220). Urubu tirado do lugar 0,4 s
+depois da ult: o chute cai no ponto antigo, vida intacta. Virada, laço da
+corrida, retorno e freada até o posto (x 450) no registro quadro a quadro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** altura do Guerreiro no fundo; chão da
+luta; o chute que seguia o adversário.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** publicar no Vercel (precisa de "pode publicar").

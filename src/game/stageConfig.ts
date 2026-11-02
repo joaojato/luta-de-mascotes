@@ -59,7 +59,9 @@ export const STAGE_DEFINITIONS: StageDefinition[] = [
     width: 2048,
     height: 869,
     sky: { key: 'estadio-sky', url: '/assets/cenarios/estadio/ceu.jpg', width: 1920, height: 1080 },
-    groundFraction: 0.92
+    // O pé dos lutadores fica no gramado, ~36 px abaixo da linha lateral
+    // (y 617): na linha, pareciam estar fora do campo (João, 01/11/2026).
+    groundFraction: 0.96
   }
 ];
 

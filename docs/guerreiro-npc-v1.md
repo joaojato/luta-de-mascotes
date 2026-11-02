@@ -33,6 +33,8 @@ Artes em `public/assets/npcs/guerreiro/base-v1/`:
 | `idle.png` | 4 | 6 | sim | nenhum |
 | `war-run.png` | 6 | 14 | sim | nenhum |
 | `sparta-kick.png` (refeito v3) | 8 | 12 | não | 3–4, evento único |
+| `turn-exit.png` | 8 | 14 | virada uma vez; corrida 4–7 até sair | nenhum |
+| `run-stop.png` | 8 | 12 | não; depois idle | nenhum |
 
 Todas: RGBA, células **512×320**, cinco colunas, leitura por linhas,
 origem `[256,296]`, chão y=296. Não interpretar como células 256×256.
@@ -84,6 +86,44 @@ acessórios inteiros e nas mesmas mãos, transparência e margens. A aprovação
 visual final é do usuário. Nenhum TypeScript ou JSON de runtime alterado;
 integração e teste em combate continuam pendentes.
 
+## Saída e parada em guarda — revisão v4
+
+Novo pedido: virar e correr para fora do campo; outra ação já correndo,
+freando e parando na posição frontal padrão do acompanhante ao fundo.
+
+`turn-exit.png`: 0 postura esquerda após golpe; 1 começa a virar;
+2 frontal; 3 continua giro para direita; 4 passada direita de saída;
+5 passagem; 6 extensão em suspensão; 7 passagem oposta. Os quadros 0–3
+tocam uma vez. Repetir apenas 4–7 se necessário para chegar fora da câmera.
+O ator continua de posse da lança e do escudo; uma fonte que deixava a
+lança solta foi rejeitada e está identificada em output.
+
+`run-stop.png`: 0 já corre para esquerda; 1 planta o pé dianteiro para
+frear; 2 reduz a passada; 3 fica em pé; 4 começa a virar de frente;
+5 quase frontal; 6–7 guarda frontal, com a capa assentando. Em seguida
+entrar no `idle.png` existente. A posição de espera ao fundo e sua camada
+visual são coordenadas do motor, não uma redução do corpo na folha.
+
+Braço A direito mantém lança, B esquerdo mantém escudo durante a rotação;
+nas poses direitas a leitura de profundidade muda progressivamente. Não
+espelhar quadros individuais para substituir a virada. Passadas e pivôs
+articulam pernas a partir dos mesmos quadris. Fontes e montagem revistos
+com comparação da guarda em tamanho real sobre fundos claro e escuro.
+
+O motor move a saída para a borda, desacelera a chegada até o ponto de
+espera e remove o NPC só depois de sair da câmera. Nenhuma dessas ações
+tem ataque ou dano. As prévias com deslocamento são composições de arte,
+não testes de integração no combate.
+
+Fontes, prompts completos, ficha, hashes, extrações, 16 quadros novos,
+contatos, GIFs e prévia: `output/guerreiro-v4/revisao.html`.
+Montagem: `python scripts/guerreiro_v4.py pack run-stop`,
+`python scripts/guerreiro_v4.py pack turn-exit`, depois
+`python scripts/guerreiro_v4.py finalize`.
+Os montadores antigos v2/v3 não devem reaplicar manifestos sobre a v4.
+PNG finais e manifesto atualizados em `public/assets/npcs/guerreiro/base-v1/`.
+Nenhum arquivo de lógica de combate foi alterado nesta entrega.
+
 ## Integração no jogo (01/11/2026)
 
 NPC de Guarda (CLAUDE.md, Regra do Fundo): mecânica `reforco` no especial do
@@ -101,3 +141,14 @@ Arte por nome em `reforco.animacoes`: `guarda` = `idle.png`, `corrida` =
 do campo depois do chute; voltar correndo e parar no posto) entram como
 `volta` e `parada` (ou `retorno`), cada uma um efeito novo no JSON; até lá,
 a corrida faz as duas.
+
+### Ajustes da integração (01/11/2026, depois)
+
+- Pé no fundo na mesma linha dos Gaviões e do Biriba (`chaoDoFundo`); antes
+  ficava 33 px acima ("ele tá voando").
+- O chute vai no ponto onde o adversário estava quando o especial saiu, como
+  o Biriba: quem sai do lugar escapa.
+- `turn-exit` ligado como `volta` (vira parado nos quadros 0 a 3; 4 a 7
+  repetem até sair da tela) e `run-stop` como `parada` (o motor desacelera
+  até o posto). Ele sempre volta pela direita, correndo para a esquerda,
+  para a guarda de frente não sair espelhada.

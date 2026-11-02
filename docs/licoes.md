@@ -531,3 +531,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   Gaviões, e sai assim que o Cartola usa a ult (corre para fora da tela,
   volta correndo no campo, chuta, sai e volta pelo fundo até o posto).
   "NPC de Guarda" é o nome que ele dá a esse tipo. (2026-11-01)
+- **NPC de fundo pisa numa linha só, e o golpe de NPC se desvia.** O
+  Guerreiro pisava 33 px acima dos Gaviões e do Biriba (usava a linha do pé
+  dos lutadores menos o recuo; os outros, o chão menos o recuo): "ele tá
+  voando". Agora todo NPC usa `chaoDoFundo`. E o chute dele seguia o
+  adversário, impossível de desviar; como o Biriba, ele golpeia o ponto onde
+  o adversário estava quando a ult saiu. (2026-11-01)
+- **Lutador pisa no gramado, abaixo da linha lateral.** Com o pé na linha,
+  parecia estar fora do campo. Chão do estádio de 0,92 para 0,96; o fundo
+  ficou onde estava (recuo 89). (2026-11-01)

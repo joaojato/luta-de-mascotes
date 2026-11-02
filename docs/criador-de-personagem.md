@@ -98,10 +98,13 @@ NPC de Guarda que golpeia uma vez (o Guerreiro do Cartola): `reforco` no
 especial do JSON. Fica de guarda no fundo; quando o mascote solta o especial,
 sai correndo pelo fundo para fora da tela, volta já correndo dentro do campo
 por trás do adversário, dá um golpe só (sem guarda que segure) e sai pelo
-mesmo lado, depois volta pelo fundo e para no posto. Perguntar: que golpe,
+mesmo lado, depois volta pelo fundo e para no posto. Como o Biriba, golpeia
+o ponto onde o adversário estava quando o especial saiu: dá para desviar. Perguntar: que golpe,
 quanto tira e empurra, onde fica de guarda (`posto`), e a arte de cada fase
 (`animacoes`: `guarda`, `corrida`, `chute`, e se tiver `volta`, `retorno` e
-`parada`; o que faltar usa a corrida).
+`parada`; o que faltar usa a corrida). A `volta` começa virada como o golpe
+e os quadros de `lacoDaVolta` repetem até ele sair da tela; a `parada` é
+corrida que freia sem deslocamento no desenho (o motor desacelera).
 
 NPC do mascote (o Biriba, os Gaviões) segue a Regra do Fundo: fica atrás
 dos dois lutadores, entre eles e a torcida, e só sai do fundo para atacar.

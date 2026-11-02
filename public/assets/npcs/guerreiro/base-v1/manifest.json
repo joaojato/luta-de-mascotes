@@ -409,9 +409,351 @@
           ]
         }
       ]
+    },
+    {
+      "file": "public\\assets\\npcs\\guerreiro\\base-v1\\run-stop.png",
+      "sha256": "ebad6ddfa812e80b238520472802a2250e3406f61b1dbde103216c4e817bb1a8",
+      "sourceSha256": "29559fa2ff98ac12effe75fccb42f3842f27add61169815e86fdc14c807b9507",
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "columns": 5,
+      "origin": [
+        256,
+        296
+      ],
+      "scale": 0.48,
+      "contactFrames": [],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            47,
+            17,
+            433,
+            470
+          ],
+          "sourceAnchor": [
+            180,
+            495
+          ],
+          "visualBounds": [
+            192,
+            67,
+            377,
+            284
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            427,
+            31,
+            797,
+            481
+          ],
+          "sourceAnchor": [
+            580,
+            495
+          ],
+          "visualBounds": [
+            183,
+            73,
+            361,
+            289
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            804,
+            28,
+            1173,
+            486
+          ],
+          "sourceAnchor": [
+            950,
+            495
+          ],
+          "visualBounds": [
+            186,
+            72,
+            363,
+            292
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1192,
+            17,
+            1522,
+            488
+          ],
+          "sourceAnchor": [
+            1320,
+            495
+          ],
+          "visualBounds": [
+            195,
+            67,
+            353,
+            293
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            40,
+            522,
+            413,
+            992
+          ],
+          "sourceAnchor": [
+            165,
+            995
+          ],
+          "visualBounds": [
+            196,
+            69,
+            375,
+            295
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            427,
+            520,
+            768,
+            991
+          ],
+          "sourceAnchor": [
+            565,
+            995
+          ],
+          "visualBounds": [
+            190,
+            68,
+            354,
+            294
+          ]
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            792,
+            520,
+            1109,
+            989
+          ],
+          "sourceAnchor": [
+            945,
+            995
+          ],
+          "visualBounds": [
+            183,
+            68,
+            335,
+            293
+          ]
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1179,
+            519,
+            1493,
+            989
+          ],
+          "sourceAnchor": [
+            1335,
+            995
+          ],
+          "visualBounds": [
+            181,
+            68,
+            332,
+            294
+          ]
+        }
+      ]
+    },
+    {
+      "file": "public\\assets\\npcs\\guerreiro\\base-v1\\turn-exit.png",
+      "sha256": "13695dd9e8d21cfd8f85cdc34483a61526b33aa19afea52f21933693bdaeeea1",
+      "sourceSha256": "bf1e047934a208ab39bed0a6c7a9f50f698044b99d63e097fdcb5669acd15109",
+      "frames": 8,
+      "fps": 14,
+      "loop": false,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "columns": 5,
+      "origin": [
+        256,
+        296
+      ],
+      "scale": 0.5,
+      "contactFrames": [],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            71,
+            9,
+            431,
+            445
+          ],
+          "sourceAnchor": [
+            220,
+            447
+          ],
+          "visualBounds": [
+            182,
+            77,
+            362,
+            295
+          ]
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            543,
+            5,
+            871,
+            445
+          ],
+          "sourceAnchor": [
+            680,
+            447
+          ],
+          "visualBounds": [
+            188,
+            75,
+            352,
+            295
+          ]
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            946,
+            8,
+            1228,
+            447
+          ],
+          "sourceAnchor": [
+            1085,
+            447
+          ],
+          "visualBounds": [
+            186,
+            76,
+            327,
+            296
+          ]
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1349,
+            8,
+            1680,
+            447
+          ],
+          "sourceAnchor": [
+            1520,
+            447
+          ],
+          "visualBounds": [
+            170,
+            76,
+            336,
+            296
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            39,
+            464,
+            406,
+            854
+          ],
+          "sourceAnchor": [
+            230,
+            870
+          ],
+          "visualBounds": [
+            160,
+            93,
+            344,
+            288
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            486,
+            461,
+            805,
+            862
+          ],
+          "sourceAnchor": [
+            665,
+            870
+          ],
+          "visualBounds": [
+            166,
+            92,
+            326,
+            292
+          ]
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            922,
+            461,
+            1324,
+            846
+          ],
+          "sourceAnchor": [
+            1100,
+            870
+          ],
+          "visualBounds": [
+            167,
+            92,
+            368,
+            284
+          ]
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1378,
+            461,
+            1695,
+            864
+          ],
+          "sourceAnchor": [
+            1540,
+            870
+          ],
+          "visualBounds": [
+            175,
+            92,
+            333,
+            294
+          ]
+        }
+      ]
     }
   ],
-  "status": "Fontes e quadros revistos; aprovação visual do usuário e integração pendentes",
+  "status": "Artes e montagem revisadas; aprovação visual e integração no combate pendentes",
   "anatomy": {
     "armA": "direito, lança",
     "armB": "esquerdo, escudo",
@@ -422,7 +764,7 @@
   "placement": "Começa no lado oposto ao Cartola, atrás do alvo à distância; CORRE até perto; não aparece já colado ao alvo",
   "sound": "Nenhum áudio ou texto; boca aberta nos quadros de golpe",
   "singleHit": true,
-  "revision": 3,
+  "revision": 4,
   "transition": {
     "runToKick": "Ao entrar no alcance, completar fase de apoio B esquerdo (corrida quadro 4) e iniciar chute quadro 0",
     "kickLeg": "Direita A próxima da câmera em TODOS os quadros; esquerda B distante apoia",
@@ -432,5 +774,35 @@
       4
     ]
   },
-  "rejected": "Chute v2 trocava leitura da perna; primeiras corridas v3 repetiam passadas sem alternância. Não reutilizar."
+  "rejected": "Chute v2 trocava leitura da perna; primeiras corridas v3 repetiam passadas sem alternância. Não reutilizar.",
+  "returnAndExit": {
+    "run-stop": {
+      "start": "Já correndo para a esquerda",
+      "end": "Guarda frontal de fundo, depois idle",
+      "worldMotion": "Motor desacelera até o ponto de espera; sem deslocamento embutido nas células"
+    },
+    "turn-exit": {
+      "start": "Postura esquerda após chute",
+      "turnFrames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "runFrames": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "end": "Continua correndo para a direita até sair; não retornar à guarda",
+      "loopUntilOutside": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "worldMotion": "Motor move para a borda após a virada e remove o ator somente fora da câmera"
+    }
+  }
 }

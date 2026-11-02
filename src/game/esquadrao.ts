@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import { sortearMergulho, type JanelaDoMergulho } from './mergulho';
-import { PLANO_DE_FUNDO } from './planoDeFundo';
+import { chaoDoFundo, PLANO_DE_FUNDO } from './planoDeFundo';
 
 /**
  * Especial "esquadrão" (docs/criador-de-personagem.md, bloco 5): o mascote
@@ -230,7 +230,7 @@ export class Esquadrao {
    */
   private postos(): Phaser.Math.Vector2[] {
     const escala = this.dono.escala();
-    const y = this.dono.chao() - PLANO_DE_FUNDO.recuo;
+    const y = chaoDoFundo(this.dono.chao());
     const xs = this.membros.map((m) => this.dono.x() - this.dono.lado() * m.cfg.posto * escala * PLANO_DE_FUNDO.escala);
     const vista = this.dono.scene.cameras?.main?.worldView;
     if (vista && vista.width > 0) {

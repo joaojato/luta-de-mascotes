@@ -8,7 +8,9 @@ import { caixaNoMundo, ladoDoReforco, passoAteOAlvo, type CaixaDeQuadro } from '
  * fica de guarda no plano de fundo (Regra do Fundo), assistindo à luta. Quando
  * o dono solta o especial, sai correndo pelo fundo para fora da tela, volta
  * já correndo dentro do campo, por trás do adversário, dá um golpe só e sai de
- * novo pelo mesmo lado; depois volta correndo pelo fundo e para no posto. É o
+ * novo pelo mesmo lado; depois volta correndo pelo fundo e para no posto. Como
+ * o Biriba, golpeia o ponto onde o adversário estava quando o especial saiu:
+ * quem anda, pula ou recua a tempo escapa. É o
  * Guerreiro do Cartola (docs/guerreiro-npc-v1.md).
  *
  * Tudo vem do JSON (Regra do JSON). A arte é desenhada correndo para a
@@ -23,11 +25,18 @@ export interface AnimacoesDoReforco {
   corrida: string;
   /** O golpe. */
   chute: string;
-  /** Saindo do campo depois do golpe (padrão: a corrida). */
+  /**
+   * Saindo do campo depois do golpe: começa virado como o golpe, vira e corre
+   * para o lado oposto (padrão: a corrida). Ver `lacoDaVolta`.
+   */
   volta?: string;
-  /** Voltando pelo fundo até o posto (padrão: a corrida). */
+  /** Voltando pelo fundo até o posto (padrão: a corrida). Sempre volta pela direita, correndo para a esquerda. */
   retorno?: string;
-  /** Uma vez, ao chegar no posto, antes da guarda (sem ela, vai direto para a guarda). */
+  /**
+   * Corrida que freia e termina na guarda de frente, sem deslocamento no
+   * desenho: o motor desacelera até o posto durante ela (sem ela, chega
+   * correndo e vai direto para a guarda).
+   */
   parada?: string;
 }
 
@@ -47,6 +56,11 @@ export interface ReforcoConfig {
   quadroDeApoio?: number;
   /** Quadros do golpe em que a caixa vale (um contato só). */
   contato: number[];
+  /**
+   * Primeiro e último quadro da `volta` que repetem até ele sair da tela (a corrida); os de
+   * antes são a virada, parado no lugar.
+   */
+  lacoDaVolta?: number[];
   /** Caixa do golpe em px de quadro, na arte virada para a esquerda. */
   caixa: CaixaDeQuadro;
   /** Pé de apoio na célula da arte, em px. */
@@ -60,8 +74,10 @@ export interface ReforcoConfig {
 export interface DonoDoReforco {
   readonly scene: Phaser.Scene;
   x(): number;
-  /** A linha do pé dos lutadores. */
+  /** A linha do pé dos lutadores (no campo). */
   chao(): number;
+  /** A linha do pé no plano de fundo (Regra do Fundo, `chaoDoFundo`). */
+  chaoDoFundo(): number;
   /** 1 olhando para a direita. */
   lado(): 1 | -1;
   escala(): number;
@@ -96,8 +112,17 @@ export class Reforco {
   private posto = 0;
   /** Para onde o golpe empurra o alvo (na direção do dono); ele entra e sai pelo lado oposto. */
   private lado: 1 | -1 = -1;
+  /**
+   * Onde o adversário estava quando o especial saiu. Como o Biriba, ele golpeia
+   * esse ponto, não o adversário: quem sai dali escapa.
+   */
+  private alvoX = 0;
   private assinatura = 0;
   private acertou = false;
+  /** O efeito tocando agora (para saber se está na virada da volta). */
+  private efeito = '';
+  /** Freada até o posto: velocidade no começo e tempo decorrido. */
+  private freada = { velocidade: 0, tempo: 0, duracao: 0 };
 
   constructor(
     private readonly dono: DonoDoReforco,
@@ -114,6 +139,7 @@ export class Reforco {
     const alvo = this.dono.alvo();
     if (!this.montado || this.estado !== 'guarda' || !alvo) return;
     this.lado = ladoDoReforco(this.dono.x(), alvo.x);
+    this.alvoX = alvo.x;
     this.acertou = false;
     this.estado = 'saindo';
     this.tocar(this.cfg.animacoes.corrida, this.saida());
@@ -146,29 +172,38 @@ export class Reforco {
           this.sairDoCampo();
           break;
         }
-        const passo = passoAteOAlvo(this.x, alvo.x, this.lado, this.cfg.alcance * this.escala(), this.cfg.velocidade * seconds);
+        const passo = passoAteOAlvo(this.x, this.alvoX, this.lado, this.cfg.alcance * this.escala(), this.cfg.velocidade * seconds);
         this.x = passo.x;
         if (passo.chegou) this.estado = 'freando';
         if (this.estado === 'freando' && this.quadro() === (this.cfg.quadroDeApoio ?? 4)) this.golpear();
         break;
       }
       case 'voltando':
-        this.correr(this.saida(), this.cfg.velocidade, seconds);
-        if (this.passou(borda, this.saida())) {
-          // Fora do campo: volta correndo pelo fundo até o posto.
-          this.estado = 'retornando';
-          this.x = borda;
-          this.tocar(this.cfg.animacoes.retorno ?? this.cfg.animacoes.corrida, this.posto > this.x ? 1 : -1);
-        }
+        // Na virada (começo da volta) fica no lugar; depois corre para a borda.
+        if (!this.virando()) this.correr(this.saida(), this.cfg.velocidade, seconds);
+        if (this.passou(borda, this.saida())) this.retornar(vista.direita + fora);
         break;
       case 'retornando': {
-        const direcao = this.posto > this.x ? 1 : -1;
-        this.correr(direcao, this.velocidadeNoFundo(), seconds);
-        if (this.passou(this.posto, direcao)) {
-          this.x = this.posto;
-          if (this.cfg.animacoes.parada && this.tocar(this.cfg.animacoes.parada, direcao)) this.estado = 'parando';
-          else this.ficarDeGuarda();
+        const falta = this.x - this.posto;
+        const duracao = this.duracao(this.cfg.animacoes.parada);
+        // Começa a frear quando a distância cabe na freada (velocidade caindo até zero).
+        if (duracao > 0 && falta <= (this.velocidadeNoFundo() * duracao) / 2) {
+          this.estado = 'parando';
+          this.freada = { velocidade: Math.min(this.velocidadeNoFundo(), (2 * Math.max(0, falta)) / duracao), tempo: 0, duracao };
+          this.tocar(this.cfg.animacoes.parada!, -1);
+          break;
         }
+        this.correr(-1, this.velocidadeNoFundo(), seconds);
+        if (this.passou(this.posto, -1)) {
+          this.x = this.posto;
+          this.ficarDeGuarda();
+        }
+        break;
+      }
+      case 'parando': {
+        this.freada.tempo += seconds;
+        const velocidade = this.freada.velocidade * Math.max(0, 1 - this.freada.tempo / this.freada.duracao);
+        this.x = Math.max(this.posto, this.x - velocidade * seconds);
         break;
       }
       default:
@@ -216,9 +251,57 @@ export class Reforco {
     this.sombra = this.dono.scene.add.ellipse(0, 0, 120, 22, 0x000000, 0.3);
     this.sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
       if (this.estado === 'golpeando') this.sairDoCampo();
-      else if (this.estado === 'parando') this.ficarDeGuarda();
+      else if (this.estado === 'parando') {
+        this.x = this.posto;
+        this.ficarDeGuarda();
+      } else if (this.estado === 'voltando' && this.efeito === this.cfg.animacoes.volta) this.tocarLacoDaVolta();
     });
     this.reset();
+  }
+
+  /** A corrida da volta (os quadros de `lacoDaVolta`) repete até ele sair da tela. */
+  private tocarLacoDaVolta(): void {
+    const chave = this.cfg.animacoes.volta ? this.dono.animacao(this.cfg.animacoes.volta) : null;
+    const laco = this.cfg.lacoDaVolta;
+    const base = chave ? this.dono.scene.anims.get(chave) : null;
+    if (!chave || !laco || !base) {
+      this.tocar(this.cfg.animacoes.corrida, this.saida());
+      return;
+    }
+    const chaveDoLaco = `${chave}-laco`;
+    if (!this.dono.scene.anims.exists(chaveDoLaco)) {
+      this.dono.scene.anims.create({
+        key: chaveDoLaco,
+        frames: base.frames.slice(laco[0], laco[1] + 1).map((quadro) => ({ key: quadro.textureKey, frame: quadro.textureFrame })),
+        frameRate: base.frameRate,
+        repeat: -1
+      });
+    }
+    this.sprite.play(chaveDoLaco, true);
+    this.efeito = `${this.cfg.animacoes.volta}-laco`;
+  }
+
+  /** Ainda nos quadros da virada, antes da corrida da volta. */
+  private virando(): boolean {
+    return this.efeito === this.cfg.animacoes.volta && this.quadro() < (this.cfg.lacoDaVolta?.[0] ?? 0);
+  }
+
+  /**
+   * Fora do campo: volta pelo fundo até o posto. Sempre entra pela direita,
+   * correndo para a esquerda, para a freada terminar na guarda de frente
+   * sem espelhar (espelhada, a lança trocaria de mão).
+   */
+  private retornar(largada: number): void {
+    this.estado = 'retornando';
+    this.x = Math.max(largada, this.posto);
+    this.tocar(this.cfg.animacoes.retorno ?? this.cfg.animacoes.corrida, -1);
+  }
+
+  /** Duração de um efeito em segundos (0 se não existe). */
+  private duracao(efeito: string | undefined): number {
+    const chave = efeito ? this.dono.animacao(efeito) : null;
+    const animacao = chave ? this.dono.scene.anims.get(chave) : null;
+    return animacao ? animacao.duration / 1000 : 0;
   }
 
   /**
@@ -256,7 +339,8 @@ export class Reforco {
 
   private sairDoCampo(): void {
     this.estado = 'voltando';
-    this.tocar(this.cfg.animacoes.volta ?? this.cfg.animacoes.corrida, this.saida());
+    // A volta começa virada como o golpe; sem ela, a corrida já virada para a saída.
+    if (!(this.cfg.animacoes.volta && this.tocar(this.cfg.animacoes.volta, this.lado))) this.tocar(this.cfg.animacoes.corrida, this.saida());
   }
 
   /** Para onde ele sai: o contrário do golpe, de volta pelo lado de onde veio. */
@@ -282,6 +366,7 @@ export class Reforco {
     if (!chave) return false;
     this.sprite.play(chave, true).setFlipX(direcao === 1);
     this.sprite.setOrigin(this.cfg.origem.x / this.sprite.frame.width, this.cfg.origem.y / this.sprite.frame.height);
+    this.efeito = efeito;
     return true;
   }
 
@@ -305,7 +390,7 @@ export class Reforco {
   private posicionar(): void {
     const fundo = this.noFundo();
     const escala = this.escala() * (fundo ? PLANO_DE_FUNDO.escala : 1);
-    const chao = this.dono.chao() - (fundo ? PLANO_DE_FUNDO.recuo : 0);
+    const chao = fundo ? this.dono.chaoDoFundo() : this.dono.chao();
     const profundidade = fundo ? PLANO_DE_FUNDO.profundidade : PROFUNDIDADE_NO_CAMPO;
     this.sprite.setPosition(this.x, chao).setScale(escala).setDepth(profundidade);
     this.sombra.setPosition(this.x, chao).setScale(escala).setDepth(profundidade - 1);

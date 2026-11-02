@@ -495,7 +495,8 @@
       "persistOnHit": true,
       "rangeAfterHit": 220,
       "reforco": {
-        "animacoes": {"guarda": "guerreiro-guarda", "corrida": "guerreiro-corrida", "chute": "guerreiro-chute"},
+        "animacoes": {"guarda": "guerreiro-guarda", "corrida": "guerreiro-corrida", "chute": "guerreiro-chute", "volta": "guerreiro-volta", "parada": "guerreiro-parada"},
+        "lacoDaVolta": [4, 7],
         "posto": 200,
         "velocidade": 1100,
         "velocidadeNoFundo": 1300,
@@ -516,7 +517,9 @@
       },
       "guerreiro-guarda": {"file": "../../../npcs/guerreiro/base-v1/idle.png", "frames": 4, "frameRate": 6, "repeat": -1, "frameWidth": 512, "frameHeight": 320},
       "guerreiro-corrida": {"file": "../../../npcs/guerreiro/base-v1/war-run.png", "frames": 6, "frameRate": 14, "repeat": -1, "frameWidth": 512, "frameHeight": 320},
-      "guerreiro-chute": {"file": "../../../npcs/guerreiro/base-v1/sparta-kick.png", "frames": 8, "frameRate": 12, "frameWidth": 512, "frameHeight": 320}
+      "guerreiro-chute": {"file": "../../../npcs/guerreiro/base-v1/sparta-kick.png", "frames": 8, "frameRate": 12, "frameWidth": 512, "frameHeight": 320},
+      "guerreiro-volta": {"file": "../../../npcs/guerreiro/base-v1/turn-exit.png", "frames": 8, "frameRate": 14, "frameWidth": 512, "frameHeight": 320},
+      "guerreiro-parada": {"file": "../../../npcs/guerreiro/base-v1/run-stop.png", "frames": 8, "frameRate": 12, "frameWidth": 512, "frameHeight": 320}
     }
   }
 }
