@@ -3118,3 +3118,22 @@ saiu da ação, a folha continua).
 de aprovação dele.
 **Atrito:** nenhum.
 **Em aberto:** ele sentir o soco no ar na mão; visual do menu.
+
+## 2026-11-02: estocada pesada do maromba (quarta ação da v7)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** o mesmo da entrada anterior; o Codex fechou a v7 com uma quarta
+ação (heavy-punch) depois do primeiro commit.
+**Feito:** estocada pesada (Baixo + Soco, 6 quadros, 12 fps, contato 3) no
+lugar do quebra-galho que usava a folha do soco rápido; quadros 0 e 5
+idênticos à guarda; passou pelo script de mãos (folhas antigas idênticas);
+caixa na frente do andador no quadro 3. `docs/coxa-maromba-ataques-v7.md`
+(do Codex) entra junto.
+**Verificado:** `npm run check`. Academia, quadro 3, caixa na frente do
+andador. Luta contra o Urubu parado: acerta a 76, 110, 118 e 139 px
+(230 → 206).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** aprovação dele dos quatro golpes; soco no ar só acerta de perto.

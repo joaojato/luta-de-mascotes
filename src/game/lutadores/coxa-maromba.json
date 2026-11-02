@@ -346,28 +346,28 @@
     },
     {
       "action": "heavy-punch",
-      "label": "Estocada pesada (quebra-galho)",
-      "file": "maos-por-cima/rigido-v1/maromba/light-punch-composed.png",
+      "label": "Estocada pesada",
+      "file": "maos-por-cima/maromba-ataques-v7/heavy-punch-composed.png",
       "frames": 6,
       "frameWidth": 512,
       "frameHeight": 320,
       "frameRate": 12,
       "repeat": 0,
       "defaultVisual": {
-        "x": 110,
-        "y": 92,
-        "width": 259,
-        "height": 200
+        "x": 133,
+        "y": 95,
+        "width": 236,
+        "height": 197
       },
       "attack": {
         "frames": [
           3
         ],
         "bounds": {
-          "x": 110,
-          "y": 115,
-          "width": 70,
-          "height": 105
+          "x": 133,
+          "y": 139,
+          "width": 50,
+          "height": 100
         }
       },
       "travel": {
