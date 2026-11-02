@@ -1,0 +1,1090 @@
+{
+  "character": "Gremista",
+  "baseApproved": "referencia\\gremio\\base-manga-longa-cabelos-pretos-v8.png",
+  "baseSha256": "e2af136d569599db450f1c02d8d438f02ca836a044cb98e2948ab06c1ae0d425",
+  "animations": [
+    {
+      "action": "light-punch",
+      "frames": 8,
+      "fpsProposed": 20,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scale": 0.535,
+      "contactFrames": [
+        2,
+        5
+      ],
+      "loop": false,
+      "file": "light-punch.png",
+      "sha256": "d9f6cd0919a6ffa63965fcef31f0d79709f0f3b3ee7b91b028e13392c3133044",
+      "sourceSha256": "d59c82a27e2d2911177d88bbd096d844acc73cb3c12d44cfc55afc9cf8ae619d",
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceFrame": 0,
+          "sourceBox": [
+            37,
+            71,
+            448,
+            434
+          ],
+          "sourceAnchor": [
+            285,
+            434
+          ],
+          "visualBounds": [
+            184,
+            142,
+            399,
+            368
+          ],
+          "exactApprovedGuard": true
+        },
+        {
+          "frame": 1,
+          "sourceFrame": 1,
+          "sourceBox": [
+            527,
+            18,
+            882,
+            434
+          ],
+          "sourceAnchor": [
+            721,
+            434
+          ],
+          "visualBounds": [
+            216,
+            137,
+            406,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 2,
+          "sourceFrame": 2,
+          "sourceBox": [
+            882,
+            70,
+            1301,
+            434
+          ],
+          "sourceAnchor": [
+            1140,
+            434
+          ],
+          "visualBounds": [
+            182,
+            165,
+            406,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 3,
+          "sourceFrame": 3,
+          "sourceBox": [
+            1357,
+            74,
+            1753,
+            436
+          ],
+          "sourceAnchor": [
+            1590,
+            436
+          ],
+          "visualBounds": [
+            195,
+            166,
+            407,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 4,
+          "sourceFrame": 4,
+          "sourceBox": [
+            36,
+            498,
+            451,
+            860
+          ],
+          "sourceAnchor": [
+            285,
+            860
+          ],
+          "visualBounds": [
+            187,
+            166,
+            409,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 5,
+          "sourceFrame": 5,
+          "sourceBox": [
+            527,
+            481,
+            896,
+            860
+          ],
+          "sourceAnchor": [
+            749,
+            860
+          ],
+          "visualBounds": [
+            201,
+            157,
+            398,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 6,
+          "sourceFrame": 6,
+          "sourceBox": [
+            940,
+            499,
+            1301,
+            861
+          ],
+          "sourceAnchor": [
+            1140,
+            861
+          ],
+          "visualBounds": [
+            213,
+            166,
+            406,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 7,
+          "sourceFrame": 7,
+          "sourceBox": [
+            1356,
+            496,
+            1769,
+            861
+          ],
+          "sourceAnchor": [
+            1600,
+            861
+          ],
+          "visualBounds": [
+            184,
+            142,
+            399,
+            368
+          ],
+          "exactApprovedGuard": true
+        }
+      ],
+      "durationsMs": [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+      ]
+    },
+    {
+      "action": "heavy-punch",
+      "frames": 8,
+      "fpsProposed": 14,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scale": 0.745,
+      "contactFrames": [
+        2,
+        3
+      ],
+      "loop": false,
+      "file": "heavy-punch.png",
+      "sha256": "29a1285fb79a9d58a331ecbdc5db600dc13819d07cf349f3edcf9ede34f042cf",
+      "sourceSha256": "b7c272780f02d090ea0d2229a2a46df0dc742c20c436bdcb529375c38e9afb15",
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceFrame": 0,
+          "sourceBox": [
+            166,
+            43,
+            453,
+            364
+          ],
+          "sourceAnchor": [
+            320,
+            365
+          ],
+          "visualBounds": [
+            184,
+            142,
+            399,
+            368
+          ],
+          "exactApprovedGuard": true
+        },
+        {
+          "frame": 1,
+          "sourceFrame": 0,
+          "sourceBox": [
+            166,
+            43,
+            453,
+            364
+          ],
+          "sourceAnchor": [
+            320,
+            365
+          ],
+          "visualBounds": [
+            205,
+            120,
+            419,
+            359
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 2,
+          "sourceFrame": 1,
+          "sourceBox": [
+            594,
+            112,
+            998,
+            364
+          ],
+          "sourceAnchor": [
+            850,
+            365
+          ],
+          "visualBounds": [
+            129,
+            172,
+            430,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 3,
+          "sourceFrame": 2,
+          "sourceBox": [
+            1085,
+            112,
+            1489,
+            364
+          ],
+          "sourceAnchor": [
+            1335,
+            365
+          ],
+          "visualBounds": [
+            134,
+            172,
+            435,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 4,
+          "sourceFrame": 4,
+          "sourceBox": [
+            111,
+            397,
+            454,
+            675
+          ],
+          "sourceAnchor": [
+            340,
+            675
+          ],
+          "visualBounds": [
+            149,
+            153,
+            405,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 5,
+          "sourceFrame": 5,
+          "sourceBox": [
+            663,
+            396,
+            981,
+            675
+          ],
+          "sourceAnchor": [
+            870,
+            675
+          ],
+          "visualBounds": [
+            166,
+            152,
+            403,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 6,
+          "sourceFrame": 6,
+          "sourceBox": [
+            1205,
+            373,
+            1499,
+            675
+          ],
+          "sourceAnchor": [
+            1358,
+            675
+          ],
+          "visualBounds": [
+            206,
+            135,
+            425,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 7,
+          "sourceFrame": 7,
+          "sourceBox": [
+            1727,
+            364,
+            2011,
+            675
+          ],
+          "sourceAnchor": [
+            1875,
+            675
+          ],
+          "visualBounds": [
+            184,
+            142,
+            399,
+            368
+          ],
+          "exactApprovedGuard": true
+        }
+      ],
+      "durationsMs": [
+        71,
+        71,
+        71,
+        71,
+        71,
+        71,
+        71,
+        71
+      ]
+    },
+    {
+      "action": "shot",
+      "frames": 12,
+      "fpsProposed": 12,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scale": 0.564,
+      "contactFrames": [],
+      "loop": false,
+      "file": "shot.png",
+      "sha256": "4b8f48e94aa70af6b61edb9a3c68faf3b43406de8c61fe1b8a0fd94258b96579",
+      "sourceSha256": "94499f6effcfc223040885473f47b5bda59810dcfc829db94ab6ef520d5c31cb",
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceFrame": 0,
+          "sourceBox": [
+            27,
+            34,
+            387,
+            373
+          ],
+          "sourceAnchor": [
+            248,
+            372
+          ],
+          "visualBounds": [
+            184,
+            142,
+            399,
+            368
+          ],
+          "exactApprovedGuard": true
+        },
+        {
+          "frame": 1,
+          "sourceFrame": 1,
+          "sourceBox": [
+            383,
+            34,
+            683,
+            374
+          ],
+          "sourceAnchor": [
+            550,
+            372
+          ],
+          "visualBounds": [
+            226,
+            169,
+            395,
+            361
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 2,
+          "sourceFrame": 2,
+          "sourceBox": [
+            676,
+            34,
+            1050,
+            374
+          ],
+          "sourceAnchor": [
+            918,
+            372
+          ],
+          "visualBounds": [
+            184,
+            169,
+            395,
+            361
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 3,
+          "sourceFrame": 3,
+          "sourceBox": [
+            1067,
+            33,
+            1409,
+            374
+          ],
+          "sourceAnchor": [
+            1273,
+            372
+          ],
+          "visualBounds": [
+            204,
+            169,
+            397,
+            361
+          ],
+          "exactApprovedGuard": false,
+          "muzzle": [
+            227,
+            208
+          ]
+        },
+        {
+          "frame": 4,
+          "sourceFrame": 4,
+          "sourceBox": [
+            65,
+            380,
+            390,
+            719
+          ],
+          "sourceAnchor": [
+            250,
+            717
+          ],
+          "visualBounds": [
+            216,
+            170,
+            399,
+            361
+          ],
+          "exactApprovedGuard": false,
+          "muzzle": [
+            279,
+            256
+          ]
+        },
+        {
+          "frame": 5,
+          "sourceFrame": 5,
+          "sourceBox": [
+            388,
+            380,
+            726,
+            719
+          ],
+          "sourceAnchor": [
+            575,
+            718
+          ],
+          "visualBounds": [
+            215,
+            169,
+            406,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 6,
+          "sourceFrame": 6,
+          "sourceBox": [
+            743,
+            380,
+            1055,
+            719
+          ],
+          "sourceAnchor": [
+            917,
+            717
+          ],
+          "visualBounds": [
+            222,
+            170,
+            398,
+            361
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 7,
+          "sourceFrame": 7,
+          "sourceBox": [
+            1097,
+            380,
+            1409,
+            719
+          ],
+          "sourceAnchor": [
+            1270,
+            717
+          ],
+          "visualBounds": [
+            222,
+            170,
+            398,
+            361
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 8,
+          "sourceFrame": 8,
+          "sourceBox": [
+            51,
+            728,
+            368,
+            1069
+          ],
+          "sourceAnchor": [
+            228,
+            1068
+          ],
+          "visualBounds": [
+            220,
+            168,
+            399,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 9,
+          "sourceFrame": 9,
+          "sourceBox": [
+            400,
+            729,
+            715,
+            1069
+          ],
+          "sourceAnchor": [
+            571,
+            1068
+          ],
+          "visualBounds": [
+            224,
+            169,
+            402,
+            361
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 10,
+          "sourceFrame": 10,
+          "sourceBox": [
+            714,
+            729,
+            1062,
+            1068
+          ],
+          "sourceAnchor": [
+            920,
+            1067
+          ],
+          "visualBounds": [
+            205,
+            169,
+            400,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 11,
+          "sourceFrame": 11,
+          "sourceBox": [
+            1085,
+            732,
+            1427,
+            1069
+          ],
+          "sourceAnchor": [
+            1275,
+            1067
+          ],
+          "visualBounds": [
+            184,
+            142,
+            399,
+            368
+          ],
+          "exactApprovedGuard": true
+        }
+      ],
+      "durationsMs": [
+        60,
+        70,
+        60,
+        80,
+        80,
+        130,
+        170,
+        190,
+        190,
+        160,
+        140,
+        100
+      ]
+    },
+    {
+      "action": "low-kick",
+      "frames": 6,
+      "fpsProposed": 16,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scale": 0.4,
+      "contactFrames": [
+        2,
+        3
+      ],
+      "loop": false,
+      "file": "low-kick.png",
+      "sha256": "bfa1e11fb93a499a721cc234ddc7f26584173296a134559832ed22a4057dbf90",
+      "sourceSha256": "d2706fc6738677084e69ead09c25a2f29cf42c4a5e4e455752551c5883246e83",
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceFrame": 0,
+          "sourceBox": [
+            17,
+            82,
+            515,
+            492
+          ],
+          "sourceAnchor": [
+            305,
+            492
+          ],
+          "visualBounds": [
+            205,
+            196,
+            404,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 1,
+          "sourceFrame": 1,
+          "sourceBox": [
+            521,
+            82,
+            996,
+            492
+          ],
+          "sourceAnchor": [
+            782,
+            492
+          ],
+          "visualBounds": [
+            216,
+            196,
+            406,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 2,
+          "sourceFrame": 2,
+          "sourceBox": [
+            963,
+            83,
+            1525,
+            493
+          ],
+          "sourceAnchor": [
+            1335,
+            493
+          ],
+          "visualBounds": [
+            171,
+            196,
+            396,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 3,
+          "sourceFrame": 3,
+          "sourceBox": [
+            13,
+            574,
+            588,
+            978
+          ],
+          "sourceAnchor": [
+            374,
+            978
+          ],
+          "visualBounds": [
+            176,
+            198,
+            406,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 4,
+          "sourceFrame": 4,
+          "sourceBox": [
+            590,
+            575,
+            1033,
+            978
+          ],
+          "sourceAnchor": [
+            839,
+            978
+          ],
+          "visualBounds": [
+            220,
+            199,
+            397,
+            360
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 5,
+          "sourceFrame": 5,
+          "sourceBox": [
+            1038,
+            571,
+            1522,
+            978
+          ],
+          "sourceAnchor": [
+            1327,
+            978
+          ],
+          "visualBounds": [
+            204,
+            197,
+            398,
+            360
+          ],
+          "exactApprovedGuard": false
+        }
+      ],
+      "durationsMs": [
+        62,
+        62,
+        62,
+        62,
+        62,
+        62
+      ]
+    },
+    {
+      "action": "jump-punch",
+      "frames": 6,
+      "fpsProposed": 14,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scale": 0.43,
+      "contactFrames": [
+        2,
+        3
+      ],
+      "loop": false,
+      "file": "jump-punch.png",
+      "sha256": "8817879d71145900503214ad6d1619cfb237c61fc801ea4ff50d142b7c874024",
+      "sourceSha256": "9d3ee0b26446277606a047e2fab756b2080200fc50a0b558e8caaa211b7d4a87",
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceFrame": 0,
+          "sourceBox": [
+            78,
+            50,
+            453,
+            505
+          ],
+          "sourceAnchor": [
+            315,
+            337
+          ],
+          "visualBounds": [
+            218,
+            117,
+            379,
+            313
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 1,
+          "sourceFrame": 1,
+          "sourceBox": [
+            623,
+            44,
+            941,
+            513
+          ],
+          "sourceAnchor": [
+            810,
+            344
+          ],
+          "visualBounds": [
+            240,
+            111,
+            377,
+            313
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 2,
+          "sourceFrame": 2,
+          "sourceBox": [
+            992,
+            151,
+            1503,
+            509
+          ],
+          "sourceAnchor": [
+            1378,
+            336
+          ],
+          "visualBounds": [
+            154,
+            160,
+            374,
+            314
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 3,
+          "sourceFrame": 3,
+          "sourceBox": [
+            37,
+            636,
+            517,
+            979
+          ],
+          "sourceAnchor": [
+            387,
+            815
+          ],
+          "visualBounds": [
+            170,
+            163,
+            376,
+            310
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 4,
+          "sourceFrame": 4,
+          "sourceBox": [
+            639,
+            552,
+            1020,
+            979
+          ],
+          "sourceAnchor": [
+            880,
+            812
+          ],
+          "visualBounds": [
+            216,
+            128,
+            380,
+            312
+          ],
+          "exactApprovedGuard": false
+        },
+        {
+          "frame": 5,
+          "sourceFrame": 5,
+          "sourceBox": [
+            1110,
+            530,
+            1501,
+            987
+          ],
+          "sourceAnchor": [
+            1370,
+            815
+          ],
+          "visualBounds": [
+            208,
+            117,
+            376,
+            314
+          ],
+          "exactApprovedGuard": false
+        }
+      ],
+      "durationsMs": [
+        71,
+        71,
+        71,
+        71,
+        71,
+        71
+      ]
+    }
+  ],
+  "cell": [
+    640,
+    384
+  ],
+  "columns": 5,
+  "origin": [
+    320,
+    360
+  ],
+  "shooting": {
+    "releases": [
+      {
+        "frame": 3,
+        "hand": "A-direita",
+        "timeMs": 190,
+        "muzzle": [
+          227,
+          208
+        ]
+      },
+      {
+        "frame": 4,
+        "hand": "B-esquerda",
+        "timeMs": 270,
+        "muzzle": [
+          279,
+          256
+        ]
+      }
+    ],
+    "totalMsProposed": 1430,
+    "secondShotToReadyMs": 1160,
+    "swordOwnership": "Embainhada durante saque/tiros/guardar; volta à mão direita na recuperação final",
+    "mustWaitRecovery": true,
+    "oneProjectilePerReleasePerActivation": true,
+    "loop": false,
+    "timingNote": "Usar durationsMs por quadro ou fases equivalentes; tocar tudo a12FPS perde o contraste saque/recuperação"
+  },
+  "heavyForwardStep": {
+    "frames": [
+      4,
+      5
+    ],
+    "afterContactFrames": [
+      2,
+      3
+    ],
+    "distancePxProposed": 16,
+    "engineMovesRoot": true,
+    "note": "Pequeno avanço DEPOIS do corte, não lunge antes de acertar"
+  },
+  "lowKick": {
+    "startCrouched": true,
+    "endsCrouched": true,
+    "contact": "Lâmina na canela, um único corte, não estocada"
+  },
+  "airAttacks": {
+    "allFramesAirborne": true,
+    "engineMovesJumpTrajectory": true,
+    "noLandingInAttack": true
+  },
+  "logicParametersNotSet": [
+    "dano",
+    "hitboxes",
+    "velocidade/alcance/projéteis",
+    "cancelamentos/balanceamento"
+  ],
+  "runtimeModified": false,
+  "status": "Arte e montagem revisadas; aprovação de cada animação e integração em combate pendentes",
+  "pendingActions": [
+    "jump-kick"
+  ],
+  "hairRevision": "v8: cabelo, barba, bigode, sobrancelhas e costeletas pretos; somente recoloração dos desenhos existentes"
+}

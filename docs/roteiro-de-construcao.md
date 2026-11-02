@@ -93,6 +93,9 @@ ele é quebrado em dois, não esticado.
   trocou para Xbox por padrão (PlayStation no menu), A confirma e B volta
   nos menus, nome do golpe da vez e opacidade dos controles. Falta: o João
   confirmar as rodadas 2 e 3 no iPhone (depende de publicar).
+- [ ] **Mosqueteiro Gaúcho (Grêmio)** (02/11/2026): golpes próprios e o
+  Flecha Negra (NPC de Guarda, três flechas sorteadas) jogáveis; o resto do
+  corpo é a guarda parada até o Codex entregar (`docs/pedidos-codex.md`).
 - [ ] **Treino livre** (01/11/2026): Academia, tecla T. Luta sem relógio e
   sem fim, vida volta 2 s depois do último golpe, troca de P1 e P2 na hora,
   CPU liga e desliga. Testado no navegador. Falta: o João jogar.

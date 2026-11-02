@@ -3137,3 +3137,33 @@ andador. Luta contra o Urubu parado: acerta a 76, 110, 118 e 139 px
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** aprovação dele dos quatro golpes; soco no ar só acerta de perto.
+
+## 2026-11-02: Mosqueteiro Gaúcho (Grêmio) e o Flecha Negra
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Coloque o mosqueteiro do Grêmio no jogo." Com um NPC de Guarda,
+o Flecha Negra: no especial sai correndo para fora da arena, volta correndo
+para dentro e, parado, dispara uma flecha sorteada: reta em pé (escapa
+pulando ou abaixando), rasteira ajoelhado (escapa só pulando) ou alta depois
+de um pulo (escapa só abaixando). "Tentar bloquear esses ataques não funciona."
+**Feito:** `mosqueteiro-gremio.json` com os quatro golpes do Codex (estocada,
+investida, corte baixo, tiro de pistola), caixas na lâmina, Regras do Passo
+e do Tiro, torcida azul, preta e branca em listras verticais, rosto e nomes
+curtos. O resto do corpo usa a guarda parada como provisório (como o Urubu
+no Marco 2), com pedido ao Codex em `docs/pedidos-codex.md`. Motor: especial
+do tipo `reforco` e `disparos` no NPC de Guarda (sorteio por peso, flecha
+como projétil do NPC, `escapa` com `pulo`/`agachar`, ajoelhar e levantar,
+salto no tiro alto, freada no campo com o começo do `run-stop`, saída da
+guarda pela virada). Defesa não segura (sem guarda que segure).
+**Verificado:** testes do sorteio e do escape; `npm run check`. Navegador,
+Gremista x Urubu no treino, 3 disparos x 3 posturas: reta acerta em pé e
+escapa agachado e pulando; rasteira acerta em pé e agachado e escapa
+pulando na hora da puxada; alta acerta em pé e pulando e escapa agachado.
+Ciclo inteiro na ordem do contrato do Codex. Corrigido no caminho: levantar
+de trás para a frente começava no quadro 0 e terminava na hora.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** o resto do corpo do Gremista (pedido ao Codex); nome no jogo
+("Mosqueteiro Gaúcho", sem nome de clube); publicar no Vercel.

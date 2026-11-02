@@ -94,8 +94,9 @@ chamado. O que cai é o golpe `queda`: nenhuma guarda segura, só sair do
 lugar. Se acertar ainda caindo, pode deixar o oponente tonto (`stunMs` no
 `drop`, como o cocô do Biriba). Enquanto quem veio está atravessando, o golpe não sai de novo.
 
-NPC de Guarda que golpeia uma vez (o Guerreiro do Cartola): `reforco` no
-especial do JSON. Fica de guarda no fundo; quando o mascote solta o especial,
+NPC de Guarda que ataca uma vez (o Guerreiro do Cartola, o Flecha Negra do
+Mosqueteiro Gaúcho): `reforco` no especial do JSON (o especial pode ser do
+tipo `reforco`, quando chamar o NPC é tudo o que ele faz). Fica de guarda no fundo; quando o mascote solta o especial,
 sai correndo pelo fundo para fora da tela, volta já correndo dentro do campo
 por trás do adversário, dá um golpe só (sem guarda que segure) e sai pelo
 mesmo lado, depois volta pelo fundo e para no posto. Como o Biriba, golpeia
@@ -105,6 +106,13 @@ quanto tira e empurra, onde fica de guarda (`posto`), e a arte de cada fase
 `parada`; o que faltar usa a corrida). A `volta` começa virada como o golpe
 e os quadros de `lacoDaVolta` repetem até ele sair da tela; a `parada` é
 corrida que freia sem deslocamento no desenho (o motor desacelera).
+De longe, em vez do golpe de perto: `disparos`, uma variante sorteada por
+chamado (`peso`), cada uma com a animação, o quadro em que a flecha sai
+(`soltura`), a boca do arco e o jeito de escapar (`escapa`: `pulo`,
+`agachar`); `antes` e `depois` para ajoelhar e levantar, `salto` para o tiro
+no ar, `freadaNoCampo` e `saidaDaGuarda` para frear e virar com a arte que
+já existe, e `flecha` para o projétil. Perguntar quais tiros, como se escapa
+de cada um e quanto tiram.
 
 NPC do mascote (o Biriba, os Gaviões) segue a Regra do Fundo: fica atrás
 dos dois lutadores, entre eles e a torcida, e só sai do fundo para atacar.
@@ -235,3 +243,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 01/11/2026: Regra do Tiro (quem atira anda para a frente; arma pesada dá coice com `recuo`).
 - 01/11/2026: `nomes` (nome curto de cada golpe nos botões do celular) e `rosto` (close do retrato na chave).
 - 01/11/2026: `reforco` (NPC de Guarda que sai do fundo no especial, golpeia uma vez e volta ao posto).
+- 02/11/2026: especial `reforco` e `disparos` do NPC de Guarda (o Flecha Negra: três flechas sorteadas, cada uma com o seu escape).

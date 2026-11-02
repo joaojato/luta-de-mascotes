@@ -15,6 +15,7 @@ import { spawnChargeAura } from './vfx';
 import { somDoEvento, tocarSom } from './sons';
 import { Esquadrao } from './esquadrao';
 import { Reforco } from './reforco';
+import type { Escape } from './reforcoRota';
 import { chaoDoFundo } from './planoDeFundo';
 import { acertoDoSopro, amostraDoSopro, direcaoDoSopro, type SoproConfig } from './sopro';
 import { danoNaForma, RelogioDaForma, type FormaConfig } from './forma';
@@ -107,6 +108,8 @@ export interface ActiveAttack {
   move: AttackMove;
   /** Special only: how the defender escapes it, and whether guard is useless. */
   dodge?: SpecialDodge;
+  /** Ataque do NPC de Guarda (as flechas do Flecha Negra): pulando ou agachado, escapa. */
+  escapa?: (Escape | string)[];
   unblockable?: boolean;
   /** A traveling shot (pipe, wave, powder cloud): only ever blocked, never perfect-guarded. */
   projectile?: boolean;
@@ -672,7 +675,7 @@ export class Fighter {
         rect: reforco.rect,
         profile: { ...this.ataque('special'), damage: cfgReforco.dano, knockback: cfgReforco.empurrao, stunMs: undefined },
         signature: reforco.assinatura, move: 'especial', finisher: true, facing: reforco.lado,
-        projectile: true, unblockable: true
+        projectile: true, unblockable: true, escapa: reforco.escapa
       };
     }
     const contato = this.defeated ? null : this.esquadrao?.contato();

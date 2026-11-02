@@ -27,6 +27,7 @@ import { LUTADORES } from '../game/lutadores';
 import { torcidaValida } from '../game/torcida';
 import { montarTorcida } from '../game/torcidaCena';
 import { BiribaCena } from '../game/biribaCena';
+import { escapou } from '../game/reforcoRota';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
 import { spawnHitSpark, type VfxColor } from '../game/vfx';
 import { BaseScene } from './BaseScene';
@@ -294,6 +295,10 @@ export class MatchScene extends BaseScene {
 
     // Ducked or jumped over: the swing stays live and can still land later.
     if (ducksUnder(attack.move, defender.isDucking) || jumpsOver(attack.move, defender.isAirborne)) {
+      return null;
+    }
+    // Flechas do NPC de Guarda: cada uma diz se pular ou agachar escapa.
+    if (escapou(attack.escapa, { noAr: defender.isAirborne, agachado: defender.isDucking })) {
       return null;
     }
     const escape = { airborne: defender.isAirborne, ducking: defender.isDucking, movingAway: defender.isMovingAwayFrom(attacker.x) };

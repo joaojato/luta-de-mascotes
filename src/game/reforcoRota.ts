@@ -48,3 +48,31 @@ export function caixaNoMundo(
   const esquerda = lado === -1 ? x + dx * escala : x - (dx + caixa.largura) * escala;
   return { x: esquerda, y: chao + (caixa.y - origem.y) * escala, largura: caixa.largura * escala, altura: caixa.altura * escala };
 }
+
+/** Como o adversário escapa de um ataque do reforço, além de sair do lugar. */
+export type Escape = 'pulo' | 'agachar';
+
+/**
+ * Sorteia um disparo pelo peso de cada um (padrão 1).
+ * @param disparos - As variantes do JSON.
+ * @param sorte - Número entre 0 (inclusive) e 1 (exclusive).
+ */
+export function sortearDisparo<T extends { peso?: number }>(disparos: T[], sorte: number): T {
+  const total = disparos.reduce((soma, d) => soma + (d.peso ?? 1), 0);
+  let resto = sorte * total;
+  for (const disparo of disparos) {
+    resto -= disparo.peso ?? 1;
+    if (resto < 0) return disparo;
+  }
+  return disparos[disparos.length - 1];
+}
+
+/**
+ * O adversário escapou deste ataque pelo jeito que estava? Pulando escapa
+ * de quem tem `pulo`; agachado, de quem tem `agachar`. Ataque sem escape
+ * só se evita saindo do lugar.
+ */
+export function escapou(escapa: readonly (Escape | string)[] | undefined, defensor: { noAr: boolean; agachado: boolean }): boolean {
+  if (!escapa) return false;
+  return (escapa.includes('pulo') && defensor.noAr) || (escapa.includes('agachar') && defensor.agachado);
+}

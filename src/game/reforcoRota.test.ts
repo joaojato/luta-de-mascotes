@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { caixaNoMundo, ladoDoReforco, passoAteOAlvo } from './reforcoRota';
+import { caixaNoMundo, escapou, ladoDoReforco, passoAteOAlvo, sortearDisparo } from './reforcoRota';
 
 const BOTA = { x: 136, y: 155, largura: 70, altura: 60 };
 const ORIGEM = { x: 256, y: 296 };
@@ -31,5 +31,28 @@ describe('reforço: o Guerreiro do Cartola', () => {
     expect(direita.x).toBe(1050);
     expect(direita.x + direita.largura).toBe(1120);
     expect(caixaNoMundo(1000, 600, 2, -1, BOTA, ORIGEM).largura).toBe(140);
+  });
+
+  it('sorteia o disparo pelo peso', () => {
+    const disparos = [{ nome: 'reto' }, { nome: 'rasteiro' }, { nome: 'alto', peso: 2 }];
+    expect(sortearDisparo(disparos, 0).nome).toBe('reto');
+    expect(sortearDisparo(disparos, 0.3).nome).toBe('rasteiro');
+    expect(sortearDisparo(disparos, 0.5).nome).toBe('alto');
+    expect(sortearDisparo(disparos, 0.999).nome).toBe('alto');
+  });
+
+  // Flecha Negra (João, 02/11/2026): reta em pé, pula ou abaixa; rasteira,
+  // só pulando; alta, só abaixando. Bloquear não adianta em nenhuma.
+  it('cada flecha tem o seu jeito de escapar', () => {
+    const emPe = { noAr: false, agachado: false };
+    const pulando = { noAr: true, agachado: false };
+    const agachado = { noAr: false, agachado: true };
+    const reta = ['pulo', 'agachar'] as const;
+    const rasteira = ['pulo'] as const;
+    const alta = ['agachar'] as const;
+    expect([emPe, pulando, agachado].map((d) => escapou(reta, d))).toEqual([false, true, true]);
+    expect([emPe, pulando, agachado].map((d) => escapou(rasteira, d))).toEqual([false, true, false]);
+    expect([emPe, pulando, agachado].map((d) => escapou(alta, d))).toEqual([false, false, true]);
+    expect(escapou(undefined, pulando)).toBe(false);
   });
 });

@@ -506,3 +506,39 @@ provisórios, decididos pelo Claude até o João mudar:
 - Golpes do maromba: soco e chute têm arte (`light-punch`, `heavy-kick`).
   Baixo + soco e baixo + chute usam essas mesmas folhas como quebra-galho
   até o João definir o pesado e o rasteiro dele.
+
+## Mosqueteiro Gaúcho (Grêmio): ficha (02/11/2026)
+
+```
+Nome no jogo: Mosqueteiro Gaúcho
+Slug (pasta e JSON): mosqueteiro-gremio
+Silhueta em uma frase: mosqueteiro baixo e robusto, manga longa azul, preta
+  e branca, chapéu com pena, espada média e duas pistolas na cintura.
+Arquétipo: agressivo, raivoso; avança em vez de recuar (o oposto do corintiano).
+Vida / velocidade / peso: médio / médio / médio (padrão, a ajustar na Academia).
+Fala de entrada: aberta.
+Fala de vitória: aberta.
+Paleta: azul #0060D8, preto #181818, branco #F0F0F0 (listras verticais).
+```
+
+Base aprovada pelo João: manga longa (`docs/gremista-golpes-v1.md`).
+Golpes com sheet própria (Codex, `ataques-v1/`, células 640×384): soco rápido
+= estocada e corte (contato 2 e 5), soco forte = investida de espada (2 e 3,
+passo de 35 px), chute baixo = corte baixo (2 e 3, passo de 25 px), chute
+básico = tiro de pistola (sai no quadro 3, passo de 20 px, Regra do Tiro).
+Soco no ar e voadora usam o quebra-galho do catálogo.
+
+**Especial: o Flecha Negra (NPC de Guarda, João, 02/11/2026).** Fica de guarda
+no fundo, de frente. No especial, sai correndo pelo fundo para fora da tela,
+volta já correndo dentro da arena, para e dispara **uma** flecha, sorteada:
+- **reta, em pé:** o adversário escapa pulando ou abaixando;
+- **rasteira, ajoelhado:** escapa só pulando (em pé ou abaixado, toma);
+- **alta, depois de um pulo:** escapa só abaixando.
+Defender não adianta em nenhuma. Mira o ponto onde o adversário estava quando
+o especial saiu (como o Biriba e o Guerreiro). Depois vira, sai da arena e
+volta pelo fundo até o posto. 30 de dano por flecha, empurrão 120.
+
+**Provisório (como o Urubu no Marco 2):** sem sheet ainda, guarda, andar,
+pular, defender, apanhar, atordoado, queda e o próprio sinal do especial usam
+a guarda parada (`guard-reference.png`); agachar e defesa baixa usam o
+primeiro quadro do corte baixo. Pedido do resto em `docs/pedidos-codex.md`.

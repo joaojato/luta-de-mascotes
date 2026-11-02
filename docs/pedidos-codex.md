@@ -222,3 +222,21 @@ metálico e sem dourado ornamental. Molde e proporção de
 | `mode-cards/dificuldade-medio.png` | MÉDIO | o mesmo mascote em guarda, quadra com gente |
 | `mode-cards/dificuldade-dificil.png` | DIFÍCIL | o mesmo mascote furioso, quadra lotada |
 | `ui/trofeu.png` | sem texto | taça de várzea, transparente, 512×512; pode ser prateada ou pintada, nunca dourada brilhante |
+
+## Mosqueteiro Gaúcho (Grêmio): o resto do corpo (02/11/2026)
+
+O lutador já está no jogo com os quatro golpes de `ataques-v1/`; o resto usa a
+guarda parada. Mesma base aprovada (manga longa), mesmo formato dos golpes
+(células 640×384, cinco colunas, origem 320,360, pé na linha 360, virado para
+a esquerda), uma geração por ação partindo da guarda (`docs/producao-personagens.md`,
+`docs/mascotes/padrao-artistico.md`). Estilo agressivo, cara de bravo.
+
+Por prioridade:
+1. `idle` (4 quadros, guarda respirando).
+2. `walk-forward` e `walk-backward` (8 quadros cada).
+3. `hit-high` (4 a 6) e `knockdown` (8 a 10, cai e fica no chão).
+4. `crouch` (4 a 6), `block-high` e `block-low` (4 a 6).
+5. `jump` (8, no estilo dos outros: prepara, sobe, desce, pousa).
+6. `jump-punch` e `jump-kick` (6 cada; já há fonte em `output/gremista-v1/`).
+7. `special` (6 a 8): o sinal que chama o Flecha Negra (assobio, braço erguido).
+8. `stunned` (4, em loop) e `dash-forward` / `dash-back` (4 a 6).

@@ -1,0 +1,538 @@
+{
+  "id": "mosqueteiro-gremio",
+  "label": "Mosqueteiro Gaúcho",
+  "nomes": {
+    "soco-rapido": "Estocada",
+    "soco-forte": "Investida",
+    "chute-basico": "Pistola",
+    "chute-baixo": "Corte baixo",
+    "soco-no-ar": "Estocada",
+    "voadora": "Investida",
+    "especial": "Flecha"
+  },
+  "rosto": {
+    "x": 0.53,
+    "y": 0.28,
+    "lado": 0.27
+  },
+  "assetRoot": "/assets/lutadores/mosqueteiro-gremio",
+  "anchorFile": "bases/teste-manga-longa-v6.png",
+  "portraitFile": "bases/teste-manga-longa-v6.png",
+  "anchorUsage": "Mosqueteiro gaúcho de manga longa azul, preta e branca, em guarda, voltado para a esquerda",
+  "sons": {
+    "projetil": "tiro-garrucha",
+    "soco-rapido": "corte",
+    "chute-baixo": "corte",
+    "chute": null
+  },
+  "torcida": {
+    "estampa": "listras-verticais",
+    "cores": [
+      "#0060D8",
+      "#181818",
+      "#F0F0F0"
+    ]
+  },
+  "selecionavel": true,
+  "stats": {},
+  "combat": {
+    "highDamage": 8,
+    "lowKickDamage": 15,
+    "kickDamage": 26,
+    "lowDamage": 28,
+    "specialDamage": 32
+  },
+  "moves": {
+    "kick": {
+      "kind": "projectile",
+      "action": "shot",
+      "releaseFrame": 3,
+      "speed": 900
+    },
+    "special": {
+      "kind": "reforco",
+      "skipCharge": true,
+      "reforco": {
+        "animacoes": {
+          "guarda": "flecha-guarda",
+          "corrida": "flecha-corrida",
+          "volta": "flecha-volta",
+          "parada": "flecha-parada"
+        },
+        "posto": 200,
+        "velocidade": 1100,
+        "velocidadeNoFundo": 1300,
+        "alcance": 300,
+        "freadaNoCampo": [
+          0,
+          3
+        ],
+        "saidaDaGuarda": 2,
+        "lacoDaVolta": [
+          4,
+          7
+        ],
+        "origem": {
+          "x": 256,
+          "y": 296
+        },
+        "dano": 30,
+        "empurrao": 120,
+        "flecha": {
+          "efeito": "flecha-seta",
+          "velocidade": 1000,
+          "caixa": {
+            "largura": 74,
+            "altura": 14
+          }
+        },
+        "disparos": [
+          {
+            "nome": "reta",
+            "animacao": "flecha-reta",
+            "soltura": 5,
+            "boca": {
+              "x": 177,
+              "y": 157
+            },
+            "escapa": [
+              "pulo",
+              "agachar"
+            ]
+          },
+          {
+            "nome": "rasteira",
+            "animacao": "flecha-baixa",
+            "antes": "flecha-ajoelhar",
+            "depois": "flecha-ajoelhar",
+            "soltura": 5,
+            "boca": {
+              "x": 187,
+              "y": 244
+            },
+            "escapa": [
+              "pulo"
+            ]
+          },
+          {
+            "nome": "alta",
+            "animacao": "flecha-alta",
+            "depois": "flecha-ajoelhar",
+            "depoisDe": 1,
+            "soltura": 5,
+            "boca": {
+              "x": 172,
+              "y": 160
+            },
+            "escapa": [
+              "agachar"
+            ],
+            "salto": {
+              "altura": 30,
+              "quadros": [
+                2,
+                6
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "effects": {
+      "flecha-guarda": {
+        "file": "../../npcs/flecha-negra/base-v1/idle.png",
+        "frames": 4,
+        "frameRate": 6,
+        "repeat": -1,
+        "frameWidth": 512,
+        "frameHeight": 320
+      },
+      "flecha-corrida": {
+        "file": "../../npcs/flecha-negra/base-v1/war-run.png",
+        "frames": 6,
+        "frameRate": 14,
+        "repeat": -1,
+        "frameWidth": 512,
+        "frameHeight": 320
+      },
+      "flecha-volta": {
+        "file": "../../npcs/flecha-negra/base-v1/turn-exit.png",
+        "frames": 8,
+        "frameRate": 14,
+        "repeat": 0,
+        "frameWidth": 512,
+        "frameHeight": 320
+      },
+      "flecha-parada": {
+        "file": "../../npcs/flecha-negra/base-v1/run-stop.png",
+        "frames": 8,
+        "frameRate": 12,
+        "repeat": 0,
+        "frameWidth": 512,
+        "frameHeight": 320
+      },
+      "flecha-reta": {
+        "file": "../../npcs/flecha-negra/base-v1/shoot-standing.png",
+        "frames": 8,
+        "frameRate": 12,
+        "repeat": 0,
+        "frameWidth": 512,
+        "frameHeight": 320
+      },
+      "flecha-baixa": {
+        "file": "../../npcs/flecha-negra/base-v1/shoot-low.png",
+        "frames": 8,
+        "frameRate": 12,
+        "repeat": 0,
+        "frameWidth": 512,
+        "frameHeight": 320
+      },
+      "flecha-alta": {
+        "file": "../../npcs/flecha-negra/base-v1/shoot-air.png",
+        "frames": 8,
+        "frameRate": 14,
+        "repeat": 0,
+        "frameWidth": 512,
+        "frameHeight": 320
+      },
+      "flecha-ajoelhar": {
+        "file": "../../npcs/flecha-negra/base-v1/kneel-transition.png",
+        "frames": 4,
+        "frameRate": 12,
+        "repeat": 0,
+        "frameWidth": 512,
+        "frameHeight": 320
+      },
+      "flecha-seta": {
+        "file": "../../npcs/flecha-negra/base-v1/arrow.png",
+        "frames": 1,
+        "frameRate": 1,
+        "frameWidth": 96,
+        "frameHeight": 24
+      }
+    }
+  },
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Guarda (provisória, um quadro)",
+      "file": "ataques-v1/guard-reference.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 1,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Andar (provisório: guarda)",
+      "file": "ataques-v1/guard-reference.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 1,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Recuar (provisório: guarda)",
+      "file": "ataques-v1/guard-reference.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 1,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Agachar (provisório: base do corte baixo)",
+      "file": "ataques-v1/low-kick.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 1,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 240,
+        "y": 196,
+        "width": 135,
+        "height": 164
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Salto (provisório: guarda)",
+      "file": "ataques-v1/guard-reference.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 1,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Defesa alta (provisória: guarda)",
+      "file": "ataques-v1/guard-reference.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 1,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      },
+      "guard": {
+        "x": 215,
+        "y": 165,
+        "width": 60,
+        "height": 150
+      }
+    },
+    {
+      "action": "block-low",
+      "label": "Defesa baixa (provisória: base do corte baixo)",
+      "file": "ataques-v1/low-kick.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 1,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 240,
+        "y": 196,
+        "width": 135,
+        "height": 164
+      },
+      "guard": {
+        "x": 215,
+        "y": 250,
+        "width": 60,
+        "height": 110
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Reação ao golpe (provisória: guarda)",
+      "file": "ataques-v1/guard-reference.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 4,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      }
+    },
+    {
+      "action": "stunned",
+      "label": "Atordoado (provisório: guarda)",
+      "file": "ataques-v1/guard-reference.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 1,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      }
+    },
+    {
+      "action": "knockdown",
+      "label": "Queda (provisória: guarda)",
+      "file": "ataques-v1/guard-reference.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 2,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Estocada e corte",
+      "file": "ataques-v1/light-punch.png",
+      "frames": 8,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 20,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            2
+          ],
+          "bounds": {
+            "x": 182,
+            "y": 265,
+            "width": 58,
+            "height": 45
+          }
+        },
+        {
+          "frames": [
+            5
+          ],
+          "bounds": {
+            "x": 201,
+            "y": 150,
+            "width": 44,
+            "height": 70
+          }
+        }
+      ]
+    },
+    {
+      "action": "heavy-punch",
+      "label": "Investida de espada",
+      "file": "ataques-v1/heavy-punch.png",
+      "frames": 8,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      },
+      "attack": {
+        "frames": [
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 129,
+          "y": 285,
+          "width": 100,
+          "height": 50
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 35
+      }
+    },
+    {
+      "action": "low-kick",
+      "label": "Corte baixo",
+      "file": "ataques-v1/low-kick.png",
+      "frames": 6,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 16,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 240,
+        "y": 196,
+        "width": 135,
+        "height": 164
+      },
+      "attack": {
+        "frames": [
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 171,
+          "y": 295,
+          "width": 65,
+          "height": 40
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          2
+        ],
+        "distance": 25
+      }
+    },
+    {
+      "action": "shot",
+      "label": "Tiro de pistola",
+      "file": "ataques-v1/shot.png",
+      "frames": 12,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      },
+      "travel": {
+        "frames": [
+          3,
+          4
+        ],
+        "distance": 20
+      }
+    },
+    {
+      "action": "special",
+      "label": "Chama o Flecha Negra (provisório: guarda)",
+      "file": "ataques-v1/guard-reference.png",
+      "frames": 1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "frameRate": 2,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 230,
+        "y": 160,
+        "width": 165,
+        "height": 200
+      }
+    }
+  ]
+}
