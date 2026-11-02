@@ -100,10 +100,16 @@ export function instalarNitidez(game: Phaser.Game, area: HTMLElement): void {
   let espera: number | undefined;
   const reajustar = (): void => {
     if (!game.isBooted || !game.canvas) return;
+    // O Phaser guarda a medida da área e só a renova no próprio ritmo: medir agora.
+    game.scale.getParentBounds();
     const larguraLogica = Math.round(game.scale.width / escalaAtual);
     const alturaLogica = Math.round(game.scale.height / escalaAtual);
     const nova = escalaPara(larguraLogica, alturaLogica, area);
-    if (Math.abs(nova - escalaAtual) < 0.01) return;
+    if (Math.abs(nova - escalaAtual) < 0.01) {
+      // Mesma escala, área nova: só reencaixa o canvas nela.
+      game.scale.refresh();
+      return;
+    }
     escalaAtual = nova;
     const width = Math.round(larguraLogica * nova);
     const height = Math.round(alturaLogica * nova);
@@ -117,9 +123,11 @@ export function instalarNitidez(game: Phaser.Game, area: HTMLElement): void {
     window.clearTimeout(espera);
     espera = window.setTimeout(reajustar, 150);
   };
-  window.addEventListener('resize', aoMudar);
+  // A área muda com a janela e também com a gaveta de debug empurrando o jogo.
+  const observador = new ResizeObserver(aoMudar);
+  observador.observe(area);
   game.events.once(Phaser.Core.Events.DESTROY, () => {
-    window.removeEventListener('resize', aoMudar);
+    observador.disconnect();
     window.clearTimeout(espera);
   });
 }

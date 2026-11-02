@@ -548,3 +548,6 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **Print em branco no celular emulado era carregamento.** Culpei a largura
   com fração de pixel; era o print saindo antes de o menu abrir (~6 s).
   Antes de concluir causa visual, conferir a cena ativa. (2026-11-01)
+- **Ferramenta de debug fica ao lado do jogo, não por cima.** A gaveta que
+  cobria a tela incomodou; aberta, ela empurra o jogo e o canvas se refaz na
+  área que sobra. (2026-11-02)

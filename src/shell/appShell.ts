@@ -180,6 +180,8 @@ export function createApp(root: HTMLElement): void {
     debugPanel?.classList.toggle('is-aberto', gavetaAberta);
     debugPanel?.setAttribute('aria-hidden', String(!gavetaAberta));
     debugAba?.classList.toggle('is-aberto', gavetaAberta);
+    // Aberta, a gaveta empurra o jogo para o lado em vez de cobri-lo.
+    appShell?.classList.toggle('com-gaveta', gavetaAberta);
   };
   const alternarGaveta = (): void => {
     gavetaAberta = !gavetaAberta;

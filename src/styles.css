@@ -290,7 +290,7 @@ input {
 }
 
 .app-shell--game-only .game-root {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   min-height: 100vh;
   border: none;
@@ -299,7 +299,16 @@ input {
 
 /* ─────────────────────────────  Debug panel  ──────────────────────────── */
 
-/* Em dev o console é uma gaveta por cima do jogo, fechada por padrão. */
+/* Em dev o console é uma gaveta ao lado do jogo, fechada por padrão. Aberta,
+   ela empurra o jogo: a área encolhe e o canvas se refaz nela (nitidez.ts). */
+.app-shell--game-only .game-host {
+  transition: right 160ms ease-out;
+}
+
+.app-shell.com-gaveta .game-host {
+  right: min(380px, 92vw);
+}
+
 .debug-gaveta {
   position: fixed;
   top: 0;

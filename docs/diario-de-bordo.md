@@ -3073,3 +3073,22 @@ para a próxima, depende de direção dele.
 **Em aberto:** redesenho do menu e dos cartões; tela preta de ~4 s enquanto
 carrega (a splash escondia); se o clique ainda falhar para ele, em que tela.
 A outra sessão commitou o Guerreiro (6c08089, 9992aa2) e terminou.
+
+## 2026-11-02: gaveta de debug empurra o jogo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Preciso que o menu de debug empurre a tela para o lado. da
+forma que está hoje ele só tampa a tela."
+**Feito:** gaveta aberta põe `com-gaveta` no shell e o host do jogo encolhe
+pela largura dela (transição de 160 ms). A escala de desenho passa a ouvir a
+área do jogo por `ResizeObserver` (antes só a janela) e mede de novo a área
+antes de reencaixar, porque o Phaser guarda a medida antiga.
+**Verificado:** `npm run check`. Chrome real 1536x730 a 125%: fechada, canvas
+1296x730 de CSS; aberta, 1156x650 terminando onde a gaveta começa (1156) e
+desenhado em 1445x813 (pixel com pixel); fechando, volta a 1296x730. Mouse
+seleciona os cinco botões nos dois estados.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** gaveta por cima do jogo.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** visual do menu (aguarda direção); tela preta enquanto carrega.
