@@ -540,3 +540,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **Lutador pisa no gramado, abaixo da linha lateral.** Com o pé na linha,
   parecia estar fora do campo. Chão do estádio de 0,92 para 0,96; o fundo
   ficou onde estava (recuo 89). (2026-11-01)
+- **Canvas casa pixel com pixel com a tela, nem maior nem menor.** Medi a
+  escala pelo monitor e o canvas ficou maior que a área: o navegador reduzia
+  e serrilhava ("parece imagem printada"). Escala vem da área do jogo e
+  acompanha a janela; arte em pixel usa `smoothPixelArt`. Verificar em Chrome
+  de verdade (headed), não só no headless. (2026-11-01)
+- **Print em branco no celular emulado era carregamento.** Culpei a largura
+  com fração de pixel; era o print saindo antes de o menu abrir (~6 s).
+  Antes de concluir causa visual, conferir a cena ativa. (2026-11-01)

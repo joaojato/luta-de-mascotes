@@ -18,17 +18,22 @@ import { SettingsScene } from '../scenes/SettingsScene';
 
 export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Game {
   const config = GAME_PROFILES[profile];
-  // Canvas na resolução da tela; as cenas seguem em 1280x720 (nitidez.ts).
-  const escala = decidirEscala(config.width, config.height);
+  // Canvas na resolução da área do jogo; as cenas seguem em 1280x720 (nitidez.ts).
+  const canvas = decidirEscala(config.width, config.height, parent);
 
   const game = new Phaser.Game({
     type: Phaser.WEBGL,
     parent,
-    width: config.width * escala,
-    height: config.height * escala,
+    width: canvas.width,
+    height: canvas.height,
     backgroundColor: '#020617',
     transparent: true,
     roundPixels: false,
+    // A arte é pixel art ampliada ~2x: pixel nítido, só a borda entre eles
+    // suavizada. O filtro linear de antes borrava tudo.
+    render: {
+      smoothPixelArt: true
+    },
     // Avoid Phaser's default 120-frame delta cooldown making startup gameplay run in slow motion.
     fps: {
       target: 60,
@@ -63,7 +68,7 @@ export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Ga
     ]
   });
 
-  instalarNitidez(game);
+  instalarNitidez(game, parent);
   guardKeyboardWhileEditing(game);
 
   if (import.meta.env.DEV) {

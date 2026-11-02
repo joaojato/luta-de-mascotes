@@ -3040,3 +3040,36 @@ luta; o chute que seguia o adversário.
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** publicar no Vercel (precisa de "pode publicar").
+
+## 2026-11-01: canvas pixel com pixel e filtro de pixel art
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "o seletor com o mouse no menu está muito quebrado, ele não
+clica nos botões e fora isso está descentralizado. De forma geral tudo nesse
+menu feio e outros elementos do jogo parecem imagens printadas (qualidade
+baixa)". Ver se a outra sessão já tinha terminado.
+**Feito:** a escala de desenho vinha do monitor inteiro: na tela dele
+(1536x730 a 125%) o canvas era 1920x1080 e aparecia em 1620x912, reduzido
+com `image-rendering: pixelated`, que joga pixel fora. Agora a escala vem da
+área do jogo (`decidirEscala(..., parent)`), sem arredondar em quartos, de
+0,5x a 3x, e acompanha a janela quando ela muda de tamanho (zoom das câmeras
+das cenas rodando). A arte é pixel art ampliada ~2x e o filtro linear
+borrava: `render.smoothPixelArt` do Phaser 4 (pixel nítido, borda suave).
+Canvas com `image-rendering: auto`.
+**Verificado:** `npm run check` (31 arquivos de teste, 295 testes, build).
+Chrome de verdade nesta máquina (janela maximizada, 125%): canvas 1622x913
+para 1620x912 reais; mouse seleciona os cinco botões do menu e o clique em
+Torneios abre Torneios; janela reduzida para 1100x650 refaz o canvas em
+1100x619 e o mouse segue certo; recorte do Urubu na luta com contorno e
+torcida nítidos. Celular emulado: canvas 2532x1170, menu aparece. Não
+consegui reproduzir o clique falhando; as recargas do Vite causadas pela
+outra sessão interrompiam meus testes no meio.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** escala pelo monitor (da sessão
+anterior), filtro linear nas texturas.
+**Aprovado explicitamente:** nada.
+**Atrito:** "tudo nesse menu feio": o visual do menu (caixas, cartões) ficou
+para a próxima, depende de direção dele.
+**Em aberto:** redesenho do menu e dos cartões; tela preta de ~4 s enquanto
+carrega (a splash escondia); se o clique ainda falhar para ele, em que tela.
+A outra sessão commitou o Guerreiro (6c08089, 9992aa2) e terminou.

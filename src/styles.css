@@ -249,8 +249,9 @@ input {
 
 .game-root canvas {
   display: block;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+  /* O canvas já nasce do tamanho da área (nitidez.ts); se a janela mudar,
+     o navegador suaviza em vez de jogar pixel fora. */
+  image-rendering: auto;
   position: relative;
   z-index: 1;
 }
