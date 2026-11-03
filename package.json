@@ -12,7 +12,8 @@
     "sprite": "python scripts/sprite.py",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "npm run typecheck && npm test && npm run build"
+    "check": "npm run typecheck && npm test && npm run build",
+    "galeria": "node scripts/galeria.mjs"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "1.0.1",

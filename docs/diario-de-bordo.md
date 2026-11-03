@@ -3376,3 +3376,26 @@ contra o Urubu: corte rápido acerta a 70, 100, 150 e 190 px; baixo a 60,
 **Atrito:** nenhum.
 **Em aberto:** o corte baixo alcança pouco além do próprio corpo (o
 desenho); se ficar curto na luta, é pedido de arte, não de caixa.
+
+## 2026-11-03: galeria para ver o que o Codex está gerando
+
+**Marco:** 2, segue em andamento.
+**Pedido:** rodar um personagem pelo Codex daqui enquanto o chat lateral faz
+outro, com "pelo menos uma forma de ver" as imagens.
+**Feito:** `npm run galeria` (`scripts/galeria.mjs`, sem dependência nova):
+página em http://localhost:5199 que lista, da mais nova para a mais antiga,
+o bruto de `~/.codex/generated_images/`, as prévias de `output/` (inclusive
+`revisao.html`) e as sheets aplicadas em `public/assets/lutadores/`. Atualiza
+a cada 4 s e marca as novas. Conferido também que o `codex.exe` vem dentro da
+extensão, está logado e tem `image_generation` ligado, então o Claude pode
+disparar `codex exec` em paralelo ao chat lateral.
+**Verificado:** `npm run check` (33 arquivos, 312 testes, build). Galeria
+respondeu 200, listou 120 arquivos (o Gremista postura v7 do chat lateral no
+topo), serviu PNG e recusou caminho com `..`.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** `--aguardar` do sprite.py e o `coxa_art_v2.py` pegam "a imagem
+mais nova" de pastas compartilhadas; com duas sessões em paralelo, uma pode
+pegar a imagem da outra.
+**Em aberto:** primeiro personagem pelo `codex exec` ainda não escolhido.
