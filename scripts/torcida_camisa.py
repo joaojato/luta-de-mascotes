@@ -5,7 +5,8 @@ a camisa entra depois, por cima. Este script pinta, em cada um dos 40
 quadros, uma camiseta de manga curta no tronco, em magenta com a sombra da
 pele, e o motor troca o magenta pela estampa do clube de cada lado
 (src/game/torcida.ts, pintarChave). A animação fica pixel por pixel a
-aprovada; só a pele do tronco muda de cor.
+aprovada; só a pele do tronco muda de cor. Depois cada célula é ampliada
+até o tamanho do atlas antigo (AMPLIACAO).
 
     python scripts/torcida_camisa.py            gera atlas e prévia
     python scripts/torcida_camisa.py --sem 3 9  deixa os tipos 3 e 9 sem camisa
@@ -31,6 +32,11 @@ CEL_L, CEL_A = 64, 80
 MANGA = 6  # quanto a camiseta abre além da cintura na altura dos ombros
 # Brilho do magenta no atlas antigo: metade em 255, o mais escuro perto de 176.
 BRILHO_MIN, BRILHO_MAX = 0.62, 1.0
+# A v3 veio desenhada menor na célula (mediana de 48 px de altura contra 55 no
+# atlas antigo) e a arquibancada encolheu na Luta (João, 03/11/2026). Cada
+# célula é ampliada com o pé fixo no meio da base, sem misturar cores, para a
+# chave magenta continuar exata.
+AMPLIACAO = 55 / 48
 
 
 def lum(p):
@@ -163,6 +169,18 @@ def vestir(origem, sem):
     return im, relatorio
 
 
+def ampliar(im):
+    """Amplia cada célula por AMPLIACAO, ancorada no meio da base."""
+    saida = Image.new('RGBA', im.size)
+    largura, altura = round(CEL_L * AMPLIACAO), round(CEL_A * AMPLIACAO)
+    sobra_x = (largura - CEL_L) // 2
+    for y0 in range(0, im.height, CEL_A):
+        for x0 in range(0, im.width, CEL_L):
+            cel = im.crop((x0, y0, x0 + CEL_L, y0 + CEL_A)).resize((largura, altura), Image.NEAREST)
+            saida.paste(cel.crop((sobra_x, altura - CEL_A, sobra_x + CEL_L, altura)), (x0, y0))
+    return saida
+
+
 def previa(original, vestido):
     """Original, vestido e vestido com uma estampa de teste, lado a lado, ampliados."""
     def pintado(cor):
@@ -186,8 +204,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--sem', type=int, nargs='*', default=[], help='tipos (0 a 9) que ficam sem camisa')
     args = ap.parse_args()
-    original = Image.open(ORIGEM).convert('RGBA')
+    original = ampliar(Image.open(ORIGEM).convert('RGBA'))
     vestido, relatorio = vestir(ORIGEM, set(args.sem))
+    vestido = ampliar(vestido)
     vestido.save(DESTINO)
     PREVIA.mkdir(parents=True, exist_ok=True)
     previa(original, vestido).save(PREVIA / 'contato.png')

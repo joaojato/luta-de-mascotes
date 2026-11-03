@@ -570,3 +570,9 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   (magenta). Atlas novo de torcida entra pela camisa em magenta
   (`scripts/torcida_camisa.py` veste por cima sem redesenhar), e o teste em
   `torcida.test.ts` derruba atlas sem chave (2026-11-03).
+
+- **Arte nova de torcida tem o tamanho da antiga.** A v3 chegou desenhada
+  menor na mesma célula e a arquibancada encolheu na Luta sem ninguém pedir;
+  o João notou comparando com o Vercel. Atlas novo de torcedor entra medido
+  contra `torcedores.png` (altura mediana do desenho na célula), e o teste em
+  `torcida.test.ts` cobra (2026-11-03).

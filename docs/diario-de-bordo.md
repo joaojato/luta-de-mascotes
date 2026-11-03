@@ -3423,3 +3423,28 @@ com a comemoração nova.
 **Atrito:** o pedido "sem camisa" foi lido como figurino final.
 **Em aberto:** um ou dois pixels de pele na dobra da barriga do tipo 5, que
 somem na escala 0,32 do jogo.
+
+## 2026-11-03: torcida da comemoração v3 do tamanho de antes
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "a torcida ficou diferente de como era antes. Olhe o tamanho
+dos torcedores na versão publicada" (print do localhost ao lado do Vercel).
+**Feito:** causa medida: a v3 foi desenhada menor dentro da mesma célula
+64×80 (mediana de 48 px de altura contra 55 no atlas antigo, uns 86%), e a
+cena usa a mesma escala para as duas. `scripts/torcida_camisa.py` ganhou
+`ampliar`: cada célula cresce 55/48 com o pé fixo no meio da base, sem
+misturar cores (a chave magenta continua exata). Nada sai da célula (x de 3
+a 62, topo em 16). Bandeira e sinalizador continuam no lugar, porque são
+posicionados pela célula. Teste novo: a altura mediana do torcedor no atlas
+carregado fica a 2 px da do atlas antigo.
+**Verificado:** `npm run check` (33 arquivos, 315 testes, build). O teste
+novo falhou com 7 px de diferença antes da ampliação. Luta Urubu x
+Almirante pelo navegador: arquibancada no tamanho do Vercel, com a
+comemoração e as camisas dos dois lados.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o tamanho menor da torcida v3.
+**Aprovado explicitamente:** nada ainda.
+**Atrito:** o meu servidor de teste dividia a porta 5199 com a galeria do
+Codex (`scripts/galeria.mjs`); a página abria a galeria, não o jogo.
+Servidor de teste agora na 5198.
+**Em aberto:** nada.

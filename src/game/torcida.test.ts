@@ -182,4 +182,31 @@ describe('atlas da torcida que a Luta carrega', () => {
       }
     }
   });
+
+  // A v3 chegou desenhada menor na célula e a arquibancada encolheu na Luta
+  // (João, 03/11/2026): o torcedor tem o tamanho do atlas antigo.
+  it('desenha o torcedor do tamanho do atlas antigo', () => {
+    const { celulaLargura: cl, celulaAltura: ca } = dados.folhas.torcedores;
+    const alturaMediana = (png: string): number => {
+      const { largura, altura, pixels } = lerPng(resolve(pasta, png));
+      const alturas: number[] = [];
+      for (let cy = 0; cy < altura; cy += ca) {
+        for (let cx = 0; cx < largura; cx += cl) {
+          let topo = ca;
+          let base = -1;
+          for (let y = 0; y < ca; y += 1) {
+            for (let x = 0; x < cl; x += 1) {
+              if (pixels[((cy + y) * largura + cx + x) * 4 + 3] > 40) {
+                topo = Math.min(topo, y);
+                base = y;
+              }
+            }
+          }
+          alturas.push(base - topo + 1);
+        }
+      }
+      return alturas.sort((a, b) => a - b)[Math.floor(alturas.length / 2)];
+    };
+    expect(Math.abs(alturaMediana(arquivo) - alturaMediana('torcedores.png'))).toBeLessThanOrEqual(2);
+  });
 });
