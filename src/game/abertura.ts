@@ -56,7 +56,7 @@ export const QUADROS_POR_SEGUNDO_DO_MOSAICO = 12;
 export const SAIDA_ANTES_DO_FIM_MS = 150;
 
 /** Cada passo do olho de um lado para o outro. */
-export const PASSO_DO_OLHAR_MS = 70;
+export const PASSO_DO_OLHAR_MS = 55;
 
 /** Quanto o olho fica na direita antes de voltar. */
 export const OLHAR_PARADO_MS = 450;

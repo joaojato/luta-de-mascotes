@@ -3770,3 +3770,17 @@ na direita sem resto de contorno.
 do contorno para trás; resolvido tratando a pupila como redonda.
 **Em aberto:** ele ver no navegador se o ritmo (70 ms por passo, 450 ms na
 direita) está bom. A abertura mínima subiu de 4,8 s para 6,1 s.
+
+## 2026-11-03: olhar da Resenha um pouco mais rápido
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Consegue deixar o movimento um pouco mais rápido? mas pouca
+coisa mesmo".
+**Feito:** passo do olhar de 70 para 55 ms (ida e volta de 280 para 220 ms
+de movimento). A espera de 1 s e os 450 ms parado na direita ficaram.
+**Verificado:** `npm run check` (46 arquivos, 403 testes, build).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o ritmo de 70 ms por passo.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** nada.
