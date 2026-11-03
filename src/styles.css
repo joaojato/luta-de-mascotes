@@ -1290,8 +1290,17 @@ html.com-toque *::after {
   touch-action: manipulation;
 }
 
-.toque__item[hidden] {
+.toque__item[hidden],
+.toque__caixa[hidden] {
   display: none;
+}
+
+.toque__titulo {
+  margin: 0 0 2px;
+  font-family: var(--font-readout);
+  font-size: 18px;
+  color: var(--ink);
+  text-align: center;
 }
 
 .toque__item:active,

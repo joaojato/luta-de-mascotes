@@ -143,6 +143,11 @@ meio do dash para na hora e entra em guarda. Arte pedida ao Codex
 
 Luta: 230 de vida para todos os lutadores, round de 99 segundos.
 
+Empate (João, 03/11/2026): ninguém leva o round. Vale para o tempo esgotado
+com a mesma vida e para o duplo K.O. (os dois caem no mesmo quadro). O mesmo
+round recomeça, quantas vezes for preciso, até alguém ganhar. A regra vive
+em `src/game/round.ts`.
+
 Ritmo (João, 28/10/2026, contra o spam de soco rápido):
 
 - Soco rápido só emenda outro se encostou (acerto ou guarda); no vazio, a
@@ -284,6 +289,11 @@ luta acontece. Sem placa de patrocínio legível.
 
 ## Telas da v1
 
+0. Abertura (João, 03/11/2026): a assinatura de quem fez o jogo, enquanto
+   tudo carrega, com a barra de carregamento embaixo. Hoje é texto, os nomes
+   do grupo e "apresentam"; a animação da logo da desenvolvedora entra no
+   lugar dele (`src/scenes/BootScene.ts`, `src/game/abertura.ts`). Fica no
+   mínimo 2,6 s; tecla ou clique pula depois de carregar.
 1. Título (nome do jogo, "aperte qualquer tecla").
 2. Seleção de mascote (retrato, nome, dois cursores).
 3. Luta (barras de vida, timer 99, contador de rounds, "Round 1, Fight!",

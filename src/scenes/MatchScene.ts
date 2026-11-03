@@ -29,6 +29,7 @@ import { torcidaValida } from '../game/torcida';
 import { montarTorcida } from '../game/torcidaCena';
 import { BiribaCena } from '../game/biribaCena';
 import { escapou } from '../game/reforcoRota';
+import { resultadoPorKO, resultadoPorTempo } from '../game/round';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
 import { spawnHitSpark, type VfxColor } from '../game/vfx';
 import { BaseScene } from './BaseScene';
@@ -44,7 +45,7 @@ const CAMERA_LERP = 0.14;
 
 const ROUNDS_TO_WIN = 2;
 // Seconds on the round clock. When it expires the fighter with more health wins
-// (a tie is a draw and replays the round).
+// (a tie is a draw and replays the round, as is a double K.O.).
 const ROUND_SECONDS = 99;
 const HUD_DEPTH = 100;
 const BANNER_DEPTH = 200;
@@ -420,17 +421,15 @@ export class MatchScene extends BaseScene {
     }
   }
 
-  /** Ends the round when either fighter is knocked out. */
+  /** Ends the round when a fighter is knocked out; both at once is a draw. */
   private checkForKnockout(): void {
     if (this.config.treino) {
       this.levantarNoTreino();
       return;
     }
-    if (this.p1.isDefeated) {
-      this.endRound(2);
-    } else if (this.p2.isDefeated) {
-      this.endRound(1);
-    }
+    const resultado = resultadoPorKO(this.p1.isDefeated, this.p2.isDefeated);
+    if (resultado === 'empate') this.drawRound('ko');
+    else if (resultado) this.endRound(resultado);
   }
 
   /**
@@ -452,26 +451,22 @@ export class MatchScene extends BaseScene {
 
   /** Decides a timed-out round by comparing remaining health. */
   private resolveTimeOut(): void {
-    const p1 = this.p1.health01;
-    const p2 = this.p2.health01;
-
-    if (p1 > p2) {
-      this.endRound(1, 'TEMPO ESGOTADO', TEXTO_DESTAQUE);
-    } else if (p2 > p1) {
-      this.endRound(2, 'TEMPO ESGOTADO', TEXTO_DESTAQUE);
-    } else {
-      this.drawRound();
-    }
+    const resultado = resultadoPorTempo(this.p1.health01, this.p2.health01);
+    if (resultado === 'empate') this.drawRound('tempo-esgotado');
+    else this.endRound(resultado, 'TEMPO ESGOTADO', TEXTO_DESTAQUE);
   }
 
-  /** Handles a drawn round (timeout with equal health): replays the round. */
-  private drawRound(): void {
+  /**
+   * Handles a drawn round (equal health on time, or a double K.O.): nobody
+   * scores and the same round replays until someone wins it.
+   */
+  private drawRound(somDoFim: 'ko' | 'tempo-esgotado'): void {
     if (this.phase !== 'fighting') {
       return;
     }
 
     this.phase = 'roundEnd';
-    this.som('tempo-esgotado');
+    this.som(somDoFim);
     this.showBanner('EMPATE', TEXTO_CLARO, 1.1);
     this.time.delayedCall(1100, () => this.startRound());
   }

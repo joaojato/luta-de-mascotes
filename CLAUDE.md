@@ -155,6 +155,9 @@ Cada uma tem nome para poder ser cobrada depois.
   história (`docs/gdd.md`, "Museu"). Outra em 03/11/2026: música o jogo
   inteiro, que acelera com a vida na luta, e efeitos gravados com o som de
   cada mascote (`docs/superpowers/specs/2026-11-03-som-e-musica-design.md`).
+  Outra em 03/11/2026: a abertura com barra de carregamento (e, depois, a
+  logo da desenvolvedora) e o menu Controles no celular (`docs/gdd.md`,
+  "Telas da v1").
 
 ## Anti-referência
 

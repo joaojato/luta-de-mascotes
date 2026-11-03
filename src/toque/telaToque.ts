@@ -167,15 +167,20 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     </button>`
     ).join('')}
     <div class="toque__painel" hidden>
-      <div class="toque__caixa" role="dialog" aria-label="Menu">
+      <div class="toque__caixa" data-tela="principal" role="dialog" aria-label="Menu">
         <button class="toque__item" data-acao="continuar" type="button">Continuar</button>
         <button class="toque__item" data-acao="voltar" type="button">Voltar / sair da luta</button>
         <button class="toque__item" data-acao="tela-cheia" type="button">Tela cheia</button>
+        <button class="toque__item" data-acao="abrir-controles" type="button">Controles</button>
+      </div>
+      <div class="toque__caixa" data-tela="controles" role="dialog" aria-label="Controles" hidden>
+        <p class="toque__titulo">Controles</p>
         <button class="toque__item" data-acao="modo" type="button"></button>
         <button class="toque__item" data-acao="cara" type="button"></button>
         <button class="toque__item" data-acao="nomes" type="button"></button>
         <button class="toque__item" data-acao="opacidade" type="button"></button>
         <button class="toque__item" data-acao="editar" type="button">Ajustar botões</button>
+        <button class="toque__item toque__item--forte" data-acao="fechar-controles" type="button">Voltar</button>
       </div>
     </div>
     <div class="toque__editor" hidden>
@@ -408,9 +413,16 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   camada.addEventListener('contextmenu', semGestoDoNavegador);
 
   // ---------------------------------------------------------------- menu
+  // As opções de controle ficam num menu próprio, aberto por Controles (João, 03/11/2026).
+  const mostrarTela = (tela: 'principal' | 'controles'): void => {
+    painel.querySelectorAll<HTMLElement>('[data-tela]').forEach((caixa) => {
+      caixa.hidden = caixa.dataset.tela !== tela;
+    });
+  };
   const abrirMenu = (): void => {
     soltarTudo();
     jogo.pausar();
+    mostrarTela('principal');
     painel.hidden = false;
   };
   const fecharMenu = (): void => {
@@ -427,6 +439,8 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
 
   const acoes: Record<string, () => void> = {
     continuar: fecharMenu,
+    'abrir-controles': () => mostrarTela('controles'),
+    'fechar-controles': () => mostrarTela('principal'),
     voltar: () => {
       fecharMenu();
       teclaEvento('keydown', 'ESC');
