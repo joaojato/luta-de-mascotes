@@ -3280,3 +3280,24 @@ de desviar).
 **Atrito:** nenhum.
 **Em aberto:** ver na tela o trajeto e os três tiros; na volta ele ainda
 reaparece pela direita do fundo (regra do retorno) e cruza o fundo até o posto.
+
+## 2026-11-02: publicar no git o que ficou pronto
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Publica no git o que está pronto hoje."
+**Feito:** três commits com o que estava solto na pasta: cortes
+horizontais v5 do Gremista (soco e chute baixo com a lâmina atravessando
+em profundidade, `docs/gremista-horizontais-v5.md`, caixas remedidas no
+JSON, que já apontava para a arte nova); o Mosqueteiro renomeado para
+Mosqueteiro Paulista (JSON e GDD); bases v1 a v5 do Gremista citadas em
+`docs/gremio-base-v1.md` e os scripts de arte do Gremista, do Flecha Negra
+e do Guerreiro. `public/configs/fighter-playground.json` ficou de fora:
+alteração de outra sessão, parada desde 01/11.
+**Verificado:** typecheck, 308 testes e build ok no estado commitado.
+Vercel não foi atualizada (pedido era só o git).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o nome "Mosqueteiro".
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** decidir o `fighter-playground.json`; publicar na Vercel
+quando ele pedir.
