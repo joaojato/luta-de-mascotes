@@ -555,3 +555,4 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   o soco e a voadora chegaram e o chute baixo foi refeito durante a sessão.
   Antes de ligar arte do Codex, conferir o `manifest-art.json` (sha256 dos
   arquivos e `status`) e só então medir caixas. (2026-11-02)
+- Golpe com mais de uma arma desenhada dispara tudo o que o desenho mostra: o João cobra cada tiro visto na sheet (2026-11-02).

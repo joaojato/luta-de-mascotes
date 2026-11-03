@@ -542,6 +542,9 @@ volta pelo fundo até o posto. 30 de dano por flecha, empurrão 120.
 `coesao-v3/` (`docs/gremista-coesao-v3.md`), cabelo e barba pretos, com
 avanço e recuo rápidos, salto, defesas, reação, atordoado, queda, o sinal do
 especial e soco no ar e voadora próprios (corte no ar e estocada no ar). As
-pistolas duram 1430 ms, com o tempo de cada quadro no JSON. Caixas de acerto
+pistolas duram 1430 ms, com o tempo de cada quadro no JSON, e **dão dois
+tiros** (João, 02/11/2026): um da pistola erguida no quadro 3 e outro da
+pistola da cintura no quadro 4, 16 de dano cada (32 se os dois entrarem;
+fica acima do chute baixo, como pede a escala). Caixas de acerto
 medidas na lâmina de cada quadro de contato (`attackSpans`). `ataques-v1/`
 fica no disco só como registro; não reaplicar.

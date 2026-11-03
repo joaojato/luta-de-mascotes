@@ -38,7 +38,7 @@
   "combat": {
     "highDamage": 8,
     "lowKickDamage": 15,
-    "kickDamage": 26,
+    "kickDamage": 16,
     "lowDamage": 28,
     "specialDamage": 32
   },
@@ -46,7 +46,18 @@
     "kick": {
       "kind": "projectile",
       "action": "shot",
-      "releaseFrame": 3,
+      "releases": [
+        {
+          "frame": 3,
+          "height": 142,
+          "forward": 118
+        },
+        {
+          "frame": 4,
+          "height": 97,
+          "forward": 52
+        }
+      ],
       "speed": 900
     },
     "special": {
@@ -232,7 +243,7 @@
     {
       "action": "walk-forward",
       "label": "Andar para frente",
-      "file": "coesao-v3/walk-forward.png",
+      "file": "passos-v4/walk-forward.png",
       "frames": 8,
       "frameWidth": 640,
       "frameHeight": 384,
@@ -248,7 +259,7 @@
     {
       "action": "walk-backward",
       "label": "Recuar",
-      "file": "coesao-v3/walk-backward.png",
+      "file": "passos-v4/walk-backward.png",
       "frames": 8,
       "frameWidth": 640,
       "frameHeight": 384,
@@ -436,7 +447,7 @@
     {
       "action": "light-punch",
       "label": "Dois cortes rápidos",
-      "file": "coesao-v3/light-punch.png",
+      "file": "passos-v4/light-punch.png",
       "frames": 8,
       "frameWidth": 640,
       "frameHeight": 384,

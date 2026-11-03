@@ -3189,3 +3189,24 @@ console; pé no gramado na mesma altura do Urubu.
 **Atrito:** nenhum.
 **Em aberto:** só o primeiro tiro das pistolas vira projétil (o segundo,
 no quadro 4, é só desenho); aprovação dele da arte; nome no jogo; Vercel.
+
+## 2026-11-02: as duas pistolas do Gremista disparam
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "A animação do gremio ele precisa dar dois tiros, atualmente ele
+dispara apenas um projetil."
+**Feito:** motor ganhou `releases` no projétil: vários tiros numa ação, cada
+um no seu quadro e do seu cano (genérico, Regra do JSON). Gremista: quadro 3
+da pistola erguida (142 px acima do pé, 118 à frente) e quadro 4 da cintura
+(97 e 52), medidos no clarão. Cada projétil tem assinatura própria (antes,
+todos usavam a do golpe) e o acerto confere o tiro que encosta no alvo, para
+o primeiro, se pulado, não esconder o segundo. Dano 16 por tiro (a escala do
+GDD pede chute básico acima do chute baixo, 15).
+**Verificado:** teste de `shotReleases`; Regra do Tiro lê o primeiro tiro;
+`npm run check` (304 testes). Navegador, contra o Urubu parado: dois
+projéteis no ar em alturas diferentes, 230 → 214 → 198.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** um tiro só virou dois.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** dano dos dois tiros (32 no total) a ajustar se pesar.

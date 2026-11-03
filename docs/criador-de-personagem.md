@@ -77,6 +77,9 @@ voltar com o contato ligeiro, ou rápido para sair (`timing` por quadro)?
 Se o golpe é um tiro, ele anda para a frente ao soltar (Regra do Tiro,
 `travel` nos quadros da soltura). Arma pesada que dá coice, como o mosquete
 do Mosqueteiro, recua (`recuo`) em vez de avançar: é o caso dele?
+Atira mais de uma vez no mesmo golpe, como as duas pistolas do Mosqueteiro
+Gaúcho? Cada tiro é uma entrada de `releases` (quadro, altura e distância
+do cano, medidos no clarão desenhado), e o dano é por tiro.
 
 Golpe próprio no lugar de um padrão (já existem: bicada do Urubu
 `beak-pull`, cachimbo do Saci `pipe-throw`, lata de cerveja do Vovô Coxa
@@ -244,3 +247,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 01/11/2026: `nomes` (nome curto de cada golpe nos botões do celular) e `rosto` (close do retrato na chave).
 - 01/11/2026: `reforco` (NPC de Guarda que sai do fundo no especial, golpeia uma vez e volta ao posto).
 - 02/11/2026: especial `reforco` e `disparos` do NPC de Guarda (o Flecha Negra: três flechas sorteadas, cada uma com o seu escape).
+- 02/11/2026: `releases` no projétil (vários tiros num golpe, cada um do seu cano: as duas pistolas do Gremista).

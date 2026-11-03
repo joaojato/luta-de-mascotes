@@ -40,7 +40,9 @@ import {
   type JumpFrames,
   type DropConfig,
   type ParticleBurst,
-  type ProjectileMoveConfig
+  type ProjectileMoveConfig,
+  type ShotRelease,
+  shotReleases
 } from './moveMechanics';
 import type {
   AttackKind,
@@ -319,7 +321,9 @@ export class Fighter {
   private dashFrom = 0;
   private dashTo = 0;
   private previousSpecialX = 0;
-  private shotReleased = false;
+  private shotsReleased = 0;
+  /** Each projectile has its own signature, so one shot's hit never spends another's. */
+  private shotSerial = 0;
   private projectiles: TravelingProjectile[] = [];
   private grounded = true;
   private locked = false;
@@ -697,10 +701,16 @@ export class Fighter {
         move: 'especial', finisher: true, facing: this.sopro.lado, projectile: true, unblockable: true
       };
     }
-    const shot = this.projectiles.find(projectile => !projectile.connected && !projectile.carrier);
+    const flying = this.projectiles.filter(projectile => !projectile.connected && !projectile.carrier);
+    const rectOf = (projectile: TravelingProjectile) => {
+      const sweep = sweptInterval(projectile.previousX, projectile.x, projectile.width/2);
+      return new Phaser.Geom.Rectangle(sweep.x, projectile.y-projectile.height/2, sweep.width, projectile.height);
+    };
+    // Two pistols: a shot already jumped over must not hide the one behind it.
+    const target = flying.length > 1 ? this.opponent?.getHurtRect() : null;
+    const shot = (target && flying.find(projectile => Phaser.Geom.Intersects.RectangleToRectangle(rectOf(projectile), target))) || flying[0];
     if (shot && !this.defeated) {
-      const sweep = sweptInterval(shot.previousX, shot.x, shot.width/2);
-      return { rect: new Phaser.Geom.Rectangle(sweep.x, shot.y-shot.height/2, sweep.width, shot.height),
+      return { rect: rectOf(shot),
         profile: shot.profile, signature: shot.signature, move: shot.move,
         finisher: shot.profile.kind === 'special', facing: shot.facing, projectile: true, unblockable: shot.unblockable };
     }
@@ -1836,7 +1846,7 @@ export class Fighter {
   private startOneShot(animKey: string): void {
     this.strike = null;
     this.specialClock = 0;
-    this.shotReleased = false;
+    this.shotsReleased = 0;
     this.locked = true;
     this.currentAnimKey = animKey;
     this.currentReverse = false;
@@ -1933,7 +1943,7 @@ export class Fighter {
     // The special itself (the dive, the pounce, the tornado); projectile ones sound at the release.
     this.som('especial', null);
     this.specialClock = 0;
-    this.shotReleased = false;
+    this.shotsReleased = 0;
     this.dashFrom = this.posX;
     this.previousSpecialX = this.posX;
     this.dashTo = this.facing === 1 ? this.maxX : this.minX;
@@ -2198,13 +2208,16 @@ export class Fighter {
         (move.startFrame ?? 2)/animation.frameRate, (move.endFrame ?? 6)/animation.frameRate), this.minX, this.maxX);
       this.sprite.x = this.posX;
       this.updateShadow();
-    } else if (move.kind === 'projectile' && !this.shotReleased && this.specialClock >= (move.releaseFrame ?? 3)/animation.frameRate) {
-      this.shotReleased = true;
-      this.spawnProjectile(move, isSpecial ? 'special' : ATTACK_KIND_OF[this.strike ?? 'soco-forte']);
+    } else if (move.kind === 'projectile') {
+      const releases = shotReleases(move);
+      while (this.shotsReleased < releases.length && this.specialClock >= releases[this.shotsReleased].frame/animation.frameRate) {
+        this.spawnProjectile(move, isSpecial ? 'special' : ATTACK_KIND_OF[this.strike ?? 'soco-forte'], releases[this.shotsReleased]);
+        this.shotsReleased += 1;
+      }
     }
   }
 
-  private spawnProjectile(move: ProjectileMoveConfig, kind: AttackKind): void {
+  private spawnProjectile(move: ProjectileMoveConfig, kind: AttackKind, release?: ShotRelease): void {
     this.som(kind === 'special' ? 'projetil-especial' : 'projetil', 'projetil-lancar');
     const width = move.hitWidth ?? 12;
     const height = move.hitHeight ?? 12;
@@ -2219,19 +2232,19 @@ export class Fighter {
     if (effectKey) {
       // Effect-sheet projectile (pipe, powder cloud): centred at hand height;
       // from behind (the Biriba), it enters at the camera edge behind him.
-      x = fromBehind ? this.behindEdgeX(width / 2) : this.posX + this.facing * (move.launchForward ?? 70) * this.appliedScale;
-      y = this.groundY - (move.launchHeight ?? 110) * this.appliedScale;
+      x = fromBehind ? this.behindEdgeX(width / 2) : this.posX + this.facing * (release?.forward ?? move.launchForward ?? 70) * this.appliedScale;
+      y = this.groundY - (release?.height ?? move.launchHeight ?? 110) * this.appliedScale;
       visual = this.scene.add.sprite(x, y, effectKey, 0)
         .setOrigin(.5, .5).setScale(move.visualScale ?? this.appliedScale).setFlipX(move.mirror !== false && this.facing === 1)
         .setDepth(move.move === 'nuvem' ? CLOUD_DEPTH : this.depthBase+2).play(effectKey);
     } else {
-      x = this.posX+this.facing*(move.visualFile ? width/2+20 : 90*this.appliedScale);
+      x = this.posX+this.facing*(move.visualFile ? width/2+20 : (release?.forward ?? 90)*this.appliedScale);
       if (fromBehind) {
         // Enters from off-screen behind the fighter and sails past them: it comes out of him.
         x = this.behindEdgeX(width / 2);
       }
       const baseline = this.groundY-24*this.appliedScale;
-      y = move.visualFile ? baseline-height/2 : this.groundY-175*this.appliedScale;
+      y = move.visualFile ? baseline-height/2 : this.groundY-(release?.height ?? 175)*this.appliedScale;
       visual = move.visualFile
         ? this.scene.add.sprite(x, baseline, `${this.character.id}-special-effect`, 0)
           .setOrigin(.5, 1).setScale(move.visualScale ?? 2).setFlipX(this.facing === 1)
@@ -2242,7 +2255,7 @@ export class Fighter {
       : move.visualFile || fromBehind ? (this.projectileMaxX-this.projectileMinX+width+512)/speed+1 : 2;
     this.projectiles.push({x, previousX:x, y, vy: -(move.launchVy ?? 0), gravity: move.gravity ?? 0,
       floorY: this.groundY - 24 * this.appliedScale, facing:this.facing, life,
-      signature:this.attackId, visual, width, height, speed,
+      signature:-(++this.shotSerial), visual, width, height, speed,
       profile:{...this.ataque(kind), height:'high', stunMs: move.stunMs}, connected:false,
       move: (move.move as AttackMove | undefined) ?? (kind === 'special' ? 'onda' : 'tiro'),
       persistOnHit:move.persistOnHit ?? false, rangeAfterHit: move.rangeAfterHit ?? 0,

@@ -91,6 +91,12 @@ export interface ProjectileMoveConfig {
   startFrame?: number;
   endFrame?: number;
   releaseFrame?: number;
+  /**
+   * Several shots in one action (the two pistols): one projectile per entry, at
+   * its frame, from its own muzzle (frame px above the ground and ahead of the
+   * fighter). Replaces `releaseFrame`.
+   */
+  releases?: ShotRelease[];
   speed?: number;
   visualFile?: string;
   visualFrames?: number;
@@ -192,6 +198,17 @@ export function strikeTravelStep(travel: StrikeTravel, frame: number, frameMs: n
 }
 
 /** A run of frames (first and last) shown for `ms` each, instead of the frame rate. */
+export interface ShotRelease {
+  frame: number;
+  height?: number;
+  forward?: number;
+}
+
+/** The shots an action lets go of, in order: `releases`, or the single `releaseFrame` (default 3). */
+export function shotReleases(move: Pick<ProjectileMoveConfig, 'releases' | 'releaseFrame'>): ShotRelease[] {
+  return move.releases?.length ? move.releases : [{ frame: move.releaseFrame ?? 3 }];
+}
+
 export interface FrameTiming {
   frames: number[];
   ms: number;

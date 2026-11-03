@@ -178,7 +178,7 @@ describe('registro de lutadores (Regra do JSON)', () => {
         if (!move || move.kind !== 'projectile' || move.spawnFrom === 'behind') return;
         const spec = lutador.actions.find((acao) => acao.action === (move.action ?? padrao[slot]));
         const nome = `${lutador.id} ${spec?.action}`;
-        const solta = move.releaseFrame ?? 0;
+        const solta = move.releases?.[0]?.frame ?? move.releaseFrame ?? 0;
         if (spec?.recuo) {
           expect(spec.recuo.some((r) => r.frames[0] <= solta + 1 && r.frames[1] >= solta), nome).toBe(true);
           return;

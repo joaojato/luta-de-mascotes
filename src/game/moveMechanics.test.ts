@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { passedDropPoint, projectileGrowthProgress, advanceStop, armorAbsorbs, dashConfig, DASH_BACK, DASH_FORWARD, DoubleTapDetector, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, sweptInterval } from './moveMechanics';
+import { passedDropPoint, projectileGrowthProgress, advanceStop, armorAbsorbs, dashConfig, DASH_BACK, DASH_FORWARD, DoubleTapDetector, isPerfectGuard, PERFECT_GUARD_SECONDS, dashPosition, ducksUnder, frameDurations, guardBreakStunMs, guardHolds, jumpFlightFrame, jumpFrames, jumpsOver, meteorDiveStart, specialDodged, strikeTravelStep, shotReleases, sweptInterval } from './moveMechanics';
 
 describe('special traversal and flight timing', () => {
   it('holds the charge position, traverses continuously and stays at the destination during recovery', () => {
@@ -173,5 +173,14 @@ describe('queda do alto (Biriba do Bira, 29/10/2026)', () => {
     expect(passedDropPoint(60, 90, 130, 1)).toBe(false);
     expect(passedDropPoint(500, 460, 480, -1)).toBe(true);
     expect(passedDropPoint(460, 420, 480, -1)).toBe(false);
+  });
+});
+
+describe('vários tiros numa ação (as duas pistolas do Gremista, 02/11/2026)', () => {
+  it('solta um projétil por entrada de `releases`, na ordem; sem ela, o `releaseFrame`', () => {
+    expect(shotReleases({})).toEqual([{ frame: 3 }]);
+    expect(shotReleases({ releaseFrame: 6 })).toEqual([{ frame: 6 }]);
+    const pistolas = [{ frame: 3, height: 142 }, { frame: 4, height: 97 }];
+    expect(shotReleases({ releaseFrame: 9, releases: pistolas })).toEqual(pistolas);
   });
 });
