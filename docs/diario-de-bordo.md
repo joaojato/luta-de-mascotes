@@ -3652,3 +3652,43 @@ texto cinza da PUC.
 a imagem colada no chat não vira arquivo.
 **Em aberto:** confirmar se a PUC reproduzida bate com a imagem dele; se
 não, ele salva o PNG em `referencia/abertura/puc-rio.png`.
+
+## 2026-11-03: mouse da Pausa andando com a câmera e Academia presa ao jogo
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "O jogo continua com um problema de alinhamento de forma geral
+seja no eixo vertical quanto no horizontal, revise o jogo e identifique o
+que não está certo. Além disso o mouse não está sincronizado com o mouse".
+**Feito:** revisão medida no navegador (Playwright no scratchpad, fora do
+repo) em 1536×730 a 125%, 1366×768, 1920×1080, 1600×700, janela
+redimensionada e gaveta de debug aberta. Mouse: em todas as telas o acerto
+bate com o desenho, menos na Pausa da luta. Causa: `setScrollFactor(0, 0,
+true)` no container do botão não chega aos filhos (o `SetAll` do Phaser só
+troca propriedade própria e o fator vem do protótipo), então o desenho ficava
+parado e o acerto andava com a câmera, que no começo do round está rolada
+208 px: em cima de Continuar acendia Recomeçar, e assim por diante.
+`menuPausa.ts` fixa cada filho. Alinhamento: margens do conteúdo medidas em
+dez telas; menu, Pelada, estádio, Seleção, Museu, Ajustes, Torneios,
+Dificuldade e HUD da luta simétricos (diferença de até 9 px vem do cartão
+escolhido crescer 5%). A Academia estava torta: o painel HTML era preso à
+janela (`right: 16px`), passava da borda do jogo com faixa nos lados e
+ficava por baixo da gaveta de debug; cobria a legenda das boxes; e a lista
+de ações (23 no Urubu) descia até 664, por cima do chão e do rodapé. Agora
+o painel se encosta no canto do canvas e acompanha janela e gaveta, a lista
+mostra só o que cabe acima do chão e rola com W/S, a legenda virou uma
+fileira embaixo do chão, e o sprite recuou 40 px para não encostar no painel.
+**Verificado:** `npm run check` (45 arquivos, 389 testes, build). No
+navegador: Pausa com a câmera em 208,5 px, mouse em cima de cada um dos cinco
+botões acende o próprio (antes acendia o vizinho da direita); Academia com
+painel dentro do jogo no shell de jogo (960 a 1400 dentro de 120 a 1416) e
+com a gaveta aberta (747 a 1140 dentro de 0 a 1156), lista de 250 a 607 com
+"knockdown" escolhido, tabela inteira.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** "alinhamento de forma geral" não apontava tela; só a medição
+achou onde estava torto. A Conectar fica deslocada só no estado de erro (sem
+HTTPS some o QR e sobra a caixa da direita); com `dev:celular` o conjunto
+fica no centro. Não mexi.
+**Em aberto:** se ele vê desalinhamento em outra tela, saber qual e o
+tamanho da janela.

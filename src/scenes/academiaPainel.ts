@@ -74,15 +74,13 @@ export class PainelAcademia {
   private esperando: { lado: Lado; comando: ComandoLuta } | null = null;
   private aviso = '';
   private visivel = true;
+  private canvas: HTMLCanvasElement | null = null;
+  private readonly observador = new ResizeObserver(() => this.encaixar());
 
   constructor(private readonly opcoes: PainelAcademiaOpcoes) {
     this.raiz = document.createElement('div');
     Object.assign(this.raiz.style, {
       position: 'fixed',
-      top: '72px',
-      right: '16px',
-      width: 'min(440px, calc(100vw - 32px))',
-      maxHeight: 'calc(100vh - 120px)',
       overflowY: 'auto',
       background: 'rgba(11, 16, 32, 0.94)',
       border: '1px solid #334155',
@@ -97,8 +95,29 @@ export class PainelAcademia {
     document.body.appendChild(this.raiz);
     // Captura antes do Phaser: enquanto espera tecla, a Academia não reage.
     window.addEventListener('keydown', this.aoTeclar, true);
+    // Preso à borda do jogo, que muda com a janela e com a gaveta de debug.
+    this.canvas = document.querySelector<HTMLCanvasElement>('#game-root canvas');
+    if (this.canvas) this.observador.observe(this.canvas);
+    window.addEventListener('resize', this.encaixar);
+    this.encaixar();
     this.render();
   }
+
+  /**
+   * Encosta o painel no canto de cima à direita do jogo, não da janela: com
+   * faixa dos lados (tela mais larga que 16:9) ou a gaveta de debug aberta,
+   * o jogo não vai até a borda da janela e o painel ficava fora dele.
+   */
+  private readonly encaixar = (): void => {
+    const jogo = this.canvas?.getBoundingClientRect() ?? new DOMRect(0, 0, window.innerWidth, window.innerHeight);
+    const largura = Math.min(440, Math.max(300, jogo.width * 0.34));
+    Object.assign(this.raiz.style, {
+      left: `${Math.round(jogo.right - 16 - largura)}px`,
+      top: `${Math.round(jogo.top + 72)}px`,
+      width: `${Math.round(largura)}px`,
+      maxHeight: `${Math.round(Math.max(160, jogo.height - 120))}px`
+    } satisfies Partial<CSSStyleDeclaration>);
+  };
 
   /** Lutador que a Academia está mostrando (destaca a linha na tabela). */
   mostrarLutador(characterId: string): void {
@@ -118,6 +137,8 @@ export class PainelAcademia {
 
   destroy(): void {
     window.removeEventListener('keydown', this.aoTeclar, true);
+    window.removeEventListener('resize', this.encaixar);
+    this.observador.disconnect();
     this.raiz.remove();
   }
 

@@ -129,7 +129,14 @@ export class MenuPausa {
         onClick: () => this.confirmar(i),
         onHover: () => this.escolher(i)
       });
-      botao.group.setScrollFactor(0, 0, true).setDepth(profundidade);
+      // Fixo um por um: o `setScrollFactor(0, 0, true)` do container não chega
+      // aos filhos (o Phaser só troca propriedade própria, e o fator vem do
+      // protótipo). O desenho ficava parado e o mouse andava com a câmera da
+      // luta: em cima de Continuar, acendia Recomeçar.
+      botao.group.setScrollFactor(0).setDepth(profundidade);
+      for (const filho of botao.group.list) {
+        (filho as unknown as Phaser.GameObjects.Components.ScrollFactor).setScrollFactor(0);
+      }
       this.botoes.push(botao);
     });
     if (!controlesDeToqueAtivos()) {

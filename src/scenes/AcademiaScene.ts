@@ -27,6 +27,10 @@ import { BaseScene } from './BaseScene';
 const SPRITE_SCALE = 2;
 const FLOOR_Y = 640;
 const LEFT_COLUMN_X = 24;
+/** A lista de ações começa aqui e para antes do chão; o que não cabe rola com W/S. */
+const LISTA_Y = 250;
+const LINHA_DA_LISTA = 20;
+const LINHAS_DA_LISTA = Math.floor((FLOOR_Y - 8 - LISTA_Y) / LINHA_DA_LISTA);
 
 const BOUNDS_COLORS: Record<keyof FighterBoundsVisibility, number> = Object.fromEntries(
   FIGHTER_BOUNDS_FIELDS.map((field) => [field.id, Number.parseInt(field.color.slice(1), 16)])
@@ -59,7 +63,8 @@ export class AcademiaScene extends BaseScene {
 
     const character = this.character();
     this.sprite = this.add
-      .sprite(this.tela.centerX - 40, FLOOR_Y, character.animations[0].sheet.key, 0)
+      // Entre a lista de ações e o painel da direita, com folga dos dois lados.
+      .sprite(this.tela.centerX - 80, FLOOR_Y, character.animations[0].sheet.key, 0)
       .setOrigin(character.anchor.x, character.anchor.y)
       .setScale(SPRITE_SCALE);
 
@@ -72,22 +77,21 @@ export class AcademiaScene extends BaseScene {
       lineSpacing: 6
     });
 
-    this.actionListText = this.add.text(LEFT_COLUMN_X, 250, '', {
+    this.actionListText = this.add.text(LEFT_COLUMN_X, LISTA_Y, '', {
       color: '#94a3b8',
       fontFamily: 'monospace',
       fontSize: '14px',
       lineSpacing: 4
     });
 
-    // Uma linha de legenda por tipo de box, na cor que o motor usa.
-    this.legendTexts = FIGHTER_BOUNDS_FIELDS.map((field, index) =>
-      this.add
-        .text(this.tela.width - 24, 120 + index * 22, '', {
-          color: field.color,
-          fontFamily: 'monospace',
-          fontSize: '14px'
-        })
-        .setOrigin(1, 0)
+    // Legenda das boxes numa fileira embaixo do chão, na cor que o motor usa.
+    // No canto direito ela ficava escondida atrás do painel.
+    this.legendTexts = FIGHTER_BOUNDS_FIELDS.map((field) =>
+      this.add.text(LEFT_COLUMN_X, FLOOR_Y + 12, '', {
+        color: field.color,
+        fontFamily: 'monospace',
+        fontSize: '14px'
+      })
     );
 
     this.painel = new PainelAcademia({
@@ -322,12 +326,24 @@ export class AcademiaScene extends BaseScene {
       `Quadro:  ${this.frame + 1}/${animation.bounds.length}  ${this.playing ? '▶' : '❚❚'}  ataque ${activeAttack} ${activeGuard}`
     ]);
 
+    // Só as linhas que cabem acima do chão, com a ação escolhida no meio.
+    const inicio = Phaser.Math.Clamp(
+      this.actionIndex - Math.floor(LINHAS_DA_LISTA / 2),
+      0,
+      Math.max(0, character.animations.length - LINHAS_DA_LISTA)
+    );
     this.actionListText.setText(
-      character.animations.map((candidate, index) => `${index === this.actionIndex ? '>' : ' '} ${candidate.action}`)
+      character.animations
+        .slice(inicio, inicio + LINHAS_DA_LISTA)
+        .map((candidate, index) => `${inicio + index === this.actionIndex ? '>' : ' '} ${candidate.action}`)
     );
 
+    // Um item depois do outro, pela largura de cada um.
+    let x = LEFT_COLUMN_X;
     FIGHTER_BOUNDS_FIELDS.forEach((field, index) => {
-      this.legendTexts[index].setText(`${index + 1} ${this.showBounds[field.id] ? '■' : '□'} ${field.label}`);
+      const legenda = this.legendTexts[index].setText(`${index + 1} ${this.showBounds[field.id] ? '■' : '□'} ${field.label}`);
+      legenda.setX(x);
+      x += legenda.width + 28;
     });
   }
 

@@ -612,3 +612,14 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   o João manda uma imagem para entrar no jogo, pedir que salve o arquivo na
   pasta, ou reproduzir a partir de uma fonte que exista no disco, e dizer
   qual dos dois foi feito (2026-11-03).
+- **No Phaser 4, `container.setScrollFactor(x, y, true)` não fixa os
+  filhos.** O `SetAll` só troca propriedade própria do objeto e o fator vem
+  do protótipo, então o desenho segue o container e o mouse segue cada filho.
+  Na Pausa da luta o clique saía no botão vizinho (câmera rolada 208 px).
+  Objeto clicável preso à tela leva `setScrollFactor(0)` nele mesmo, um por
+  um (2026-11-03).
+- **Painel HTML por cima do jogo se mede pelo canvas, não pela janela.** O
+  painel da Academia com `position: fixed; right: 16px` saía do jogo em tela
+  mais larga que 16:9 e sumia atrás da gaveta de debug. Encaixe pelo
+  `getBoundingClientRect` do canvas, refeito com `ResizeObserver`
+  (2026-11-03).
