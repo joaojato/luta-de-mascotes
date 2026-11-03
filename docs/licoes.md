@@ -557,3 +557,4 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   arquivos e `status`) e só então medir caixas. (2026-11-02)
 - Golpe com mais de uma arma desenhada dispara tudo o que o desenho mostra: o João cobra cada tiro visto na sheet (2026-11-02).
 - Arte do Codex pode trocar o JSON enquanto eu trabalho: antes de commitar o JSON, conferir se todo `file` dele existe no git, senão o push sai quebrado (2026-11-02).
+- Ataque de NPC que mira o adversário precisa vir de longe para ser desviável: o Flecha atirando a 300 px, pelas costas do alvo, ficou difícil demais; atira de trás do dono (2026-11-02).

@@ -554,6 +554,10 @@ volta já correndo dentro da arena, para e dispara **uma** flecha, sorteada:
 Defender não adianta em nenhuma. Mira o ponto onde o adversário estava quando
 o especial saiu (como o Biriba e o Guerreiro). Depois vira, sai da arena e
 volta pelo fundo até o posto. 30 de dano por flecha, empurrão 120.
+**Sempre atrás do Gremista (João, 02/11/2026):** sai e volta pela borda das
+costas do dono e para atrás dele (`atrasDoDono`), atirando por cima do
+Gremista; a flecha cruza a distância toda e dá tempo de desviar. Antes ele
+entrava pelo lado do adversário e atirava a 300 px pelas costas dele.
 
 **Corpo inteiro (02/11/2026, revisão de coesão v3 do Codex):** 19 ações em
 `coesao-v3/` (`docs/gremista-coesao-v3.md`), cabelo e barba pretos, com

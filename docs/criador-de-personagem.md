@@ -119,7 +119,9 @@ chamado (`peso`), cada uma com a animação, o quadro em que a flecha sai
 `agachar`); `antes` e `depois` para ajoelhar e levantar, `salto` para o tiro
 no ar, `freadaNoCampo` e `saidaDaGuarda` para frear e virar com a arte que
 já existe, e `flecha` para o projétil. Perguntar quais tiros, como se escapa
-de cada um e quanto tiram.
+de cada um e quanto tiram. E de onde atira: do lado do adversário (o padrão,
+a `alcance` dele) ou por cima do dono, entrando pelas costas dele
+(`atrasDoDono`, o Flecha Negra), o que dá mais tempo de desviar?
 
 NPC do mascote (o Biriba, os Gaviões) segue a Regra do Fundo: fica atrás
 dos dois lutadores, entre eles e a torcida, e só sai do fundo para atacar.
@@ -253,3 +255,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 02/11/2026: especial `reforco` e `disparos` do NPC de Guarda (o Flecha Negra: três flechas sorteadas, cada uma com o seu escape).
 - 02/11/2026: `releases` no projétil (vários tiros num golpe, cada um do seu cano: as duas pistolas do Gremista).
 - 02/11/2026: `museu` (apelido, quem é, de onde veio), a ficha da cena Museu.
+- 02/11/2026: `atrasDoDono` no NPC de Guarda que atira (entra pelas costas do dono e atira por cima dele).

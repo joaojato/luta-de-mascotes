@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 
 import { PLANO_DE_FUNDO } from './planoDeFundo';
-import { caixaNoMundo, ladoDoReforco, passoAteOAlvo, sortearDisparo, type CaixaDeQuadro, type Escape } from './reforcoRota';
+import { caixaNoMundo, ladoDoReforco, ladoPelasCostas, paradaAtrasDoDono, passoAteOAlvo, sortearDisparo, type CaixaDeQuadro, type Escape } from './reforcoRota';
 
 /**
  * NPC de Guarda que golpeia uma vez (docs/criador-de-personagem.md, bloco 5):
@@ -89,6 +89,12 @@ export interface ReforcoConfig {
   velocidadeNoFundo?: number;
   /** Distância do pé de apoio ao ponto mirado quando para, em px de quadro. */
   alcance: number;
+  /**
+   * Para atirar por cima do dono: entra pela borda das costas dele e para
+   * este tanto de px de quadro atrás dele (no lugar do `alcance`), para a
+   * flecha cruzar a tela e dar tempo de desviar.
+   */
+  atrasDoDono?: number;
   /** Quadro da corrida em que ele freia para golpear de perto (padrão 4: o apoio no pé B). */
   quadroDeApoio?: number;
   /**
@@ -217,7 +223,7 @@ export class Reforco {
   chamar(): void {
     const alvo = this.dono.alvo();
     if (!this.montado || this.estado !== 'guarda' || !alvo) return;
-    this.lado = ladoDoReforco(this.dono.x(), alvo.x);
+    this.lado = this.cfg.atrasDoDono !== undefined ? ladoPelasCostas(this.dono.x(), alvo.x) : ladoDoReforco(this.dono.x(), alvo.x);
     this.alvoX = alvo.x;
     this.acertou = false;
     this.soltou = false;
@@ -237,7 +243,7 @@ export class Reforco {
     const alvo = this.dono.alvo();
     const fora = FORA_DA_TELA * this.escala();
     const vista = this.vista();
-    // A borda por onde ele entra e sai: o lado oposto ao dono, atrás do alvo.
+    // A borda por onde ele entra e sai: atrás do alvo (ou das costas do dono, com `atrasDoDono`).
     const borda = this.lado === -1 ? vista.direita + fora : vista.esquerda - fora;
     this.moverFlechas(seconds, vista);
 
@@ -408,15 +414,18 @@ export class Reforco {
 
   /**
    * Para atirar: corre até o ponto de disparo (o alcance antes do ponto
-   * mirado, sem passar da tela) e freia com o começo da `parada`.
+   * mirado, ou atrás do dono com `atrasDoDono`, sem passar da tela) e freia
+   * com o começo da `parada`.
    */
   private entrarParaAtirar(seconds: number, vista: { esquerda: number; direita: number }): void {
     if (this.estado === 'freando') return;
     const dentro = DENTRO_DA_TELA * this.escala();
     // Nunca para fora da tela: se o ponto ficaria fora, para logo dentro da borda.
     const limite = this.lado === -1 ? vista.direita - dentro : vista.esquerda + dentro;
-    const alcanceNaTela = Math.min(this.cfg.alcance * this.escala(), Math.abs(limite - this.alvoX));
-    const passo = passoAteOAlvo(this.x, this.alvoX, this.lado, alcanceNaTela, this.cfg.velocidade * seconds);
+    const atras = this.cfg.atrasDoDono;
+    const passo = atras !== undefined
+      ? passoAteOAlvo(this.x, paradaAtrasDoDono(this.dono.x(), this.lado, atras * this.escala(), limite), this.lado, 0, this.cfg.velocidade * seconds)
+      : passoAteOAlvo(this.x, this.alvoX, this.lado, Math.min(this.cfg.alcance * this.escala(), Math.abs(limite - this.alvoX)), this.cfg.velocidade * seconds);
     this.x = passo.x;
     if (!passo.chegou) return;
     this.estado = 'freando';

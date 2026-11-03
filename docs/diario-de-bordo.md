@@ -3257,3 +3257,26 @@ Esc volta ao menu.
 **Atrito:** nenhum.
 **Em aberto:** João revisar a voz e os fatos das fichas; ficha do
 Mosqueteiro Gaúcho.
+
+## 2026-11-02: Flecha Negra atira de trás do Gremista
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "O Flecha Negra tem que aparecer sempre atrás do gremista, para
+dar tempo do adversário desviar, da forma que está tá muito difícil."
+**Feito:** opção `atrasDoDono` no NPC de Guarda (genérica, Regra do JSON):
+ele olha do dono para o alvo, sai e volta pela borda das costas do dono e
+para atrás dele (130 px de quadro), sem colar na borda; a flecha sai por
+cima do Gremista e cruza a tela. O Guerreiro do Cartola não muda.
+**Verificado:** testes de `ladoPelasCostas` e `paradaAtrasDoDono`;
+`npm run check` (32 arquivos, 308 testes, build). **Não verificado no
+navegador:** a máquina travou (servidores órfãos das portas 5243 e
+5251 a 5253, que o bloqueio de permissão não me deixou encerrar) e a página
+não carregou em 3 min.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a entrada do Flecha pelo lado do
+adversário, a 300 px, trocada pela entrada pelas costas do dono (difícil demais
+de desviar).
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** ver na tela o trajeto e os três tiros; na volta ele ainda
+reaparece pela direita do fundo (regra do retorno) e cruza o fundo até o posto.

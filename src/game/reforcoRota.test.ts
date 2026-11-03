@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { caixaNoMundo, escapou, ladoDoReforco, passoAteOAlvo, sortearDisparo } from './reforcoRota';
+import { caixaNoMundo, escapou, ladoDoReforco, ladoPelasCostas, paradaAtrasDoDono, passoAteOAlvo, sortearDisparo } from './reforcoRota';
 
 const BOTA = { x: 136, y: 155, largura: 70, altura: 60 };
 const ORIGEM = { x: 256, y: 296 };
@@ -54,5 +54,20 @@ describe('reforço: o Guerreiro do Cartola', () => {
     expect([emPe, pulando, agachado].map((d) => escapou(rasteira, d))).toEqual([false, true, false]);
     expect([emPe, pulando, agachado].map((d) => escapou(alta, d))).toEqual([false, false, true]);
     expect(escapou(undefined, pulando)).toBe(false);
+  });
+});
+
+describe('Flecha Negra atira por cima do dono (João, 02/11/2026)', () => {
+  it('olha do dono para o alvo e entra pela borda das costas do dono', () => {
+    expect(ladoPelasCostas(300, 800)).toBe(1);
+    expect(ladoPelasCostas(900, 400)).toBe(-1);
+  });
+
+  it('para atrás do dono, mas nunca colado na borda por onde entrou', () => {
+    expect(paradaAtrasDoDono(500, 1, 180, 60)).toBe(320);
+    expect(paradaAtrasDoDono(900, -1, 180, 1220)).toBe(1080);
+    // Dono encostado na borda: para logo dentro dela, mesmo à frente dele.
+    expect(paradaAtrasDoDono(100, 1, 180, 60)).toBe(60);
+    expect(paradaAtrasDoDono(1200, -1, 180, 1220)).toBe(1220);
   });
 });

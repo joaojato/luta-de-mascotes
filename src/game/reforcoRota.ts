@@ -21,6 +21,23 @@ export function ladoDoReforco(donoX: number, alvoX: number): 1 | -1 {
 }
 
 /**
+ * Quem atira por cima do dono (o Flecha Negra): entra pela borda das costas
+ * do dono e atira na direção do alvo, então olha do dono para o alvo.
+ */
+export function ladoPelasCostas(donoX: number, alvoX: number): 1 | -1 {
+  return donoX <= alvoX ? 1 : -1;
+}
+
+/**
+ * Onde quem atira por cima do dono para: `atras` px (no mundo) atrás do dono,
+ * nunca mais perto da borda por onde entrou que `limite`.
+ */
+export function paradaAtrasDoDono(donoX: number, lado: 1 | -1, atras: number, limite: number): number {
+  const parada = donoX - lado * atras;
+  return lado === 1 ? Math.max(parada, limite) : Math.min(parada, limite);
+}
+
+/**
  * Um passo da corrida até ficar a `alcance` px (no mundo) do alvo. Nunca passa
  * do ponto, mesmo com quadro longo, e nunca recua: se o alvo veio para perto,
  * fica onde está.

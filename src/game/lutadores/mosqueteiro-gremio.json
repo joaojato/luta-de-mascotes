@@ -74,6 +74,7 @@
         "velocidade": 1100,
         "velocidadeNoFundo": 1300,
         "alcance": 300,
+        "atrasDoDono": 130,
         "freadaNoCampo": [
           0,
           3
@@ -447,7 +448,7 @@
     {
       "action": "light-punch",
       "label": "Dois cortes rápidos",
-      "file": "passos-v4/light-punch.png",
+      "file": "horizontais-v5/light-punch.png",
       "frames": 8,
       "frameWidth": 640,
       "frameHeight": 384,
@@ -643,7 +644,7 @@
     {
       "action": "low-kick",
       "label": "Corte na canela",
-      "file": "coesao-v3/low-kick.png",
+      "file": "horizontais-v5/low-kick.png",
       "frames": 6,
       "frameWidth": 640,
       "frameHeight": 384,
