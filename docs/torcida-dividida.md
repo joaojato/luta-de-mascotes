@@ -1,5 +1,7 @@
 # Torcida dividida (29/10/2026)
 
+Atualização de 03/11/2026: a [circulação v4](torcida-circulacao-v4.md) adiciona saída por derrota e vida do vencedor. Ela prevalece sobre a regra histórica de não reagir à luta descrita abaixo.
+
 Pedido do João: a arquibancada do Estádio se divide em duas torcidas. A
 metade da esquerda veste o clube do P1, a da direita o do P2. Camisas,
 bandeiras e fumaça de sinalizador seguem as cores e a estampa de cada clube.

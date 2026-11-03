@@ -1,0 +1,13 @@
+﻿import ts from 'typescript';
+import fs from 'node:fs';
+const moduleUrl=s=>'data:text/javascript;base64,'+Buffer.from(ts.transpileModule(s,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64');
+const model=moduleUrl(fs.readFileSync('src/game/putometro.ts','utf8').replace(/import .*vidaFaixas.*;/,"const HEALTH_DANGER=.25,HEALTH_WARN=.5;"));
+const source=fs.readFileSync('src/game/putometroVisual.ts','utf8').replace(/import .*estilo.*;/,"const FONTE_TEXTO='Arial';").replace("'./putometro'",JSON.stringify(model));
+const {PutometroVisual}=await import(moduleUrl(source));
+const {novoPutometro}=await import(model);
+let ops=[],fill=0,alpha=1,line=0,lw=1,path=[];
+const g={clear(){ops=[];return this},fillStyle(c,a=1){fill=c;alpha=a;return this},beginPath(){path=[];return this},moveTo(x,y){path.push([x,y]);return this},lineTo(x,y){path.push([x,y]);return this},closePath(){return this},fillPath(){ops.push({kind:'polygon',points:path,color:fill,alpha});return this},lineStyle(w,c){line=c;lw=w;return this},lineBetween(x,y,x2,y2){ops.push({kind:'line',points:[[x,y],[x2,y2]],color:line,width:lw});return this},fillCircle(x,y,r){ops.push({kind:'circle',x,y,r,color:fill,alpha});return this},strokeCircle(x,y,r){ops.push({kind:'circleStroke',x,y,r,color:line,width:lw});return this}};
+let label={};const chain={add(){},setAlpha(){return this},setScale(){return this}};
+const scene={add:{container:()=>chain,graphics:()=>g,text:(x,y,text)=>{label={x,y,text};return {setOrigin(){return this},setText(t){label.text=t;return this},setColor(c){label.color=c;return this}}}},tweens:{add:()=>({stop(){}})}};
+const view=new PutometroVisual(scene,chain,0,0,127,79,false);view.atualizar(novoPutometro(),0,16);
+fs.mkdirSync('output/putometro',{recursive:true});fs.writeFileSync('output/putometro/geometry.json',JSON.stringify({ops,label}));

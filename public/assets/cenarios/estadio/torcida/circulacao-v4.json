@@ -1,0 +1,29 @@
+{
+  "imagem": "arquibancada-vazia.png",
+  "largura": 2048,
+  "altura": 869,
+  "chaoZero": 623,
+  "oclusaoFrenteY": 624,
+  "niveis": [
+    {"nivel":12,"fileiraY":290,"peY":307,"escadaEsquerdaX":323,"escala":0.835},
+    {"nivel":11,"fileiraY":315,"peY":332,"escadaEsquerdaX":310,"escala":0.845},
+    {"nivel":10,"fileiraY":340,"peY":357,"escadaEsquerdaX":297,"escala":0.855},
+    {"nivel":9,"fileiraY":365,"peY":382,"escadaEsquerdaX":283,"escala":0.865},
+    {"nivel":8,"fileiraY":390,"peY":408,"escadaEsquerdaX":270,"escala":0.878},
+    {"nivel":7,"fileiraY":416,"peY":434,"escadaEsquerdaX":256,"escala":0.891},
+    {"nivel":6,"fileiraY":442,"peY":460,"escadaEsquerdaX":242,"escala":0.903},
+    {"nivel":5,"fileiraY":468,"peY":486,"escadaEsquerdaX":228,"escala":0.916},
+    {"nivel":4,"fileiraY":496,"peY":515,"escadaEsquerdaX":212,"escala":0.931},
+    {"nivel":3,"fileiraY":525,"peY":544,"escadaEsquerdaX":196,"escala":0.947},
+    {"nivel":2,"fileiraY":555,"peY":574,"escadaEsquerdaX":180,"escala":0.964},
+    {"nivel":1,"fileiraY":586,"peY":606,"escadaEsquerdaX":162,"escala":0.982},
+    {"nivel":0,"fileiraY":618,"peY":623,"escadaEsquerdaX":147,"escala":1}
+  ],
+  "saidaEsquerdaX": -80,
+  "saidaDireitaX": 2128,
+  "escadaExternaEsquerdaX": -48,
+  "escadaExternaDireitaX": 2096,
+  "observacaoLaterais": "Acesso externo inferido fora do enquadramento: nao existe escada lateral visivel na pintura. O NPC continua simulado e so e removido apos descer ao nivel 0.",
+  "andar": {"arquivo":"torcida-andar-v4.png","arquivoVestido":"torcida-andar-v4-camisa.png","celulaLargura":64,"celulaAltura":112,"colunas":8,"linhas":5,"quadrosPorTipo":4,"tipos":10,"fps":8,"ancora":{"x":32,"y":111}},
+  "descer": {"arquivo":"torcida-descer-v4.png","arquivoVestido":"torcida-descer-v4-camisa.png","celulaLargura":64,"celulaAltura":112,"colunas":8,"linhas":5,"quadrosPorTipo":4,"tipos":10,"fps":6,"ancora":{"x":32,"y":111}}
+}

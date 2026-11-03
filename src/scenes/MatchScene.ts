@@ -27,6 +27,7 @@ import { proximaTorcida, tocarSom } from '../game/sons';
 import { LUTADORES } from '../game/lutadores';
 import { torcidaValida } from '../game/torcida';
 import { montarTorcida } from '../game/torcidaCena';
+import { derrotaDaTorcida, reiniciarTorcida, vidaDaTorcida } from '../game/torcidaMovimentoCena';
 import { BiribaCena } from '../game/biribaCena';
 import { escapou } from '../game/reforcoRota';
 import { resultadoPorKO, resultadoPorTempo } from '../game/round';
@@ -254,6 +255,7 @@ export class MatchScene extends BaseScene {
       if (this.phase === 'fighting') {
         if (this.config.treino) this.atualizarTreino(time, seconds);
         else this.tickRoundTimer(delta);
+        if (!this.config.treino && this.phase === 'fighting') vidaDaTorcida(this, this.p1.health01, this.p2.health01);
         this.hud.applyHealth(this.p1.health01, this.p2.health01);
         // A música aperta conforme o mais machucado perde vida (docs/musica.md).
         musica(this.game).definirTensao(tensaoDaLuta(this.p1.health01, this.p2.health01));
@@ -346,6 +348,10 @@ export class MatchScene extends BaseScene {
       attacker.markAttackConnected(attack.signature, blocked);
       attacker.registerOffense(blocked, isSpecial);
       defender.registerDefense(blocked);
+      const ladoAtacante=attacker===this.p1?0:1,ladoDefensor=defender===this.p1?0:1;
+      const danoRelativo=Math.max(0,vidaAntes-defender.healthPoints)/defender.maxHealthPoints;
+      this.events.emit('torcida-acao',ladoAtacante,perfect?'sofreu-parry':blocked?'barrado':isSpecial?'especial':'acerto',danoRelativo);
+      this.events.emit('torcida-acao',ladoDefensor,perfect?'parry':blocked?'bloqueio':'dano',danoRelativo);
       if (perfect) {
         // The attacker is left dizzy: no damage, no push.
         attacker.applyHit(PERFECT_GUARD_STAGGER, facing === 1 ? -1 : 1, false);
@@ -986,6 +992,9 @@ export class MatchScene extends BaseScene {
       this.p2Wins += 1;
     }
 
+    derrotaDaTorcida(this, winner === 1 ? 1 : 0, Math.max(this.p1Wins, this.p2Wins) >= ROUNDS_TO_WIN,
+      winner === 1 ? this.p1.health01 : this.p2.health01);
+
     const winnerName =
       winner === 1
         ? `P1 ${getCharacterDefinition(this.config.p1CharacterId).label}`
@@ -1086,6 +1095,7 @@ export class MatchScene extends BaseScene {
 
   /** Restarts the match from round 1 with the same configuration. */
   private rematch(): void {
+    reiniciarTorcida(this);
     this.overlay.forEach((object) => object.destroy());
     this.overlay = [];
     this.roundNumber = 1;

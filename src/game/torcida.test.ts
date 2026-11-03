@@ -209,4 +209,23 @@ describe('atlas da torcida que a Luta carrega', () => {
     };
     expect(Math.abs(alturaMediana(arquivo) - alturaMediana('torcedores.png'))).toBeLessThanOrEqual(2);
   });
+
+  // Quem roda a camisa na mão (João, 03/11/2026): a camisa também é cor
+  // chave, para sair com o clube do lado dele.
+  it('tem a camisa na mão em cor chave em todo quadro, carregada pela cena', () => {
+    const folha = dados.folhas.camisaNaMao;
+    expect(readFileSync(resolve(__dirname, 'torcidaCena.ts'), 'utf8')).toContain(`[TORCIDA_CHAVES.camisaNaMao, '${folha.arquivo}']`);
+    expect(folha.porLado).toBeGreaterThanOrEqual(3);
+    const { largura, pixels } = lerPng(resolve(pasta, folha.arquivo));
+    for (let q = 0; q < folha.quadrosPorTipo; q += 1) {
+      let chave = 0;
+      for (let y = 0; y < folha.celulaAltura; y += 1) {
+        for (let x = q * folha.celulaLargura; x < (q + 1) * folha.celulaLargura; x += 1) {
+          const i = (y * largura + x) * 4;
+          if (pixels[i + 3] > 0 && brilhoDaChave(pixels[i], pixels[i + 1], pixels[i + 2]) !== null) chave += 1;
+        }
+      }
+      expect(chave, `${folha.arquivo}: quadro ${q}`).toBeGreaterThan(50);
+    }
+  });
 });

@@ -75,6 +75,17 @@
         "x": 16,
         "y": 30
       }
+    },
+    "camisaNaMao": {
+      "arquivo": "torcedor-camisa-na-mao.png",
+      "celulaLargura": 96,
+      "celulaAltura": 96,
+      "colunas": 4,
+      "linhas": 1,
+      "quadrosPorTipo": 4,
+      "porLado": 3,
+      "fpsSugerido": 6,
+      "origem": "scripts/torcida_camisa_na_mao.py: tipo 0 da v3 sem camisa, camiseta em cor chave presa no punho mais alto"
     }
   },
   "fileiras": [

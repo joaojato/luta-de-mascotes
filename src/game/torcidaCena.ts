@@ -1,6 +1,13 @@
 import * as Phaser from 'phaser';
 
 import { bandeirasDoClube, coresDoSinalizador, pintarChave, variantesDaCamisa, type TorcidaClube } from './torcida';
+import { criarCirculacaoTorcida, type TorcedorNaCena } from './torcidaMovimentoCena';
+import { MAPA_TORCIDA } from './torcidaRotas';
+import { camadaDaFileira, comporCamadasTorcida } from './torcidaCamadas';
+import cadeiras from '../../public/assets/cenarios/estadio/torcida/cadeiras-camadas-v5.json';
+import humores from '../../public/assets/cenarios/estadio/torcida/humores-v5.json';
+import { criarHumoresTorcida } from './torcidaHumorCena';
+import { prepararFrenteEstadio, QUADRO_ESTADIO_INTEIRO } from './torcidaFundo';
 
 /**
  * Monta a torcida dividida na Luta (docs/torcida-dividida.md): fundo sem
@@ -17,8 +24,21 @@ export const TORCIDA_CHAVES = {
   torcedores: 'torcida-torcedores',
   bandeira: 'torcida-bandeira',
   fumaca: 'torcida-fumaca',
-  sinalizador: 'torcida-sinalizador'
+  sinalizador: 'torcida-sinalizador',
+  camisaNaMao: 'torcida-camisa-na-mao',
+  andar: 'torcida-andar-v4',
+  descer: 'torcida-descer-v4',
+  andarBase: 'torcida-andar-v4-base',
+  descerBase: 'torcida-descer-v4-base',
+  cadeiras: 'torcida-cadeiras-camadas-v5',
+  quieta:'torcida-quieta-v5-camisa',brava:'torcida-brava-v5-camisa',
+  quietaBase:'torcida-quieta-v5-base',bravaBase:'torcida-brava-v5-base',copo:'torcida-copo-v5'
 } as const;
+
+/** Peças que a torcida dispensa: sem elas a arquibancada sai igual, só sem o destaque. */
+const OPCIONAIS: string[] = [TORCIDA_CHAVES.dados, TORCIDA_CHAVES.camisaNaMao,
+  TORCIDA_CHAVES.andar, TORCIDA_CHAVES.descer, TORCIDA_CHAVES.andarBase, TORCIDA_CHAVES.descerBase, TORCIDA_CHAVES.cadeiras,
+  TORCIDA_CHAVES.quieta,TORCIDA_CHAVES.brava,TORCIDA_CHAVES.quietaBase,TORCIDA_CHAVES.bravaBase,TORCIDA_CHAVES.copo];
 
 /** Carregados no Boot; se faltarem, a Luta fica com a pintura antiga. */
 export function carregarTorcida(scene: Phaser.Scene): void {
@@ -30,7 +50,18 @@ export function carregarTorcida(scene: Phaser.Scene): void {
     [TORCIDA_CHAVES.torcedores, 'torcedores-comemoracao-v3-camisa.png'],
     [TORCIDA_CHAVES.bandeira, 'bandeira.png'],
     [TORCIDA_CHAVES.fumaca, 'fumaca.png'],
-    [TORCIDA_CHAVES.sinalizador, 'sinalizador.png']
+    [TORCIDA_CHAVES.sinalizador, 'sinalizador.png'],
+    [TORCIDA_CHAVES.camisaNaMao, 'torcedor-camisa-na-mao.png'],
+    [TORCIDA_CHAVES.andar, 'torcida-andar-v4-camisa.png'],
+    [TORCIDA_CHAVES.descer, 'torcida-descer-v4-camisa.png'],
+    [TORCIDA_CHAVES.andarBase, 'torcida-andar-v4.png'],
+    [TORCIDA_CHAVES.descerBase, 'torcida-descer-v4.png'],
+    [TORCIDA_CHAVES.cadeiras, 'cadeiras-camadas-v5.png'],
+    [TORCIDA_CHAVES.quieta, 'torcida-quieta-v5-camisa.png'],
+    [TORCIDA_CHAVES.brava, 'torcida-brava-v5-camisa.png'],
+    [TORCIDA_CHAVES.quietaBase, 'torcida-quieta-v5.png'],
+    [TORCIDA_CHAVES.bravaBase, 'torcida-brava-v5.png'],
+    [TORCIDA_CHAVES.copo, 'torcida-copo-v5.png']
   ];
   imagens.forEach(([chave, arquivo]) => {
     if (!scene.textures.exists(chave)) {
@@ -68,6 +99,8 @@ export interface DadosTorcida {
   bandeira: Folha;
   fumaca: Folha;
   sinalizador: Folha;
+  /** Torcedor sem camisa rodando a do clube na mão; `porLado` em cada metade. */
+  camisaNaMao: (Folha & { porLado: number }) | null;
   fileiras: Fileira[];
 }
 
@@ -112,6 +145,9 @@ export function lerDadosTorcida(raw: unknown): DadosTorcida | null {
   const bandeira = lerFolha(folhas.bandeira);
   const fumaca = lerFolha(folhas.fumaca);
   const sinalizador = lerFolha(folhas.sinalizador);
+  const folhaCamisaNaMao = lerFolha(folhas.camisaNaMao);
+  const porLado = Number((folhas.camisaNaMao as Record<string, unknown> | undefined)?.porLado ?? 3);
+  const camisaNaMao = folhaCamisaNaMao && porLado > 0 ? { ...folhaCamisaNaMao, porLado } : null;
   const fileiras = Array.isArray(r.fileiras)
     ? (r.fileiras as Record<string, unknown>[])
         .map((f) => ({
@@ -127,7 +163,7 @@ export function lerDadosTorcida(raw: unknown): DadosTorcida | null {
   if (!torcedores || !bandeira || !fumaca || !sinalizador || fileiras.length === 0) return null;
   const cenario = r.cenario as { divisaoX?: unknown; largura?: unknown } | undefined;
   const divisaoX = Number(cenario?.divisaoX ?? Number(cenario?.largura) / 2);
-  return { divisaoX: Number.isFinite(divisaoX) ? divisaoX : 1024, torcedores, bandeira, fumaca, sinalizador, fileiras };
+  return { divisaoX: Number.isFinite(divisaoX) ? divisaoX : 1024, torcedores, bandeira, fumaca, sinalizador, camisaNaMao, fileiras };
 }
 
 /** Sorteio com semente fixa: a mesma torcida em toda luta. */
@@ -209,12 +245,12 @@ export function montarTorcida(
 ): boolean {
   const dados = lerDadosTorcida(scene.cache.json.get(TORCIDA_CHAVES.dados));
   const temArte = Object.values(TORCIDA_CHAVES).every(
-    (chave) => chave === TORCIDA_CHAVES.dados || scene.textures.exists(chave)
+    (chave) => OPCIONAIS.includes(chave) || scene.textures.exists(chave)
   );
   if (!dados || !temArte) return false;
 
   const meio = dados.divisaoX;
-  scene.add.image(0, 0, TORCIDA_CHAVES.fundo).setOrigin(0, 0).setScale(escala).setDepth(profundidade);
+  scene.add.image(0, 0, TORCIDA_CHAVES.fundo, QUADRO_ESTADIO_INTEIRO).setOrigin(0, 0).setScale(escala).setDepth(profundidade);
 
   // Uma folha pintada por camisa do clube (estampa e as lisas) e por
   // bandeira; ficam guardadas pelo id do lutador para as próximas lutas.
@@ -272,11 +308,14 @@ export function montarTorcida(
     sprite.play({ key: anim, startFrame: inicio });
     sprite.anims.timeScale = ritmo;
     scene.sys.updateList.add(sprite);
+    sprite.setData('torcidaChao', fileiras[indice].y + 20 * fileiras[indice].escala);
+    sprite.setData('torcidaCamada',camadaDaFileira(fileiras[indice].y));
     return sprite;
   };
 
   const pes = { x: 0.5, y: 1 };
-  const posicoes: { x: number; fileira: number; lado: 0 | 1 }[] = [];
+  const todos: TorcedorNaCena[] = [];
+  const posicoes: TorcedorNaCena[] = [];
   fileiras.forEach((fileira, indice) => {
     const passo = fileira.passo * fileira.escala;
     for (let x = fileira.xInicio + passo / 2; x <= fileira.xFim; x += passo) {
@@ -287,8 +326,11 @@ export function montarTorcida(
       const tipo = Math.floor(sortear() * dados.torcedores.tipos);
       const inicio = Math.floor(sortear() * BALANCO.length);
       const ritmo = 0.7 + sortear() * 0.6;
-      camadas[indice].gente.push(criar(indice, px, fileira.y, lado.camisas[camisa], pes, lado.animTipo(camisa, tipo), inicio, ritmo));
-      if (fileira.setor === 'central') posicoes.push({ x: px, fileira: indice, lado: ladoIndice });
+      const sprite = criar(indice, px, fileira.y, lado.camisas[camisa], pes, lado.animTipo(camisa, tipo), inicio, ritmo);
+      camadas[indice].gente.push(sprite);
+      const pessoa: TorcedorNaCena = { x: px, fileira: indice, lado: ladoIndice, sprite, tipo, camisa, extras: [] };
+      todos.push(pessoa);
+      if (fileira.setor === 'central') posicoes.push(pessoa);
     }
   });
 
@@ -319,9 +361,9 @@ export function montarTorcida(
     espalhar(ladoIndice, 3, [0.1, 0.5]).forEach((p, k) => {
       const f = fileiras[p.fileira];
       const bandeira = lado.bandeiras[k % lado.bandeiras.length];
-      camadas[p.fileira].atras.push(
-        criar(p.fileira, p.x, f.y - celula.altura * 0.55 * f.escala, bandeira.textura, dados.bandeira.origem, bandeira.anim, Math.floor(sortear() * dados.bandeira.quadros))
-      );
+      const sprite = criar(p.fileira, p.x, f.y - celula.altura * 0.55 * f.escala, bandeira.textura, dados.bandeira.origem, bandeira.anim, Math.floor(sortear() * dados.bandeira.quadros));
+      camadas[p.fileira].atras.push(sprite);
+      p.extras.push(sprite);
     });
     espalhar(ladoIndice, 3, [0.35, 0.75]).forEach((p, k) => {
       const f = fileiras[p.fileira];
@@ -329,22 +371,87 @@ export function montarTorcida(
       const topoDaChama = mao.y - dados.sinalizador.celula.altura * 0.75 * f.escala;
       const fumacaSprite = criar(p.fileira, mao.x, topoDaChama, fumaca, dados.fumaca.origem, animFumaca, Math.floor(sortear() * dados.fumaca.quadros));
       fumacaSprite.setTint(lado.sinalizador[k % lado.sinalizador.length]).setAlpha(0.85);
-      camadas[p.fileira].frente.push(fumacaSprite, criar(p.fileira, mao.x, mao.y, chama, dados.sinalizador.origem, animChama, 0));
+      const chamaSprite = criar(p.fileira, mao.x, mao.y, chama, dados.sinalizador.origem, animChama, 0);
+      camadas[p.fileira].frente.push(fumacaSprite, chamaSprite);
+      p.extras.push(fumacaSprite, chamaSprite);
     });
   });
+
+  // Quem tirou a camisa e roda a do clube na mão: toma o lugar de alguns
+  // torcedores da arquibancada central, espalhados pela metade de cada lado.
+  const camisaNaMao = dados.camisaNaMao;
+  if (camisaNaMao && scene.textures.exists(TORCIDA_CHAVES.camisaNaMao)) {
+    ([0, 1] as const).forEach((ladoIndice) => {
+      const lado = lados[ladoIndice];
+      const textura = texturaFatiada(scene, TORCIDA_CHAVES.camisaNaMao, `torcida-camisa-na-mao-${lado.lado.id}`, camisaNaMao.celula, lado.lado.clube);
+      const anim = animacao(scene, `${textura}-roda`, textura, [...Array(camisaNaMao.quadros).keys()], 6);
+      espalhar(ladoIndice, camisaNaMao.porLado, [0.2, 0.9]).forEach((p) => {
+        const gente = camadas[p.fileira].gente;
+        gente.splice(gente.indexOf(p.sprite), 1);
+        p.sprite.destroy();
+        p.sprite = criar(p.fileira, p.x, fileiras[p.fileira].y, textura, pes, anim, Math.floor(sortear() * camisaNaMao.quadros));
+        p.semCamisa = true;
+        p.tipo = 0;
+        gente.push(p.sprite);
+      });
+    });
+  }
 
   // Uma imagem só para a torcida inteira, redesenhada dez vezes por segundo
   // (o balanço roda a 3, a bandeira e a fumaça a 8): setecentas figuras
   // desenhadas uma a uma, todo quadro, derrubavam o ritmo da Luta.
-  const fundo = scene.textures.get(TORCIDA_CHAVES.fundo).getSourceImage();
+  const fundo = scene.textures.get(TORCIDA_CHAVES.fundo).getSourceImage(QUADRO_ESTADIO_INTEIRO);
   const imagem = scene.add
     .renderTexture(0, 0, Math.ceil(fundo.width * escala), Math.ceil(fundo.height * escala))
     .setOrigin(0, 0)
     .setDepth(profundidade + 0.1);
   const ordem = camadas.flatMap((camada) => [...camada.atras, ...camada.gente, ...camada.frente]);
+  const camadasCadeiras: Phaser.GameObjects.Sprite[]=[];
+  if(scene.textures.exists(TORCIDA_CHAVES.cadeiras)) {
+    const textura=scene.textures.get(TORCIDA_CHAVES.cadeiras);
+    cadeiras.camadas.forEach((c)=>{
+      const frame=`patamar-${c.indice}`;
+      if(!textura.has(frame)) textura.add(frame,0,0,c.topo,cadeiras.largura,c.base-c.topo+1);
+      camadasCadeiras.push(scene.make.sprite({x:0,y:c.topo*escala,key:TORCIDA_CHAVES.cadeiras,frame},false).setOrigin(0,0).setScale(escala));
+    });
+  }
+  const temMovimento = [TORCIDA_CHAVES.andar, TORCIDA_CHAVES.descer, TORCIDA_CHAVES.andarBase, TORCIDA_CHAVES.descerBase]
+    .every((key) => scene.textures.exists(key));
+  const circulacao = temMovimento ? criarCirculacaoTorcida(scene, escala, fileiras, todos, (pessoa, descer) => {
+    const folha = descer ? MAPA_TORCIDA.descer : MAPA_TORCIDA.andar;
+    const chave = descer
+      ? (pessoa.semCamisa ? TORCIDA_CHAVES.descerBase : TORCIDA_CHAVES.descer)
+      : (pessoa.semCamisa ? TORCIDA_CHAVES.andarBase : TORCIDA_CHAVES.andar);
+    const clube = pessoa.semCamisa ? null : variantesDaCamisa(lados[pessoa.lado].lado.clube)[pessoa.camisa];
+    const textura = texturaFatiada(scene, chave, `${chave}-${lados[pessoa.lado].lado.id}-${pessoa.camisa}`, { largura: 64, altura: 112 }, clube);
+    const quadros = Array.from({ length: folha.quadrosPorTipo }, (_, q) => pessoa.tipo * folha.quadrosPorTipo + q);
+    return { textura, anim: animacao(scene, `${textura}-tipo${pessoa.tipo}`, textura, quadros, folha.fps) };
+  }) : null;
+  const festejos=new Map(todos.map(p=>[p,{textura:p.sprite.texture.key,anim:p.sprite.anims.currentAnim!.key}]));
+  const temHumores=[TORCIDA_CHAVES.quieta,TORCIDA_CHAVES.brava,TORCIDA_CHAVES.quietaBase,TORCIDA_CHAVES.bravaBase].every(key=>scene.textures.exists(key));
+  const humor=temHumores?criarHumoresTorcida(scene,escala,fileiras,todos,(p,h)=>{
+    if(h==='torcendo')return festejos.get(p)!;
+    const folha=humores[h==='irritada'?'brava':h];
+    const chave=h==='quieta'?(p.semCamisa?TORCIDA_CHAVES.quietaBase:TORCIDA_CHAVES.quieta):(p.semCamisa?TORCIDA_CHAVES.bravaBase:TORCIDA_CHAVES.brava);
+    const clube=p.semCamisa?null:variantesDaCamisa(lados[p.lado].lado.clube)[p.camisa];
+    const textura=texturaFatiada(scene,chave,`${chave}-${lados[p.lado].lado.id}-${p.camisa}`,{largura:64,altura:80},clube);
+    const quadros=h==='irritada'?[p.tipo*4+3]:Array.from({length:4},(_,q)=>p.tipo*4+q);
+    return {textura,anim:animacao(scene,`${textura}-${h}-tipo${p.tipo}`,textura,quadros,h==='irritada'?1:folha.fps)};
+  },scene.textures.exists(TORCIDA_CHAVES.copo)?TORCIDA_CHAVES.copo:undefined,profundidade+.3):null;
+  // A frente pintada volta por cima: pessoas circulam atras do alambrado, nunca no gramado.
+  const texturaFundo = scene.textures.get(TORCIDA_CHAVES.fundo);
+  const frente = prepararFrenteEstadio(texturaFundo, MAPA_TORCIDA.oclusaoFrenteY);
+  scene.add.image(0, MAPA_TORCIDA.oclusaoFrenteY * escala, TORCIDA_CHAVES.fundo, frente)
+    .setOrigin(0, 0).setScale(escala).setDepth(profundidade + .2);
   const redesenhar = (): void => {
+    circulacao?.atualizar();
+    humor?.atualizar();
     imagem.clear();
-    imagem.draw(ordem);
+    const fixos=ordem.filter((s)=>s.active && s.visible);
+    const moveis=(circulacao?.sprites() ?? []).filter((s)=>s.active && s.visible);
+    moveis.sort((a,b)=>Number(a.getData('torcidaChao'))-Number(b.getData('torcidaChao')));
+    const visiveis=comporCamadasTorcida(camadasCadeiras,fixos,moveis,s=>Number(s.getData('torcidaCamada')));
+    imagem.draw(visiveis);
     imagem.render();
   };
   redesenhar();
@@ -352,6 +459,7 @@ export function montarTorcida(
   scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
     relogio.remove();
     ordem.forEach((sprite) => sprite.destroy());
+    camadasCadeiras.forEach((sprite)=>sprite.destroy());
   });
 
   return true;
