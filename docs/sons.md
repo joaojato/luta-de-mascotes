@@ -81,7 +81,6 @@ médio, especial e K.O. alto, torcida bem baixa por baixo de tudo.
 
 | Chave | Quando toca | Como soa |
 |---|---|---|
-| `torcida` | fundo da luta inteira, em loop | multidão, bem baixa |
 | `round` | aparece "ROUND N" | surdo de bateria de torcida, duas batidas |
 | `luta-comeca` | aparece "FIGHT!" | apito longo de juiz |
 | `ko` | alguém cai sem vida | apito longo descendo e um bumbo |
@@ -90,7 +89,7 @@ médio, especial e K.O. alto, torcida bem baixa por baixo de tudo.
 | `relogio` | cada um dos últimos 5 segundos | tique de relógio |
 | `especial-pronto` | a barra de especial enche | brilho subindo |
 | `especial-entrada` | entrada do especial (o retrato na tela) | "shing" com batida |
-| `torcida-coro`, `torcida-uh`, `torcida-assobio`, `torcida-batucada`, `torcida-palmas` | um deles sorteado a cada 5 a 11 s, por cima do loop, sem seguir a luta | coro "ôôô", "uuuh" de quase-gol, assobios, surdo e caixa, palmas ritmadas |
+| `torcida-coro`, `torcida-uh`, `torcida-assobio`, `torcida-batucada`, `torcida-palmas` | um deles sorteado a cada 5 a 11 s, por baixo da música, sem seguir a luta (o loop de fundo saiu em 03/11/2026: soava como mar) | coro "ôôô", "uuuh" de quase-gol, assobios, surdo e caixa, palmas ritmadas |
 
 ### Camada 3: corpo (todos os lutadores)
 

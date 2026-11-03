@@ -8,7 +8,7 @@ import type { StarterAudioAsset } from './core/audio';
  */
 const SONS: [chave: string, volume: number, loop?: boolean][] = [
   ['ui-mover', 0.18], ['ui-travar', 0.35],
-  ['torcida', 0.1, true], ['round', 0.5], ['luta-comeca', 0.35], ['ko', 0.55], ['tempo-esgotado', 0.35],
+  ['round', 0.5], ['luta-comeca', 0.35], ['ko', 0.55], ['tempo-esgotado', 0.35],
   ['vitoria', 0.5], ['relogio', 0.3], ['especial-pronto', 0.3], ['especial-entrada', 0.5],
   ['passo', 0.12], ['pulo', 0.25], ['aterrissar', 0.3], ['dash', 0.3], ['queda', 0.55], ['tontura', 0.35],
   ['ar-leve', 0.22], ['ar-pesado', 0.3], ['impacto-leve', 0.45], ['impacto-pesado', 0.55], ['impacto-baixo', 0.5],
@@ -28,7 +28,7 @@ const SONS: [chave: string, volume: number, loop?: boolean][] = [
   ['dor', 0.4], ['dor-forte', 0.45], ['dor-ko', 0.5],
   ['dor-porco', 0.4], ['dor-forte-porco', 0.45], ['dor-galo', 0.35], ['dor-forte-galo', 0.4],
   ['dor-urubu', 0.4], ['dor-forte-urubu', 0.45], ['dor-cao', 0.35], ['dor-forte-cao', 0.4],
-  // Torcida à toa: soltos por cima do loop, bem baixos.
+  // Torcida à toa: soltos por baixo da música, bem baixos (sem loop de fundo desde 03/11/2026).
   ['torcida-coro', 0.16], ['torcida-uh', 0.16], ['torcida-assobio', 0.1], ['torcida-batucada', 0.14],
   ['torcida-palmas', 0.12],
   // Acerto de cada mascote (eventos `acerto-*` de quem bate, 03/11/2026).

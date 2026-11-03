@@ -590,3 +590,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **`loudnorm` do ffmpeg reamostra para 192 kHz.** As amostras da música
   saíram com o dobro do tamanho; todo `loudnorm` termina com `aresample`
   (2026-11-03).
+- **Loop de fundo da torcida soava como mar e incomodava muito.** O ruído
+  constante "que vai e volta" era o `torcida` em loop (sintetizado e depois
+  gravado e abafado: multidão com o agudo cortado vira onda). O João pediu
+  para sair; a música faz o papel do estádio. Ambiente contínuo de ruído não
+  volta; torcida só em reações curtas e soltas (2026-11-03).

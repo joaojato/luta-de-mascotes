@@ -21,7 +21,6 @@ import { MatchHud } from '../game/matchHud';
 import { exibicao } from '../game/exibicao';
 import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STAGGER, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
-import { syncLoopingAudioAsset, stopAudioAsset } from '../game/core/audio';
 import { tensaoDaLuta } from '../game/musica/sequenciador';
 import { musica } from '../game/musica/tocador';
 import { proximaTorcida, tocarSom } from '../game/sons';
@@ -168,7 +167,6 @@ export class MatchScene extends BaseScene {
     this.painelTreino = this.config.treino ? this.montarPainelTreino() : null;
 
     this.startRound();
-    syncLoopingAudioAsset(this, 'torcida', this.app.settingsStore.getState());
     this.agendarTorcida(null);
 
     // Volta dos Ajustes abertos pela pausa.
@@ -178,7 +176,6 @@ export class MatchScene extends BaseScene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.events.off(Phaser.Scenes.Events.RESUME, aoVoltar);
       this.fecharPausa();
-      stopAudioAsset(this, 'torcida');
       musica(this.game).tocar('menu');
       this.p1?.destroy();
       this.p2?.destroy();
@@ -523,7 +520,7 @@ export class MatchScene extends BaseScene {
 
   /**
    * The crowd makes noise on its own (chant, "uuuh", whistles, drums, claps)
-   * every few seconds, over the loop. It doesn't follow the fight.
+   * every few seconds, under the music. It doesn't follow the fight.
    * @param anterior - The last one, so the same never plays twice in a row.
    */
   private agendarTorcida(anterior: string | null): void {

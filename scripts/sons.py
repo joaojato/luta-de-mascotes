@@ -381,7 +381,7 @@ def especial_carga():
 
 SONS = {
     'ui-mover': ui_mover, 'ui-travar': ui_travar,
-    'torcida': torcida, 'round': round_, 'luta-comeca': luta_comeca, 'ko': ko,
+    'round': round_, 'luta-comeca': luta_comeca, 'ko': ko,
     'tempo-esgotado': tempo_esgotado, 'vitoria': vitoria, 'relogio': relogio,
     'especial-pronto': especial_pronto, 'especial-entrada': especial_entrada,
     'passo': passo, 'pulo': pulo, 'aterrissar': aterrissar, 'dash': dash, 'queda': queda, 'tontura': tontura,
@@ -784,7 +784,7 @@ SONS.update({
     'torcida-batucada': torcida_batucada, 'torcida-palmas': torcida_palmas,
 })
 
-LOOPS = {'torcida'}
+LOOPS: set[str] = set()
 
 
 def gravar(nome: str, dados: list[float], pico_alvo: float = 0.85) -> None:

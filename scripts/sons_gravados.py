@@ -56,7 +56,6 @@ PACOTES = {
     'dog-sounds': ['dog.7z'],
     'crow-caw': ['crow_caw.wav'],
     'crow': ['crow_0.ogg'],
-    'crowd-shoutingspeaking-ambience': ['crowd_shouting_0.ogg'],
     'oooooooooooooo': ['oooooooooo_0.ogg'],
     'applause-in-a-large-hall-or-church': ['applause-clapping-church-crowd-immersive.wav'],
     'thwack-sounds': ['thwack-1.0.zip'],
@@ -158,8 +157,6 @@ SONS: dict[str, Som] = {
                   'natural', dur=1.0),
 
     # ------------------------------------------------ torcida (gravada)
-    'torcida': Som([C('crowd-shoutingspeaking-ambience/crowd_shouting_0.ogg', ini=1, dur=20)],
-                   'abafado', loop=True),
     'torcida-uh': Som([C('oooooooooooooo/oooooooooo_0.ogg')], 'abafado'),
     'torcida-palmas': Som([C('applause-in-a-large-hall-or-church/applause-clapping-church-crowd-immersive.wav',
                              ini=6, dur=3.5, filtro='afade=t=in:d=0.4,afade=t=out:st=2.8:d=0.7')], 'abafado'),

@@ -3491,3 +3491,22 @@ Outro trabalho (torcida v4, gremista v7) corria em paralelo no mesmo
 repositório: o commit levou só os arquivos e trechos deste pedido.
 **Em aberto:** o João ouvir e apontar os sons que não convencem (trocar é
 mudar o nome do arquivo na receita); voz cantada com letra pede gravação.
+
+## 2026-11-03: sai o loop de fundo da torcida
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "me incomoda muito um ruído constante de efeito de mar, um
+barulho alto que vai e volta". E se a música já estava no localhost.
+**Feito:** o ruído era o loop `torcida`, que tocava a luta inteira (vinha
+de antes, sintetizado; nesta manhã virou multidão gravada e abafada, que
+continuou soando como mar). Saiu do jogo, da lista, dos dois scripts e o
+WAV foi apagado. A torcida segue com as reações soltas (coro, "uuuh",
+palmas, assobio, batucada) por baixo da música.
+**Verificado:** `npm run check` (40 arquivos, 348 testes, build, com o
+trabalho paralelo na pasta) e na árvore do commit, isolada.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o loop de fundo da torcida, "bem
+esquisito", soando como mar.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** o João ouvir o resto dos sons e a música.
