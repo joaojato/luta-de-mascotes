@@ -220,7 +220,14 @@ Todo mascote nasce com os sons gerais (`docs/sons.md`). Perguntar só o que
 soa como o quê? Ele anda sem passo (paira)? Se é bicho, como ele grita de
 dor (`dor` e `dor-forte`: grunhido, grasnido, ganido)? Gente usa a dor
 geral. Entra no bloco `sons` do JSON (Regra do Som) e, se o som não existe,
-em `scripts/sons.py`. Nada de som de desenho animado.
+em `scripts/sons_gravados.py` (gravação CC0 tratada; síntese em
+`scripts/sons.py` só quando não há gravação boa). Nada de som de desenho
+animado.
+
+**De que material ele bate?** O acerto soa de quem bate (`acerto-leve`,
+`acerto-pesado`, `acerto-baixo`, `acerto-especial`): madeira, pena, aço,
+carne molhada, alumínio. Todo mascote tem pelo menos um acerto próprio,
+cobrado por teste em `src/game/sons.test.ts`.
 
 ## 7. O que sai do questionário
 
@@ -246,6 +253,7 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 29/10/2026: torcida com todas as cores do clube (camisas lisas, bandeira, sinalizador).
 - 29/10/2026: golpe que chama alguém (`drop`, `queda`), `lowKick`, `hitEffect` de projétil e tontura como partícula do jogo.
 - 30/10/2026: som de dor por mascote (`dor`, `dor-forte`, `dor-ko`).
+- 03/11/2026: som do acerto por mascote (`acerto-leve`, `acerto-pesado`, `acerto-baixo`, `acerto-especial`).
 - 30/10/2026: especial `esquadrao` (aliados que atacam no lugar do mascote; arte de cada aliado em efeitos `<nome>-idle`, `-takeoff`, `-flight`, `-strike`, `-return`).
 - 30/10/2026: Regra do Fundo para NPC que acompanha o mascote; `mergulho` sorteado no `esquadrao`.
 - 30/10/2026: `recuo` (estocada que recua depois de cada contato); seguidores do `esquadrao` teleguiados.

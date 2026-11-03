@@ -9,7 +9,7 @@
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Bengalada", "chute-basico": "Chute", "chute-baixo": "Varredura", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Pó de Arroz"},
   "rosto": {"x": 0.44, "y": 0.38, "lado": 0.26},
   "assetRoot": "/assets/lutadores/cartola",
-  "sons": {"projetil-especial": "po-de-arroz"},
+  "sons": {"projetil-especial": "po-de-arroz", "acerto-leve": "acerto-leve-bengala", "acerto-pesado": "acerto-pesado-bengala", "acerto-baixo": "acerto-pesado-bengala"},
   "torcida": { "estampa": "listras-verticais", "cores": ["#A80018", "#006048", "#F0F0F0"] },
   "anchorUsage": "Cartola, padrão Urubu, guarda voltada para a esquerda",
   "selecionavel": true,

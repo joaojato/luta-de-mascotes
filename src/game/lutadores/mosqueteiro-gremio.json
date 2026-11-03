@@ -23,7 +23,10 @@
     "projetil": "tiro-garrucha",
     "soco-rapido": "corte",
     "chute-baixo": "corte",
-    "chute": null
+    "chute": null,
+    "acerto-leve": "acerto-leve-espada",
+    "acerto-pesado": "acerto-pesado-espada",
+    "acerto-baixo": "acerto-pesado-espada"
   },
   "torcida": {
     "estampa": "listras-verticais",

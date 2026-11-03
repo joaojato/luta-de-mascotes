@@ -1802,6 +1802,16 @@ export class Fighter {
    * feet-anchored and mirrored like the fighter. One-shot effects remove themselves.
    */
   /**
+   * O som deste lutador num evento: o do bloco `sons` do JSON dele, ou o
+   * geral (Regra do Som). A cena usa para o acerto, que é de quem bate.
+   * @param evento - Nome do evento (`acerto-leve`, `acerto-pesado`...).
+   * @param geral - O som que todo lutador tem nesse evento.
+   */
+  somDe(evento: string, geral: string | null): string | null {
+    return somDoEvento(this.character.sons, evento, geral);
+  }
+
+  /**
    * Plays the sound of an event (docs/sons.md): the fighter's own from its
    * JSON `sons` block, or the general one every fighter has.
    * @param evento - Event name (`passo`, `chute`, `especial`...).

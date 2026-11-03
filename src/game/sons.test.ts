@@ -42,4 +42,11 @@ describe('sons (docs/sons.md, Regra do Som)', () => {
       })
     );
   });
+
+  it('todo mascote tem pelo menos um acerto com som próprio (o golpe soa de quem bate)', () => {
+    LUTADORES.forEach((lutador) => {
+      const proprios = Object.entries(lutador.sons ?? {}).filter(([evento, chave]) => evento.startsWith('acerto-') && chave);
+      expect(proprios.length, lutador.id).toBeGreaterThan(0);
+    });
+  });
 });

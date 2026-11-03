@@ -1,5 +1,6 @@
 {
   "id": "dragao",
+  "sons": {"chute": "fogo-cuspe", "especial": "fogo-sopro", "acerto-pesado": "acerto-pesado-dragao", "acerto-baixo": "acerto-pesado-dragao", "dor": "dor-dragao", "dor-forte": "dor-forte-dragao"},
   "label": "Dragão",
   "museu": {
     "apelido": "Fogo que vem de Campinas",

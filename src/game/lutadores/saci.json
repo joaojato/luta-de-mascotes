@@ -9,7 +9,7 @@
   "nomes": {"soco-rapido": "Jab", "soco-forte": "Direto", "chute-basico": "Cachimbo", "chute-baixo": "Chute", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Furacão"},
   "rosto": {"x": 0.45, "y": 0.19, "lado": 0.33},
   "assetRoot": "/assets/lutadores/saci",
-  "sons": {"projetil": "cachimbo", "especial": "tornado"},
+  "sons": {"projetil": "cachimbo", "especial": "tornado", "acerto-leve": "acerto-leve-saci", "acerto-pesado": "acerto-pesado-saci", "acerto-baixo": "acerto-pesado-saci"},
   "torcida": { "estampa": "lisa", "cores": ["#E81810", "#F0F0F0"] },
   "anchorUsage": "Saci, uma única perna, guarda voltada para esquerda",
   "stats": {},

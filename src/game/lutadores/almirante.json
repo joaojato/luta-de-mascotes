@@ -9,7 +9,7 @@
   "nomes": {"soco-rapido": "Jab", "soco-forte": "Cruzado", "chute-basico": "Garrucha", "chute-baixo": "Chute", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Caravela"},
   "rosto": {"x": 0.45, "y": 0.325, "lado": 0.33},
   "assetRoot": "/assets/lutadores/almirante",
-  "sons": {"chute": null, "projetil": "tiro-garrucha", "projetil-especial": "caravela", "carga": "sino-navio"},
+  "sons": {"chute": null, "projetil": "tiro-garrucha", "projetil-especial": "caravela", "carga": "sino-navio", "acerto-leve": "acerto-leve-madeira", "acerto-pesado": "acerto-pesado-madeira", "acerto-baixo": "acerto-pesado-madeira", "acerto-especial": "acerto-especial-canhao"},
   "torcida": { "estampa": "faixa-diagonal", "cores": ["#181818", "#ECECEC"] },
   "anchorUsage": "Almirante em guarda, voltado para a esquerda",
   "selecionavel": true,

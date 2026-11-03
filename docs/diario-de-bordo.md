@@ -3448,3 +3448,46 @@ comemoração e as camisas dos dois lados.
 Codex (`scripts/galeria.mjs`); a página abria a galeria, não o jogo.
 Servidor de teste agora na 5198.
 **Em aberto:** nada.
+
+## 2026-11-03: efeitos gravados com dono e música de arquibancada
+
+**Marco:** 2, segue em andamento (exceção da v1 aberta pelo João hoje).
+**Pedido:** efeitos "extremamente genéricos" e "muito digitalizados": cada
+golpe com a personalidade de quem bate, linha mais atual e menos eletrônica
+(Hotline Miami de referência). Música o jogo inteiro, arquibancada
+sul-americana com cara de jogo retrô ("Domingo eu vou ao Maracanã", sambas
+antigos de arquibancada, Los Pibes Chorros); na luta, mais tensa e mais
+rápida conforme a vida cai.
+**Feito:** base de efeitos trocada por gravação CC0 do OpenGameArt (36
+pacotes conferidos um a um como CC0, 885 arquivos medidos), tratada por
+`scripts/sons_gravados.py` (ffmpeg: grave, saturação, compressão, volume
+percebido igual): 78 sons. O acerto virou evento de quem bate (`acerto-*`) e
+os 13 JSONs ganharam material próprio (madeira, pena, aço, metal, carne
+molhada, alumínio, fogo, cachorro e corvo de verdade). Música montada nota a
+nota em `src/game/musica/` (temas como dado, sequenciador puro testado,
+tocador no Web Audio do Phaser), com timbres do FluidR3 GM (MIT): bateria de
+marcha, cuíca, güiro, agogô, apito, trompete, acordeão, baixo e coro, 61
+amostras (2,9 MB) por `scripts/musica_amostras.py`. Menu em samba de
+arquibancada (C, A7, Dm, G7, 104 BPM); luta em cumbia de hinchada (Am, G, F,
+E), de 96 a 140 BPM com cinco camadas e filtro abrindo conforme a vida do
+mais machucado cai; K.O. fecha com pancada. ADR 0008, `docs/musica.md`,
+`docs/sons.md`, criador e contrato atualizados.
+**Verificado:** `npm run check` na árvore do commit, isolada (34 arquivos,
+324 testes, build), e na pasta com o trabalho paralelo (37, 340). Chrome sem
+tela por CDP, contando as notas agendadas: menu com bumbo a cada 1,154 s
+(104 BPM) e o samba inteiro; luta com vida cheia a 1,25 s (96 BPM) só com a
+base; P2 a 40% a 0,98 s (122 BPM) com caixa e trompete; P2 a 4% a 0,869 s
+(138 BPM) com todas as camadas. Nenhum erro no console. O agente não ouve:
+os sons foram escolhidos por medida (duração, grave, ataque), falta o
+ouvido do João.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** os efeitos sintetizados (ficam só
+apito, relógio, laser, voz de porco e galo, coro e batucada da torcida).
+**Aprovado explicitamente:** a direção do desenho ("perfeito pode seguir").
+**Atrito:** o `loudnorm` do ffmpeg devolve 192 kHz (amostras saíram com o
+dobro do tamanho até reamostrar). O Vite de teste caiu de novo na porta da
+galeria do Codex; o laço do Phaser não anda no Chrome sem tela sem bombear.
+Outro trabalho (torcida v4, gremista v7) corria em paralelo no mesmo
+repositório: o commit levou só os arquivos e trechos deste pedido.
+**Em aberto:** o João ouvir e apontar os sons que não convencem (trocar é
+mudar o nome do arquivo na receita); voz cantada com letra pede gravação.

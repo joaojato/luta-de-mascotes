@@ -1,7 +1,7 @@
 {
   "id": "galo",
   "assetRoot": "/assets/lutadores/galo",
-  "sons": {"chute-baixo": "giro", "projetil": "ovo-arremesso", "projetil-acerto": "ovo-quebra", "especial": "cacarejo", "dor": "dor-galo", "dor-forte": "dor-forte-galo"},
+  "sons": {"chute-baixo": "giro", "projetil": "ovo-arremesso", "projetil-acerto": "ovo-quebra", "especial": "cacarejo", "dor": "dor-galo", "dor-forte": "dor-forte-galo", "acerto-leve": "acerto-leve-pena", "acerto-pesado": "acerto-pesado-pena"},
   "torcida": {
     "estampa": "listras-verticais",
     "cores": [

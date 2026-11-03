@@ -9,7 +9,7 @@
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Mordida", "chute-basico": "Chute", "chute-baixo": "Coice", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Vômito"},
   "rosto": {"x": 0.28, "y": 0.23, "lado": 0.38},
   "assetRoot": "/assets/lutadores/porco",
-  "sons": {"soco-forte": "mordida", "chute-baixo": "coice", "carga": "enjoo", "projetil-especial": "vomito", "dor": "dor-porco", "dor-forte": "dor-forte-porco"},
+  "sons": {"soco-forte": "mordida", "chute-baixo": "coice", "carga": "enjoo", "projetil-especial": "vomito", "dor": "dor-porco", "dor-forte": "dor-forte-porco", "acerto-leve": "acerto-leve-porco", "acerto-pesado": "acerto-pesado-porco", "acerto-baixo": "acerto-pesado-porco"},
   "torcida": {
     "estampa": "lisa",
     "cores": [

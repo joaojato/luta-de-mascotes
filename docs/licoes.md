@@ -576,3 +576,17 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   o João notou comparando com o Vercel. Atlas novo de torcedor entra medido
   contra `torcedores.png` (altura mediana do desenho na célula), e o teste em
   `torcida.test.ts` cobra (2026-11-03).
+
+- **Síntese pura não serve de efeito: o João quer gravação.** Depois de
+  dizer em 30/10 que os sons sintetizados não agradavam, em 03/11 chamou de
+  "muito digitalizados" e "extremamente genéricos", com Hotline Miami de
+  referência. Efeito novo começa em gravação CC0 tratada
+  (`scripts/sons_gravados.py`); síntese só para apito, relógio ou laser. E
+  golpe soa de quem bate: mascote novo nasce com material de acerto próprio,
+  cobrado em `sons.test.ts` (2026-11-03).
+- **Aprovou a direção da música e dos efeitos** ("perfeito pode seguir"):
+  samba de arquibancada no menu, cumbia de hinchada na luta, timbre de 16
+  bits em vez de chiptune, tensão pela vida do mais machucado (2026-11-03).
+- **`loudnorm` do ffmpeg reamostra para 192 kHz.** As amostras da música
+  saíram com o dobro do tamanho; todo `loudnorm` termina com `aresample`
+  (2026-11-03).

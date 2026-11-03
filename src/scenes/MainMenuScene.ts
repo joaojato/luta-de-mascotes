@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
+import { musica } from '../game/musica/tocador';
 import { FERRAMENTAS_DE_DEV, GAME_TAGLINE, GAME_TITLE } from '../game/constants';
 import { createTextButton, type TextButton } from '../game/ui';
 import { SCENE_KEYS } from '../game/types';
@@ -25,6 +26,7 @@ export class MainMenuScene extends BaseScene {
   }
 
   create(): void {
+    musica(this.game).tocar('menu');
     this.buttons = [];
     this.dividers = [];
     this.selectedIndex = 0;

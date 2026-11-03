@@ -119,8 +119,12 @@ Cada uma tem nome para poder ser cobrada depois.
   Cobrada por teste em `lutadores.test.ts`.
 - **Regra do Som.** Lutador não tem código de som. O motor toca o som
   geral de cada evento; o bloco `sons` do JSON troca pelo próprio do
-  mascote ou cala com `null`. Todo som é gerado por `scripts/sons.py`
-  (`docs/sons.md`, ADR 0007). Cobrada por teste em `src/game/sons.test.ts`.
+  mascote ou cala com `null`. O acerto é de quem bate (`acerto-*`) e todo
+  mascote tem pelo menos um próprio. Todo som sai de script: gravação CC0
+  tratada em `scripts/sons_gravados.py`, síntese em `scripts/sons.py` só
+  para o que não tem gravação boa (`docs/sons.md`, ADR 0008). A música é
+  montada nota a nota em `src/game/musica/` (`docs/musica.md`). Cobrada por
+  teste em `src/game/sons.test.ts` e `src/game/musica/musica.test.ts`.
 - **Regra do Fundo.** NPC de um lutador (o Biriba do Bira, os Gaviões do
   Mosqueteiro, o Guerreiro do Cartola) vive no plano de fundo: atrás dos
   dois lutadores, entre eles e a torcida, menor e com o pé mais alto que o
@@ -148,7 +152,9 @@ Cada uma tem nome para poder ser cobrada depois.
   Academia e pontos de vida e dano na tela
   (`docs/superpowers/specs/2026-11-01-controles-e-treino-design.md`).
   Outra em 02/11/2026: o Museu, ficha de cada mascote com descrição e
-  história (`docs/gdd.md`, "Museu").
+  história (`docs/gdd.md`, "Museu"). Outra em 03/11/2026: música o jogo
+  inteiro, que acelera com a vida na luta, e efeitos gravados com o som de
+  cada mascote (`docs/superpowers/specs/2026-11-03-som-e-musica-design.md`).
 
 ## Anti-referência
 

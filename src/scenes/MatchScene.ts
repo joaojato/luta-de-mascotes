@@ -22,6 +22,8 @@ import { exibicao } from '../game/exibicao';
 import { armorAbsorbs, BLOCK_PUSHBACK, ducksUnder, guardBreakStunMs, guardHolds, isPerfectGuard, jumpsOver, PERFECT_GUARD_STAGGER, specialDodged } from '../game/moveMechanics';
 import { DEFAULT_GROUND_FRACTION, getStageDefinition } from '../game/stageConfig';
 import { syncLoopingAudioAsset, stopAudioAsset } from '../game/core/audio';
+import { tensaoDaLuta } from '../game/musica/sequenciador';
+import { musica } from '../game/musica/tocador';
 import { proximaTorcida, tocarSom } from '../game/sons';
 import { LUTADORES } from '../game/lutadores';
 import { torcidaValida } from '../game/torcida';
@@ -177,6 +179,7 @@ export class MatchScene extends BaseScene {
       this.events.off(Phaser.Scenes.Events.RESUME, aoVoltar);
       this.fecharPausa();
       stopAudioAsset(this, 'torcida');
+      musica(this.game).tocar('menu');
       this.p1?.destroy();
       this.p2?.destroy();
       this.biribas.forEach((biriba) => biriba.destroy());
@@ -246,6 +249,8 @@ export class MatchScene extends BaseScene {
         if (this.config.treino) this.atualizarTreino(time, seconds);
         else this.tickRoundTimer(delta);
         this.hud.applyHealth(this.p1.health01, this.p2.health01);
+        // A música aperta conforme o mais machucado perde vida (docs/musica.md).
+        musica(this.game).definirTensao(tensaoDaLuta(this.p1.health01, this.p2.health01));
       }
     }
     const pontos = (lutador: Fighter): [number, number] => [lutador.healthPoints, lutador.maxHealthPoints];
@@ -343,15 +348,16 @@ export class MatchScene extends BaseScene {
       }
 
       this.spawnHitFx(attack.rect, hurt, blocked, isSpecial, finisher, perfect);
-      this.som(
-        perfect ? 'defesa-perfeita'
-          : blocked ? 'defesa'
-          : breakStunMs !== null ? 'defesa-quebrada'
-          : isSpecial ? 'impacto-especial'
-          : attack.move === 'soco-rapido' || attack.move === 'soco-no-ar' ? 'impacto-leve'
-          : attack.move === 'chute-baixo' ? 'impacto-baixo'
-          : 'impacto-pesado'
-      );
+      if (perfect || blocked || breakStunMs !== null) {
+        this.som(perfect ? 'defesa-perfeita' : blocked ? 'defesa' : 'defesa-quebrada');
+      } else {
+        // O acerto soa de quem bate: o bloco `sons` do atacante troca o geral (docs/sons.md).
+        const [evento, geral] = isSpecial ? ['acerto-especial', 'impacto-especial']
+          : attack.move === 'soco-rapido' || attack.move === 'soco-no-ar' ? ['acerto-leve', 'impacto-leve']
+          : attack.move === 'chute-baixo' ? ['acerto-baixo', 'impacto-baixo']
+          : ['acerto-pesado', 'impacto-pesado'];
+        this.som(attacker.somDe(evento, geral), (Math.random() - 0.5) * 160);
+      }
     };
   }
 
@@ -511,8 +517,8 @@ export class MatchScene extends BaseScene {
   }
 
   /** Plays a match sound with the current volume settings (docs/sons.md). */
-  private som(chave: string): void {
-    tocarSom(this, chave, this.app.settingsStore.getState());
+  private som(chave: string | null, detune = 0): void {
+    tocarSom(this, chave, this.app.settingsStore.getState(), detune);
   }
 
   /**
@@ -847,6 +853,7 @@ export class MatchScene extends BaseScene {
     this.tweens.resumeAll();
     this.time.paused = false;
     this.sound.resumeAll();
+    musica(this.game).pausar(false);
   }
 
   /** Esc abre e fecha a pausa: teclas, golpes de cada mascote, comandos e as opções. */
@@ -896,6 +903,7 @@ export class MatchScene extends BaseScene {
     this.tweens.pauseAll();
     this.time.paused = true;
     this.sound.pauseAll();
+    musica(this.game).pausar(true);
   }
 
   /** Resets both fighters to their corners and runs the round intro. */
@@ -919,6 +927,7 @@ export class MatchScene extends BaseScene {
 
     this.showBanner(this.config.treino ? 'TREINO' : `ROUND ${this.roundNumber}`, '#f8fafc');
     this.som('round');
+    musica(this.game).tocar('luta');
 
     this.time.delayedCall(900, () => {
       if (this.phase !== 'intro') {
@@ -961,6 +970,7 @@ export class MatchScene extends BaseScene {
         : `${this.config.mode === '1vcpu' ? 'CPU' : 'P2'} ${getCharacterDefinition(this.config.p2CharacterId).label}`;
     this.showBanner(bannerText, bannerColor, 1.2);
     this.som(bannerText === 'K.O.' ? 'ko' : 'tempo-esgotado');
+    musica(this.game).parar(true);
 
     this.time.delayedCall(1100, () => {
       const matchOver = this.p1Wins >= ROUNDS_TO_WIN || this.p2Wins >= ROUNDS_TO_WIN;

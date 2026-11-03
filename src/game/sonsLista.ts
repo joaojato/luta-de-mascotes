@@ -1,9 +1,10 @@
 import type { StarterAudioAsset } from './core/audio';
 
 /**
- * Sons do jogo (docs/sons.md): arquivos gerados por `scripts/sons.py`. O
- * volume aqui é o relativo de cada som; o volume dos Ajustes multiplica por
- * cima.
+ * Sons do jogo (docs/sons.md): arquivos gravados e tratados por
+ * `scripts/sons_gravados.py`, e os que sobraram sintetizados por
+ * `scripts/sons.py`. O volume aqui é o relativo de cada som; o volume dos
+ * Ajustes multiplica por cima.
  */
 const SONS: [chave: string, volume: number, loop?: boolean][] = [
   ['ui-mover', 0.18], ['ui-travar', 0.35],
@@ -29,7 +30,16 @@ const SONS: [chave: string, volume: number, loop?: boolean][] = [
   ['dor-urubu', 0.4], ['dor-forte-urubu', 0.45], ['dor-cao', 0.35], ['dor-forte-cao', 0.4],
   // Torcida à toa: soltos por cima do loop, bem baixos.
   ['torcida-coro', 0.16], ['torcida-uh', 0.16], ['torcida-assobio', 0.1], ['torcida-batucada', 0.14],
-  ['torcida-palmas', 0.12]
+  ['torcida-palmas', 0.12],
+  // Acerto de cada mascote (eventos `acerto-*` de quem bate, 03/11/2026).
+  ['acerto-leve-madeira', 0.45], ['acerto-pesado-madeira', 0.55], ['acerto-especial-canhao', 0.65],
+  ['acerto-leve-pena', 0.45], ['acerto-pesado-pena', 0.55], ['acerto-leve-saci', 0.45], ['acerto-pesado-saci', 0.5],
+  ['acerto-leve-bengala', 0.45], ['acerto-pesado-bengala', 0.55], ['acerto-leve-porco', 0.45],
+  ['acerto-pesado-porco', 0.55], ['acerto-leve-espada', 0.45], ['acerto-pesado-espada', 0.55],
+  ['acerto-leve-metal', 0.45], ['acerto-pesado-metal', 0.55], ['acerto-pesado-dragao', 0.55],
+  ['acerto-leve-andador', 0.45], ['acerto-pesado-cabecada', 0.55], ['acerto-pesado-maromba', 0.6],
+  ['tiro-mosquete', 0.6], ['fogo-cuspe', 0.45], ['fogo-sopro', 0.5], ['dor-dragao', 0.4], ['dor-forte-dragao', 0.45],
+  ['lata', 0.4], ['arroto', 0.45]
 ];
 
 export const SOM_ASSETS: StarterAudioAsset[] = SONS.map(([chave, volume, loop]) => ({

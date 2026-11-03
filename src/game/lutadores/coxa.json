@@ -1,5 +1,6 @@
 {
   "id": "coxa",
+  "sons": {"carga": "arroto", "projetil-acerto": "lata", "acerto-leve": "acerto-leve-andador", "acerto-pesado": "acerto-pesado-cabecada"},
   "label": "Vovô Coxa",
   "museu": {
     "apelido": "O mais velho da turma, e o mais forte depois da cerveja",

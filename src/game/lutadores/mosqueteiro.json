@@ -13,8 +13,10 @@
     "soco-rapido": "corte",
     "chute-baixo": "corte",
     "chute": null,
-    "projetil": "tiro-garrucha",
-    "carga": "assobio-dedos"
+    "projetil": "tiro-mosquete",
+    "carga": "assobio-dedos",
+    "acerto-leve": "acerto-leve-espada",
+    "acerto-baixo": "acerto-pesado-espada"
   },
   "torcida": { "estampa": "listras-verticais", "cores": ["#181818", "#F0F0F0"] },
   "anchorUsage": "Mosqueteiro de risca de giz em guarda, voltado para a esquerda",

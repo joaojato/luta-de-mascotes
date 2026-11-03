@@ -9,7 +9,7 @@
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Patada", "chute-basico": "Biriba", "chute-baixo": "Carrinho", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Mordida"},
   "rosto": {"x": 0.4, "y": 0.34, "lado": 0.3},
   "assetRoot": "/assets/lutadores/cachorro",
-  "sons": {"soco-forte": "garra", "especial": "bote", "chute": "assobio-dedos", "projetil": "latido-voo", "projetil-acerto": "coco", "dor": "dor-cao", "dor-forte": "dor-forte-cao"},
+  "sons": {"soco-forte": "garra", "especial": "bote", "chute": "assobio-dedos", "projetil": "latido-voo", "projetil-acerto": "coco", "dor": "dor-cao", "dor-forte": "dor-forte-cao", "acerto-especial": "mordida"},
   "torcida": {
     "estampa": "listras-verticais",
     "cores": [

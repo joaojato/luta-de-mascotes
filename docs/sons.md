@@ -7,10 +7,20 @@ com água, etc.).
 
 ## Como são feitos
 
-Sintetizados em Python, só com a biblioteca padrão, como o apito que já
-existe (`scripts/apito.py`). Um script, `scripts/sons.py`, gera todos os
-WAV em `public/assets/audio/sfx/`. Decisão em
-`docs/decisoes/0007-sons-sintetizados.md`.
+**Desde 03/11/2026, gravados** (ADR 0008): o João achou a síntese "muito
+digitalizada" e os golpes "extremamente genéricos". `scripts/sons_gravados.py`
+pega trechos de pacotes CC0 do OpenGameArt (baixados em
+`referencia/sons-cc0/`, fora do git), empilha em camadas e trata com o
+ffmpeg: grave reforçado, saturação e compressão, o peso sujo de Hotline
+Miami. Todo som sai no mesmo volume percebido; o relativo fica em
+`src/game/sonsLista.ts`.
+
+Sobra sintetizado em `scripts/sons.py` (ADR 0007) só o que não tem gravação
+boa: apitos de juiz, relógio, laser, a voz do porco e do galo, o coro e a
+batucada da torcida. Esse script não grava por cima de chave que tem receita
+gravada.
+
+A música tem documento próprio: `docs/musica.md`.
 
 - Som de arcade, curto e seco, que combina com o pixel art. Nada de
   realismo de filme.
@@ -45,6 +55,12 @@ Eventos que o JSON pode trocar: `passo`, `pulo`, `aterrissar`, `dash`,
 cai no chão), `dor` (golpe fraco entra), `dor-forte` (golpe forte ou
 especial entra) e `dor-ko` (o golpe que derruba; sem som próprio, usa o
 `dor-forte` do mascote). O latido do Biriba de cenário é a chave `latido`.
+
+**O acerto é de quem bate** (03/11/2026): `acerto-leve`, `acerto-pesado`,
+`acerto-baixo` e `acerto-especial` são eventos do atacante, e o bloco `sons`
+dele troca o impacto geral pelo material do mascote. Todo mascote tem pelo
+menos um acerto próprio (teste em `src/game/sons.test.ts`). Cada acerto sai
+com o tom variando um pouco, para o combo não soar carimbado.
 
 Mascote novo nasce com todos os sons gerais. Trocar um som é dado.
 
@@ -160,5 +176,24 @@ médio, especial e K.O. alto, torcida bem baixa por baixo de tudo.
    apito de 2600 Hz descendo, "muito fino"), torcida fazendo barulho
    sozinha, e revisão do que soava desenho animado (tontura, bicada,
    cachimbo, cacarejo, laser, enjoo, vômito, cocô, especial pronto).
+
+4. **Gravados e com dono** (pedido do João, 03/11/2026): feita em
+   03/11/2026. Base de efeitos trocada por gravação CC0 tratada (78 sons) e
+   acerto de cada mascote:
+
+   | Mascote | Material do acerto | Próprios novos |
+   |---|---|---|
+   | Almirante | madeira de navio; especial com canhão | garrucha de pólvora negra, caravela batendo, sino |
+   | Urubu | pena (bater de asa) | corvo de verdade na dor |
+   | Saci | estalo leve e rápido | |
+   | Cartola | bengala de madeira | |
+   | Bira | mordida no especial | latido e choro de cachorro de verdade |
+   | Galo | pena | |
+   | Esquadrão | armadura (metal) | |
+   | Porco | carne pesada e molhada | |
+   | Mosqueteiros | aço de espada | mosquete grave do Paulista |
+   | Dragão | pancada com rugido | fogo no cuspe e no sopro, rugido na dor |
+   | Vovô Coxa | andador de alumínio, cabeçada | lata, arroto no especial |
+   | Vovô Maromba | pancada com metal | |
 
 Cada entrega roda `npm run check` e é ouvida no navegador antes do commit.

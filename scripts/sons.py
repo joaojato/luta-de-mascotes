@@ -3,6 +3,10 @@
 Só biblioteca padrão. Cada som é uma função que devolve amostras entre -1 e
 1; o script normaliza e grava WAV mono 22 kHz em public/assets/audio/sfx/.
 
+Desde 03/11/2026 a base dos efeitos é gravada (scripts/sons_gravados.py,
+ADR 0008). Este script só grava as chaves que lá não têm receita, para não
+apagar o som gravado.
+
 Rodar tudo: python scripts/sons.py
 Rodar alguns: python scripts/sons.py pulo ko
 """
@@ -799,7 +803,8 @@ def gravar(nome: str, dados: list[float], pico_alvo: float = 0.85) -> None:
 
 def main() -> None:
     PASTA.mkdir(parents=True, exist_ok=True)
-    nomes = sys.argv[1:] or list(SONS)
+    from sons_gravados import SONS as GRAVADOS
+    nomes = [nome for nome in sys.argv[1:] or list(SONS) if nome not in GRAVADOS]
     for nome in nomes:
         gravar(nome, SONS[nome]())
 

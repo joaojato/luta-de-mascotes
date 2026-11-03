@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 
 import type { GameSettings } from '../types';
+import { chavesDaMusica } from '../musica/sequenciador';
 import { SOM_ASSETS } from '../sonsLista';
 
 export type AudioCategory = 'music' | 'sfx';
@@ -38,7 +39,17 @@ export type AudioKey = (typeof AUDIO_KEYS)[keyof typeof AUDIO_KEYS];
 
 export const STARTER_AUDIO_ASSETS: StarterAudioAsset[] = [
   audio(AUDIO_KEYS.uiConfirm, 'sfx', '/assets/audio/sfx/apito.wav', 0.3, false, 'apito de juiz que confirma nos menus'),
-  ...SOM_ASSETS
+  ...SOM_ASSETS,
+  // Notas da música, tocadas uma a uma pelo tocador (docs/musica.md), nunca por chave solta.
+  ...chavesDaMusica().map(({ chave, arquivo }): StarterAudioAsset => ({
+    kind: 'audio',
+    key: chave,
+    url: `/assets/audio/musica/${arquivo}.wav`,
+    category: 'music',
+    volume: 1,
+    loop: false,
+    usage: 'nota da música (docs/musica.md)'
+  }))
 ];
 export const STARTER_AUDIO_CUES: GeneratedAudioCue[] = [
   cue('starter-jump', 'sfx', 380, 0.08, 0.34, 'generated jump cue'),
