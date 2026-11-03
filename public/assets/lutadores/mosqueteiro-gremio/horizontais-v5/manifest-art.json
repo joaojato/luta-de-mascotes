@@ -1,0 +1,420 @@
+{
+  "character": "Gremista",
+  "revision": 5,
+  "identity": "referencia/gremio/base-manga-longa-cabelos-pretos-v8.png",
+  "baseSha256": "e2af136d569599db450f1c02d8d438f02ca836a044cb98e2948ab06c1ae0d425",
+  "productionGuard": "idle frame0",
+  "animations": [
+    {
+      "action": "low-kick",
+      "file": "low-kick.png",
+      "frames": 6,
+      "fps": 16,
+      "repeat": 0,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scaleUniform": 0.35,
+      "durationsMs": [
+        62,
+        62,
+        62,
+        62,
+        62,
+        62
+      ],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            18,
+            50,
+            525,
+            470
+          ],
+          "sourceAnchor": [
+            354,
+            469
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            202,
+            213,
+            379,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            589,
+            49,
+            998,
+            470
+          ],
+          "sourceAnchor": [
+            820,
+            469
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            239,
+            213,
+            382,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            1073,
+            51,
+            1504,
+            470
+          ],
+          "sourceAnchor": [
+            1321,
+            469
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            233,
+            214,
+            384,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            6,
+            561,
+            543,
+            978
+          ],
+          "sourceAnchor": [
+            364,
+            979
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            195,
+            214,
+            383,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            576,
+            561,
+            1017,
+            978
+          ],
+          "sourceAnchor": [
+            843,
+            979
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            227,
+            214,
+            381,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            1035,
+            561,
+            1524,
+            978
+          ],
+          "sourceAnchor": [
+            1350,
+            979
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            210,
+            214,
+            381,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        }
+      ],
+      "sourceSha256": "7dedca36d2be967e5b30c7ddab7d89bdcd8c5a2f0b1e93d4b291264031c7eb84",
+      "sha256": "d8863abefb85f87ce1621e6c777ae170c1cc765e0e056873f6a08c585e047bd4",
+      "review": "One level depth sweep: right A across torso to far side1, foreshortened nearward edge2, leftward foreground follow3, retract4, low ready5. Same A shoulder/wrist connection and planted hips/knees throughout; left B guards. Hat260->91px, head110->38.5px, boot130->45.5px, hanger200->70px, crouched body420->147px; one uniform scale. No contact copies or overhead strike."
+    },
+    {
+      "action": "light-punch",
+      "file": "light-punch.png",
+      "frames": 8,
+      "fps": 20,
+      "repeat": 0,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scaleUniform": 0.48,
+      "durationsMs": [
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50,
+        50
+      ],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            58,
+            23,
+            385,
+            418
+          ],
+          "sourceAnchor": [
+            254,
+            418
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            231,
+            171,
+            388,
+            361
+          ],
+          "exactProductionGuard": true,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            520,
+            26,
+            828,
+            418
+          ],
+          "sourceAnchor": [
+            698,
+            418
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            235,
+            172,
+            383,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            964,
+            26,
+            1272,
+            418
+          ],
+          "sourceAnchor": [
+            1142,
+            418
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            235,
+            172,
+            383,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1376,
+            27,
+            1715,
+            418
+          ],
+          "sourceAnchor": [
+            1585,
+            418
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            220,
+            172,
+            383,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            77,
+            468,
+            385,
+            861
+          ],
+          "sourceAnchor": [
+            254,
+            861
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            235,
+            171,
+            383,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            520,
+            468,
+            828,
+            861
+          ],
+          "sourceAnchor": [
+            698,
+            861
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            235,
+            171,
+            383,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            934,
+            468,
+            1272,
+            861
+          ],
+          "sourceAnchor": [
+            1142,
+            861
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            220,
+            171,
+            382,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1389,
+            465,
+            1715,
+            861
+          ],
+          "sourceAnchor": [
+            1585,
+            861
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            231,
+            171,
+            388,
+            361
+          ],
+          "exactProductionGuard": true,
+          "exactProductionPose": null
+        }
+      ],
+      "sourceSha256": "b2e463bf4d067f57b54c31725a5f64d771f3002efb4a558ea89fa255788fd566",
+      "sha256": "afd3e2e2951568a9f75ac76ad7f99f181ae6d6d8fc398ee9e8dc019fd26d7cd7",
+      "review": "Two compact horizontal depth cuts: far chamber1/4, nearward foreshortened blade2/5, level near-side follow3/6. Anatomical right A grip/shoulder continuous; left B guards. Feet remain planted, body upright190px, uniform scale only. Unforeshortened follow blade3/6 redrawn15% shorter to match same physical hanger, not body scaling. Exact production guard used endpoints0/7 only; active cuts are source originals."
+    }
+  ],
+  "missing": [],
+  "status": "Visual art reviewed; combat testing separate",
+  "scope": "Horizontal edge sweeps from background toward camera"
+}

@@ -3,6 +3,8 @@
 Atualização posterior: caminhadas e ataque rápido foram substituídos
 pela [revisão v4](gremista-passos-v4.md). Os demais arquivos desta revisão
 permanecem vigentes. Não reaplicar essas três folhas v3 sobre a correção.
+O baixo e o leve foram depois substituídos pelos
+[cortes horizontais v5](gremista-horizontais-v5.md); as caminhadas ficam na v4.
 
 Pedido de 02/11/2026: priorizar excelência, corrigir crescimento/distorção
 entre quadros e ações, criar espera animada e verificar ações ausentes.

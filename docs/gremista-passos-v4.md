@@ -1,5 +1,9 @@
 # Gremista — passos com direita à frente e cortes leves
 
+Atualização posterior: o leve foi substituído pelos
+[cortes horizontais v5](gremista-horizontais-v5.md). As duas caminhadas v4
+permanecem vigentes.
+
 Correção posterior à coesão v3, solicitada pelo usuário em 02/11/2026.
 Altera somente `walk-forward`, `walk-backward` e `light-punch`, oito
 quadros cada, mantendo os FPS existentes (8, 8 e 20 respectivamente).
