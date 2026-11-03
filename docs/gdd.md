@@ -448,7 +448,7 @@ Entrou jogável pelo vigia de lutador novo, com a arte do Codex
 o plano dele não as tinha.
 
 ```
-Nome no jogo: Mosqueteiro
+Nome no jogo: Mosqueteiro Paulista (era "Mosqueteiro" até 02/11/2026, João)
 Slug (pasta e JSON): mosqueteiro
 Silhueta em uma frase: mosqueteiro de risca de giz preta, chapéu largo com pluma vinho, espada fina e mosquete nas costas
 Arquétipo: alcance de espada e tiro lento e forte
