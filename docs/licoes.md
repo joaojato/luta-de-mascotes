@@ -604,3 +604,11 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   saiu no canto em 1920×1080 porque a câmera dela ficou sem o zoom da
   nitidez; em 1280 o zoom é 1 e tudo parece certo. Coisa visual se confere
   pelo menos em 1920×1080 e no celular deitado (2026-11-03).
+- **Centrar o conjunto não é centrar o que o olho vê.** A abertura tinha logo
+  e barra centradas como bloco, e a logo ficava até 120 px acima do meio; o
+  João leu como desalinhado. O elemento principal vai no centro exato e o
+  secundário se arranja em volta (2026-11-03).
+- **Imagem colada no chat não vira arquivo.** Ela chega só para ver; quando
+  o João manda uma imagem para entrar no jogo, pedir que salve o arquivo na
+  pasta, ou reproduzir a partir de uma fonte que exista no disco, e dizer
+  qual dos dois foi feito (2026-11-03).

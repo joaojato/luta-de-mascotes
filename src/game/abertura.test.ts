@@ -3,7 +3,18 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { ABERTURA_MINIMA_MS, blocosDaBarra, BLOCOS_DA_BARRA, LOGOS_DA_ABERTURA, logoDaVez, podeSairDaAbertura, SOM_DA_ABERTURA, TEMPO_POR_LOGO_MS } from './abertura';
+import {
+  ABERTURA_MINIMA_MS,
+  blocosDaBarra,
+  BLOCOS_DA_BARRA,
+  ESCALA_RETRO,
+  LOGOS_DA_ABERTURA,
+  logoDaVez,
+  podeSairDaAbertura,
+  posicoesDaAbertura,
+  SOM_DA_ABERTURA,
+  TEMPO_POR_LOGO_MS
+} from './abertura';
 import { SOM_ASSETS } from './sonsLista';
 
 // A abertura mascara o carregamento e dá o crédito: Resenha Games, depois a
@@ -55,4 +66,16 @@ describe('abertura do jogo', () => {
   it('o plim da abertura é um som da lista do jogo', () => {
     expect(SOM_ASSETS.some((som) => som.key === SOM_DA_ABERTURA)).toBe(true);
   });
+
+  // A logo é o que o olho mede: fica no meio exato da tela, em qualquer
+  // proporção, e a barra vai embaixo dela (João, 03/11/2026).
+  for (const [largura, altura] of [[1280, 720], [1558, 720], [1280, 1024]]) {
+    it(`em ${largura}x${altura}, a logo fica no meio exato e a barra embaixo dela`, () => {
+      const pos = posicoesDaAbertura({ width: largura, height: altura, centerX: largura / 2, centerY: altura / 2 });
+      expect([pos.logoX, pos.logoY]).toEqual([largura / 2, altura / 2]);
+      const baseDaLogo = altura / 2 + (Math.max(...LOGOS_DA_ABERTURA.map((l) => l.altura)) * ESCALA_RETRO) / 2;
+      expect(pos.barraY).toBeGreaterThan(baseDaLogo);
+      expect(pos.barraY + 30).toBeLessThan(altura);
+    });
+  }
 });

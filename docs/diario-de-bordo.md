@@ -3623,3 +3623,32 @@ cents), sem erro no console.
 **Em aberto:** trocar a logo da PUC quando o arquivo estiver em
 `referencia/abertura/puc-rio.png`. O plim sai mudo na primeira visita antes
 de qualquer clique (trava de som do navegador).
+
+## 2026-11-03: abertura no centro exato e PUC para fundo escuro
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Continua desalinhado. Preciso que seja centralizado sempre
+independente do dispositivo, proporção da tela e etc." E a logo nova da PUC,
+mandada como imagem no chat.
+**Feito:** duas causas. A pasta dele (o localhost:5173) não tinha recebido o
+commit da centralização, porque a outra sessão tem arquivos abertos lá;
+avancei a pasta (nenhum arquivo em comum, nada da outra sessão foi tocado).
+E a abertura centrava o conjunto logo e barra, então a logo ficava 32 a
+120 px acima do meio. `posicoesDaAbertura` põe a logo no meio exato e a
+barra no vão embaixo dela. A imagem da PUC não chegou como arquivo; é a
+versão para fundo escuro (o mesmo brasão com "PUC RIO" em branco, que no
+chat parece vazio), então `scripts/abertura_logos.py` pinta de branco o
+texto da logo que já existia e reabre o furo do "O" de RIO, que sumia na
+redução.
+**Verificado:** `npm run check` (38 arquivos, 343 testes, build). Medido no navegador em nove
+telas (1920×1080, 4:3, 16:10, 5:4, 21:9 de 3440, janela baixa de 1920×600,
+tablet em pé, dois celulares deitados): centro da logo e do menu a 0 px do
+centro da janela em todas.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o centro do conjunto logo e barra; o
+texto cinza da PUC.
+**Aprovado explicitamente:** nada novo.
+**Atrito:** ele viu a versão antiga porque a pasta dele estava atrasada; e
+a imagem colada no chat não vira arquivo.
+**Em aberto:** confirmar se a PUC reproduzida bate com a imagem dele; se
+não, ele salva o PNG em `referencia/abertura/puc-rio.png`.

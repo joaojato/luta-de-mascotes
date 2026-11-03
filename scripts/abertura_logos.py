@@ -26,15 +26,21 @@ PREVIA = RAIZ / 'output/abertura-retro'
 # Lado do bloco em cada quadro do mosaico, do grosso ao fino.
 BLOCOS = [12, 8, 5, 3, 2, 1]
 
-# nome: (arquivo, quadro largura x altura, lado que manda, tamanho dele, cores, tolerância do fundo)
+# nome: (arquivo, quadro largura x altura, lado que manda, tamanho dele, cores,
+#        tolerância do fundo, linha da fonte a partir da qual o texto vira branco)
+# A PUC usa a versão para fundo escuro (João, 03/11/2026): o mesmo brasão com
+# "PUC RIO" em branco; a fonte é a de texto cinza, e o texto (da linha 150 da
+# fonte para baixo, abaixo do brasão) é pintado de branco.
 LOGOS = {
-    'resenha-games': ('resenha-games.png', (176, 120), 'largura', 168, 8, 40),
-    'puc-rio': ('puc-rio.png', (80, 120), 'altura', 112, 12, 60),
+    'resenha-games': ('resenha-games.png', (176, 120), 'largura', 168, 8, 40, None),
+    'puc-rio': ('puc-rio.png', (80, 120), 'altura', 112, 12, 60, 150),
 }
+BRANCO = (255, 255, 255)
 
 
-def sem_fundo(im, tolerancia):
-    """Apaga o fundo ligado aos cantos (preenchimento a partir das bordas)."""
+def sem_fundo(im, tolerancia, texto_branco=None):
+    """Apaga o fundo ligado aos cantos (preenchimento a partir das bordas) e,
+    com `texto_branco`, pinta de branco o que sobrou dessa linha para baixo."""
     im = im.convert('RGBA')
     px = im.load()
     w, h = im.size
@@ -50,6 +56,11 @@ def sem_fundo(im, tolerancia):
         visto.add((x, y))
         px[x, y] = (0, 0, 0, 0)
         fila.extend(((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)))
+    if texto_branco is not None:
+        for y in range(texto_branco, h):
+            for x in range(w):
+                if px[x, y][3]:
+                    px[x, y] = BRANCO + (px[x, y][3],)
     return im.crop(im.getbbox())
 
 
@@ -70,6 +81,31 @@ def pixel_arte(im, lado, tamanho, cores):
     return saida
 
 
+def abrir_o(im, linhas=8, anel=2):
+    """O "O" de RIO tem um furo de 2 px na fonte, que some na redução e
+    vira bolinha. Pega a última letra da linha de baixo (a mais à direita) e
+    deixa só um anel de `anel` px, como o desenho original."""
+    px = im.load()
+    w, h = im.size
+    topo = h - linhas
+    cheio = {(x, y) for y in range(topo, h) for x in range(w) if px[x, y][3]}
+    if not cheio:
+        return im
+    inicio = max(cheio, key=lambda p: p[0])
+    letra, fila = set(), deque([inicio])
+    while fila:
+        x, y = fila.popleft()
+        if (x, y) in letra or (x, y) not in cheio:
+            continue
+        letra.add((x, y))
+        fila.extend((x + dx, y + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1))
+    miolo = [(x, y) for x, y in letra
+             if all((x + dx, y + dy) in letra for dx in range(-anel, anel + 1) for dy in range(-anel, anel + 1))]
+    for x, y in miolo:
+        px[x, y] = (0, 0, 0, 0)
+    return im
+
+
 def mosaico(im, bloco):
     if bloco == 1:
         return im
@@ -77,8 +113,10 @@ def mosaico(im, bloco):
     return reduzido.resize((reduzido.width * bloco, reduzido.height * bloco), Image.NEAREST).crop((0, 0, im.width, im.height))
 
 
-def folha(nome, arquivo, quadro, lado, tamanho, cores, tolerancia):
-    logo = pixel_arte(sem_fundo(Image.open(FONTE / arquivo), tolerancia), lado, tamanho, cores)
+def folha(nome, arquivo, quadro, lado, tamanho, cores, tolerancia, texto_branco):
+    logo = pixel_arte(sem_fundo(Image.open(FONTE / arquivo), tolerancia, texto_branco), lado, tamanho, cores)
+    if texto_branco is not None:
+        logo = abrir_o(logo)
     qw, qh = quadro
     assert logo.width <= qw and logo.height <= qh, f'{nome}: {logo.size} não cabe em {quadro}'
     centrado = Image.new('RGBA', quadro)

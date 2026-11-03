@@ -8,6 +8,8 @@
  * `scripts/abertura_logos.py`.
  */
 
+import type { TelaLogica } from './nitidez';
+
 export interface LogoDaAbertura {
   chave: string;
   arquivo: string;
@@ -51,6 +53,16 @@ export function logoDaVez(decorridoMs: number): number {
  */
 export function podeSairDaAbertura(decorridoMs: number, carregou: boolean, pulou: boolean): boolean {
   return carregou && (pulou || decorridoMs >= ABERTURA_MINIMA_MS);
+}
+
+/**
+ * Onde a logo e a barra ficam. A logo é o que o olho mede: fica no meio exato
+ * da tela, em qualquer proporção; a barra vai no vão entre ela e o rodapé.
+ */
+export function posicoesDaAbertura(tela: TelaLogica): { logoX: number; logoY: number; barraY: number } {
+  const meiaAltura = (Math.max(...LOGOS_DA_ABERTURA.map((logo) => logo.altura)) * ESCALA_RETRO) / 2;
+  const baseDaLogo = tela.centerY + meiaAltura;
+  return { logoX: tela.centerX, logoY: tela.centerY, barraY: baseDaLogo + (tela.height - baseDaLogo) * 0.35 };
 }
 
 /** Blocos acesos da barra para um progresso de 0 a 1 (só cheia no fim). */

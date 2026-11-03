@@ -296,7 +296,9 @@ luta acontece. Sem placa de patrocínio legível.
    de TV de tubo por cima e barra de 20 blocos roxos embaixo. 2,4 s por logo,
    com um plim de console quando cada uma fica nítida; carregando devagar,
    as duas se revezam até acabar. Tecla ou clique pula depois de carregar.
-   Logo e barra ficam no meio da tela em qualquer aparelho. Folhas geradas por `scripts/abertura_logos.py` a partir de
+   A logo fica no meio exato da tela em qualquer aparelho e proporção, e a
+   barra vai embaixo dela. A PUC é a versão para fundo escuro: brasão com
+   "PUC RIO" em branco. Folhas geradas por `scripts/abertura_logos.py` a partir de
    `referencia/abertura/` (fora do git); tempos em `src/game/abertura.ts`.
 1. Título (nome do jogo, "aperte qualquer tecla").
 2. Seleção de mascote (retrato, nome, dois cursores).

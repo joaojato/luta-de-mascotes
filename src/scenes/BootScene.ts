@@ -12,6 +12,7 @@ import {
   LOGOS_DA_ABERTURA,
   logoDaVez,
   podeSairDaAbertura,
+  posicoesDaAbertura,
   SOM_DA_ABERTURA,
   TEMPO_POR_LOGO_MS
 } from '../game/abertura';
@@ -114,7 +115,8 @@ export class BootScene extends BaseScene {
 
   /** Logo no meio, linhas de TV por cima, barra de blocos embaixo. */
   private montarAbertura(): void {
-    const { width, height, centerX, centerY } = this.tela;
+    const { width, height, centerX } = this.tela;
+    const posicoes = posicoesDaAbertura(this.tela);
     this.cameras.main.setBackgroundColor(COR_FUNDO);
 
     for (const { chave, quadros } of LOGOS_DA_ABERTURA) {
@@ -128,11 +130,11 @@ export class BootScene extends BaseScene {
         });
       }
     }
-    // Logo e barra juntas no meio da tela.
-    this.logo = this.add.sprite(centerX, centerY - 60, LOGOS_DA_ABERTURA[0].chave, 0).setScale(ESCALA_RETRO).setVisible(false);
+    // A logo no meio exato da tela; a barra embaixo dela.
+    this.logo = this.add.sprite(posicoes.logoX, posicoes.logoY, LOGOS_DA_ABERTURA[0].chave, 0).setScale(ESCALA_RETRO).setVisible(false);
 
     const larguraDaBarra = BLOCOS_DA_BARRA * (LADO_DO_BLOCO + VAO_DO_BLOCO) - VAO_DO_BLOCO;
-    const yBarra = centerY + 210;
+    const yBarra = posicoes.barraY;
     const blocos = Array.from({ length: BLOCOS_DA_BARRA }, (_, i) =>
       this.add
         .rectangle(centerX - larguraDaBarra / 2 + i * (LADO_DO_BLOCO + VAO_DO_BLOCO), yBarra, LADO_DO_BLOCO, LADO_DO_BLOCO / 2, COR_DO_BLOCO_APAGADO)
