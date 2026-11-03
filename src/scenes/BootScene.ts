@@ -8,13 +8,16 @@ import { carregarBiriba } from '../game/biribaCena';
 import {
   blocosDaBarra,
   BLOCOS_DA_BARRA,
+  duracaoDoMosaico,
   ESCALA_RETRO,
   LOGOS_DA_ABERTURA,
   logoDaVez,
   podeSairDaAbertura,
   posicoesDaAbertura,
-  SOM_DA_ABERTURA,
-  TEMPO_POR_LOGO_MS
+  QUADROS_POR_SEGUNDO_DO_MOSAICO,
+  SAIDA_ANTES_DO_FIM_MS,
+  sequenciaDoOlhar,
+  SOM_DA_ABERTURA
 } from '../game/abertura';
 import { tocarSom } from '../game/sons';
 import { SOM_ASSETS } from '../game/sonsLista';
@@ -27,7 +30,6 @@ const COR_DO_BLOCO = 0xa269dd;
 const COR_DO_BLOCO_APAGADO = 0x231628;
 const LADO_DO_BLOCO = 18;
 const VAO_DO_BLOCO = 4;
-const QUADROS_POR_SEGUNDO_DO_MOSAICO = 12;
 
 /**
  * Carrega o jogo atrás da abertura retrô (src/game/abertura.ts): a logo da
@@ -119,7 +121,8 @@ export class BootScene extends BaseScene {
     const posicoes = posicoesDaAbertura(this.tela);
     this.cameras.main.setBackgroundColor(COR_FUNDO);
 
-    for (const { chave, quadros } of LOGOS_DA_ABERTURA) {
+    for (const logo of LOGOS_DA_ABERTURA) {
+      const { chave, quadros } = logo;
       // Pixel arte: ampliada sem suavizar.
       this.textures.get(chave).setFilter(Phaser.Textures.FilterMode.NEAREST);
       if (!this.anims.exists(`${chave}-mosaico`)) {
@@ -128,6 +131,10 @@ export class BootScene extends BaseScene {
           frames: this.anims.generateFrameNumbers(chave, { start: 0, end: quadros - 1 }),
           frameRate: QUADROS_POR_SEGUNDO_DO_MOSAICO
         });
+      }
+      const olhar = sequenciaDoOlhar(logo);
+      if (olhar.length && !this.anims.exists(`${chave}-olhar`)) {
+        this.anims.create({ key: `${chave}-olhar`, frames: olhar.map(({ frame, duration }) => ({ key: chave, frame, duration })) });
       }
     }
     // A logo no meio exato da tela; a barra embaixo dela.
@@ -170,14 +177,21 @@ export class BootScene extends BaseScene {
     // Plim quando o mosaico acaba e a logo fica nítida. O navegador trava o
     // som até a primeira tecla ou clique na página: aí ele sai mudo.
     this.logo.off(Phaser.Animations.Events.ANIMATION_COMPLETE);
+    const logo = LOGOS_DA_ABERTURA[vez];
+    const aindaNaTela = (): boolean => this.logoNaTela === vez && !this.desfazendo && !this.saindo;
     this.logo.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-      if (this.logoNaTela === vez && !this.saindo) {
-        tocarSom(this, SOM_DA_ABERTURA, this.app.settingsStore.getState(), LOGOS_DA_ABERTURA[vez].tomDoPlim);
+      if (!aindaNaTela()) return;
+      tocarSom(this, SOM_DA_ABERTURA, this.app.settingsStore.getState(), logo.tomDoPlim);
+      // Os olhos ficam na esquerda, esperam, vão até a direita e voltam.
+      if (logo.olhar) {
+        this.time.delayedCall(logo.olhar.esperaMs, () => {
+          if (aindaNaTela()) this.logo.play(`${chave}-olhar`);
+        });
       }
     });
     this.desfazendo = false;
     this.logo.setVisible(true).setTexture(chave, 0).play(`${chave}-mosaico`);
-    const saida = TEMPO_POR_LOGO_MS - this.duracaoDoMosaico(vez) - 150;
+    const saida = logo.tempoMs - duracaoDoMosaico(logo) - SAIDA_ANTES_DO_FIM_MS;
     this.time.delayedCall(saida, () => {
       if (this.logoNaTela === vez && !this.saindo) this.desfazer(vez);
     });
@@ -191,16 +205,12 @@ export class BootScene extends BaseScene {
     this.logo.playReverse(`${LOGOS_DA_ABERTURA[vez].chave}-mosaico`);
   }
 
-  private duracaoDoMosaico(vez: number): number {
-    return (LOGOS_DA_ABERTURA[vez].quadros / QUADROS_POR_SEGUNDO_DO_MOSAICO) * 1000;
-  }
-
   /** A logo na tela (se houver) sai pelo mosaico e o menu abre. */
   private sair(): void {
     this.saindo = true;
     const vez = Math.max(0, this.logoNaTela);
     const naTela = this.logo.visible;
     if (naTela && !this.desfazendo) this.desfazer(vez);
-    this.time.delayedCall(naTela ? this.duracaoDoMosaico(vez) + 120 : 120, () => this.scene.start(SCENE_KEYS.MainMenu));
+    this.time.delayedCall(naTela ? duracaoDoMosaico(LOGOS_DA_ABERTURA[vez]) + 120 : 120, () => this.scene.start(SCENE_KEYS.MainMenu));
   }
 }

@@ -297,8 +297,11 @@ luta acontece. Sem placa de patrocínio legível.
    desenvolvedora, e depois a da PUC-Rio, em estilo retrô de console de 16
    bits, enquanto tudo carrega. Cada logo é pixel arte ampliada 3x, entra
    pelo mosaico (do bloco grosso ao fino) e sai por ele ao contrário; linhas
-   de TV de tubo por cima e barra de 20 blocos roxos embaixo. 2,4 s por logo,
-   com um plim de console quando cada uma fica nítida; carregando devagar,
+   de TV de tubo por cima e barra de 20 blocos roxos embaixo. 3,7 s na
+   Resenha e 2,4 s na PUC, com um plim de console quando cada uma fica
+   nítida. Na Resenha, os olhos do controle começam olhando para a esquerda,
+   esperam 1 s, vão até a direita em três passos, param um instante, voltam
+   e travam na esquerda até a logo sair. Carregando devagar,
    as duas se revezam até acabar. Tecla ou clique pula depois de carregar.
    A logo fica no meio exato da tela em qualquer aparelho e proporção, e a
    barra vai embaixo dela. A PUC é a versão para fundo escuro: brasão com

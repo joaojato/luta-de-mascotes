@@ -3743,3 +3743,30 @@ em `Desktop/PUC/8° Período/Jesus 3`. Outro trabalho seguia commitando na
 mesma pasta.
 **Em aberto:** o João jogar contra Galo, Bira, Urubu e Porco e dizer se o
 especial ficou forte demais (intocável desde a preparação).
+
+## 2026-11-03: olhos da Resenha Games olham para a direita e voltam
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Na logo do Resenha games, faça uma pequena animação dos olhos
+do controle indo da esquerda para a direita, e depois voltando. Mas ele
+começa na esquerda, espera um segundo, vai e volta, e trava denovo".
+**Feito:** `scripts/abertura_logos.py` acrescenta três quadros de olhar
+depois do mosaico na folha da Resenha (de 6 para 9 quadros; mosaico e PUC
+saíram idênticos aos de antes). A pupila está fundida no contorno esquerdo
+do olho, então cada quadro refaz o olho vazio espelhando a metade direita e
+redesenha a pupila redonda mais à direita, até a posição espelhada (19 px de
+curso). `abertura.ts` passou a ter tempo por logo (Resenha 3,7 s, PUC 2,4 s)
+e `sequenciaDoOlhar`: ida em 70 ms por passo, 450 ms parado na direita,
+volta e trava no quadro do olho na esquerda. A BootScene toca o olhar 1 s
+depois do plim. GDD atualizado.
+**Verificado:** `npm run check` (46 arquivos, 401 testes, build). No
+navegador, quadro a quadro: olho na esquerda, ~1,2 s parado, 6, 7, 8 e volta
+ao 5, travado ~0,7 s até o mosaico de saída; capturas com o olho no meio e
+na direita sem resto de contorno.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** a primeira versão do script deixava metade da pupila e um arco
+do contorno para trás; resolvido tratando a pupila como redonda.
+**Em aberto:** ele ver no navegador se o ritmo (70 ms por passo, 450 ms na
+direita) está bom. A abertura mínima subiu de 4,8 s para 6,1 s.
