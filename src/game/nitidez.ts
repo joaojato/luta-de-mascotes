@@ -81,8 +81,10 @@ export function instalarNitidez(game: Phaser.Game, area: HTMLElement): void {
       const zoom = (): void => {
         cena.cameras.main.setOrigin(0, 0).setZoom(escalaAtual);
       };
-      // A primeira cena já começou antes do READY.
-      if (cena.sys.isActive()) zoom();
+      // A primeira cena já começou antes do READY, e pode estar ainda
+      // carregando (a abertura carrega as logos pelo pack): o zoom vale desde já.
+      const status = cena.sys.getStatus();
+      if (status >= Phaser.Scenes.START && status <= Phaser.Scenes.RUNNING) zoom();
       cena.sys.events.on(Phaser.Scenes.Events.START, zoom);
       cena.sys.events.on(Phaser.Scenes.Events.ADDED_TO_SCENE, (objeto: Phaser.GameObjects.GameObject) => {
         if (objeto instanceof Phaser.GameObjects.Text && objeto.style.resolution < escalaAtual) {

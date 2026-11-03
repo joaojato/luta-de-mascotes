@@ -12,8 +12,11 @@ import {
   LOGOS_DA_ABERTURA,
   logoDaVez,
   podeSairDaAbertura,
+  SOM_DA_ABERTURA,
   TEMPO_POR_LOGO_MS
 } from '../game/abertura';
+import { tocarSom } from '../game/sons';
+import { SOM_ASSETS } from '../game/sonsLista';
 import { COR_FUNDO, FONTE_TEXTO, FONTES_DO_JOGO, TEXTO_APAGADO } from '../game/estilo';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
@@ -45,6 +48,8 @@ export class BootScene extends BaseScene {
 
   private logoNaTela = -1;
 
+  private desfazendo = false;
+
   private textos: Phaser.GameObjects.Text[] = [];
 
   constructor() {
@@ -56,7 +61,10 @@ export class BootScene extends BaseScene {
       url: logo.arquivo,
       frameConfig: { frameWidth: logo.largura, frameHeight: logo.altura }
     }));
-    super({ key: SCENE_KEYS.Boot, pack: { files } as unknown as Phaser.Types.Scenes.SettingsConfig['pack'] });
+    // O plim também vem antes: o resto dos sons ainda está carregando quando a primeira logo fica nítida.
+    const plim = SOM_ASSETS.find((som) => som.key === SOM_DA_ABERTURA);
+    const som = plim ? [{ type: 'audio', key: plim.key, url: plim.url }] : [];
+    super({ key: SCENE_KEYS.Boot, pack: { files: [...files, ...som] } as unknown as Phaser.Types.Scenes.SettingsConfig['pack'] });
   }
 
   /**
@@ -120,10 +128,11 @@ export class BootScene extends BaseScene {
         });
       }
     }
-    this.logo = this.add.sprite(centerX, centerY - 40, LOGOS_DA_ABERTURA[0].chave, 0).setScale(ESCALA_RETRO).setVisible(false);
+    // Logo e barra juntas no meio da tela.
+    this.logo = this.add.sprite(centerX, centerY - 60, LOGOS_DA_ABERTURA[0].chave, 0).setScale(ESCALA_RETRO).setVisible(false);
 
     const larguraDaBarra = BLOCOS_DA_BARRA * (LADO_DO_BLOCO + VAO_DO_BLOCO) - VAO_DO_BLOCO;
-    const yBarra = centerY + 230;
+    const yBarra = centerY + 210;
     const blocos = Array.from({ length: BLOCOS_DA_BARRA }, (_, i) =>
       this.add
         .rectangle(centerX - larguraDaBarra / 2 + i * (LADO_DO_BLOCO + VAO_DO_BLOCO), yBarra, LADO_DO_BLOCO, LADO_DO_BLOCO / 2, COR_DO_BLOCO_APAGADO)
@@ -156,24 +165,40 @@ export class BootScene extends BaseScene {
   private mostrarLogo(vez: number): void {
     this.logoNaTela = vez;
     const { chave } = LOGOS_DA_ABERTURA[vez];
+    // Plim quando o mosaico acaba e a logo fica nítida. O navegador trava o
+    // som até a primeira tecla ou clique na página: aí ele sai mudo.
+    this.logo.off(Phaser.Animations.Events.ANIMATION_COMPLETE);
+    this.logo.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+      if (this.logoNaTela === vez && !this.saindo) {
+        tocarSom(this, SOM_DA_ABERTURA, this.app.settingsStore.getState(), LOGOS_DA_ABERTURA[vez].tomDoPlim);
+      }
+    });
+    this.desfazendo = false;
     this.logo.setVisible(true).setTexture(chave, 0).play(`${chave}-mosaico`);
-    if (vez < LOGOS_DA_ABERTURA.length - 1) {
-      const saida = TEMPO_POR_LOGO_MS - this.duracaoDoMosaico(vez) - 150;
-      this.time.delayedCall(saida, () => {
-        if (this.logoNaTela === vez && !this.saindo) this.logo.playReverse(`${chave}-mosaico`);
-      });
-    }
+    const saida = TEMPO_POR_LOGO_MS - this.duracaoDoMosaico(vez) - 150;
+    this.time.delayedCall(saida, () => {
+      if (this.logoNaTela === vez && !this.saindo) this.desfazer(vez);
+    });
+  }
+
+  /** A logo se desfaz pelo mosaico e some. */
+  private desfazer(vez: number): void {
+    this.desfazendo = true;
+    this.logo.off(Phaser.Animations.Events.ANIMATION_COMPLETE);
+    this.logo.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => this.logo.setVisible(false));
+    this.logo.playReverse(`${LOGOS_DA_ABERTURA[vez].chave}-mosaico`);
   }
 
   private duracaoDoMosaico(vez: number): number {
     return (LOGOS_DA_ABERTURA[vez].quadros / QUADROS_POR_SEGUNDO_DO_MOSAICO) * 1000;
   }
 
-  /** A logo na tela sai pelo mosaico e o menu abre. */
+  /** A logo na tela (se houver) sai pelo mosaico e o menu abre. */
   private sair(): void {
     this.saindo = true;
     const vez = Math.max(0, this.logoNaTela);
-    this.logo.playReverse(`${LOGOS_DA_ABERTURA[vez].chave}-mosaico`);
-    this.time.delayedCall(this.duracaoDoMosaico(vez) + 120, () => this.scene.start(SCENE_KEYS.MainMenu));
+    const naTela = this.logo.visible;
+    if (naTela && !this.desfazendo) this.desfazer(vez);
+    this.time.delayedCall(naTela ? this.duracaoDoMosaico(vez) + 120 : 120, () => this.scene.start(SCENE_KEYS.MainMenu));
   }
 }

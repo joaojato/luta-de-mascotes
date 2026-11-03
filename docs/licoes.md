@@ -600,3 +600,7 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   animação ou timer. Tela de carregamento animada carrega o mínimo pelo
   `pack` da cena e o resto em `create`, com `this.load.start()`
   (`BootScene`, 2026-11-03).
+- **Tela conferida só em 1280×720 esconde o erro de escala.** A abertura
+  saiu no canto em 1920×1080 porque a câmera dela ficou sem o zoom da
+  nitidez; em 1280 o zoom é 1 e tudo parece certo. Coisa visual se confere
+  pelo menos em 1920×1080 e no celular deitado (2026-11-03).

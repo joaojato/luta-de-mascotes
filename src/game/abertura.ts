@@ -3,7 +3,8 @@
  * desenvolvedora, e depois a da PUC-Rio, em estilo retrô de console de 16
  * bits, enquanto tudo carrega com a barra de blocos embaixo. Mascara o
  * carregamento e serve de crédito. Cada logo entra pelo mosaico (do pixel
- * grosso ao fino) e sai por ele ao contrário; as folhas saem de
+ * grosso ao fino) e sai por ele ao contrário, e as duas se revezam enquanto
+ * o jogo não terminou de carregar; as folhas saem de
  * `scripts/abertura_logos.py`.
  */
 
@@ -15,12 +16,17 @@ export interface LogoDaAbertura {
   altura: number;
   /** Quadros do mosaico; o último é a logo pronta. */
   quadros: number;
+  /** Tom do plim quando ela fica nítida, em cents. */
+  tomDoPlim: number;
 }
 
 export const LOGOS_DA_ABERTURA: LogoDaAbertura[] = [
-  { chave: 'abertura-resenha-games', arquivo: '/assets/abertura/resenha-games.png', largura: 176, altura: 120, quadros: 6 },
-  { chave: 'abertura-puc-rio', arquivo: '/assets/abertura/puc-rio.png', largura: 80, altura: 120, quadros: 6 }
+  { chave: 'abertura-resenha-games', arquivo: '/assets/abertura/resenha-games.png', largura: 176, altura: 120, quadros: 6, tomDoPlim: 0 },
+  { chave: 'abertura-puc-rio', arquivo: '/assets/abertura/puc-rio.png', largura: 80, altura: 120, quadros: 6, tomDoPlim: -500 }
 ];
+
+/** O plim de console quando cada logo fica nítida (`scripts/sons.py`, docs/sons.md). */
+export const SOM_DA_ABERTURA = 'plim';
 
 /** Cada pixel da arte vira um quadrado de 3 na tela, sem suavizar. */
 export const ESCALA_RETRO = 3;
@@ -34,9 +40,9 @@ export const ABERTURA_MINIMA_MS = TEMPO_POR_LOGO_MS * LOGOS_DA_ABERTURA.length;
 /** Blocos da barra de carregamento. */
 export const BLOCOS_DA_BARRA = 20;
 
-/** Qual logo está na tela; carregando devagar, a última fica até acabar. */
+/** Qual logo está na tela; carregando devagar, elas se revezam até acabar. */
 export function logoDaVez(decorridoMs: number): number {
-  return Math.min(LOGOS_DA_ABERTURA.length - 1, Math.floor(Math.max(0, decorridoMs) / TEMPO_POR_LOGO_MS));
+  return Math.floor(Math.max(0, decorridoMs) / TEMPO_POR_LOGO_MS) % LOGOS_DA_ABERTURA.length;
 }
 
 /**

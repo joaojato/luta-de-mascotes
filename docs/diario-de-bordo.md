@@ -3592,3 +3592,34 @@ Saci no P1 e Porco no P2 (1v1), Urubu no P1 e a CPU abrindo no Galo
 **Atrito:** `menuPausa.ts` importa o Phaser, que não carrega no teste: a
 lista de opções foi para um arquivo próprio.
 **Em aberto:** nada.
+
+## 2026-11-03: abertura e menu no centro, plim e logos em rodízio
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "pode por um som de plim sim, mas preciso que fique
+centralizado independente do dispositivo. Inclusive centralize o menu
+principal." Depois: trocar a logo da PUC por outra (imagem no chat) e deixar
+o jogo trocando entre a Resenha Games e a PUC-Rio.
+**Feito:** a abertura saía no canto de cima à esquerda em toda tela maior
+que 1280×720: a câmera dela não ganhava o zoom da nitidez, porque
+`nitidez.ts` só dava zoom em cena já rodando, e a abertura ainda carregava
+as logos pelo `pack`. Agora vale para cena que já começou. O menu tinha a
+logo presa no alto e um vão embaixo; `src/game/menuPrincipal.ts` centra
+logo e botões num bloco só, com 4 ou 6 opções. Logo e barra da abertura
+subiram 20 px para o conjunto ficar no meio. Plim novo em `scripts/sons.py`
+(blip de onda quadrada e sino de console), no `pack` da abertura, tocado
+quando cada logo fica nítida (o da PUC uma quarta abaixo). As logos se
+revezam enquanto carrega, e cada uma some depois de se desfazer.
+**Verificado:** `npm run check` (38 arquivos, 340 testes, build; a primeira rodada deu timeout do executor com a máquina carregada, a segunda limpa). Medido no navegador em
+1920×1080, 1366×768, 1536×864 a 125%, 2560×1080, 1280×800, celular deitado
+e em pé: abertura e menu no centro horizontal em todos (antes, a abertura em
+640 de 960 no 1920); bloco do menu no meio da altura. Rodízio no 1920:
+Resenha, PUC, Resenha, PUC e o menu, com três plims (o da PUC em -500
+cents), sem erro no console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a PUC parada até o fim do carregamento.
+**Aprovado explicitamente:** a abertura retrô ("ficou legal").
+**Atrito:** a imagem nova da PUC chegou só no chat, sem arquivo no disco.
+**Em aberto:** trocar a logo da PUC quando o arquivo estiver em
+`referencia/abertura/puc-rio.png`. O plim sai mudo na primeira visita antes
+de qualquer clique (trava de som do navegador).

@@ -7,7 +7,7 @@ import type { StarterAudioAsset } from './core/audio';
  * Ajustes multiplica por cima.
  */
 const SONS: [chave: string, volume: number, loop?: boolean][] = [
-  ['ui-mover', 0.18], ['ui-travar', 0.35],
+  ['ui-mover', 0.18], ['ui-travar', 0.35], ['plim', 0.4],
   ['round', 0.5], ['luta-comeca', 0.35], ['ko', 0.55], ['tempo-esgotado', 0.35],
   ['vitoria', 0.5], ['relogio', 0.3], ['especial-pronto', 0.3], ['especial-entrada', 0.5],
   ['passo', 0.12], ['pulo', 0.25], ['aterrissar', 0.3], ['dash', 0.3], ['queda', 0.55], ['tontura', 0.35],

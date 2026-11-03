@@ -3,7 +3,8 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { ABERTURA_MINIMA_MS, blocosDaBarra, BLOCOS_DA_BARRA, LOGOS_DA_ABERTURA, logoDaVez, podeSairDaAbertura, TEMPO_POR_LOGO_MS } from './abertura';
+import { ABERTURA_MINIMA_MS, blocosDaBarra, BLOCOS_DA_BARRA, LOGOS_DA_ABERTURA, logoDaVez, podeSairDaAbertura, SOM_DA_ABERTURA, TEMPO_POR_LOGO_MS } from './abertura';
+import { SOM_ASSETS } from './sonsLista';
 
 // A abertura mascara o carregamento e dá o crédito: Resenha Games, depois a
 // PUC-Rio, em estilo retrô (João, 03/11/2026).
@@ -13,8 +14,13 @@ describe('abertura do jogo', () => {
     expect(logoDaVez(0)).toBe(0);
     expect(logoDaVez(TEMPO_POR_LOGO_MS - 1)).toBe(0);
     expect(logoDaVez(TEMPO_POR_LOGO_MS)).toBe(1);
-    // Carregando devagar, a última logo fica na tela até acabar.
-    expect(logoDaVez(TEMPO_POR_LOGO_MS * 10)).toBe(1);
+  });
+
+  // Carregando devagar, as duas se revezam até acabar (João, 03/11/2026).
+  it('carregando devagar, volta à Resenha Games e segue trocando', () => {
+    expect(logoDaVez(TEMPO_POR_LOGO_MS * 2)).toBe(0);
+    expect(logoDaVez(TEMPO_POR_LOGO_MS * 3 + 10)).toBe(1);
+    expect(logoDaVez(TEMPO_POR_LOGO_MS * 10)).toBe(0);
   });
 
   it('só sai depois de carregar tudo, mesmo que o tempo tenha passado', () => {
@@ -43,5 +49,10 @@ describe('abertura do jogo', () => {
       const png = readFileSync(resolve(__dirname, '../../public', logo.arquivo.replace(/^\//, '')));
       expect([png.readUInt32BE(16), png.readUInt32BE(20)], logo.arquivo).toEqual([logo.largura * logo.quadros, logo.altura]);
     }
+  });
+
+  // Plim quando a logo fica nítida (João, 03/11/2026), gerado como os outros sons.
+  it('o plim da abertura é um som da lista do jogo', () => {
+    expect(SOM_ASSETS.some((som) => som.key === SOM_DA_ABERTURA)).toBe(true);
   });
 });

@@ -3,6 +3,8 @@ import * as Phaser from 'phaser';
 import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { musica } from '../game/musica/tocador';
 import { FERRAMENTAS_DE_DEV, GAME_TAGLINE, GAME_TITLE } from '../game/constants';
+import { LOGO_IMAGE_ASSET } from '../game/assets';
+import { layoutDoMenu, type LayoutDoMenu } from '../game/menuPrincipal';
 import { createTextButton, type TextButton } from '../game/ui';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
@@ -11,6 +13,8 @@ interface MenuOption {
   label: string;
   action: () => void;
 }
+
+const LARGURA_DA_LOGO = 440;
 
 export class MainMenuScene extends BaseScene {
   private selectedIndex = 0;
@@ -34,11 +38,14 @@ export class MainMenuScene extends BaseScene {
 
     this.markActiveScene(SCENE_KEYS.MainMenu);
     this.createBackdrop();
-    if (!this.createLogo(108, 440)) {
+    this.options = this.montarOpcoes();
+    // Logo e botões num bloco só, centrado na altura da tela (menuPrincipal.ts).
+    const layout = layoutDoMenu(this.tela.height, this.alturaDaLogo(), this.options.length);
+    if (!this.createLogo(layout.logoY, LARGURA_DA_LOGO)) {
       this.createHeading(GAME_TITLE, GAME_TAGLINE);
     }
 
-    this.renderMenu();
+    this.renderMenu(layout);
 
     const keyUp = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     const keyDown = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
@@ -76,31 +83,35 @@ export class MainMenuScene extends BaseScene {
     });
   }
 
-  private renderMenu(): void {
-    this.clearButtons();
+  /** Altura da logo na tela (0 sem a imagem, e o título de texto entra no lugar). */
+  private alturaDaLogo(): number {
+    if (!this.textures.exists(LOGO_IMAGE_ASSET.key)) return 0;
+    const frame = this.textures.getFrame(LOGO_IMAGE_ASSET.key);
+    return (frame.height * Math.min(LARGURA_DA_LOGO, this.tela.width - 32)) / frame.width;
+  }
 
+  private montarOpcoes(): MenuOption[] {
     const playOption: MenuOption = { label: 'Pelada', action: () => this.scene.start(SCENE_KEYS.ModeSelect) };
     const torneiosOption: MenuOption = { label: 'Torneios', action: () => this.scene.start(SCENE_KEYS.Torneio) };
     const museuOption: MenuOption = { label: 'Museu', action: () => this.scene.start(SCENE_KEYS.Museu) };
     const academiaOption: MenuOption = { label: 'Academia', action: () => this.scene.start(SCENE_KEYS.Academia) };
     const celularOption: MenuOption = { label: 'Celular', action: () => this.scene.start(SCENE_KEYS.Conectar) };
     const settingsOption: MenuOption = { label: 'Ajustes', action: () => this.scene.start(SCENE_KEYS.Settings) };
-    this.options = FERRAMENTAS_DE_DEV
+    return FERRAMENTAS_DE_DEV
       ? [playOption, torneiosOption, museuOption, academiaOption, celularOption, settingsOption]
       : [playOption, torneiosOption, museuOption, settingsOption];
+  }
 
-    // Seis opções (dev) apertam um pouco para não subir na logo.
-    const spacing = this.options.length > 5 ? 64 : 72;
-    const altura = this.options.length > 5 ? 52 : 58;
-    const startY = this.tela.centerY - (spacing * (this.options.length - 1)) / 2 + 20;
+  private renderMenu(layout: LayoutDoMenu): void {
+    this.clearButtons();
     let row = 0;
 
     const layoutButton = (option: MenuOption, optionIndex: number): void => {
       const button = createTextButton(this, {
         x: this.tela.centerX,
-        y: startY + row * spacing,
+        y: layout.primeiroBotaoY + row * layout.espaco,
         width: 380,
-        height: altura,
+        height: layout.alturaBotao,
         label: option.label,
         onClick: () => this.confirmOption(option),
         onHover: () => this.setSelection(optionIndex)

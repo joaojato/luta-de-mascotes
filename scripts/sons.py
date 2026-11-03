@@ -212,6 +212,16 @@ def ui_travar():
     return mistura(ganho(batida(160, 60, 0.3, 0.12), 1.2), ganho(apito(0.1), 0.4), inicio=[0, 0.05])
 
 
+def plim():
+    """Abertura (03/11/2026): sino de console quando a logo fica nítida.
+    Um blip de onda quadrada dá o ataque de 8 bits; o sino em sol com dois
+    harmônicos curtos soa e some, com um eco pequeno."""
+    blip = ganho(env(tom(0.05, lambda t: 1760, 'quadrada'), 0.001, 0.015), 0.3)
+    sino = mistura(*[ganho(env(tom(0.8, lambda t, f=f: f), 0.002, q), g)
+                     for f, q, g in ((1568, 0.3, 1.0), (3136, 0.16, 0.45), (4704, 0.08, 0.2))])
+    return eco(mistura(blip, pico(sino)), 0.11, 2, 0.25)
+
+
 # ---------------------------------------------------------------- camada 2
 
 def torcida():
@@ -380,7 +390,7 @@ def especial_carga():
 
 
 SONS = {
-    'ui-mover': ui_mover, 'ui-travar': ui_travar,
+    'ui-mover': ui_mover, 'ui-travar': ui_travar, 'plim': plim,
     'round': round_, 'luta-comeca': luta_comeca, 'ko': ko,
     'tempo-esgotado': tempo_esgotado, 'vitoria': vitoria, 'relogio': relogio,
     'especial-pronto': especial_pronto, 'especial-entrada': especial_entrada,

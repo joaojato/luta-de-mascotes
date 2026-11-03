@@ -76,6 +76,7 @@ médio, especial e K.O. alto, torcida bem baixa por baixo de tudo.
 | `ui-mover` | o cursor muda de opção, em qualquer menu e na seleção | tique curto e seco |
 | `ui-confirmar` | confirma (já existe: `apito.wav`) | apito de juiz curto |
 | `ui-travar` | jogador trava o lutador na seleção | batida grave e apito curto |
+| `plim` | cada logo da abertura fica nítida (o da PUC, uma quarta abaixo) | blip de onda quadrada e sino de console com eco curto |
 
 ### Camada 2: partida
 
