@@ -31,6 +31,10 @@ aparecer neste arquivo.
    nada de fofura corporativa.)
 4. Rival natural no elenco atual (Urubu, Almirante, Saci, Cartola, Bira, Galo)?
 5. Fala de entrada e fala de vitória.
+6. Museu (bloco `museu` do JSON): um apelido de uma linha, "quem é" (visual,
+   jeito de lutar, especial) e "de onde veio" (a história do mascote na
+   torcida). Sem nome oficial de clube: fale da torcida e da cidade (Regra do
+   Escudo, cobrada em `src/game/museu.test.ts`).
 
 ## 2. Como ele se parece
 
@@ -248,3 +252,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 01/11/2026: `reforco` (NPC de Guarda que sai do fundo no especial, golpeia uma vez e volta ao posto).
 - 02/11/2026: especial `reforco` e `disparos` do NPC de Guarda (o Flecha Negra: três flechas sorteadas, cada uma com o seu escape).
 - 02/11/2026: `releases` no projétil (vários tiros num golpe, cada um do seu cano: as duas pistolas do Gremista).
+- 02/11/2026: `museu` (apelido, quem é, de onde veio), a ficha da cena Museu.

@@ -1,6 +1,11 @@
 {
   "id": "bahia",
   "label": "Esquadrão",
+  "museu": {
+    "apelido": "O grito que atravessa a tela",
+    "descricao": "Herói de capa vermelha, topete e uniforme azul, vermelho e branco, que prefere bater de longe: laser dos olhos e, no especial, o grito Bora Bahêa, que sai voando em letras e fica maior quanto mais longe vai.",
+    "historia": "O tricolor de Salvador é chamado de Esquadrão de Aço, e o mascote dele é um super-herói de capa nas cores do clube. No jogo ele virou Esquadrão para não pegar emprestado o herói dos quadrinhos que o inspirou. O especial vem do grito mais famoso da torcida baiana."
+  },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Corte", "chute-basico": "Laser", "chute-baixo": "Rasteira", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Bora Bahêa"},
   "rosto": {"x": 0.33, "y": 0.2, "lado": 0.36},
   "assetRoot": "/assets/lutadores/bahia",

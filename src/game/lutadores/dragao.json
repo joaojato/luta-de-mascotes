@@ -1,6 +1,11 @@
 {
   "id": "dragao",
   "label": "Dragão",
+  "museu": {
+    "apelido": "Fogo que vem de Campinas",
+    "descricao": "Dragão vermelho e preto de asas abertas, bruto de perto. Soca o estômago, gira a cauda e cospe fogo curto; no especial, sobe, paira e varre o chão com um jato de fogo. Escapa quem passa por baixo dele.",
+    "historia": "O rubro-negro de Goiânia nasceu em 1937 no bairro de Campinas e atende por Dragão há gerações, apelido que a torcida leva nas faixas e no grito. No elenco, ele lembra que clássico de rivalidade existe em toda capital do país."
+  },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Estômago", "chute-basico": "Cuspida", "chute-baixo": "Rabada", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Sopro"},
   "rosto": {"x": 0.22, "y": 0.35, "lado": 0.37},
   "assetRoot": "/assets/lutadores/dragao",

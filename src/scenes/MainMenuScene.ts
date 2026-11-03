@@ -79,14 +79,17 @@ export class MainMenuScene extends BaseScene {
 
     const playOption: MenuOption = { label: 'Pelada', action: () => this.scene.start(SCENE_KEYS.ModeSelect) };
     const torneiosOption: MenuOption = { label: 'Torneios', action: () => this.scene.start(SCENE_KEYS.Torneio) };
+    const museuOption: MenuOption = { label: 'Museu', action: () => this.scene.start(SCENE_KEYS.Museu) };
     const academiaOption: MenuOption = { label: 'Academia', action: () => this.scene.start(SCENE_KEYS.Academia) };
     const celularOption: MenuOption = { label: 'Celular', action: () => this.scene.start(SCENE_KEYS.Conectar) };
     const settingsOption: MenuOption = { label: 'Ajustes', action: () => this.scene.start(SCENE_KEYS.Settings) };
     this.options = FERRAMENTAS_DE_DEV
-      ? [playOption, torneiosOption, academiaOption, celularOption, settingsOption]
-      : [playOption, torneiosOption, settingsOption];
+      ? [playOption, torneiosOption, museuOption, academiaOption, celularOption, settingsOption]
+      : [playOption, torneiosOption, museuOption, settingsOption];
 
-    const spacing = 72;
+    // Seis opções (dev) apertam um pouco para não subir na logo.
+    const spacing = this.options.length > 5 ? 64 : 72;
+    const altura = this.options.length > 5 ? 52 : 58;
     const startY = this.tela.centerY - (spacing * (this.options.length - 1)) / 2 + 20;
     let row = 0;
 
@@ -95,7 +98,7 @@ export class MainMenuScene extends BaseScene {
         x: this.tela.centerX,
         y: startY + row * spacing,
         width: 380,
-        height: 58,
+        height: altura,
         label: option.label,
         onClick: () => this.confirmOption(option),
         onHover: () => this.setSelection(optionIndex)

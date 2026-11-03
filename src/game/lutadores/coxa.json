@@ -1,6 +1,11 @@
 {
   "id": "coxa",
   "label": "Vovô Coxa",
+  "museu": {
+    "apelido": "O mais velho da turma, e o mais forte depois da cerveja",
+    "descricao": "Velhinho de boné, bigode branco e andador, que luta com o que tem à mão: batidinha de andador, cabeçada e lata de cerveja em parábola. No especial ele bebe e vira o Vovô Maromba por cinco segundos: bate mais forte e apanha menos.",
+    "historia": "O alviverde de Curitiba, fundado em 1909 por descendentes de imigrantes alemães, é o clube mais antigo do Paraná: daí o Vovô. O apelido Coxa-Branca começou como provocação a um jogador de origem alemã nos anos 1940 e foi adotado com orgulho pela torcida. A cerveja do especial é uma piscadela para essa herança."
+  },
   "nomes": {"soco-rapido": "Estocadas", "soco-forte": "Cabeçada", "chute-basico": "Cerveja", "chute-baixo": "Apoiada", "soco-no-ar": "Andador", "voadora": "Voadora", "especial": "Maromba"},
   "rosto": {"x": 0.37, "y": 0.28, "lado": 0.35},
   "assetRoot": "/assets/lutadores/coxa",

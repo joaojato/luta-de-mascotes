@@ -11,6 +11,11 @@
   },
   "selecionavel": true,
   "label": "Galo",
+  "museu": {
+    "apelido": "Briga de galo se resolve no bico",
+    "descricao": "Galo de briga preto e branco, agressivo e de curta distância. Chuta girando e deixa rastro de garras; no especial, voa baixo até o rival e dá uma bicada na altura da cabeça. Quem se abaixa escapa.",
+    "historia": "Criado em 1945 pelo cartunista Fernando Pieruccetti, o Mangabeira, que desenhou um bicho para cada grande clube de Belo Horizonte. Para o alvinegro mineiro escolheu o galo de briga, que não foge da luta. A torcida abraçou o desenho, e hoje o clube inteiro é chamado de Galo."
+  },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Cruzado", "chute-basico": "Ovo", "chute-baixo": "Giro", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Bicada"},
   "rosto": {"x": 0.3, "y": 0.36, "lado": 0.34},
   "anchorUsage": "Galo, padrão Urubu, guarda voltada para a esquerda",

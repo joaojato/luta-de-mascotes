@@ -290,6 +290,23 @@ luta acontece. Sem placa de patrocínio legível.
    "K.O.").
 4. Vitória (retrato do vencedor, fala de vitória, "de novo?").
 
+## Museu (João, 02/11/2026)
+
+Opção do menu principal, também na versão publicada. Um mascote por vez: em
+guarda à esquerda, ficha à direita, rostos do elenco embaixo para trocar
+(setas, A/D ou clique; Esc volta). A ficha mora no bloco `museu` do JSON do
+mascote (Regra do JSON):
+
+- **apelido:** uma linha com atitude de torcida;
+- **quem é:** visual, jeito de lutar e especial, como estão no jogo;
+- **de onde veio:** a história do mascote na torcida.
+
+Sem nome oficial de clube no texto (Regra do Escudo): fala da torcida e da
+cidade ("a torcida rubro-negra do Rio"). Os textos de 02/11/2026 são
+rascunho do Claude, com fatos conhecidos (ano de fundação, cartunista,
+data de adoção); o João revisa a voz e confere os fatos antes da
+apresentação. Mascote sem ficha aparece como "Ficha em preparo".
+
 ## Modos de jogo (João, 31/10/2026)
 
 - **Pelada:** o amistoso. 1 VS 1 no mesmo teclado ou 1 VS CPU.

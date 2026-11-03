@@ -1,6 +1,11 @@
 {
   "id": "cartola",
   "label": "Cartola",
+  "museu": {
+    "apelido": "Elegância é revidar sem amassar o fraque",
+    "descricao": "Cavalheiro magro de cartola alta e fraque bordô, que luta no contra-golpe com a bengala: bengalada, varredura que só a guarda baixa segura e o Pó de Arroz, uma nuvem que deixa o rival tonto.",
+    "historia": "Também nasceu nos anos 1940, nos traços de Lorenzo Mollas, para representar a fama de clube da elite que a torcida tricolor carioca carregava. O Pó de Arroz vem de um apelido que os rivais deram a essa torcida no começo do século XX. Ela adotou o xingamento e passou a jogar talco na arquibancada, tradição que dura até hoje."
+  },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Bengalada", "chute-basico": "Chute", "chute-baixo": "Varredura", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Pó de Arroz"},
   "rosto": {"x": 0.39, "y": 0.36, "lado": 0.31},
   "assetRoot": "/assets/lutadores/cartola",

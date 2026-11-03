@@ -41,7 +41,7 @@ Arquitetura real (herdada do Vibe Fighter, nomes em inglês ficam):
 
 ```
 src/scenes/           Boot, MainMenu, ModeSelect, LevelSelect,
-                      CharacterSelect, Match, Academia, Settings
+                      CharacterSelect, Match, Academia, Museu, Settings
 src/game/fighter.ts   motor: estados, hit/hurt/guard box, hitstun, rounds
 src/game/lutadores/<slug>.json   um JSON por lutador: ações, boxes, stats
 src/game/lutadores/index.ts      registro; ordem = ordem na seleção
@@ -147,6 +147,8 @@ Cada uma tem nome para poder ser cobrada depois.
   PlayStation no celular, colchetes e rostos no mata-mata, treino livre na
   Academia e pontos de vida e dano na tela
   (`docs/superpowers/specs/2026-11-01-controles-e-treino-design.md`).
+  Outra em 02/11/2026: o Museu, ficha de cada mascote com descrição e
+  história (`docs/gdd.md`, "Museu").
 
 ## Anti-referência
 

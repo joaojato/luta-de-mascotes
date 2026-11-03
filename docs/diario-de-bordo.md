@@ -3230,3 +3230,30 @@ trocados pela v4 (pedido dele ao Codex).
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** só um dos dois cortes do soco rápido conta por golpe (como antes).
+
+## 2026-11-02: Museu
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Crie uma sessão dentro do jogo de título museu. A ideia é ter
+uma descrição de cada mascote e história do mesmo."
+**Feito:** cena `MuseuScene` (opção Museu no menu principal, também no
+build publicado): mascote em guarda à esquerda, ficha à direita (nome,
+apelido, "Quem é", "De onde veio"), rostos do elenco embaixo; setas, A/D
+ou clique; Esc volta. Texto no bloco `museu` do JSON de cada mascote
+(Regra do JSON), tipado em `FichaDoMuseu`. Fichas escritas para os 11
+mascotes; o Mosqueteiro Gaúcho aparece como "Ficha em preparo" porque outra
+sessão estava editando o JSON dele. Menu aperta o espaçamento com seis
+opções. GDD (seção Museu), CLAUDE.md (exceção da v1, lista de cenas) e
+criador de personagem (pergunta 6) atualizados.
+**Verificado:** `npm run check` (308 testes; `museu.test.ts` cobra três
+campos preenchidos, sem travessão e sem nome oficial de clube). Chrome real,
+build de desenvolvimento servida sem recarga (o Vite recarregava a cada
+salvamento da outra sessão): os 12 mascotes passam com a guarda animada, o
+texto mais longo termina em 547 px (painel até 580), clique no rosto troca,
+Esc volta ao menu.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** João revisar a voz e os fatos das fichas; ficha do
+Mosqueteiro Gaúcho.

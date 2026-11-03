@@ -29,6 +29,8 @@ export interface LutadorJson {
   sons?: Record<string, string | null>;
   id: string;
   label: string;
+  /** Ficha da cena Museu: quem é no jogo e de onde veio o mascote (docs/gdd.md, "Museu"). */
+  museu?: FichaDoMuseu;
   /** Nome curto de cada golpe (até 11 letras), para os botões do celular. */
   nomes?: Partial<Record<GolpeId, string>>;
   /** Close do rosto no retrato: centro em fração (`x`, `y`) e lado em fração da largura. */
@@ -52,6 +54,16 @@ export interface LutadorJson {
   /** Sobrescreve `DEFAULT_FIGHTER_COMBAT` só nos campos presentes. */
   combat?: Partial<FighterCombat>;
   actions: FighterActionSpec[];
+}
+
+/** O que o Museu mostra de um mascote. Texto corrido, sem nome oficial de clube (Regra do Escudo). */
+export interface FichaDoMuseu {
+  /** Uma linha, com atitude de torcida. */
+  apelido: string;
+  /** Quem é no jogo: visual, jeito de lutar, especial. */
+  descricao: string;
+  /** De onde veio o mascote: a história da torcida por trás dele. */
+  historia: string;
 }
 
 /** Uma variante visual: subpasta de `assetRoot` e o que ela troca da base. */

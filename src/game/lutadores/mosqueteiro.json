@@ -1,6 +1,11 @@
 {
   "id": "mosqueteiro",
   "label": "Mosqueteiro",
+  "museu": {
+    "apelido": "Um por todos, e a Fiel por ele",
+    "descricao": "Mosqueteiro de risca de giz preta, chapéu largo com pluma vinho, espada fina e mosquete nas costas. Luta de alcance: estocadas que recuam um passo, tiro lento e forte e, no especial, os Gaviões, que mergulham do alto.",
+    "historia": "Nos primeiros anos, o alvinegro paulista, time de operários, foi comparado aos mosqueteiros de Alexandre Dumas: poucos, valentes e enfrentando clubes mais ricos. O mosqueteiro virou símbolo do clube, e o gavião chegou em 1969, com a torcida organizada que se chama de Fiel."
+  },
   "nomes": {"soco-rapido": "Estocadas", "soco-forte": "Cotovelada", "chute-basico": "Mosquete", "chute-baixo": "Estocada", "soco-no-ar": "Corte", "voadora": "Mergulho", "especial": "Gaviões"},
   "rosto": {"x": 0.36, "y": 0.37, "lado": 0.36},
   "assetRoot": "/assets/lutadores/mosqueteiro",

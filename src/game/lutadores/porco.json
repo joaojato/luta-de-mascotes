@@ -1,6 +1,11 @@
 {
   "id": "porco",
   "label": "Porco",
+  "museu": {
+    "apelido": "O xingamento que virou coroa",
+    "descricao": "Javali verde de terno rasgado, presas de marfim e calção branco. Pressiona de perto: mordida, coice de costas e, no especial, um jato de vômito verde à queima-roupa.",
+    "historia": "Os rivais chamavam a torcida alviverde de São Paulo de porco para provocar. Em 1986 o clube fez o contrário do esperado: adotou o porco como mascote oficial, no lugar do periquito. A torcida assumiu o grito, e o que era ofensa virou motivo de festa."
+  },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Mordida", "chute-basico": "Chute", "chute-baixo": "Coice", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Vômito"},
   "rosto": {"x": 0.32, "y": 0.22, "lado": 0.47},
   "assetRoot": "/assets/lutadores/porco",

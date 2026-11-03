@@ -1,6 +1,11 @@
 {
   "id": "almirante",
   "label": "Almirante",
+  "museu": {
+    "apelido": "O navegador que não perde a viagem",
+    "descricao": "Comandante de casaco naval preto, ombreiras de prata e forro vermelho. Pesado e paciente: segura a distância com a garrucha e, no especial, chama a caravela, que entra pela borda da tela empurrada por uma onda.",
+    "historia": "Nasceu nos anos 1940, nos desenhos que o cartunista argentino Lorenzo Mollas fez para a imprensa esportiva carioca, junto com os mascotes dos outros grandes do Rio. Homenageia o navegador português que dá nome ao clube cruz-maltino e a colônia portuguesa que o fundou: por isso o mar e a caravela estão em tudo o que ele faz."
+  },
   "nomes": {"soco-rapido": "Jab", "soco-forte": "Cruzado", "chute-basico": "Garrucha", "chute-baixo": "Chute", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Caravela"},
   "rosto": {"x": 0.5, "y": 0.32, "lado": 0.34},
   "assetRoot": "/assets/lutadores/almirante",

@@ -1,6 +1,11 @@
 {
   "id": "urubu",
   "label": "Urubu",
+  "museu": {
+    "apelido": "O dono do céu da arquibancada",
+    "descricao": "Bicho grande de asa, camisa listrada em vermelho e preto. Luta por cima: bicada que puxa o rival para perto, golpe de asas e, no especial, sobe numa térmica e cai do alto como um meteoro. Só escapa quem pula recuando.",
+    "historia": "Durante anos, urubu foi a provocação dos rivais contra a torcida rubro-negra do Rio. No fim dos anos 1960, torcedores soltaram um urubu de verdade no Maracanã num dia de clássico, o time venceu e a ofensa virou orgulho. Desde então a ave é o símbolo da maior torcida do país."
+  },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Asas", "chute-basico": "Bicada", "chute-baixo": "Chute", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Meteoro"},
   "rosto": {"x": 0.33, "y": 0.31, "lado": 0.375},
   "assetRoot": "/assets/lutadores/urubu",
