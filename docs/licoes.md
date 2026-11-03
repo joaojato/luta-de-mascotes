@@ -595,3 +595,8 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   gravado e abafado: multidão com o agudo cortado vira onda). O João pediu
   para sair; a música faz o papel do estádio. Ambiente contínuo de ruído não
   volta; torcida só em reações curtas e soltas (2026-11-03).
+- **No `preload` do Phaser nada anda.** A abertura com animação ficou
+  parada enquanto carregava: a cena em `preload` não chama `update` nem anda
+  animação ou timer. Tela de carregamento animada carrega o mínimo pelo
+  `pack` da cena e o resto em `create`, com `this.load.start()`
+  (`BootScene`, 2026-11-03).

@@ -3542,3 +3542,28 @@ a barra anda de 3% a 90% e o menu entra em uns 25 s, sem erro no console.
 trabalho dela; trabalhei numa worktree à parte, a partir da main publicada.
 **Em aberto:** nome e logo da desenvolvedora, e o formato da animação dela
 (vídeo ou folha de sprites). Até lá a abertura mostra os nomes do grupo.
+
+## 2026-11-03: abertura retrô com a Resenha Games e a PUC-Rio
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Coloque a logo nossa desenvolvedora e depois o da PUC-Rio. Mas
+precisa ser em um modelo retrô" (as duas logos em anexo).
+**Feito:** `scripts/abertura_logos.py` tira o fundo das duas logos
+(originais em `referencia/abertura/`, fora do git), reduz para pixel arte
+(Resenha 168×108, PUC 67×112), corta a paleta (8 e 12 cores), binariza a
+borda e monta 6 quadros de mosaico, do bloco de 12 ao pixel fino, cada
+bloco com a cor de um pixel só, como o mosaico do Super Nintendo. A
+`BootScene` mostra as duas em sequência, ampliadas 3x sem suavizar, com
+linhas de TV de tubo e a barra de 20 blocos no roxo da Resenha; os nomes do
+grupo saíram. Primeira tentativa ficou parada: no `preload` o Phaser não
+anda animação; as logos vêm pelo `pack` e o resto carrega em `create`.
+**Verificado:** `npm run check` (36 arquivos, 332 testes, build). Build de produção com
+a rede limitada a 4 MB/s, 94 fotos: Resenha de 1,6 s a 4 s entrando pelo
+mosaico, PUC de 4 s até o fim do carregamento com a barra subindo, menu em
+uns 32 s, sem erro no console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** os nomes do grupo no lugar da logo.
+**Aprovado explicitamente:** nada ainda.
+**Atrito:** nenhum com o João; o `preload` parado custou uma rodada.
+**Em aberto:** som de abertura (um "blim" de console), se ele quiser, pelo
+`scripts/sons.py`.

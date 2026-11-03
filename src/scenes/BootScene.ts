@@ -5,17 +5,30 @@ import { registerGeneratedAssets } from '../game/generatedAssets';
 import { registerFightingUiAtlasFrames } from '../game/fightingUiAtlas';
 import { carregarTorcida } from '../game/torcidaCena';
 import { carregarBiriba } from '../game/biribaCena';
-import { CREDITO_DA_ABERTURA, larguraDaBarra, podeSairDaAbertura } from '../game/abertura';
-import { COR_BORDA, COR_DESTAQUE, COR_FUNDO, CONTORNO_TITULO, FONTE_TEXTO, FONTE_TITULO, FONTES_DO_JOGO, SOMBRA_TITULO, TEXTO_APAGADO, TEXTO_DESTAQUE } from '../game/estilo';
+import {
+  blocosDaBarra,
+  BLOCOS_DA_BARRA,
+  ESCALA_RETRO,
+  LOGOS_DA_ABERTURA,
+  logoDaVez,
+  podeSairDaAbertura,
+  TEMPO_POR_LOGO_MS
+} from '../game/abertura';
+import { COR_FUNDO, FONTE_TEXTO, FONTES_DO_JOGO, TEXTO_APAGADO } from '../game/estilo';
 import { SCENE_KEYS } from '../game/types';
 import { BaseScene } from './BaseScene';
 
-const LARGURA_DA_BARRA = 420;
-const ALTURA_DA_BARRA = 10;
+/** Roxo da logo da Resenha Games: a barra acende nele. */
+const COR_DO_BLOCO = 0xa269dd;
+const COR_DO_BLOCO_APAGADO = 0x231628;
+const LADO_DO_BLOCO = 18;
+const VAO_DO_BLOCO = 4;
+const QUADROS_POR_SEGUNDO_DO_MOSAICO = 12;
 
 /**
- * Carrega o jogo atrás da abertura (src/game/abertura.ts): o crédito do grupo
- * aparece no meio da tela e a barra de carregamento enche embaixo dele.
+ * Carrega o jogo atrás da abertura retrô (src/game/abertura.ts): a logo da
+ * Resenha Games e depois a da PUC-Rio entram e saem pelo mosaico, com linhas
+ * de TV de tubo por cima e a barra de blocos embaixo.
  */
 export class BootScene extends BaseScene {
   private inicio = 0;
@@ -26,19 +39,37 @@ export class BootScene extends BaseScene {
 
   private saindo = false;
 
-  private textos: Phaser.GameObjects.Text[] = [];
-
   private fontes: Promise<unknown> = Promise.resolve();
 
+  private logo!: Phaser.GameObjects.Sprite;
+
+  private logoNaTela = -1;
+
+  private textos: Phaser.GameObjects.Text[] = [];
+
   constructor() {
-    super(SCENE_KEYS.Boot);
+    // As logos vêm antes do resto (o `pack` carrega antes do preload): a
+    // abertura aparece enquanto o jogo carrega por trás dela.
+    const files: Phaser.Types.Loader.FileTypes.SpriteSheetFileConfig[] = LOGOS_DA_ABERTURA.map((logo) => ({
+      type: 'spritesheet',
+      key: logo.chave,
+      url: logo.arquivo,
+      frameConfig: { frameWidth: logo.largura, frameHeight: logo.altura }
+    }));
+    super({ key: SCENE_KEYS.Boot, pack: { files } as unknown as Phaser.Types.Scenes.SettingsConfig['pack'] });
   }
 
-  preload(): void {
+  /**
+   * O resto carrega já com a cena rodando: no preload o Phaser não anda as
+   * animações nem chama o update, e a abertura ficaria parada.
+   */
+  create(): void {
+    this.markActiveScene(SCENE_KEYS.Boot);
     this.inicio = this.time.now;
     this.carregou = false;
     this.pulou = false;
     this.saindo = false;
+    this.logoNaTela = -1;
     // As fontes vêm junto com a arte: até 3 s, e o texto do canvas, que não se
     // redesenha sozinho quando a fonte chega, é redesenhado com elas.
     const limite = new Promise((resolver) => window.setTimeout(resolver, 3000));
@@ -46,78 +77,103 @@ export class BootScene extends BaseScene {
       .catch(() => undefined)
       .then(() => this.textos.forEach((texto) => texto.updateText()));
     this.montarAbertura();
+
     preloadStarterAssets(this);
     carregarTorcida(this);
     carregarBiriba(this);
-  }
-
-  create(): void {
-    this.markActiveScene(SCENE_KEYS.Boot);
-    registerGeneratedAssets(this);
-    registerFightingUiAtlasFrames(this);
-    registerStarterAnimations(this);
-    // O menu só abre com as fontes prontas.
-    void this.fontes.then(() => {
-      this.carregou = true;
+    this.load.once(Phaser.Loader.Events.COMPLETE, () => {
+      registerGeneratedAssets(this);
+      registerFightingUiAtlasFrames(this);
+      registerStarterAnimations(this);
+      // O menu só abre com as fontes prontas.
+      void this.fontes.then(() => {
+        this.carregou = true;
+      });
     });
+    this.load.start();
   }
 
   update(time: number): void {
-    if (this.saindo || !podeSairDaAbertura(time - this.inicio, this.carregou, this.pulou)) return;
-    this.saindo = true;
-    this.cameras.main.fadeOut(350, 5, 3, 10);
-    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start(SCENE_KEYS.MainMenu));
+    if (this.saindo) return;
+    const decorrido = time - this.inicio;
+    if (podeSairDaAbertura(decorrido, this.carregou, this.pulou)) {
+      this.sair();
+      return;
+    }
+    const vez = logoDaVez(decorrido);
+    if (vez !== this.logoNaTela) this.mostrarLogo(vez);
   }
 
-  /** Crédito no meio, barra embaixo; tecla ou clique pula depois de carregar. */
+  /** Logo no meio, linhas de TV por cima, barra de blocos embaixo. */
   private montarAbertura(): void {
-    const { centerX, centerY } = this.tela;
+    const { width, height, centerX, centerY } = this.tela;
     this.cameras.main.setBackgroundColor(COR_FUNDO);
 
-    const nomes = this.add
-      .text(centerX, centerY - 30, CREDITO_DA_ABERTURA.nomes, {
-        fontFamily: FONTE_TITULO,
-        fontSize: '44px',
-        fontStyle: '900',
-        color: TEXTO_DESTAQUE,
-        stroke: CONTORNO_TITULO,
-        strokeThickness: 6,
-        shadow: { offsetX: 4, offsetY: 4, color: SOMBRA_TITULO, fill: true, stroke: true }
-      })
-      .setOrigin(0.5)
-      .setAlpha(0);
-    const linha = this.add
-      .text(centerX, centerY + 22, CREDITO_DA_ABERTURA.linha, {
-        fontFamily: FONTE_TEXTO,
-        fontSize: '22px',
-        fontStyle: '500',
-        color: TEXTO_APAGADO
-      })
-      .setOrigin(0.5)
-      .setAlpha(0);
-    this.textos = [nomes, linha];
-    this.tweens.add({ targets: nomes, alpha: 1, y: nomes.y - 8, duration: 900, ease: 'Sine.easeOut' });
-    this.tweens.add({ targets: linha, alpha: 1, duration: 700, delay: 600 });
+    for (const { chave, quadros } of LOGOS_DA_ABERTURA) {
+      // Pixel arte: ampliada sem suavizar.
+      this.textures.get(chave).setFilter(Phaser.Textures.FilterMode.NEAREST);
+      if (!this.anims.exists(`${chave}-mosaico`)) {
+        this.anims.create({
+          key: `${chave}-mosaico`,
+          frames: this.anims.generateFrameNumbers(chave, { start: 0, end: quadros - 1 }),
+          frameRate: QUADROS_POR_SEGUNDO_DO_MOSAICO
+        });
+      }
+    }
+    this.logo = this.add.sprite(centerX, centerY - 40, LOGOS_DA_ABERTURA[0].chave, 0).setScale(ESCALA_RETRO).setVisible(false);
 
-    const yBarra = centerY + 150;
-    this.add.rectangle(centerX, yBarra, LARGURA_DA_BARRA + 6, ALTURA_DA_BARRA + 6).setStrokeStyle(2, COR_BORDA, 1);
-    const cheio = this.add
-      .rectangle(centerX - LARGURA_DA_BARRA / 2, yBarra, 0, ALTURA_DA_BARRA, COR_DESTAQUE)
-      .setOrigin(0, 0.5);
+    const larguraDaBarra = BLOCOS_DA_BARRA * (LADO_DO_BLOCO + VAO_DO_BLOCO) - VAO_DO_BLOCO;
+    const yBarra = centerY + 230;
+    const blocos = Array.from({ length: BLOCOS_DA_BARRA }, (_, i) =>
+      this.add
+        .rectangle(centerX - larguraDaBarra / 2 + i * (LADO_DO_BLOCO + VAO_DO_BLOCO), yBarra, LADO_DO_BLOCO, LADO_DO_BLOCO / 2, COR_DO_BLOCO_APAGADO)
+        .setOrigin(0, 0.5)
+    );
     const porcento = this.add
-      .text(centerX, yBarra + 26, 'carregando 0%', { fontFamily: FONTE_TEXTO, fontSize: '16px', color: TEXTO_APAGADO })
+      .text(centerX, yBarra + 24, 'CARREGANDO 0%', { fontFamily: FONTE_TEXTO, fontSize: '16px', fontStyle: '700', color: TEXTO_APAGADO })
       .setOrigin(0.5);
-    this.textos.push(porcento);
+    this.textos = [porcento];
     this.load.on(Phaser.Loader.Events.PROGRESS, (progresso: number) => {
-      cheio.width = larguraDaBarra(progresso, LARGURA_DA_BARRA);
-      porcento.setText(`carregando ${Math.round(progresso * 100)}%`);
+      const acesos = blocosDaBarra(progresso);
+      blocos.forEach((bloco, i) => bloco.setFillStyle(i < acesos ? COR_DO_BLOCO : COR_DO_BLOCO_APAGADO));
+      porcento.setText(`CARREGANDO ${Math.round(progresso * 100)}%`);
     });
-    this.load.once(Phaser.Loader.Events.COMPLETE, () => porcento.setText('pronto'));
+    this.load.once(Phaser.Loader.Events.COMPLETE, () => porcento.setText('PRONTO'));
+
+    // Linhas de TV de tubo por cima de tudo.
+    const linhas = this.add.graphics().setDepth(10);
+    linhas.fillStyle(0x000000, 0.28);
+    for (let y = 0; y < height; y += 3) linhas.fillRect(0, y, width, 1);
 
     const pular = (): void => {
       this.pulou = true;
     };
     this.input.keyboard?.on('keydown', pular);
     this.input.on(Phaser.Input.Events.POINTER_DOWN, pular);
+  }
+
+  /** A logo da vez entra pelo mosaico; antes da troca, a anterior sai por ele. */
+  private mostrarLogo(vez: number): void {
+    this.logoNaTela = vez;
+    const { chave } = LOGOS_DA_ABERTURA[vez];
+    this.logo.setVisible(true).setTexture(chave, 0).play(`${chave}-mosaico`);
+    if (vez < LOGOS_DA_ABERTURA.length - 1) {
+      const saida = TEMPO_POR_LOGO_MS - this.duracaoDoMosaico(vez) - 150;
+      this.time.delayedCall(saida, () => {
+        if (this.logoNaTela === vez && !this.saindo) this.logo.playReverse(`${chave}-mosaico`);
+      });
+    }
+  }
+
+  private duracaoDoMosaico(vez: number): number {
+    return (LOGOS_DA_ABERTURA[vez].quadros / QUADROS_POR_SEGUNDO_DO_MOSAICO) * 1000;
+  }
+
+  /** A logo na tela sai pelo mosaico e o menu abre. */
+  private sair(): void {
+    this.saindo = true;
+    const vez = Math.max(0, this.logoNaTela);
+    this.logo.playReverse(`${LOGOS_DA_ABERTURA[vez].chave}-mosaico`);
+    this.time.delayedCall(this.duracaoDoMosaico(vez) + 120, () => this.scene.start(SCENE_KEYS.MainMenu));
   }
 }

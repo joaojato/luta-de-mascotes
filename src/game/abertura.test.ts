@@ -1,24 +1,47 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
 import { describe, expect, it } from 'vitest';
 
-import { ABERTURA_MINIMA_MS, larguraDaBarra, podeSairDaAbertura } from './abertura';
+import { ABERTURA_MINIMA_MS, blocosDaBarra, BLOCOS_DA_BARRA, LOGOS_DA_ABERTURA, logoDaVez, podeSairDaAbertura, TEMPO_POR_LOGO_MS } from './abertura';
 
-// A abertura mascara o carregamento e mostra os créditos (João, 03/11/2026).
+// A abertura mascara o carregamento e dá o crédito: Resenha Games, depois a
+// PUC-Rio, em estilo retrô (João, 03/11/2026).
 describe('abertura do jogo', () => {
+  it('mostra a Resenha Games e depois a PUC-Rio', () => {
+    expect(LOGOS_DA_ABERTURA.map((logo) => logo.chave)).toEqual(['abertura-resenha-games', 'abertura-puc-rio']);
+    expect(logoDaVez(0)).toBe(0);
+    expect(logoDaVez(TEMPO_POR_LOGO_MS - 1)).toBe(0);
+    expect(logoDaVez(TEMPO_POR_LOGO_MS)).toBe(1);
+    // Carregando devagar, a última logo fica na tela até acabar.
+    expect(logoDaVez(TEMPO_POR_LOGO_MS * 10)).toBe(1);
+  });
+
   it('só sai depois de carregar tudo, mesmo que o tempo tenha passado', () => {
     expect(podeSairDaAbertura(ABERTURA_MINIMA_MS * 3, false, false)).toBe(false);
     expect(podeSairDaAbertura(ABERTURA_MINIMA_MS * 3, false, true)).toBe(false);
   });
 
-  it('carregada, fica o tempo dos créditos, a não ser que o jogador pule', () => {
+  it('carregada, passa pelas duas logos, a não ser que o jogador pule', () => {
+    expect(ABERTURA_MINIMA_MS).toBe(TEMPO_POR_LOGO_MS * LOGOS_DA_ABERTURA.length);
     expect(podeSairDaAbertura(ABERTURA_MINIMA_MS - 1, true, false)).toBe(false);
     expect(podeSairDaAbertura(ABERTURA_MINIMA_MS, true, false)).toBe(true);
     expect(podeSairDaAbertura(200, true, true)).toBe(true);
   });
 
-  it('a barra acompanha o progresso e não passa da moldura', () => {
-    expect(larguraDaBarra(0, 400)).toBe(0);
-    expect(larguraDaBarra(0.5, 400)).toBe(200);
-    expect(larguraDaBarra(1.3, 400)).toBe(400);
-    expect(larguraDaBarra(-1, 400)).toBe(0);
+  it('a barra enche de bloco em bloco, sem passar do total', () => {
+    expect(blocosDaBarra(0)).toBe(0);
+    expect(blocosDaBarra(0.5)).toBe(BLOCOS_DA_BARRA / 2);
+    expect(blocosDaBarra(0.99)).toBe(BLOCOS_DA_BARRA - 1);
+    expect(blocosDaBarra(1)).toBe(BLOCOS_DA_BARRA);
+    expect(blocosDaBarra(1.3)).toBe(BLOCOS_DA_BARRA);
+    expect(blocosDaBarra(-1)).toBe(0);
+  });
+
+  it('cada folha de logo tem os quadros do tamanho declarado', () => {
+    for (const logo of LOGOS_DA_ABERTURA) {
+      const png = readFileSync(resolve(__dirname, '../../public', logo.arquivo.replace(/^\//, '')));
+      expect([png.readUInt32BE(16), png.readUInt32BE(20)], logo.arquivo).toEqual([logo.largura * logo.quadros, logo.altura]);
+    }
   });
 });

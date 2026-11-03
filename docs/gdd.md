@@ -289,11 +289,14 @@ luta acontece. Sem placa de patrocínio legível.
 
 ## Telas da v1
 
-0. Abertura (João, 03/11/2026): a assinatura de quem fez o jogo, enquanto
-   tudo carrega, com a barra de carregamento embaixo. Hoje é texto, os nomes
-   do grupo e "apresentam"; a animação da logo da desenvolvedora entra no
-   lugar dele (`src/scenes/BootScene.ts`, `src/game/abertura.ts`). Fica no
-   mínimo 2,6 s; tecla ou clique pula depois de carregar.
+0. Abertura (João, 03/11/2026): a logo da Resenha Games, a nossa
+   desenvolvedora, e depois a da PUC-Rio, em estilo retrô de console de 16
+   bits, enquanto tudo carrega. Cada logo é pixel arte ampliada 3x, entra
+   pelo mosaico (do bloco grosso ao fino) e sai por ele ao contrário; linhas
+   de TV de tubo por cima e barra de 20 blocos roxos embaixo. 2,4 s por logo;
+   carregando devagar, a PUC fica até acabar. Tecla ou clique pula depois de
+   carregar. Folhas geradas por `scripts/abertura_logos.py` a partir de
+   `referencia/abertura/` (fora do git); tempos em `src/game/abertura.ts`.
 1. Título (nome do jogo, "aperte qualquer tecla").
 2. Seleção de mascote (retrato, nome, dois cursores).
 3. Luta (barras de vida, timer 99, contador de rounds, "Round 1, Fight!",
