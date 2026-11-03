@@ -4,7 +4,8 @@ import { AUDIO_KEYS, playAudioCue } from '../game/core/audio';
 import { createTextButton, type TextButton } from '../game/ui';
 import { DEFAULT_SETTINGS } from '../game/settings';
 import { COR_BORDA, COR_PAINEL, FONTE_TEXTO, TEXTO_CLARO } from '../game/estilo';
-import { SCENE_KEYS, type SceneKey } from '../game/types';
+import { SCENE_KEYS, type GameSettings, type SceneKey } from '../game/types';
+import { abrirFuncoesDosBotoes, controlesDeToqueAtivos } from '../toque/telaToque';
 import { BaseScene } from './BaseScene';
 
 /** Aberta pela pausa da Luta: volta para ela em vez de ir ao menu. */
@@ -21,12 +22,6 @@ interface Linha {
 }
 
 export class SettingsScene extends BaseScene {
-  private sfxValue!: Phaser.GameObjects.Text;
-
-  private musicValue!: Phaser.GameObjects.Text;
-
-  private muteValue!: Phaser.GameObjects.Text;
-
   private linhas: Linha[] = [];
 
   private selectedRow = 0;
@@ -47,78 +42,68 @@ export class SettingsScene extends BaseScene {
     this.createHeading('Ajustes', '');
 
     const painelDebug = this.app.painelDebug;
-    const quantas = painelDebug ? 6 : 5;
-    const espaco = painelDebug ? 52 : 60;
-    const buttonHeight = painelDebug ? 46 : 52;
+    const quantas = painelDebug ? 8 : 7;
+    const espaco = painelDebug ? 48 : 52;
+    const buttonHeight = painelDebug ? 40 : 44;
+    const topo = this.tela.centerY - 160;
 
     const centerX = this.tela.centerX;
-    const centerY = this.tela.centerY;
+    const altura = (quantas - 1) * espaco + buttonHeight + 48;
     this.add
-      .rectangle(centerX, centerY + (painelDebug ? 40 : 30), 560, painelDebug ? 460 : 440, COR_PAINEL, 0.85)
+      .rectangle(centerX, topo + ((quantas - 1) * espaco) / 2, 560, altura, COR_PAINEL, 0.85)
       .setStrokeStyle(2, COR_BORDA, 1);
 
-    const valueStyle = {
-      color: TEXTO_CLARO,
-      fontFamily: FONTE_TEXTO,
-      fontSize: '22px',
-      fontStyle: 'bold'
-    };
-
-    this.sfxValue = this.add.text(centerX, centerY - 155, '', valueStyle).setOrigin(0.5);
-    this.musicValue = this.add.text(centerX, centerY - 120, '', valueStyle).setOrigin(0.5);
-    this.muteValue = this.add.text(centerX, centerY - 85, '', valueStyle).setOrigin(0.5);
-
     const wideButtonWidth = 340;
-    const halfButtonWidth = 165;
     const botao = (linha: number, x: number, width: number, label: string, onClick: () => void): TextButton =>
       createTextButton(this, {
         x: centerX + x,
-        y: centerY - 35 + linha * espaco,
+        y: topo + linha * espaco,
         width,
         height: buttonHeight,
         label,
         onClick,
         onHover: () => this.setSelection(linha)
       });
+    // Linha de volume: − e + nas pontas, o valor no meio.
+    const valor = (linha: number): Phaser.GameObjects.Text =>
+      this.add
+        .text(centerX, topo + linha * espaco, '', { color: TEXTO_CLARO, fontFamily: FONTE_TEXTO, fontSize: '22px', fontStyle: 'bold' })
+        .setOrigin(0.5);
 
     const efeitos = { esquerda: () => this.changeVolume('sfx', -0.1), direita: () => this.changeVolume('sfx', 0.1) };
     const musica = { esquerda: () => this.changeVolume('music', -0.1), direita: () => this.changeVolume('music', 0.1) };
-    const mudo = () => this.toggleMute();
+    const mudo = () => this.alternar('muted');
+    const fps = () => this.alternar('mostrarFps');
     const restaurar = () => this.app.settingsStore.setState(DEFAULT_SETTINGS);
     const voltar = () => this.voltar();
+    // No celular, os botões da tela; no computador, as teclas.
+    const toque = controlesDeToqueAtivos();
+    const botoes = toque
+      ? () => abrirFuncoesDosBotoes()
+      : () => this.scene.start(SCENE_KEYS.Botoes, { voltarPara: this.voltarPara });
 
+    const valorEfeitos = valor(0);
+    const valorMusica = valor(1);
+    const botaoSom = botao(2, 0, wideButtonWidth, '', mudo);
+    const botaoFps = botao(3, 0, wideButtonWidth, '', fps);
     this.linhas = [
-      {
-        ...efeitos,
-        botoes: [
-          botao(0, -88, halfButtonWidth, 'Efeitos −', efeitos.esquerda),
-          botao(0, 88, halfButtonWidth, 'Efeitos +', efeitos.direita)
-        ]
-      },
-      {
-        ...musica,
-        botoes: [
-          botao(1, -88, halfButtonWidth, 'Música −', musica.esquerda),
-          botao(1, 88, halfButtonWidth, 'Música +', musica.direita)
-        ]
-      },
-      { esquerda: mudo, direita: mudo, confirmar: mudo, botoes: [botao(2, 0, wideButtonWidth, 'Ligar ou tirar o som', mudo)] },
-      { confirmar: restaurar, botoes: [botao(3, 0, wideButtonWidth, 'Restaurar padrão', restaurar)] }
+      { ...efeitos, botoes: [botao(0, -175, 90, '−', efeitos.esquerda), botao(0, 175, 90, '+', efeitos.direita)] },
+      { ...musica, botoes: [botao(1, -175, 90, '−', musica.esquerda), botao(1, 175, 90, '+', musica.direita)] },
+      { esquerda: mudo, direita: mudo, confirmar: mudo, botoes: [botaoSom] },
+      { esquerda: fps, direita: fps, confirmar: fps, botoes: [botaoFps] },
+      { confirmar: botoes, botoes: [botao(4, 0, wideButtonWidth, toque ? 'Botões do celular' : 'Botões do teclado', botoes)] },
+      { confirmar: restaurar, botoes: [botao(5, 0, wideButtonWidth, 'Restaurar padrão', restaurar)] }
     ];
 
     // Só em dev: mostra ou esconde a gaveta do console de debug do lado.
     if (painelDebug) {
-      let debugBotao: TextButton | null = null;
       const rotuloDebug = () => `Painel de debug: ${painelDebug.aberto() ? 'aberto' : 'fechado'}`;
       const alternarDebug = () => {
         painelDebug.alternar();
         playAudioCue(this, AUDIO_KEYS.uiConfirm, this.app.settingsStore.getState());
-        debugBotao?.destroy();
-        debugBotao = botao(4, 0, wideButtonWidth, rotuloDebug(), alternarDebug);
-        this.linhas[4].botoes = [debugBotao];
-        this.setSelection(this.selectedRow);
+        debugBotao.setLabel(rotuloDebug());
       };
-      debugBotao = botao(4, 0, wideButtonWidth, rotuloDebug(), alternarDebug);
+      const debugBotao = botao(6, 0, wideButtonWidth, rotuloDebug(), alternarDebug);
       this.linhas.push({ esquerda: alternarDebug, direita: alternarDebug, confirmar: alternarDebug, botoes: [debugBotao] });
     }
 
@@ -146,9 +131,10 @@ export class SettingsScene extends BaseScene {
     this.input.keyboard?.on('keydown-SPACE', confirmar);
 
     const unsubscribe = this.app.settingsStore.subscribe((settings) => {
-      this.sfxValue.setText(`Efeitos: ${Math.round(settings.sfxVolume * 100)}%`);
-      this.musicValue.setText(`Música: ${Math.round(settings.musicVolume * 100)}%`);
-      this.muteValue.setText(`Som: ${settings.muted ? 'mudo' : 'ligado'}`);
+      valorEfeitos.setText(`Efeitos: ${Math.round(settings.sfxVolume * 100)}%`);
+      valorMusica.setText(`Música: ${Math.round(settings.musicVolume * 100)}%`);
+      botaoSom.setLabel(`Som: ${settings.muted ? 'mudo' : 'ligado'}`);
+      botaoFps.setLabel(`FPS na tela: ${settings.mostrarFps ? 'ligado' : 'desligado'}`);
     });
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, unsubscribe);
@@ -175,9 +161,10 @@ export class SettingsScene extends BaseScene {
     playAudioCue(this, AUDIO_KEYS.uiConfirm, this.app.settingsStore.getState());
   }
 
-  private toggleMute(): void {
-    const settings = this.app.settingsStore.getState();
-    this.app.settingsStore.patchState({ muted: !settings.muted });
+  /** Liga ou desliga um ajuste de sim ou não. */
+  private alternar(chave: 'muted' | 'mostrarFps'): void {
+    const settings: GameSettings = this.app.settingsStore.getState();
+    this.app.settingsStore.patchState({ [chave]: !settings[chave] });
     playAudioCue(this, AUDIO_KEYS.uiConfirm, this.app.settingsStore.getState());
   }
 

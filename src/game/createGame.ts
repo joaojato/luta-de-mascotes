@@ -16,6 +16,7 @@ import { AcademiaScene } from '../scenes/AcademiaScene';
 import { MuseuScene } from '../scenes/MuseuScene';
 import { ConectarScene } from '../scenes/ConectarScene';
 import { SettingsScene } from '../scenes/SettingsScene';
+import { BotoesScene } from '../scenes/BotoesScene';
 
 export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Game {
   const config = GAME_PROFILES[profile];
@@ -66,7 +67,8 @@ export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Ga
       AcademiaScene,
       MuseuScene,
       ConectarScene,
-      SettingsScene
+      SettingsScene,
+      BotoesScene
     ]
   });
 

@@ -139,8 +139,14 @@ export interface ProjectileMoveConfig {
   dodge?: SpecialDodge | string;
   /** No guard holds it. */
   unblockable?: boolean;
-  /** Advance special no hit interrupts: it only takes health; only the `dodge` escapes it (the Bira run). */
+  /** Golpe nenhum interrompe o especial, da preparação ao fim: quem bate só tira vida (o vômito do Porco). */
   imparavel?: boolean;
+  /**
+   * Ninguém acerta ele no especial: `true` o especial inteiro (preparação,
+   * avanço e golpe: Galo e Bira); `[de, até]` só nesses quadros da sheet
+   * `special` (a queda do Urubu). Com `unblockable`, só a esquiva (`dodge`) salva.
+   */
+  invulneravel?: boolean | number[];
   /** Advance (`run`, `hop`, `meteor`): distance from the opponent where it stops and strikes. */
   reach?: number;
   /** `run`: sheet frames repeated while closing in, and the first strike frame. */
@@ -241,6 +247,17 @@ export function specialDodged(
     return defender.airborne && defender.movingAway;
   }
   return false;
+}
+
+/** Em que parte do especial o lutador está: preparação, golpe (a sheet `special`), avanço ou fora dele. */
+export type FaseDoEspecial = 'fora' | 'preparacao' | 'avanco' | 'golpe';
+
+/** Se nenhum golpe acerta o lutador agora, pelo `invulneravel` do especial (GDD, "Especiais"). */
+export function especialInvulneravel(invulneravel: boolean | number[] | undefined, fase: FaseDoEspecial, quadro: number): boolean {
+  if (!invulneravel || fase === 'fora') return false;
+  if (invulneravel === true) return true;
+  const [de, ate] = invulneravel;
+  return fase === 'golpe' && quadro >= de && quadro <= ate;
 }
 
 /** Where an advance stops: `reach` short of the target, never stepping backwards. */

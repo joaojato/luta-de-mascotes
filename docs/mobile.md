@@ -117,3 +117,19 @@ Verificado em Chromium com toque emulado (844×390): A avança da abertura ao
 menu e do menu aos modos, B volta; na luta (Urubu) os nomes mudam de
 Socos/Bicada de pé para Asas/Chute abaixado e Soco aéreo no pulo; troca para
 PlayStation com as cores certas.
+
+## Funções dos botões (03/11/2026)
+
+Pedido do João: remapear o que cada botão faz, mas só entre o que o celular
+tem. Menu ☰ ▸ Controles ▸ Funções dos botões (ou Ajustes ▸ Botões do
+celular, que abre a mesma tela e fecha direto no Voltar). Cada item mostra
+o botão e o golpe ("A: Soco (trocar)"); tocar passa para o próximo golpe
+(Soco, Chute, Defender, Especial) e quem tinha esse golpe fica com o antigo,
+para nunca haver golpe repetido nem golpe sem botão. Andar, pular e agachar
+ficam no direcional. Nos menus o lugar continua mandando: A / ✕ confirma e
+B / ○ volta, qualquer que seja o golpe deles na luta. O especial apagado
+segue o botão que tem o especial. Salvo em `funcoes` dentro de
+`luta-de-mascotes:toque-botoes`; losango incompleto volta ao de fábrica.
+
+Os botões apertam as teclas do P1, relidas a cada aperto: remapear o
+teclado em Ajustes ▸ Botões do teclado vale na hora aqui também.

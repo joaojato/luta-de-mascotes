@@ -514,6 +514,7 @@
       "kind": "meteor",
       "dodge": "pulo-recuando",
       "unblockable": true,
+      "invulneravel": [4, 9],
       "riseFrames": [
         0,
         2

@@ -429,6 +429,7 @@
   "moves": {
     "special": {
       "kind": "projectile",
+      "imparavel": true,
       "releaseFrame": 2,
       "speed": 240,
       "range": 240,

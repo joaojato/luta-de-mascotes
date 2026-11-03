@@ -170,8 +170,16 @@ export class MatchScene extends BaseScene {
     this.startRound();
     this.agendarTorcida(null);
 
-    // Volta dos Ajustes abertos pela pausa.
-    const aoVoltar = (): void => this.markActiveScene(SCENE_KEYS.Match);
+    // Volta dos Ajustes abertos pela pausa: as teclas podem ter mudado lá.
+    const aoVoltar = (): void => {
+      this.markActiveScene(SCENE_KEYS.Match);
+      this.montarTeclas();
+      // A pausa lista as teclas: remonta com as novas.
+      if (this.pausa) {
+        this.fecharPausa();
+        this.alternarPausa();
+      }
+    };
     this.events.on(Phaser.Scenes.Events.RESUME, aoVoltar);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -282,7 +290,8 @@ export class MatchScene extends BaseScene {
    * @param defender - The fighter whose hurtbox is tested.
    */
   private prepareHit(attacker: Fighter, defender: Fighter): (() => void) | null {
-    if (defender.isDefeated) {
+    // No trecho intocável do especial, nada acerta: o golpe segue vivo e passa.
+    if (defender.isDefeated || defender.isInvulneravel) {
       return null;
     }
 
@@ -599,14 +608,13 @@ export class MatchScene extends BaseScene {
     this.p2.setProjectileBounds(0, this.stageWorldWidth);
   }
 
-  /** Registers the two keyboard control schemes plus the menu shortcut. */
-  private registerKeys(): void {
-    const keyboard = this.input.keyboard;
-    if (!keyboard) {
-      throw new Error('MatchScene requires keyboard input');
-    }
-
-    // Botões remapeados na Academia (aba Botões); sem nada salvo, o padrão.
+  /**
+   * Teclas de luta dos dois lados, remapeadas em Ajustes ▸ Botões do teclado
+   * (ou na aba Botões da Academia); sem nada salvo, o padrão. Roda de novo na
+   * volta dos Ajustes abertos pela pausa: o remapeamento vale na hora.
+   */
+  private montarTeclas(): void {
+    const keyboard = this.input.keyboard!;
     const codes = Phaser.Input.Keyboard.KeyCodes as Record<string, number>;
     const controles = carregarControles(new Set(Object.keys(codes)));
     this.controles = controles;
@@ -623,6 +631,16 @@ export class MatchScene extends BaseScene {
     });
     this.p1Keys = teclas('p1');
     this.p2Keys = teclas('p2');
+  }
+
+  /** Registers the two keyboard control schemes plus the menu shortcut. */
+  private registerKeys(): void {
+    const keyboard = this.input.keyboard;
+    if (!keyboard) {
+      throw new Error('MatchScene requires keyboard input');
+    }
+
+    this.montarTeclas();
 
     // Tab não faz nada na luta; a captura só impede o navegador de pular o foco.
     keyboard.addCapture('TAB');

@@ -499,6 +499,8 @@
     "special": {
       "kind": "hop",
       "dodge": "agachar",
+      "invulneravel": true,
+      "unblockable": true,
       "reach": 110,
       "travelFrames": [
         0,

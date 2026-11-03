@@ -515,7 +515,8 @@
     "special": {
       "kind": "run",
       "dodge": "pulo",
-      "imparavel": true,
+      "invulneravel": true,
+      "unblockable": true,
       "approachAction": "special-run",
       "loopFrames": [
         0,

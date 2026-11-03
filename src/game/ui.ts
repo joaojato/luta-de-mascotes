@@ -6,6 +6,8 @@ import { COR_BORDA, COR_DESTAQUE, COR_PAINEL, FONTE_TEXTO, FONTE_TITULO, TEXTO_A
 export interface TextButton {
   group: Phaser.GameObjects.Container;
   setSelected(selected: boolean): void;
+  /** Troca o rótulo (botão que mostra o estado: ligado, desligado). */
+  setLabel(texto: string): void;
   destroy(): void;
 }
 
@@ -34,7 +36,10 @@ export function createTextButton(scene: Phaser.Scene, config: TextButtonConfig):
   background.setInteractive({ useHandCursor: true });
   label.setOrigin(0.5);
   // Rótulo comprido encolhe para caber no botão, em vez de vazar pela borda.
-  label.setScale(Math.min(1, (config.width - 20) / label.width));
+  const caber = (): void => {
+    label.setScale(Math.min(1, (config.width - 20) / label.width));
+  };
+  caber();
 
   const group = scene.add.container(0, 0, [background, label]);
 
@@ -56,6 +61,10 @@ export function createTextButton(scene: Phaser.Scene, config: TextButtonConfig):
   return {
     group,
     setSelected,
+    setLabel: (texto: string) => {
+      label.setText(texto.toUpperCase());
+      caber();
+    },
     destroy: () => {
       group.destroy(true);
     }

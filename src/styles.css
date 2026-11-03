@@ -336,6 +336,23 @@ input {
 }
 
 /* Aba no canto: discreta até o mouse chegar. */
+/* Ajustes ▸ FPS na tela. Em dev, ao lado da aba do debug. */
+.contador-fps {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 62;
+  padding: 3px 7px;
+  background: rgba(7, 6, 19, 0.72);
+  color: #a3e635;
+  font: bold 12px/1.2 ui-monospace, Consolas, monospace;
+  pointer-events: none;
+}
+
+.debug-aba ~ .contador-fps {
+  right: 76px;
+}
+
 .debug-aba {
   position: fixed;
   top: 8px;

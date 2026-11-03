@@ -104,6 +104,7 @@ import {
   type TileGymDebugState
 } from '../game/types';
 import { renderDebugPanels } from './debugPanels';
+import { montarContadorDeFps } from './contadorFps';
 import { acompanharProporcaoDaTela } from '../toque/tamanhoDoJogo';
 import { controlesDeToqueAtivos, montarControlesDeToque, querControlesDeToque } from '../toque/telaToque';
 
@@ -204,6 +205,7 @@ export function createApp(root: HTMLElement): void {
   };
 
   setAppContext(context);
+  montarContadorDeFps(appShell, settingsStore, () => game);
 
   // Celular deitado: botões na tela no lugar do teclado (docs/mobile.md).
   if (!isDebugShell && querControlesDeToque()) {

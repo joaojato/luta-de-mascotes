@@ -486,24 +486,77 @@ describe('advance specials', () => {
     expect(sprite.anims.currentAnim.key).toBe('cachorro-idle');
   });
 
-  it('Bira run is fast and unstoppable: a hit only takes health, the run goes on', () => {
+  // João, 03/11/2026: Galo, Bira e a queda do Urubu não tomam golpe nem são
+  // defendidos; só a esquiva salva.
+  it('Bira run is fast and untouchable, bite included', () => {
     const {fighter, sprite} = charged('cachorro', opponent(800));
     for (let i = 0; i < 15; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
     // 1120 px/s: a quarter second covers ~280 px (it used to be 140).
     expect(fighter.x).toBeGreaterThanOrEqual(200 + 270);
-    expect(fighter.isImparavel).toBe(true);
-    const vida = fighter.health01;
-    fighter.applyHit({ damage: 18, knockback: 260, hitstun: 360, kind: 'kick', height: 'high' } as never, -1, false, true);
-    expect(fighter.health01).toBeLessThan(vida);
-    expect(sprite.anims.currentAnim.key).toBe('cachorro-special-run');
-    for (let i = 0; i < 60 && sprite.anims.currentAnim.key === 'cachorro-special-run'; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
-    expect(fighter.x).toBe(800 - 230);
+    expect(fighter.isInvulneravel).toBe(true);
+    let bite = null as ReturnType<Fighter['getActiveAttack']>;
+    for (let i = 0; i < 100 && !bite; i++) {
+      fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+      expect(fighter.isInvulneravel).toBe(true);
+      bite = fighter.getActiveAttack();
+    }
+    expect(bite?.unblockable).toBe(true);
+    for (let i = 0; i < 60; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe('cachorro-idle');
+    expect(fighter.isInvulneravel).toBe(false);
   });
 
-  it('other specials stay interruptible', () => {
-    const {fighter} = charged('galo', opponent(600));
+  it('Galo is untouchable from the charge on and the peck is unblockable', () => {
+    const {fighter} = setup('galo');
+    fighter.setOpponent(opponent(600));
+    expect(fighter.isInvulneravel).toBe(false);
+    fighter.fillMeter();
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, special: true});
+    expect(fighter.isInvulneravel).toBe(true);
+  });
+
+  it('Urubu can be hit while rising, never on the way down', () => {
+    const {fighter, sprite} = charged('urubu', opponent(650));
+    fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.isInvulneravel).toBe(false);
+    let intocavelNaQueda = false;
+    for (let i = 0; i < 120 && sprite.anims.currentAnim.key !== 'urubu-idle'; i++) {
+      fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+      const quadro = Number(sprite.frame.name);
+      if (sprite.anims.currentAnim.key === 'urubu-special' && quadro >= 4 && quadro <= 9) {
+        expect(fighter.isInvulneravel).toBe(true);
+        intocavelNaQueda = true;
+      }
+    }
+    expect(intocavelNaQueda).toBe(true);
+  });
+
+  it('Porco vomit is unstoppable: a hit takes health, the vomit goes on', () => {
+    const {fighter, sprite, complete, delays} = setup('porco');
+    fighter.setOpponent(opponent(700));
+    fighter.fillMeter();
+    fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, special: true});
+    expect(fighter.isImparavel).toBe(true);
+    expect(fighter.isInvulneravel).toBe(false);
+    const golpe = { damage: 18, knockback: 260, hitstun: 360, kind: 'kick', height: 'high' } as never;
+    let vida = fighter.health01;
+    fighter.applyHit(golpe, -1, false, fighter.isImparavel);
+    expect(fighter.health01).toBeLessThan(vida);
+    expect(sprite.anims.currentAnim.key).toBe('porco-special-charge');
+    complete('special-charge');
+    delays.splice(0).forEach((fn) => fn());
+    expect(sprite.anims.currentAnim.key).toBe('porco-special');
+    vida = fighter.health01;
+    fighter.applyHit(golpe, -1, false, fighter.isImparavel);
+    expect(fighter.health01).toBeLessThan(vida);
+    expect(sprite.anims.currentAnim.key).toBe('porco-special');
+  });
+
+  it('other specials stay hittable and interruptible', () => {
+    const {fighter} = charged('saci', opponent(600));
     fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
     expect(fighter.isImparavel).toBe(false);
+    expect(fighter.isInvulneravel).toBe(false);
   });
 
   it('Galo hops low toward the head, lands, and the peck is ducked', () => {

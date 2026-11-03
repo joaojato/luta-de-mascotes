@@ -10,7 +10,16 @@ import * as Phaser from 'phaser';
 
 import { carregarControles, type ComandoLuta } from '../game/controles';
 import { aoMudarLuta, lutaNaTela, type LutaNaTela } from './lutaNaTela';
-import { carregarPreferencias, proximaOpacidade, salvarPreferencias, type Cara } from './preferencias';
+import {
+  carregarPreferencias,
+  FUNCOES_DO_BOTAO,
+  FUNCOES_PADRAO,
+  proximaOpacidade,
+  salvarPreferencias,
+  trocarFuncao,
+  type Cara,
+  type PosicaoDoBotao
+} from './preferencias';
 import { carregarModo, diferencaDeTeclas, direcoesDoPonto, salvarModo, type Direcao, type ModoDirecional } from './direcao';
 import {
   apagarLayout,
@@ -99,7 +108,6 @@ function abertoComoApp(): boolean {
 // (lupa e zoom), e ◀ ▶ viram emoji em alguns aparelhos.
 const SETA = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1.5 9 8H1z"/></svg>';
 // As letras do Xbox também são traço, pelo mesmo motivo.
-type PosicaoDoBotao = 'cima' | 'direita' | 'baixo' | 'esquerda';
 const CARAS: Record<Cara, Record<PosicaoDoBotao, { simbolo: string; nome: string }>> = {
   xbox: {
     cima: { simbolo: '<path d="M12 9 20 20 28 9M20 20v11"/>', nome: 'Y' },
@@ -116,15 +124,25 @@ const CARAS: Record<Cara, Record<PosicaoDoBotao, { simbolo: string; nome: string
 };
 
 /**
- * O comando de cada lugar do losango, igual nas duas caras (docs/mobile.md),
- * e a tecla que ele aperta fora da luta, nos menus.
+ * Cada lugar do losango e a tecla que ele aperta fora da luta, nos menus. O
+ * golpe de cada um na luta vem das preferências (Funções dos botões); nos
+ * menus o lugar manda, como em console.
  */
-const BOTOES: { id: PosicaoDoBotao; comando: ComandoLuta; noMenu?: { tecla: string; nome: string } }[] = [
-  { id: 'cima', comando: 'special' },
-  { id: 'direita', comando: 'block', noMenu: { tecla: 'ESC', nome: 'Voltar' } },
-  { id: 'baixo', comando: 'light', noMenu: { tecla: 'ENTER', nome: 'OK' } },
-  { id: 'esquerda', comando: 'heavy' }
+const BOTOES: { id: PosicaoDoBotao; noMenu?: { tecla: string; nome: string } }[] = [
+  { id: 'cima' },
+  { id: 'direita', noMenu: { tecla: 'ESC', nome: 'Voltar' } },
+  { id: 'baixo', noMenu: { tecla: 'ENTER', nome: 'OK' } },
+  { id: 'esquerda' }
 ];
+
+/** Abre as Funções dos botões por fora (Ajustes no celular); null sem controles de toque. */
+let abrirFuncoesPorFora: (() => void) | null = null;
+
+/** Abre a tela de escolher o golpe de cada botão. Falso se não há controles de toque. */
+export function abrirFuncoesDosBotoes(): boolean {
+  abrirFuncoesPorFora?.();
+  return abrirFuncoesPorFora !== null;
+}
 
 /**
  * Monta os controles por cima do jogo.
@@ -133,14 +151,15 @@ const BOTOES: { id: PosicaoDoBotao; comando: ComandoLuta; noMenu?: { tecla: stri
  */
 export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): void {
   const codes = new Set(Object.keys(KEY_CODES));
-  const p1 = carregarControles(codes).p1;
-  const teclaDe = (comando: ComandoLuta): string => p1[comando];
-  const teclaDaDirecao: Record<Direcao, string> = {
+  // Lido a cada aperto: remapear o teclado nos Ajustes vale na hora aqui também.
+  const teclaDe = (comando: ComandoLuta): string => carregarControles(codes).p1[comando];
+  const direcoesDoTeclado = (): Record<Direcao, string> => ({
     left: teclaDe('left'),
     right: teclaDe('right'),
     up: teclaDe('jump'),
     down: teclaDe('crouch')
-  };
+  });
+  let teclaDaDirecao = direcoesDoTeclado();
 
   let modo: ModoDirecional = carregarModo();
   let editando = false;
@@ -160,8 +179,8 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
       <span class="toque__pino"></span>
     </div>
     ${BOTOES.map(
-      ({ id, comando }) => `
-    <button class="toque__controle toque__botao toque__botao--${id}" data-id="${id}" data-comando="${comando}" type="button">
+      ({ id }) => `
+    <button class="toque__controle toque__botao toque__botao--${id}" data-id="${id}" type="button">
       <svg viewBox="0 0 40 40" aria-hidden="true"></svg>
       <span class="toque__nome"></span>
     </button>`
@@ -179,8 +198,15 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
         <button class="toque__item" data-acao="cara" type="button"></button>
         <button class="toque__item" data-acao="nomes" type="button"></button>
         <button class="toque__item" data-acao="opacidade" type="button"></button>
+        <button class="toque__item" data-acao="abrir-funcoes" type="button">Funções dos botões</button>
         <button class="toque__item" data-acao="editar" type="button">Ajustar botões</button>
         <button class="toque__item toque__item--forte" data-acao="fechar-controles" type="button">Voltar</button>
+      </div>
+      <div class="toque__caixa" data-tela="funcoes" role="dialog" aria-label="Funções dos botões" hidden>
+        <p class="toque__titulo">Funções dos botões</p>
+        ${BOTOES.map(({ id }) => `<button class="toque__item" data-acao="funcao" data-posicao="${id}" type="button"></button>`).join('')}
+        <button class="toque__item" data-acao="funcoes-padrao" type="button">Restaurar padrão</button>
+        <button class="toque__item toque__item--forte" data-acao="fechar-funcoes" type="button">Voltar</button>
       </div>
     </div>
     <div class="toque__editor" hidden>
@@ -225,14 +251,23 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   const itemOpacidade = pegar<HTMLButtonElement>('[data-acao="opacidade"]');
 
   const mostrarNomes = (luta: LutaNaTela | null): void => {
-    for (const { id, comando, noMenu } of BOTOES) {
+    for (const { id, noMenu } of BOTOES) {
       const botao = controles[id];
-      const nome = luta ? luta.nomes[comando as keyof LutaNaTela['nomes']] : (noMenu?.nome ?? '');
+      const funcao = preferencias.funcoes[id];
+      const nome = luta ? luta.nomes[funcao] : (noMenu?.nome ?? '');
       botao.querySelector('.toque__nome')!.textContent = nome;
       botao.setAttribute('aria-label', [CARAS[preferencias.cara][id].nome, nome].filter(Boolean).join(': '));
+      // O especial apaga enquanto não pode sair (barra vazia ou no ar).
+      botao.classList.toggle('is-apagado', funcao === 'special' && luta !== null && !luta.especialPronto);
     }
-    // O especial apaga enquanto não pode sair (barra vazia ou no ar).
-    controles.cima.classList.toggle('is-apagado', luta !== null && !luta.especialPronto);
+  };
+  const itensDeFuncao = camada.querySelectorAll<HTMLButtonElement>('[data-acao="funcao"]');
+  const mostrarFuncoes = (): void => {
+    itensDeFuncao.forEach((item) => {
+      const posicao = item.dataset.posicao as PosicaoDoBotao;
+      const golpe = FUNCOES_DO_BOTAO.find(({ id }) => id === preferencias.funcoes[posicao])!.nome;
+      item.textContent = `${CARAS[preferencias.cara][posicao].nome}: ${golpe} (trocar)`;
+    });
   };
 
   const mostrarPreferencias = (): void => {
@@ -246,6 +281,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     camada.style.setProperty('--toque-opacidade', String(preferencias.opacidade));
     itemOpacidade.textContent = `Opacidade dos controles: ${Math.round(preferencias.opacidade * 100)}% (trocar)`;
     mostrarNomes(lutaNaTela());
+    mostrarFuncoes();
   };
   mostrarPreferencias();
   aoMudarLuta(mostrarNomes);
@@ -347,6 +383,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     evento.preventDefault();
     if (editando) return;
     dedo = evento.pointerId;
+    teclaDaDirecao = direcoesDoTeclado();
     capturar(direcional, evento);
     mover(evento);
   });
@@ -362,11 +399,11 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   // ---------------------------------------------------------------- botões
   const soltadores: (() => void)[] = [soltarDirecional];
 
-  for (const { id, comando, noMenu } of BOTOES) {
+  for (const { id, noMenu } of BOTOES) {
     const botao = controles[id];
     let dono: number | null = null;
     // A tecla é escolhida no aperto e a mesma é solta, mesmo se a luta acabar no meio.
-    let tecla = teclaDe(comando);
+    let tecla = teclaDe(preferencias.funcoes[id]);
     const largar = (): void => {
       if (dono === null) return;
       dono = null;
@@ -381,7 +418,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
       capturar(botao, evento);
       botao.classList.add('is-on');
       vibrar();
-      tecla = lutaNaTela() === null && noMenu ? noMenu.tecla : teclaDe(comando);
+      tecla = lutaNaTela() === null && noMenu ? noMenu.tecla : teclaDe(preferencias.funcoes[id]);
       teclaEvento('keydown', tecla);
     });
     const fim = (evento: PointerEvent): void => {
@@ -401,7 +438,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   const semGestoDoNavegador = (evento: Event): void => {
     if (evento.cancelable) evento.preventDefault();
   };
-  [direcional, ...camada.querySelectorAll<HTMLElement>('[data-comando]')].forEach((alvo) => {
+  [direcional, ...camada.querySelectorAll<HTMLElement>('.toque__botao')].forEach((alvo) => {
     for (const tipo of ['touchstart', 'touchmove', 'touchend'] as const) {
       alvo.addEventListener(tipo, semGestoDoNavegador, { passive: false });
     }
@@ -414,7 +451,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
 
   // ---------------------------------------------------------------- menu
   // As opções de controle ficam num menu próprio, aberto por Controles (João, 03/11/2026).
-  const mostrarTela = (tela: 'principal' | 'controles'): void => {
+  const mostrarTela = (tela: 'principal' | 'controles' | 'funcoes'): void => {
     painel.querySelectorAll<HTMLElement>('[data-tela]').forEach((caixa) => {
       caixa.hidden = caixa.dataset.tela !== tela;
     });
@@ -437,10 +474,36 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     if (evento.target === painel) fecharMenu();
   });
 
-  const acoes: Record<string, () => void> = {
+  // Aberta pelos Ajustes do jogo, a tela de funções fecha direto em vez de voltar ao menu.
+  let funcoesPorFora = false;
+  abrirFuncoesPorFora = (): void => {
+    abrirMenu();
+    funcoesPorFora = true;
+    mostrarTela('funcoes');
+  };
+
+  const acoes: Record<string, (item: HTMLElement) => void> = {
     continuar: fecharMenu,
     'abrir-controles': () => mostrarTela('controles'),
     'fechar-controles': () => mostrarTela('principal'),
+    'abrir-funcoes': () => {
+      funcoesPorFora = false;
+      mostrarTela('funcoes');
+    },
+    'fechar-funcoes': () => {
+      if (funcoesPorFora) fecharMenu();
+      else mostrarTela('controles');
+    },
+    funcao: (item) => {
+      preferencias = { ...preferencias, funcoes: trocarFuncao(preferencias.funcoes, item.dataset.posicao as PosicaoDoBotao) };
+      salvarPreferencias(preferencias);
+      mostrarPreferencias();
+    },
+    'funcoes-padrao': () => {
+      preferencias = { ...preferencias, funcoes: { ...FUNCOES_PADRAO } };
+      salvarPreferencias(preferencias);
+      mostrarPreferencias();
+    },
     voltar: () => {
       fecharMenu();
       teclaEvento('keydown', 'ESC');
@@ -494,7 +557,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     }
   };
   camada.querySelectorAll<HTMLElement>('[data-acao]').forEach((item) => {
-    item.addEventListener('click', () => acoes[item.dataset.acao!]?.());
+    item.addEventListener('click', () => acoes[item.dataset.acao!]?.(item));
   });
 
   // ---------------------------------------------------------------- edição

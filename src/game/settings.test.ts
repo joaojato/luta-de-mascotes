@@ -9,13 +9,15 @@ describe('sanitizeSettings', () => {
         sfxVolume: 0.4,
         musicVolume: 0.2,
         muted: true,
-        cpuDificuldade: 'dificil'
+        cpuDificuldade: 'dificil',
+        mostrarFps: true
       })
     ).toEqual({
       sfxVolume: 0.4,
       musicVolume: 0.2,
       muted: true,
-      cpuDificuldade: 'dificil'
+      cpuDificuldade: 'dificil',
+      mostrarFps: true
     });
   });
 
@@ -29,7 +31,8 @@ describe('sanitizeSettings', () => {
       sfxVolume: 0.35,
       musicVolume: 0.35,
       muted: false,
-      cpuDificuldade: 'medio'
+      cpuDificuldade: 'medio',
+      mostrarFps: false
     });
   });
 

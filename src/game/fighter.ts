@@ -32,9 +32,11 @@ import {
   DASH_STOP_GAP,
   dashConfig,
   DoubleTapDetector,
+  especialInvulneravel,
   meteorDiveStart,
   strikeTravelStep,
   type AttackMove,
+  type FaseDoEspecial,
   type SpecialDodge,
   type GuardStance,
   type JumpFrames,
@@ -469,9 +471,23 @@ export class Fighter {
     return this.currentAnimKey === this.actionKeys.blockHigh ? 'alta' : null;
   }
 
-  /** In an unstoppable special (the Bira run): every hit only takes health. */
+  /** No especial imparável (o vômito do Porco): golpe só tira vida, não interrompe. */
   get isImparavel(): boolean {
-    return this.advance?.move.imparavel === true;
+    return this.character.moves?.special?.imparavel === true && this.faseDoEspecial !== 'fora';
+  }
+
+  /** No trecho intocável do especial (Galo, Bira, a queda do Urubu): golpe nenhum acerta. */
+  get isInvulneravel(): boolean {
+    const fase = this.faseDoEspecial;
+    const animacao = fase === 'golpe' ? this.currentAnimation() : null;
+    return especialInvulneravel(this.character.moves?.special?.invulneravel, fase, animacao ? this.currentFrameIndex(animacao) : -1);
+  }
+
+  private get faseDoEspecial(): FaseDoEspecial {
+    if (this.defeated || !this.locked) return 'fora';
+    if (this.currentAnimKey === this.actionKeys.specialCharge) return 'preparacao';
+    if (this.currentAnimKey === this.actionKeys.special) return 'golpe';
+    return this.advance ? 'avanco' : 'fora';
   }
 
   /** Mid heavy on the ground: the quick punch bounces off (armor). */

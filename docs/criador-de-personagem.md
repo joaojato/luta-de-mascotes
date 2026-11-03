@@ -151,9 +151,12 @@ encolhe (`src/game/planoDeFundo.ts`).
    do mascote.
 3. Como o oponente escapa? Pular (`pulo`), agachar (`agachar`), pular
    recuando (`pulo-recuando`) ou defender normalmente?
-4. Dá para defender, ou é imbloqueável? Golpe nenhum interrompe o
-   especial que avança (`imparavel`: quem bate só tira vida e ele segue,
-   como a corrida do Bira)? Aí só a esquiva (pergunta 3) escapa.
+4. Dá para defender, ou é imbloqueável (`unblockable`)? E ele, apanha no
+   especial? Três jeitos: normal (golpe interrompe); imparável (`imparavel`:
+   quem bate só tira vida e ele segue, como o vômito do Porco); intocável
+   (`invulneravel`: nada acerta ele, `true` o especial inteiro como Galo e
+   Bira, ou `[de, até]` só nesses quadros da sheet `special`, como a queda do
+   Urubu). Intocável e imbloqueável: só a esquiva (pergunta 3) salva.
 5. Atordoa quem leva? (Pó de Arroz e meteoro deixam tonto 1,5 s.)
 6. Tem preparação própria (`special-charge`) ou já sai direto? O golpe em si
    é a sheet `special`. Especial que corre pode ter uma sheet só para a
@@ -261,6 +264,7 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 30/10/2026: especial `sopro` (jato contínuo varrendo do chão ao alto, com `special-return`) e célula alta por ação (`frameHeight`).
 - 01/11/2026: especial `forma` (vira outro lutador por um tempo, com cronômetro no HUD).
 - 01/11/2026: `imparavel` no especial que avança (golpe só tira vida) e `moves.dash` por lutador.
+- 03/11/2026: `imparavel` vale para qualquer especial (o vômito do Porco) e `invulneravel` (nada acerta: Galo, Bira, a queda do Urubu).
 - 01/11/2026: Regra do Tiro (quem atira anda para a frente; arma pesada dá coice com `recuo`).
 - 01/11/2026: `nomes` (nome curto de cada golpe nos botões do celular) e `rosto` (close do retrato na chave).
 - 01/11/2026: `reforco` (NPC de Guarda que sai do fundo no especial, golpeia uma vez e volta ao posto).

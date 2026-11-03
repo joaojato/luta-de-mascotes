@@ -206,10 +206,14 @@ do JSON (Regra do JSON: o motor não conhece mascote).
 
 | Mascote | Tipo (`kind`) | O que faz | Como escapar (`dodge`) |
 |---|---|---|---|
-| Urubu: meteoro | `meteor` | Térmica sobe, ele sai pelo alto da tela, o ponto de impacto segue o oponente até o mergulho começar e então trava; mergulho a 45 graus. Nenhuma guarda segura. Acerto atordoa 1,5 s, como o Pó de Arroz (vítima tonta, `stunned`). | Só pulando enquanto recua (`pulo-recuando`). |
-| Galo: bicada | `hop` | Voo baixo até 110 px do oponente, bicada na altura da cabeça, pouso. | Agachar (`agachar`). |
-| Bira: bote | `run` | Galope aos saltos (sheet própria, `approachAction`), a 1120 px/s, até 230 px do oponente; imparável (`imparavel`, João 01/11/2026): golpe só tira vida, não para a corrida nem o bote; bote com salto real até 90 px dele, mordida no ar uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
+| Urubu: meteoro | `meteor` | Térmica sobe, ele sai pelo alto da tela, o ponto de impacto segue o oponente até o mergulho começar e então trava; mergulho a 45 graus. Nenhuma guarda segura. Acerto atordoa 1,5 s, como o Pó de Arroz (vítima tonta, `stunned`). Subindo ainda apanha; na queda (quadros 4 a 9 da sheet) nada acerta ele (`invulneravel: [4, 9]`, João 03/11/2026). | Só pulando enquanto recua (`pulo-recuando`). |
+| Galo: bicada | `hop` | Voo baixo até 110 px do oponente, bicada na altura da cabeça, pouso. Da preparação ao pouso nada acerta ele (`invulneravel`) e nenhuma guarda segura a bicada (`unblockable`), João 03/11/2026. | Agachar (`agachar`). |
+| Bira: bote | `run` | Galope aos saltos (sheet própria, `approachAction`), a 1120 px/s, até 230 px do oponente; intocável (`invulneravel`, João 03/11/2026; antes, em 01/11, só imparável): da preparação à mordida nada acerta ele, e nenhuma guarda segura o bote (`unblockable`); bote com salto real até 90 px dele, mordida no ar uma vez; efeito de mandíbula só no contato. | Pular (`pulo`). |
 | Saci: tornado | `dash` | Atravessa a tela girando, a uns 1000 px/s; só o funil de baixo acerta (João, 29/10/2026: antes a caixa ia até a cintura e não dava para pular). | Pular (`pulo`): quem está no ar quando ele passa escapa. Pular na carga é cedo demais (pousa antes). |
+
+Galo, Bira e Urubu (João, 03/11/2026): a única forma de não tomar dano do
+especial deles é a esquiva da coluna "Como escapar". Golpe não acerta eles no
+trecho intocável e guarda não segura o golpe deles.
 
 O soco forte do Bira é a patada, com o efeito de garras no quadro 3.
 Especiais de avanço acertam uma vez: dano 34 por padrão (escala de 29/10/2026).
@@ -448,7 +452,7 @@ Rival: em aberto
 | Baixo + Soco | mordida (abre e fecha a mandíbula, tronco avança) | `heavy-punch.png` |
 | Chute | chute padrão | `heavy-kick.png` |
 | Baixo + Chute | coice de costas com passo largo (a corrida antes dele, `low-kick-run.png`, fica para quando o motor tiver corrida fora do especial) | `low-kick.png` |
-| Especial | vômito verde: jato que sai da boca, anda 240 px e se desfaz; defesa segura, pular e agachar não escapam, tonto 1 s, dano 18 (8%) | `special-charge.png`, `special.png` + `vomit-jet.png` |
+| Especial | vômito verde: jato que sai da boca, anda 240 px e se desfaz; defesa segura, pular e agachar não escapam, tonto 1 s, dano 18 (8%); imparável (`imparavel`, João 03/11/2026): da preparação ao fim, golpe tira vida mas não interrompe | `special-charge.png`, `special.png` + `vomit-jet.png` |
 
 Torcida: camisas verdes ou brancas (João). `stunned` e `knockdown` ainda em
 produção; a queda usa a reação de apanhar e a tontura cai no padrão do motor.

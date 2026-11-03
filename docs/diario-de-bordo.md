@@ -3692,3 +3692,54 @@ HTTPS some o QR e sobra a caixa da direita); com `dev:celular` o conjunto
 fica no centro. Não mexi.
 **Em aberto:** se ele vê desalinhamento em outra tela, saber qual e o
 tamanho da janela.
+
+## 2026-11-03: especiais intocáveis, logo da PUC, FPS e botões nos Ajustes
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Galo, Bira e Urubu (Urubu apenas na queda) não podem tomar hit
+nem ter o ataque bloqueado. A única forma dos adversários não tomarem dano é
+desviando. O porco do palmeiras também não pode ser interrompido, mas pode
+tomar dano durante a ult." Trocar a logo da PUC-Rio pelo arquivo com
+"transparente" no nome. Nos Ajustes, ver o FPS e remapear os botões do
+teclado; no celular, remapear o que cada botão faz, dentro dos disponíveis.
+**Feito:**
+- Motor: `invulneravel` no especial (`true`, o especial inteiro; `[de, até]`,
+  só esses quadros da sheet `special`): a luta não testa golpe contra quem
+  está intocável. `imparavel` passou a valer para qualquer especial, da
+  preparação ao fim. Galo e Bira: `invulneravel` e `unblockable`; Urubu:
+  `invulneravel: [4, 9]` (a queda); Porco: `imparavel`. GDD, criador e
+  lição atualizados.
+- Logo: `referencia/abertura/puc-rio-transparente.png` (o arquivo de
+  `Desktop/PUC/8° Período/Jesus 3`), passado pelo mesmo
+  `scripts/abertura_logos.py` em pixel arte com mosaico; fonte já
+  transparente só é recortada, sem pintar o texto.
+- Ajustes: valor de volume no meio dos botões − e +, "Som" e "FPS na tela"
+  mostram o estado, "Botões do teclado" abre a cena nova `BotoesScene` (P1
+  e P2 lado a lado, Enter espera a tecla, tecla repetida troca com o dono)
+  e, no celular, "Botões do celular" abre as Funções dos botões. Contador de
+  FPS em `src/shell/contadorFps.ts`, no canto, por cima de tudo. A Luta relê
+  as teclas e remonta a pausa na volta dos Ajustes.
+- Celular: Controles ▸ Funções dos botões, cada botão cicla entre Soco,
+  Chute, Defender e Especial e troca com quem tinha o golpe; os botões releem
+  as teclas do teclado a cada aperto.
+**Verificado:** `npm run check` (45 arquivos, 393 testes, build). Testes
+novos do lutador: Bira intocável da corrida à mordida, Galo desde a
+preparação, Urubu atingível subindo e intocável nos quadros 4 a 9, Porco
+apanha na preparação e no vômito sem sair dele, Saci segue normal. Chrome
+sem tela por CDP: FPS aparece no canto ao ligar; Botões do teclado com P1
+Esquerda = J, depois P2 Esquerda = J e o P1 herda o K; pela pausa ▸
+Configurações ▸ Botões, a luta volta andando com o J e a pausa mostra o J;
+abertura com a PUC nova; no modo celular, A vira Chute, o X herda o Soco,
+fica salvo, e na luta o A aperta a tecla do chute; Ajustes ▸ Botões do
+celular abre a mesma tela. Console sem erro. A invulnerabilidade foi
+conferida nos testes do motor, não numa luta jogada.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o Bira imparável de 01/11 virou
+intocável; a fonte da logo da PUC (a cinza, pintada de branco) trocada pela
+transparente que ele baixou.
+**Aprovado explicitamente:** nada.
+**Atrito:** o arquivo "que acabei de baixar" não estava em Downloads, e sim
+em `Desktop/PUC/8° Período/Jesus 3`. Outro trabalho seguia commitando na
+mesma pasta.
+**Em aberto:** o João jogar contra Galo, Bira, Urubu e Porco e dizer se o
+especial ficou forte demais (intocável desde a preparação).

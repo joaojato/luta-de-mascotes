@@ -20,7 +20,8 @@ export const SCENE_KEYS = {
   FighterPlayground: 'FighterPlaygroundScene',
   TileGym: 'TileGymScene',
   LevelEditor: 'LevelEditorScene',
-  Settings: 'SettingsScene'
+  Settings: 'SettingsScene',
+  Botoes: 'BotoesScene'
 } as const;
 
 export type SceneKey = (typeof SCENE_KEYS)[keyof typeof SCENE_KEYS];
@@ -83,6 +84,8 @@ export interface GameSettings {
   muted: boolean;
   /** Dificuldade da CPU no 1 VS CPU (escolhida na tela de modo). */
   cpuDificuldade: Dificuldade;
+  /** Contador de quadros por segundo no canto da tela (Ajustes). */
+  mostrarFps: boolean;
 }
 
 export interface InputSnapshot {

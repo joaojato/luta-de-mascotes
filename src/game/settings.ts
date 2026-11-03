@@ -7,7 +7,8 @@ export const DEFAULT_SETTINGS: GameSettings = {
   sfxVolume: 0.8,
   musicVolume: 0.55,
   muted: false,
-  cpuDificuldade: 'medio'
+  cpuDificuldade: 'medio',
+  mostrarFps: false
 };
 
 export function sanitizeSettings(raw: unknown): GameSettings {
@@ -22,7 +23,8 @@ export function sanitizeSettings(raw: unknown): GameSettings {
     muted: typeof candidate?.muted === 'boolean' ? candidate.muted : DEFAULT_SETTINGS.muted,
     cpuDificuldade: DIFICULDADES.some((d) => d.id === candidate?.cpuDificuldade)
       ? (candidate!.cpuDificuldade as Dificuldade)
-      : DEFAULT_SETTINGS.cpuDificuldade
+      : DEFAULT_SETTINGS.cpuDificuldade,
+    mostrarFps: typeof candidate?.mostrarFps === 'boolean' ? candidate.mostrarFps : DEFAULT_SETTINGS.mostrarFps
   };
 }
 

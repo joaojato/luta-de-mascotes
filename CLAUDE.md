@@ -157,7 +157,9 @@ Cada uma tem nome para poder ser cobrada depois.
   cada mascote (`docs/superpowers/specs/2026-11-03-som-e-musica-design.md`).
   Outra em 03/11/2026: a abertura com barra de carregamento (e, depois, a
   logo da desenvolvedora) e o menu Controles no celular (`docs/gdd.md`,
-  "Telas da v1").
+  "Telas da v1"). Outra em 03/11/2026: Trocar personagens na pausa, FPS na
+  tela e remapear botões nos Ajustes (teclado; no celular, o golpe de cada
+  botão, `docs/mobile.md`).
 
 ## Anti-referência
 

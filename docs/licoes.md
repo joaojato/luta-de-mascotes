@@ -623,3 +623,10 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   mais larga que 16:9 e sumia atrás da gaveta de debug. Encaixe pelo
   `getBoundingClientRect` do canvas, refeito com `ResizeObserver`
   (2026-11-03).
+- **Imparável não bastou para o Bira: virou intocável.** Em 01/11 o João
+  pediu a corrida do Bira imparável (golpe só tira vida); em 03/11 pediu que
+  Galo, Bira e a queda do Urubu não tomem golpe nem sejam defendidos, "a
+  única forma de não tomar dano é desviando". O Porco ganhou o imparável
+  (apanha, mas não para). São três jeitos diferentes de apanhar no especial
+  (normal, `imparavel`, `invulneravel`), cada um no JSON; perguntar qual no
+  questionário do mascote novo (2026-11-03).
