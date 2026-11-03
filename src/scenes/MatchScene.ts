@@ -878,6 +878,18 @@ export class MatchScene extends BaseScene {
           this.fecharPausa();
           this.scene.restart(this.config);
         },
+        // Torneio tem o time fixo e o treino troca na Academia: lá a opção some.
+        trocarPersonagens:
+          this.config.torneio || this.config.treino
+            ? undefined
+            : () => {
+                this.fecharPausa();
+                this.scene.start(SCENE_KEYS.CharacterSelect, {
+                  mode: this.config.mode,
+                  stageId: this.config.stageId,
+                  atuais: { p1: this.config.p1CharacterId, p2: this.config.p2CharacterId }
+                });
+              },
         // Os Ajustes abrem por cima da luta parada e devolvem para a pausa.
         configuracoes: () => {
           this.scene.launch(SCENE_KEYS.Settings, { voltarPara: SCENE_KEYS.Match });

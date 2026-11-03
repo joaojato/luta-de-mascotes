@@ -17,6 +17,8 @@ interface CharacterSelectData {
   stageId: string;
   /** Escolha do time de um torneio novo: só o jogador escolhe. */
   torneio?: { formato: FormatoTorneio; tamanho: 8 | 16 };
+  /** Vindo da pausa da luta: os cursores começam nos mascotes que estavam lutando. */
+  atuais?: { p1: string; p2: string };
 }
 
 const P1_COLOR = COR_P1;
@@ -61,6 +63,7 @@ export class CharacterSelectScene extends BaseScene {
   private mode: MatchMode = '1v1';
   private stageId = '';
   private torneio: CharacterSelectData['torneio'] | null = null;
+  private atuais: CharacterSelectData['atuais'] | null = null;
   private tiles: Tile[] = [];
   private columns = 1;
   private p1!: PlayerCursor;
@@ -77,6 +80,7 @@ export class CharacterSelectScene extends BaseScene {
     this.mode = data?.mode ?? '1v1';
     this.stageId = data?.stageId ?? '';
     this.torneio = data?.torneio ?? null;
+    this.atuais = data?.atuais ?? null;
   }
 
   create(): void {
@@ -87,8 +91,13 @@ export class CharacterSelectScene extends BaseScene {
     this.createBackdrop(this.stageId);
     this.createHeading(this.torneio ? 'Escolha seu time' : 'Escolha seu lutador', '');
     this.buildGrid();
-    this.p1 = this.createCursor('P1', P1_COLOR, 0, -1);
-    this.p2 = this.createCursor(this.mode === '1v1' ? 'P2' : 'CPU', P2_COLOR, this.mode === '1v1' ? Math.min(1, this.tiles.length - 1) : 0, 1);
+    this.p1 = this.createCursor('P1', P1_COLOR, this.casaDe(this.atuais?.p1) ?? 0, -1);
+    this.p2 = this.createCursor(
+      this.mode === '1v1' ? 'P2' : 'CPU',
+      P2_COLOR,
+      this.mode === '1v1' ? (this.casaDe(this.atuais?.p2) ?? Math.min(1, this.tiles.length - 1)) : 0,
+      1
+    );
 
     if (this.mode === '1vcpu') {
       this.setCursorVisible(this.p2, false);
@@ -434,9 +443,19 @@ export class CharacterSelectScene extends BaseScene {
     });
   }
 
-  /** O cursor da CPU aparece no primeiro lutador livre e passa a andar com o direcional. */
+  /** Casa da grade de um mascote, ou null se ele não está na seleção. */
+  private casaDe(id: string | undefined): number | null {
+    const indice = SELECTABLE_ROSTER.findIndex((lutador) => lutador.id === id);
+    return indice >= 0 ? indice : null;
+  }
+
+  /**
+   * O cursor da CPU aparece no adversário da luta anterior (vindo da pausa) ou
+   * no primeiro lutador livre, e passa a andar com o direcional.
+   */
   private abrirEscolhaDaCpu(): void {
-    const livre = this.tiles.findIndex((_, index) => index !== this.p1.index);
+    const anterior = this.casaDe(this.atuais?.p2);
+    const livre = anterior !== null && anterior !== this.p1.index ? anterior : this.tiles.findIndex((_, index) => index !== this.p1.index);
     this.p2.index = livre >= 0 ? livre : this.p1.index;
     this.p2.locked = false;
     this.setCursorVisible(this.p2, true);

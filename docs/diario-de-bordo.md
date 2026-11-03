@@ -3567,3 +3567,28 @@ uns 32 s, sem erro no console.
 **Atrito:** nenhum com o João; o `preload` parado custou uma rodada.
 **Em aberto:** som de abertura (um "blim" de console), se ele quiser, pelo
 `scripts/sons.py`.
+
+## 2026-11-03: trocar personagens pela pausa
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "um botão de trocar personagens no menu de pause, para caso a
+pessoa queira trocar rapidamente os personagens ela não precisa sair e
+voltar tudo do zero".
+**Feito:** a pausa ganhou "Trocar personagens", entre Recomeçar e
+Configurações. Leva direto à Seleção com o mesmo modo e o mesmo estádio, sem
+passar pelo menu nem pela escolha de estádio, e os cursores já abrem nos
+mascotes que estavam lutando (na CPU, o cursor dela abre no adversário
+anterior depois que o P1 trava). No torneio a opção some (o time é fixo) e
+no treino também (lá se troca na Academia). As opções viraram dado em
+`src/game/opcoesDaPausa.ts`, fora do Phaser, com teste. Botão de texto
+encolhe rótulo que não caiba.
+**Verificado:** `npm run check`. Chrome sem tela por CDP: pausa 1v1 e 1vCPU
+com cinco botões, rótulo inteiro dentro do botão; clicar leva à Seleção com
+Saci no P1 e Porco no P2 (1v1), Urubu no P1 e a CPU abrindo no Galo
+(1vCPU); torneio e treino com quatro botões, sem a troca. Console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** `menuPausa.ts` importa o Phaser, que não carrega no teste: a
+lista de opções foi para um arquivo próprio.
+**Em aberto:** nada.

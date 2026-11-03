@@ -33,6 +33,8 @@ export function createTextButton(scene: Phaser.Scene, config: TextButtonConfig):
 
   background.setInteractive({ useHandCursor: true });
   label.setOrigin(0.5);
+  // Rótulo comprido encolhe para caber no botão, em vez de vazar pela borda.
+  label.setScale(Math.min(1, (config.width - 20) / label.width));
 
   const group = scene.add.container(0, 0, [background, label]);
 

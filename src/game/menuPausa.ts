@@ -15,6 +15,7 @@ import {
 } from './estilo';
 import { LUTADORES } from './lutadores';
 import { telaDe } from './nitidez';
+import { opcoesDaPausa, type AcoesDaPausa, type OpcaoDaPausa } from './opcoesDaPausa';
 import { createTextButton, type TextButton } from './ui';
 import { controlesDeToqueAtivos } from '../toque/telaToque';
 
@@ -54,24 +55,9 @@ export function golpesDoMascote(personagemId: string): string[] {
   return linhas.filter(([, nome]) => nome).map(([botao, nome]) => `${botao}: ${nome}`);
 }
 
-/** O que cada opção da pausa faz; a ordem aqui é a ordem na tela. */
-export interface AcoesDaPausa {
-  continuar: () => void;
-  recomecar: () => void;
-  configuracoes: () => void;
-  sair: () => void;
-}
-
-export const OPCOES_DA_PAUSA: { id: keyof AcoesDaPausa; rotulo: string }[] = [
-  { id: 'continuar', rotulo: 'Continuar' },
-  { id: 'recomecar', rotulo: 'Recomeçar' },
-  { id: 'configuracoes', rotulo: 'Configurações' },
-  { id: 'sair', rotulo: 'Sair da partida' }
-];
-
 /**
  * Tela de pausa da Luta (Esc): teclas de cada lado, golpes de cada mascote, os
- * comandos gerais e as quatro opções embaixo. Setas ou WASD escolhem, Enter ou
+ * comandos gerais e as opções embaixo. Setas ou WASD escolhem, Enter ou
  * Espaço confirmam; o Esc de fechar é da Luta. Fica por cima de tudo e não
  * depende do estado da luta.
  */
@@ -79,6 +65,7 @@ export class MenuPausa {
   private readonly objetos: Phaser.GameObjects.GameObject[] = [];
   private readonly botoes: TextButton[] = [];
   private readonly teclas: [string, () => void][] = [];
+  private readonly opcoes: OpcaoDaPausa[];
   private escolhida = 0;
 
   constructor(
@@ -87,6 +74,7 @@ export class MenuPausa {
     profundidade: number,
     private readonly acoes: AcoesDaPausa
   ) {
+    this.opcoes = opcoesDaPausa(acoes);
     const { centerX, width, height } = telaDe(scene);
     const fixo = <T extends Phaser.GameObjects.Components.ScrollFactor & Phaser.GameObjects.Components.Depth>(o: T): T => {
       o.setScrollFactor(0).setDepth(profundidade);
@@ -124,11 +112,11 @@ export class MenuPausa {
     texto(xGeral, 104, 'Comandos', 22, TEXTO_DESTAQUE);
     texto(xGeral, 140, COMANDOS_GERAIS.join('\n'), 16).setWordWrapWidth(width - xGeral - 40);
 
-    // As quatro opções numa fileira embaixo (duas por linha na tela em pé).
-    const porLinha = width >= 1000 ? OPCOES_DA_PAUSA.length : 2;
+    // As opções numa fileira embaixo (duas por linha na tela em pé).
+    const porLinha = width >= 1000 ? this.opcoes.length : 2;
     const largura = Math.min(280, (width - 40) / porLinha - 16);
-    const linhas = Math.ceil(OPCOES_DA_PAUSA.length / porLinha);
-    OPCOES_DA_PAUSA.forEach(({ rotulo }, i) => {
+    const linhas = Math.ceil(this.opcoes.length / porLinha);
+    this.opcoes.forEach(({ rotulo }, i) => {
       const coluna = i % porLinha;
       const linha = Math.floor(i / porLinha);
       const botao = createTextButton(scene, {
@@ -172,7 +160,7 @@ export class MenuPausa {
 
   private confirmar(indice: number): void {
     playAudioCue(this.scene, AUDIO_KEYS.uiConfirm, getAppContext().settingsStore.getState());
-    this.acoes[OPCOES_DA_PAUSA[indice].id]();
+    this.acoes[this.opcoes[indice].id]?.();
   }
 
   destroy(): void {
