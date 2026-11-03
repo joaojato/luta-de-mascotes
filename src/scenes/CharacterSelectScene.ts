@@ -7,7 +7,8 @@ import { COR_DESTAQUE, COR_P1, COR_P2, FONTE_TEXTO, FONTE_TITULO, TEXTO_DESTAQUE
 import { sortearIndice } from '../game/sorteio';
 import { criarTorneio } from '../game/torneio';
 import { salvarTorneio } from '../game/torneioSalvo';
-import { coverCrop } from '../game/ui';
+import { LUTADORES } from '../game/lutadores';
+import { bustoCrop } from '../game/ui';
 import { SCENE_KEYS, type FormatoTorneio, type MatchMode } from '../game/types';
 import { BaseScene } from './BaseScene';
 
@@ -150,7 +151,7 @@ export class CharacterSelectScene extends BaseScene {
         .setDepth(6);
     } else if (this.textures.exists(character.portrait.key)) {
       portrait = this.add.image(x, y, character.portrait.key).setDepth(6);
-      coverCrop(portrait, TILE_SIZE - 6, x, y);
+      bustoCrop(portrait, TILE_SIZE - 6, x, y, LUTADORES.find((l) => l.id === character.id)?.rosto);
     }
 
     const flash = this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0xffffff, 0).setDepth(8);

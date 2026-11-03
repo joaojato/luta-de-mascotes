@@ -202,7 +202,11 @@ E ainda: retrato (`portrait.png`, busto) e âncora (`anchor-w.png`).
 
 No retrato, onde fica o rosto? Vira o campo `rosto` do JSON (centro `x`,
 `y` em fração do retrato, `lado` em fração da largura): é o close da chave
-do mata-mata e da tabela.
+do mata-mata, da tabela e do Museu, e dele sai o busto da seleção. Mede-se
+como no Mosqueteiro Paulista, o modelo: quadrado centrado no rosto, da aba
+do chapéu (ou do topo da cabeça, crista, orelhas) até o queixo, com uns 12%
+de folga. Na seleção o rosto ocupa 36% do quadrado, com o centro a 36% da
+largura e 37% da altura (`src/game/recorte.ts`).
 
 Nome curto de cada golpe, até 11 letras, para o botão do celular: campo
 `nomes`, um por golpe do catálogo (`soco-rapido`, `soco-forte`,
@@ -256,3 +260,4 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 02/11/2026: `releases` no projétil (vários tiros num golpe, cada um do seu cano: as duas pistolas do Gremista).
 - 02/11/2026: `museu` (apelido, quem é, de onde veio), a ficha da cena Museu.
 - 02/11/2026: `atrasDoDono` no NPC de Guarda que atira (entra pelas costas do dono e atira por cima dele).
+- 02/11/2026: `rosto` medido como no Mosqueteiro Paulista; dele sai também o busto da seleção.

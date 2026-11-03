@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 
+import { recorteBusto, recorteRosto, type Recorte, type Rosto } from './recorte';
 import { COR_BORDA, COR_DESTAQUE, COR_PAINEL, FONTE_TEXTO, FONTE_TITULO, TEXTO_APAGADO, TEXTO_CLARO, TEXTO_DESTAQUE } from './estilo';
 
 export interface TextButton {
@@ -246,27 +247,37 @@ export function coverCrop(image: Phaser.GameObjects.Image, size: number, x: numb
   image.setPosition(x - (cropX + cropWidth / 2 - image.width / 2) * scale, y - (cropY + cropHeight / 2 - image.height / 2) * scale);
 }
 
+/** Aplica um recorte quadrado do retrato, escalado para `size` e centrado em (`x`, `y`). */
+function aplicarRecorte(image: Phaser.GameObjects.Image, size: number, x: number, y: number, recorte: Recorte): void {
+  const scale = size / recorte.lado;
+  image.setScale(scale);
+  image.setCrop(recorte.x, recorte.y, recorte.lado, recorte.lado);
+  image.setPosition(
+    x - (recorte.x + recorte.lado / 2 - image.width / 2) * scale,
+    y - (recorte.y + recorte.lado / 2 - image.height / 2) * scale
+  );
+}
+
 /**
  * Close do rosto: recorta do retrato o quadrado marcado em `rosto` no JSON
  * do lutador e o escala para `size`. Sem a marcação, cai no {@link coverCrop}.
  */
-export function rostoCrop(
-  image: Phaser.GameObjects.Image,
-  size: number,
-  x: number,
-  y: number,
-  rosto: { x: number; y: number; lado: number } | undefined
-): void {
+export function rostoCrop(image: Phaser.GameObjects.Image, size: number, x: number, y: number, rosto: Rosto | undefined): void {
   if (!rosto) {
     coverCrop(image, size, x, y);
     return;
   }
-  const lado = Math.min(rosto.lado * image.width, image.width, image.height);
-  const cropX = Phaser.Math.Clamp(rosto.x * image.width - lado / 2, 0, image.width - lado);
-  const cropY = Phaser.Math.Clamp(rosto.y * image.height - lado / 2, 0, image.height - lado);
-  const scale = size / lado;
+  aplicarRecorte(image, size, x, y, recorteRosto(image.width, image.height, rosto));
+}
 
-  image.setScale(scale);
-  image.setCrop(cropX, cropY, lado, lado);
-  image.setPosition(x - (cropX + lado / 2 - image.width / 2) * scale, y - (cropY + lado / 2 - image.height / 2) * scale);
+/**
+ * Busto da seleção: o rosto no mesmo tamanho e lugar do Mosqueteiro Paulista,
+ * o modelo (`recorteBusto`). Sem a marcação, cai no {@link coverCrop}.
+ */
+export function bustoCrop(image: Phaser.GameObjects.Image, size: number, x: number, y: number, rosto: Rosto | undefined): void {
+  if (!rosto) {
+    coverCrop(image, size, x, y);
+    return;
+  }
+  aplicarRecorte(image, size, x, y, recorteBusto(image.width, image.height, rosto));
 }

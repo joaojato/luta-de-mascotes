@@ -7,7 +7,7 @@
     "historia": "Homenagem ao Biriba, o vira-lata que em 1948 entrou em campo num jogo do alvinegro carioca e virou amuleto do dirigente Carlito Rocha. O time foi campeão daquele ano, e o cachorro passou a frequentar vestiário, concentração e banco de reservas. Virou um dos mascotes mais queridos do futebol brasileiro."
   },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Patada", "chute-basico": "Biriba", "chute-baixo": "Carrinho", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Mordida"},
-  "rosto": {"x": 0.36, "y": 0.31, "lado": 0.33},
+  "rosto": {"x": 0.4, "y": 0.34, "lado": 0.3},
   "assetRoot": "/assets/lutadores/cachorro",
   "sons": {"soco-forte": "garra", "especial": "bote", "chute": "assobio-dedos", "projetil": "latido-voo", "projetil-acerto": "coco", "dor": "dor-cao", "dor-forte": "dor-forte-cao"},
   "torcida": {

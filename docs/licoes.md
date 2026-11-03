@@ -560,3 +560,6 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - Ataque de NPC que mira o adversário precisa vir de longe para ser desviável: o Flecha atirando a 300 px, pelas costas do alvo, ficou difícil demais; atira de trás do dono (2026-11-02).
 - Reincidência: o Codex trocou caminhos do JSON do Gremista de novo durante a sessão, e o commit saiu sem os PNGs. Antes de todo commit que toca JSON de lutador, rodar `git ls-files` contra cada `file` dele (2026-11-02).
 - Nome no jogo do Mosqueteiro do Corinthians: "Mosqueteiro Paulista", par do "Mosqueteiro Gaúcho" (pedido dele, 2026-11-02).
+- **Recorte de retrato tem modelo: o Mosqueteiro Paulista.** O João aprovou o
+  enquadramento dele na seleção e no Museu; todo `rosto` se mede igual ao
+  dele e o busto sai da mesma conta (`recorte.ts`). (2026-11-02)

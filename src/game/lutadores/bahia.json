@@ -7,7 +7,7 @@
     "historia": "O tricolor de Salvador é chamado de Esquadrão de Aço, e o mascote dele é um super-herói de capa nas cores do clube. No jogo ele virou Esquadrão para não pegar emprestado o herói dos quadrinhos que o inspirou. O especial vem do grito mais famoso da torcida baiana."
   },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Corte", "chute-basico": "Laser", "chute-baixo": "Rasteira", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Bora Bahêa"},
-  "rosto": {"x": 0.33, "y": 0.2, "lado": 0.36},
+  "rosto": {"x": 0.34, "y": 0.235, "lado": 0.35},
   "assetRoot": "/assets/lutadores/bahia",
   "sons": {"passo": null, "chute": null, "projetil": "laser", "soco-forte": "corte", "projetil-especial": "bora-bahea"},
   "torcida": {

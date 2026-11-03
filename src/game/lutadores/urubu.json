@@ -7,7 +7,7 @@
     "historia": "Durante anos, urubu foi a provocação dos rivais contra a torcida rubro-negra do Rio. No fim dos anos 1960, torcedores soltaram um urubu de verdade no Maracanã num dia de clássico, o time venceu e a ofensa virou orgulho. Desde então a ave é o símbolo da maior torcida do país."
   },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Asas", "chute-basico": "Bicada", "chute-baixo": "Chute", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Meteoro"},
-  "rosto": {"x": 0.33, "y": 0.31, "lado": 0.375},
+  "rosto": {"x": 0.29, "y": 0.325, "lado": 0.36},
   "assetRoot": "/assets/lutadores/urubu",
   "sons": {"chute": "bicada", "soco-forte": "asas", "carga": "termica", "especial": "meteoro", "especial-mergulho": "mergulho", "especial-pouso": "meteoro-pouso", "dor": "dor-urubu", "dor-forte": "dor-forte-urubu"},
   "torcida": {

@@ -7,7 +7,7 @@
     "historia": "O alviverde de Curitiba, fundado em 1909 por descendentes de imigrantes alemães, é o clube mais antigo do Paraná: daí o Vovô. O apelido Coxa-Branca começou como provocação a um jogador de origem alemã nos anos 1940 e foi adotado com orgulho pela torcida. A cerveja do especial é uma piscadela para essa herança."
   },
   "nomes": {"soco-rapido": "Estocadas", "soco-forte": "Cabeçada", "chute-basico": "Cerveja", "chute-baixo": "Apoiada", "soco-no-ar": "Andador", "voadora": "Voadora", "especial": "Maromba"},
-  "rosto": {"x": 0.37, "y": 0.28, "lado": 0.35},
+  "rosto": {"x": 0.34, "y": 0.295, "lado": 0.31},
   "assetRoot": "/assets/lutadores/coxa",
   "torcida": {
     "estampa": "listras-horizontais",

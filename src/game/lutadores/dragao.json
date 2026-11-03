@@ -7,7 +7,7 @@
     "historia": "O rubro-negro de Goiânia nasceu em 1937 no bairro de Campinas e atende por Dragão há gerações, apelido que a torcida leva nas faixas e no grito. No elenco, ele lembra que clássico de rivalidade existe em toda capital do país."
   },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Estômago", "chute-basico": "Cuspida", "chute-baixo": "Rabada", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Sopro"},
-  "rosto": {"x": 0.22, "y": 0.35, "lado": 0.37},
+  "rosto": {"x": 0.19, "y": 0.33, "lado": 0.34},
   "assetRoot": "/assets/lutadores/dragao",
   "torcida": {
     "estampa": "listras-verticais",
