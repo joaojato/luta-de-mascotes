@@ -247,7 +247,7 @@
     {
       "action": "walk-forward",
       "label": "Andar para frente",
-      "file": "passos-v4/walk-forward.png",
+      "file": "postura-v7/walk-forward.png",
       "frames": 8,
       "frameWidth": 640,
       "frameHeight": 384,
@@ -263,7 +263,7 @@
     {
       "action": "walk-backward",
       "label": "Recuar",
-      "file": "passos-v4/walk-backward.png",
+      "file": "postura-v7/walk-backward.png",
       "frames": 8,
       "frameWidth": 640,
       "frameHeight": 384,
@@ -451,7 +451,7 @@
     {
       "action": "light-punch",
       "label": "Dois cortes rápidos",
-      "file": "cortes-v6/light-punch.png",
+      "file": "postura-v7/light-punch.png",
       "frames": 16,
       "frameWidth": 640,
       "frameHeight": 384,
@@ -669,7 +669,7 @@
     {
       "action": "low-kick",
       "label": "Corte na canela",
-      "file": "cortes-v6/low-kick.png",
+      "file": "postura-v7/low-kick.png",
       "frames": 12,
       "frameWidth": 640,
       "frameHeight": 384,

@@ -1,0 +1,1244 @@
+{
+  "character": "Gremista",
+  "revision": 7,
+  "identity": "referencia/gremio/base-manga-longa-cabelos-pretos-v8.png",
+  "baseSha256": "e2af136d569599db450f1c02d8d438f02ca836a044cb98e2948ab06c1ae0d425",
+  "productionGuard": "idle frame0",
+  "animations": [
+    {
+      "action": "walk-forward",
+      "file": "walk-forward.png",
+      "frames": 8,
+      "fps": 8,
+      "repeat": -1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scaleUniform": 0.49,
+      "durationsMs": [
+        125,
+        125,
+        125,
+        125,
+        125,
+        125,
+        125,
+        125
+      ],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            69,
+            23,
+            382,
+            417
+          ],
+          "sourceAnchor": [
+            245,
+            415
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            234,
+            168,
+            387,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            512,
+            23,
+            821,
+            416
+          ],
+          "sourceAnchor": [
+            690,
+            415
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            233,
+            168,
+            384,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            928,
+            23,
+            1265,
+            416
+          ],
+          "sourceAnchor": [
+            1135,
+            415
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            219,
+            168,
+            384,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1379,
+            24,
+            1705,
+            417
+          ],
+          "sourceAnchor": [
+            1575,
+            415
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            224,
+            168,
+            384,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            57,
+            464,
+            374,
+            860
+          ],
+          "sourceAnchor": [
+            241,
+            858
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            230,
+            167,
+            385,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            501,
+            464,
+            820,
+            860
+          ],
+          "sourceAnchor": [
+            681,
+            858
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            232,
+            167,
+            388,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            943,
+            464,
+            1263,
+            860
+          ],
+          "sourceAnchor": [
+            1127,
+            858
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            230,
+            167,
+            387,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1388,
+            464,
+            1707,
+            860
+          ],
+          "sourceAnchor": [
+            1570,
+            858
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            231,
+            167,
+            387,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        }
+      ],
+      "sourceSha256": "deb130e35dda7143108e4e516d662f9f84e974929b1dea1db1814d7f80090224",
+      "sha256": "4e9d34784a010c1e07f4ff091648656a1ca8a5e1d3b223de8f3bf1d905f6ab43",
+      "review": "Opponent LEFT; corrected rear B whole leg and boot now faceLEFT, front A leadsLEFT. Actual front knee/thigh/ankle lift1-2 and landing3, rear knee lift4-6/landing7. Both complete limbs articulate instead of foot-only swivels; upper torso leansLEFT and chestfront remainsvisible. Same A/B hips, no passing. Source391px standingbody->192px, face77->38px, oneuniformscale. Grid/backward rear-leg draft rejected; source contains no grid."
+    },
+    {
+      "action": "walk-backward",
+      "file": "walk-backward.png",
+      "frames": 8,
+      "fps": 8,
+      "repeat": -1,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scaleUniform": 0.49,
+      "durationsMs": [
+        125,
+        125,
+        125,
+        125,
+        125,
+        125,
+        125,
+        125
+      ],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            69,
+            24,
+            383,
+            416
+          ],
+          "sourceAnchor": [
+            245,
+            415
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            234,
+            168,
+            388,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            512,
+            23,
+            821,
+            416
+          ],
+          "sourceAnchor": [
+            690,
+            415
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            233,
+            168,
+            384,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            956,
+            23,
+            1295,
+            416
+          ],
+          "sourceAnchor": [
+            1138,
+            415
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            231,
+            168,
+            397,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1395,
+            24,
+            1747,
+            416
+          ],
+          "sourceAnchor": [
+            1578,
+            415
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            230,
+            168,
+            402,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            67,
+            466,
+            387,
+            862
+          ],
+          "sourceAnchor": [
+            242,
+            860
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            234,
+            167,
+            391,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            506,
+            466,
+            823,
+            862
+          ],
+          "sourceAnchor": [
+            690,
+            860
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            230,
+            167,
+            385,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            952,
+            466,
+            1273,
+            862
+          ],
+          "sourceAnchor": [
+            1138,
+            860
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            229,
+            167,
+            386,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1394,
+            466,
+            1721,
+            862
+          ],
+          "sourceAnchor": [
+            1575,
+            860
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            231,
+            167,
+            391,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        }
+      ],
+      "sourceSha256": "d5513f5c8cec2db7f92861d39bb219cbdaeed91edd19f53d5964b37fff185966",
+      "sha256": "59aa48811f7baf9de359ba4720100d717842ba880c388b8af4b6bd0e2f480d6e",
+      "review": "Chest and pelvis towardLEFT opponent, front A RIGHT leadsLEFT, rear B LEFT onRIGHT. Both toes pointLEFT. Rear B thigh/knee/wholeboot lifts1-2 and plants3, front A flexes/lifts4-6 and plants7, no toe-only swivel or mirrored leg swap. Retreat travelRIGHT is separate from facingLEFT. Same uniform0.49 scale as forward/body about192px, actual grounded contact and airborne boot phases reviewed."
+    },
+    {
+      "action": "light-punch",
+      "file": "light-punch.png",
+      "frames": 16,
+      "fps": 40,
+      "repeat": 0,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scaleUniform": 0.8,
+      "durationsMs": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            89,
+            18,
+            284,
+            259
+          ],
+          "sourceAnchor": [
+            201,
+            258
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            230,
+            168,
+            386,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            409,
+            19,
+            652,
+            259
+          ],
+          "sourceAnchor": [
+            566,
+            258
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            194,
+            169,
+            388,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            757,
+            20,
+            1009,
+            259
+          ],
+          "sourceAnchor": [
+            918,
+            258
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            191,
+            170,
+            393,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1129,
+            20,
+            1364,
+            259
+          ],
+          "sourceAnchor": [
+            1277,
+            258
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            202,
+            170,
+            390,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            51,
+            290,
+            300,
+            532
+          ],
+          "sourceAnchor": [
+            210,
+            533
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            193,
+            166,
+            392,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            378,
+            289,
+            658,
+            532
+          ],
+          "sourceAnchor": [
+            568,
+            533
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            168,
+            165,
+            392,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            710,
+            290,
+            1016,
+            532
+          ],
+          "sourceAnchor": [
+            914,
+            533
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            157,
+            166,
+            402,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1054,
+            290,
+            1378,
+            533
+          ],
+          "sourceAnchor": [
+            1271,
+            533
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            146,
+            166,
+            405,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 8,
+          "sourceBox": [
+            33,
+            565,
+            310,
+            809
+          ],
+          "sourceAnchor": [
+            207,
+            810
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            181,
+            164,
+            403,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 9,
+          "sourceBox": [
+            418,
+            565,
+            660,
+            809
+          ],
+          "sourceAnchor": [
+            565,
+            810
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            203,
+            164,
+            396,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 10,
+          "sourceBox": [
+            777,
+            566,
+            1013,
+            809
+          ],
+          "sourceAnchor": [
+            920,
+            810
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            206,
+            165,
+            395,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 11,
+          "sourceBox": [
+            1123,
+            566,
+            1370,
+            809
+          ],
+          "sourceAnchor": [
+            1280,
+            810
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            194,
+            165,
+            392,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 12,
+          "sourceBox": [
+            18,
+            843,
+            308,
+            1087
+          ],
+          "sourceAnchor": [
+            210,
+            1086
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            166,
+            166,
+            398,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 13,
+          "sourceBox": [
+            365,
+            843,
+            660,
+            1087
+          ],
+          "sourceAnchor": [
+            564,
+            1086
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            161,
+            166,
+            397,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 14,
+          "sourceBox": [
+            761,
+            843,
+            1013,
+            1087
+          ],
+          "sourceAnchor": [
+            919,
+            1086
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            194,
+            166,
+            396,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 15,
+          "sourceBox": [
+            1146,
+            843,
+            1364,
+            1087
+          ],
+          "sourceAnchor": [
+            1277,
+            1086
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            215,
+            166,
+            389,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        }
+      ],
+      "sourceSha256": "5389a80c7fc3f5e401542871e3eedab8a1994ce99f4ad41abba6e42f7c35e564",
+      "sha256": "2772d219aad10144127a53a8ec2dff0a9ed15e84e74ef41a75208361040b4456",
+      "review": "Two shoulder/elbow-driven forward thrusts LEFT, locked wrist. Actual glove/elbow travel and shoulder/chest lean in contacts6-7/12-13, rear B pushes/front A knee absorbs, same right A blade grip. Folded chamber2-3/9-10 and extension4-7/11-13 use constant limb lengths, never wrist-only tilting. Both toes LEFT and same A/B hips throughout. Standing238px->190px, boots59->47px, same0.8 scale all16; no per-frame scaling or guard copying that would restore backward rearfoot."
+    },
+    {
+      "action": "low-kick",
+      "file": "low-kick.png",
+      "frames": 12,
+      "fps": 32,
+      "repeat": 0,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scaleUniform": 0.59,
+      "durationsMs": [
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25
+      ],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            73,
+            28,
+            368,
+            281
+          ],
+          "sourceAnchor": [
+            254,
+            280
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            213,
+            211,
+            387,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            443,
+            31,
+            779,
+            281
+          ],
+          "sourceAnchor": [
+            665,
+            280
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            189,
+            213,
+            387,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            845,
+            33,
+            1188,
+            281
+          ],
+          "sourceAnchor": [
+            1077,
+            280
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            183,
+            214,
+            385,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1301,
+            33,
+            1598,
+            281
+          ],
+          "sourceAnchor": [
+            1487,
+            280
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            210,
+            214,
+            385,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            44,
+            352,
+            368,
+            597
+          ],
+          "sourceAnchor": [
+            258,
+            600
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            194,
+            214,
+            385,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            426,
+            353,
+            778,
+            597
+          ],
+          "sourceAnchor": [
+            669,
+            600
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            177,
+            214,
+            385,
+            358
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            810,
+            353,
+            1188,
+            597
+          ],
+          "sourceAnchor": [
+            1080,
+            600
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            161,
+            214,
+            384,
+            358
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1220,
+            353,
+            1598,
+            597
+          ],
+          "sourceAnchor": [
+            1488,
+            600
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            162,
+            214,
+            385,
+            358
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 8,
+          "sourceBox": [
+            20,
+            671,
+            369,
+            920
+          ],
+          "sourceAnchor": [
+            258,
+            920
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            180,
+            213,
+            386,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 9,
+          "sourceBox": [
+            460,
+            671,
+            779,
+            920
+          ],
+          "sourceAnchor": [
+            665,
+            920
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            199,
+            213,
+            387,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 10,
+          "sourceBox": [
+            874,
+            670,
+            1189,
+            920
+          ],
+          "sourceAnchor": [
+            1078,
+            920
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            200,
+            212,
+            386,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 11,
+          "sourceBox": [
+            1303,
+            666,
+            1599,
+            920
+          ],
+          "sourceAnchor": [
+            1487,
+            920
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            211,
+            210,
+            386,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        }
+      ],
+      "sourceSha256": "690b09268c8ae4444730a48151640ca5257f9215185db44bf1e6d57328357cb7",
+      "sha256": "5ad256fa0d5766aa88bec84f799ecc62916b2a0b9b95366a4e8a13a05619b4f7",
+      "review": "One aggressive crouched point-thrust, right A shoulder/chest leansLEFT and elbow opens through4-7; wrist remains firm/neutral and same medium hanger pointsLEFT. Contact6-7 glove actually travelsforward, fixed upperarm/forearm length unfolding. FrontRIGHT knee absorbs load/rearLEFT pushes; bothboots ground/toesLEFT, hips stable. Crouch held0-11 with gradual retract8-11, no standing or wristwave. Source250px crouchedbody->148px, head63->37px, oneuniform0.59scale all12. Every source tip complete with margins."
+    }
+  ],
+  "missing": [],
+  "status": "Visual art reviewed; combat testing separate",
+  "scope": "Opponent-facing bent-knee footwork; shoulder-driven aggressive sword attacks"
+}

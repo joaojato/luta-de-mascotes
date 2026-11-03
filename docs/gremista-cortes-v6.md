@@ -1,5 +1,9 @@
 # Gremista — continuidade da espada e fase de acerto
 
+Atualização de 03/11/2026: rápido e baixo substituídos pela
+[postura v7](gremista-postura-v7.md), com extensão real do braço e mais
+agressividade conforme pedido posterior. Não reaplicar estas folhas v6.
+
 Correções posteriores à v5. A última instrução do usuário esclarece que
 o movimento **da torcida para a câmera ocorre no acerto**. A ida para o
 fundo é preparação. O usuário também rejeitou inversões súbitas da ponta
