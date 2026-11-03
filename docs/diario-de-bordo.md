@@ -3510,3 +3510,35 @@ esquisito", soando como mar.
 **Aprovado explicitamente:** nada.
 **Atrito:** nada.
 **Em aberto:** o João ouvir o resto dos sons e a música.
+
+## 2026-11-03: empate recomeça o round, menu Controles e abertura com carregamento
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "quando dá empate, o time P1 ganha. O correto é recomeçar o
+round até ser resolvido." Menu de controles bagunçado: um item Controles que
+abre outro menu. Barra de carregamento ao entrar no jogo. Abertura com a logo
+da desenvolvedora, para mascarar o carregamento e dar crédito.
+**Feito:** o tempo esgotado com vida igual já recomeçava; o que entregava o
+round era o duplo K.O. (os dois caem no mesmo quadro desde que a troca de
+golpes passou a ser simultânea, 28/10): a checagem olhava o P1 primeiro e
+dava o round a um lado. `src/game/round.ts` decide o round (duplo K.O. e vida
+igual no tempo são empate) e a Luta recomeça o mesmo round, sem pontuar. No
+menu ☰ do celular ficam Continuar, Voltar, Tela cheia e Controles; Controles
+abre direcional, Xbox ou PlayStation, nomes dos golpes, opacidade, ajustar
+botões e Voltar. A `BootScene` virou a abertura: os nomes do grupo e
+"apresentam" aparecem no meio e a barra com a porcentagem enche embaixo;
+fica no mínimo 2,6 s (`src/game/abertura.ts`), tecla ou clique pula depois de
+carregar, e escurece para o menu. As fontes são pedidas no começo para o
+crédito já sair na letra do jogo.
+**Verificado:** `npm run check` (36 arquivos, 330 testes, build). No
+navegador: duplo K.O. no 1v1 fica 0 a 0 e o round 1 recomeça com vida cheia;
+menu do celular simulado (844×390) abre Controles, troca para PlayStation,
+volta e reabre no principal; build de produção com a rede limitada a 4 MB/s,
+a barra anda de 3% a 90% e o menu entra em uns 25 s, sem erro no console.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o duplo K.O. com vencedor.
+**Aprovado explicitamente:** nada ainda.
+**Atrito:** a outra sessão mexia na torcida e a Luta quebrava na cópia de
+trabalho dela; trabalhei numa worktree à parte, a partir da main publicada.
+**Em aberto:** nome e logo da desenvolvedora, e o formato da animação dela
+(vídeo ou folha de sprites). Até lá a abertura mostra os nomes do grupo.
