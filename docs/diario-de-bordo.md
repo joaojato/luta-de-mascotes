@@ -3326,3 +3326,53 @@ nos três tiros para em x 436, 182 px atrás do Gremista (618), e a flecha voa
 **Aprovado explicitamente:** nada.
 **Atrito:** o meu commit levou de novo um JSON do Codex sem os PNGs.
 **Em aberto:** o corte rápido tem só 50 ms de contato por corte (o desenho).
+
+## 2026-11-02: recorte dos retratos pelo modelo do Mosqueteiro Paulista
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Melhore o recorte das imagens dos personagens. Use de modelo o
+mosqueteiro paulista. O recorte, alinhamento está perfeito. Tanto no museu,
+quanto na seleção de personagens."
+**Feito:** a seleção cortava o retrato pelo centro (`coverCrop`) e o Museu
+usava um `rosto` marcado sem critério comum. Agora as duas telas saem do
+mesmo `rosto`: `src/game/recorte.ts` calcula o close (Museu, chave) e o
+busto da seleção, este com a proporção do modelo (rosto em 36% do
+quadrado, centro a 36% e 37%). Remedi o `rosto` de 11 mascotes como o do
+Mosqueteiro (aba do chapéu ou topo da cabeça até o queixo, ~12% de folga),
+com grade ampliada de cada retrato; Saci, Coxa, Urubu, Cartola e Galo
+reajustados depois de ver as duas telas. Critério no criador.
+**Verificado:** 4 testes novos (o busto do modelo é o retrato inteiro;
+rosto no mesmo tamanho e lugar; recorte não sai do retrato); 312 testes,
+build. Navegador: seleção e Museu fotografados antes e depois, rostos sem
+corte de queixo (Esquadrão) nem de orelha (Saci), bustos de Saci, Cartola,
+Gaúcho e Coxa no enquadramento do Mosqueteiro; console sem erro.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o recorte dos retratos.
+**Aprovado explicitamente:** o recorte do Mosqueteiro Paulista (modelo).
+**Atrito:** close e busto saem da mesma medida: alargar o close encolhe o
+busto (o Coxa voltou a 0,31 por isso).
+**Em aberto:** o retrato do Galo e o do Urubu são escuros/desbotados na
+própria arte.
+
+## 2026-11-02: cortes do Gremista com a espada contínua (cortes v6)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Os novos modelos de animação do mosqueteiro gaúcho já foram
+colocados."
+**Feito:** `cortes-v6/` do Codex (o dobro de quadros nos cortes rápido e
+baixo, mesma duração, a ponta da espada sem virar de lado e o corte da
+torcida para a câmera no acerto); o Codex já trocou caminhos, quadros, FPS
+e janelas no JSON. Caixas medidas de novo na lâmina de cada quadro de
+acerto: no rápido a lâmina agora vai mais longe (ponta em x 173 a 186, a
+caixa da v5 parava em 220); no baixo vai menos (ponta em 212 a 216, a caixa
+da v5 ia até 195, à frente do desenho).
+**Verificado:** `npm run check` (32 arquivos, 308 testes, build; a primeira
+rodada teve erro de processo de teste por máquina carregada). Navegador,
+contra o Urubu: corte rápido acerta a 70, 100, 150 e 190 px; baixo a 60,
+90 e 120.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** os cortes v5 trocados pela v6.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** o corte baixo alcança pouco além do próprio corpo (o
+desenho); se ficar curto na luta, é pedido de arte, não de caixa.

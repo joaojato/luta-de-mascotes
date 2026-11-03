@@ -1,5 +1,9 @@
 # Gremista — cortes horizontais com profundidade
 
+Substituída pela [revisão de continuidade v6](gremista-cortes-v6.md), que
+acrescenta intermediários e fixa a fase do acerto conforme a última
+correção do usuário. Não reaplicar estas folhas sobre os cortes v6.
+
 Pedido posterior a passos-v4: Q/I baixo e E/P pareciam estranhos. O usuário
 esclareceu que o corte seco atravessa um plano horizontal, como vindo da
 arquibancada para a câmera. O mapa atual confirma `low-kick` para baixo +

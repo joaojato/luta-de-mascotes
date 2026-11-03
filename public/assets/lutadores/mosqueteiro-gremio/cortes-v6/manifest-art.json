@@ -1,0 +1,784 @@
+{
+  "character": "Gremista",
+  "revision": 6,
+  "identity": "referencia/gremio/base-manga-longa-cabelos-pretos-v8.png",
+  "baseSha256": "e2af136d569599db450f1c02d8d438f02ca836a044cb98e2948ab06c1ae0d425",
+  "productionGuard": "idle frame0",
+  "animations": [
+    {
+      "action": "low-kick",
+      "file": "low-kick.png",
+      "frames": 12,
+      "fps": 32,
+      "repeat": 0,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scaleUniform": 0.48,
+      "durationsMs": [
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25,
+        31.25
+      ],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            15,
+            24,
+            347,
+            334
+          ],
+          "sourceAnchor": [
+            210,
+            334
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            226,
+            211,
+            385,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            380,
+            24,
+            709,
+            334
+          ],
+          "sourceAnchor": [
+            572,
+            334
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            228,
+            211,
+            386,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            759,
+            24,
+            1071,
+            334
+          ],
+          "sourceAnchor": [
+            934,
+            334
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            236,
+            211,
+            386,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1130,
+            24,
+            1433,
+            334
+          ],
+          "sourceAnchor": [
+            1296,
+            334
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            240,
+            211,
+            385,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            45,
+            385,
+            347,
+            696
+          ],
+          "sourceAnchor": [
+            210,
+            696
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            241,
+            211,
+            386,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            384,
+            385,
+            709,
+            696
+          ],
+          "sourceAnchor": [
+            572,
+            696
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            230,
+            211,
+            386,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            718,
+            385,
+            1071,
+            696
+          ],
+          "sourceAnchor": [
+            934,
+            696
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            216,
+            211,
+            385,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1072,
+            384,
+            1433,
+            696
+          ],
+          "sourceAnchor": [
+            1296,
+            696
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            212,
+            210,
+            385,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 8,
+          "sourceBox": [
+            1,
+            746,
+            347,
+            1057
+          ],
+          "sourceAnchor": [
+            210,
+            1058
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            220,
+            210,
+            386,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 9,
+          "sourceBox": [
+            380,
+            746,
+            709,
+            1057
+          ],
+          "sourceAnchor": [
+            572,
+            1058
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            228,
+            210,
+            386,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 10,
+          "sourceBox": [
+            740,
+            746,
+            1071,
+            1057
+          ],
+          "sourceAnchor": [
+            934,
+            1058
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            227,
+            210,
+            386,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 11,
+          "sourceBox": [
+            1100,
+            746,
+            1433,
+            1057
+          ],
+          "sourceAnchor": [
+            1296,
+            1058
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            226,
+            210,
+            386,
+            359
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        }
+      ],
+      "sourceSha256": "24f8f7f7d52ba5ce5bcd342513661ce6c7cc20d2f63a1f75c95ef1d857804c7f",
+      "sha256": "816d365855ef0393d860efa419721ee837dc067a928c62125ea7925df0a2dbe0",
+      "review": "Technical left-pointing blade guide supplied after user rejected flips. Every silver tip stays LEFT of its own hilt; rigid blade/grip tilts gradually through readiness0-3, horizontal active4-7 toward near foreground/contact6-7, gradual return8-11. Same right A hand/shoulder and planted leg attachments. No point-right pose and no frame reversal. All12 drawn source poses. Edge8 repaired before assembly. Uniform scale0.48, body about150px crouched, hat about90px and boots48px. Discarded direction-switching sources are not used."
+    },
+    {
+      "action": "light-punch",
+      "file": "light-punch.png",
+      "frames": 16,
+      "fps": 40,
+      "repeat": 0,
+      "frameWidth": 640,
+      "frameHeight": 384,
+      "columns": 5,
+      "origin": [
+        320,
+        360
+      ],
+      "scaleUniform": 0.85,
+      "durationsMs": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "frameData": [
+        {
+          "frame": 0,
+          "sourceBox": [
+            106,
+            13,
+            292,
+            236
+          ],
+          "sourceAnchor": [
+            210,
+            236
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            231,
+            171,
+            388,
+            361
+          ],
+          "exactProductionGuard": true,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 1,
+          "sourceBox": [
+            449,
+            13,
+            657,
+            236
+          ],
+          "sourceAnchor": [
+            576,
+            236
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            212,
+            170,
+            389,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 2,
+          "sourceBox": [
+            828,
+            13,
+            1023,
+            236
+          ],
+          "sourceAnchor": [
+            942,
+            236
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            223,
+            170,
+            389,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 3,
+          "sourceBox": [
+            1212,
+            13,
+            1389,
+            236
+          ],
+          "sourceAnchor": [
+            1308,
+            236
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            238,
+            170,
+            388,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 4,
+          "sourceBox": [
+            106,
+            279,
+            292,
+            502
+          ],
+          "sourceAnchor": [
+            210,
+            502
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            232,
+            170,
+            390,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 5,
+          "sourceBox": [
+            434,
+            279,
+            657,
+            502
+          ],
+          "sourceAnchor": [
+            576,
+            502
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            199,
+            170,
+            389,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 6,
+          "sourceBox": [
+            776,
+            279,
+            1024,
+            502
+          ],
+          "sourceAnchor": [
+            942,
+            502
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            179,
+            170,
+            390,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 7,
+          "sourceBox": [
+            1135,
+            279,
+            1391,
+            502
+          ],
+          "sourceAnchor": [
+            1308,
+            502
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            173,
+            170,
+            391,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 8,
+          "sourceBox": [
+            116,
+            545,
+            292,
+            768
+          ],
+          "sourceAnchor": [
+            210,
+            767
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            240,
+            171,
+            390,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 9,
+          "sourceBox": [
+            481,
+            545,
+            657,
+            768
+          ],
+          "sourceAnchor": [
+            576,
+            767
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            239,
+            171,
+            389,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 10,
+          "sourceBox": [
+            827,
+            545,
+            1024,
+            768
+          ],
+          "sourceAnchor": [
+            942,
+            767
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            222,
+            171,
+            389,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 11,
+          "sourceBox": [
+            1161,
+            546,
+            1390,
+            768
+          ],
+          "sourceAnchor": [
+            1308,
+            767
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            195,
+            172,
+            390,
+            361
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 12,
+          "sourceBox": [
+            40,
+            810,
+            292,
+            1033
+          ],
+          "sourceAnchor": [
+            210,
+            1033
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            176,
+            170,
+            390,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 13,
+          "sourceBox": [
+            417,
+            810,
+            657,
+            1033
+          ],
+          "sourceAnchor": [
+            576,
+            1033
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            186,
+            170,
+            389,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 14,
+          "sourceBox": [
+            814,
+            811,
+            1024,
+            1033
+          ],
+          "sourceAnchor": [
+            942,
+            1033
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            211,
+            171,
+            389,
+            360
+          ],
+          "exactProductionGuard": false,
+          "exactProductionPose": null
+        },
+        {
+          "frame": 15,
+          "sourceBox": [
+            1195,
+            810,
+            1389,
+            1033
+          ],
+          "sourceAnchor": [
+            1308,
+            1033
+          ],
+          "target": [
+            320,
+            360
+          ],
+          "visualBounds": [
+            231,
+            171,
+            388,
+            361
+          ],
+          "exactProductionGuard": true,
+          "exactProductionPose": null
+        }
+      ],
+      "sourceSha256": "22233e51857a9450f1872c04c850b5bb71eabac93c24d1898fb12ee6a64d8964",
+      "sha256": "0c1e8d43810544424b8f21208c051536a8b3c5e9be0d2c1fa12adad2e750a4a0",
+      "review": "Technical blade/joint guide applied: all16 silver tips stay LEFT of their own gold hilts. Small progressive wrist angles; no side flip. Anticipation1-3 and8-9; active far-to-near cuts4-7 and10-13, contacts6-7/12-13. Upright torso, bent right A elbow/same grip, left B guards, feet planted. Uniform0.85 scale matches222px standing body->189px; boots about46px. No copied impact poses; exact guard only0/15.16drawings replace8 at doubledFPS, original400ms duration retained."
+    }
+  ],
+  "missing": [],
+  "status": "Visual art reviewed; combat testing separate",
+  "scope": "Near-to-far anticipation; active far-to-near cuts with continuously left-pointing blade"
+}
