@@ -7,31 +7,32 @@
   },
   "folhas": {
     "torcedores": {
-      "arquivo": "torcedores.png",
+      "arquivo": "torcedores-comemoracao-v3-camisa.png",
       "celulaLargura": 64,
       "celulaAltura": 80,
       "colunas": 4,
       "linhas": 10,
       "quadrosPorTipo": 4,
       "tipos": [
-        "homem-pele-escura",
-        "mulher-cachos",
-        "homem-loiro",
-        "crianca",
-        "idoso",
-        "mulher-gordinha",
-        "homem-bone",
-        "mulher-afro",
-        "homem-barba",
-        "mulher-rabo-de-cavalo"
+        "adulto-cabelo-curto",
+        "adulto-cachos",
+        "adulto-loiro",
+        "adulto-cabelo-preto",
+        "idoso-barba-grisalha",
+        "adulto-corpo-largo",
+        "adulto-bone-azul",
+        "adulto-afro",
+        "adulto-barba",
+        "adulto-rabo-de-cavalo"
       ],
       "poses": [
-        "parado",
-        "bracos-acima",
-        "pulinho",
-        "punho"
+        "punhos-ombros",
+        "pulo-bracos-em-v",
+        "punho-direito",
+        "punho-esquerdo"
       ],
-      "fpsSugerido": 4
+      "fpsSugerido": 6,
+      "camisa": "chave magenta pintada por scripts/torcida_camisa.py sobre a v3 sem camisa"
     },
     "bandeira": {
       "arquivo": "bandeira.png",

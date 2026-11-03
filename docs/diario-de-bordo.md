@@ -3399,3 +3399,27 @@ topo), serviu PNG e recusou caminho com `..`.
 mais nova" de pastas compartilhadas; com duas sessões em paralelo, uma pode
 pegar a imagem da outra.
 **Em aberto:** primeiro personagem pelo `codex exec` ainda não escolhido.
+
+## 2026-11-03: torcida da comemoração v3 vestida com a cor de cada clube
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "a torcida mudou, agora tá todo mundo sem camisa. Cadê as
+cores?" Depois: manter a animação nova, com a camisa do mascote que luta;
+pediram sem camisa para vestir por cima.
+**Feito:** causa achada: a troca do atlas pela v3 (do Codex, ainda fora do
+git) não tinha nenhum pixel magenta (o antigo tinha 25.093), então
+`pintarChave` não pintava nada. `scripts/torcida_camisa.py` veste os 40
+quadros com camiseta magenta sombreada (calça acha a cintura, linha do
+queixo acha a gola, manga curta nos ombros). Cena e `torcida.json` apontam
+para `torcedores-comemoracao-v3-camisa.png`. Teste novo lê o PNG e exige
+cor chave em toda célula, e confere que cena e JSON carregam o mesmo arquivo.
+**Verificado:** `npm run check` (33 arquivos, 314 testes, build). O teste
+novo falha com o atlas sem camisa e passa com o vestido. Luta Urubu x Galo
+no estádio pelo navegador: metade rubro-negra, metade alvinegra listrada,
+com a comemoração nova.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a torcida sem camisa no jogo.
+**Aprovado explicitamente:** nada ainda (a torcida vestida espera o olho dele).
+**Atrito:** o pedido "sem camisa" foi lido como figurino final.
+**Em aberto:** um ou dois pixels de pele na dobra da barriga do tipo 5, que
+somem na escala 0,32 do jogo.

@@ -1,0 +1,18 @@
+{
+  "arquivo": "comemoracao-sem-camisa-v2.png",
+  "celulaLargura": 64,
+  "celulaAltura": 80,
+  "colunas": 4,
+  "linhas": 2,
+  "quadros": 8,
+  "tipos": 1,
+  "fpsSugerido": 8,
+  "loop": true,
+  "ancora": {
+    "x": 32,
+    "y": 79
+  },
+  "figurino": "sem camisa, calca preta",
+  "ordem": "esquerda para direita, cima para baixo",
+  "integracao": "arte adicional; nao substitui o atlas de dez tipos; pendente no runtime"
+}

@@ -563,3 +563,10 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **Recorte de retrato tem modelo: o Mosqueteiro Paulista.** O João aprovou o
   enquadramento dele na seleção e no Museu; todo `rosto` se mede igual ao
   dele e o busto sai da mesma conta (`recorte.ts`). (2026-11-02)
+- **Torcida "sem camisa" é base para vestir, não figurino final.** O pedido
+  de torcida sem camisa era para pôr as camisas dos clubes por cima; o Codex
+  entregou a v3 sem camisa e ligou direto no jogo, e a arquibancada inteira
+  perdeu as cores dos mascotes. A cor do clube só existe onde há cor chave
+  (magenta). Atlas novo de torcida entra pela camisa em magenta
+  (`scripts/torcida_camisa.py` veste por cima sem redesenhar), e o teste em
+  `torcida.test.ts` derruba atlas sem chave (2026-11-03).

@@ -1,3 +1,7 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { inflateSync } from 'node:zlib';
+
 import { describe, expect, it } from 'vitest';
 
 import { LUTADORES } from './lutadores';
@@ -117,5 +121,65 @@ describe('torcida dividida (docs/torcida-dividida.md)', () => {
         expect(clube.cores.map(corHex).map(([r, g, b]) => (r << 16) | (g << 8) | b).concat(0xf0f0f0), `${lutador.id}`).toContain(cor);
       });
     });
+  });
+});
+
+/** Lê um PNG RGBA de 8 bits (o que o Pillow salva) sem dependência nova. */
+function lerPng(arquivo: string): { largura: number; altura: number; pixels: Uint8Array } {
+  const dados = readFileSync(arquivo);
+  const largura = dados.readUInt32BE(16);
+  const altura = dados.readUInt32BE(20);
+  expect(`${dados[24]}/${dados[25]}`, `${arquivo} precisa ser RGBA de 8 bits`).toBe('8/6');
+  const partes: Buffer[] = [];
+  for (let i = 8; i < dados.length; ) {
+    const tamanho = dados.readUInt32BE(i);
+    if (dados.toString('ascii', i + 4, i + 8) === 'IDAT') partes.push(dados.subarray(i + 8, i + 8 + tamanho));
+    i += tamanho + 12;
+  }
+  const cru = inflateSync(Buffer.concat(partes));
+  const linha = largura * 4;
+  const pixels = new Uint8Array(linha * altura);
+  for (let y = 0; y < altura; y += 1) {
+    const filtro = cru[y * (linha + 1)];
+    for (let x = 0; x < linha; x += 1) {
+      const v = cru[y * (linha + 1) + 1 + x];
+      const a = x >= 4 ? pixels[y * linha + x - 4] : 0;
+      const b = y > 0 ? pixels[(y - 1) * linha + x] : 0;
+      const c = x >= 4 && y > 0 ? pixels[(y - 1) * linha + x - 4] : 0;
+      const p = a + b - c;
+      const paeth = Math.abs(p - a) <= Math.abs(p - b) && Math.abs(p - a) <= Math.abs(p - c) ? a : Math.abs(p - b) <= Math.abs(p - c) ? b : c;
+      const previsto = [0, a, b, (a + b) >> 1, paeth][filtro];
+      pixels[y * linha + x] = (v + previsto) & 0xff;
+    }
+  }
+  return { largura, altura, pixels };
+}
+
+describe('atlas da torcida que a Luta carrega', () => {
+  const pasta = resolve(__dirname, '../../public/assets/cenarios/estadio/torcida');
+  const dados = JSON.parse(readFileSync(resolve(pasta, 'torcida.json'), 'utf8'));
+  const arquivo: string = dados.folhas.torcedores.arquivo;
+
+  it('é o mesmo no torcida.json e no carregamento da cena', () => {
+    expect(readFileSync(resolve(__dirname, 'torcidaCena.ts'), 'utf8')).toContain(`[TORCIDA_CHAVES.torcedores, '${arquivo}']`);
+  });
+
+  // A cor do clube só existe onde há camisa em cor chave: atlas sem magenta
+  // deixa a arquibancada inteira sem as cores dos mascotes (03/11/2026).
+  it('tem camisa em cor chave em todo torcedor', () => {
+    const { largura, altura, pixels } = lerPng(resolve(pasta, arquivo));
+    const { celulaLargura: cl, celulaAltura: ca } = dados.folhas.torcedores;
+    for (let cy = 0; cy < altura; cy += ca) {
+      for (let cx = 0; cx < largura; cx += cl) {
+        let chave = 0;
+        for (let y = cy; y < cy + ca; y += 1) {
+          for (let x = cx; x < cx + cl; x += 1) {
+            const i = (y * largura + x) * 4;
+            if (pixels[i + 3] > 0 && brilhoDaChave(pixels[i], pixels[i + 1], pixels[i + 2]) !== null) chave += 1;
+          }
+        }
+        expect(chave, `${arquivo}: célula na coluna ${cx / cl}, fileira ${cy / ca}`).toBeGreaterThan(50);
+      }
+    }
   });
 });

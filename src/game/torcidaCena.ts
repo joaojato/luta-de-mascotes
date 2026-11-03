@@ -27,7 +27,7 @@ export function carregarTorcida(scene: Phaser.Scene): void {
   }
   const imagens: [string, string][] = [
     [TORCIDA_CHAVES.fundo, 'arquibancada-vazia.png'],
-    [TORCIDA_CHAVES.torcedores, 'torcedores.png'],
+    [TORCIDA_CHAVES.torcedores, 'torcedores-comemoracao-v3-camisa.png'],
     [TORCIDA_CHAVES.bandeira, 'bandeira.png'],
     [TORCIDA_CHAVES.fumaca, 'fumaca.png'],
     [TORCIDA_CHAVES.sinalizador, 'sinalizador.png']
@@ -188,8 +188,8 @@ export interface LadoDaTorcida {
   clube: TorcidaClube;
 }
 
-/** Balanço do torcedor: parado, braços, parado, pulinho, punho. */
-const BALANCO = [0, 1, 0, 2, 0, 3];
+/** Comemoração coletiva: preparação, pulo em V e punhos alternados. */
+const BALANCO = [0, 1, 2, 3];
 
 /**
  * Desenha a arquibancada dividida. Devolve falso se a arte não estiver
@@ -237,7 +237,7 @@ export function montarTorcida(
           `${camisas[camisa]}-tipo${tipo}`,
           camisas[camisa],
           BALANCO.map((q) => tipo * dados.torcedores.quadros + Math.min(q, dados.torcedores.quadros - 1)),
-          3
+          6
         )
     };
   });
