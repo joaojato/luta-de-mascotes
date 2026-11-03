@@ -1,5 +1,9 @@
 # Gremista — revisão de coesão e conjunto completo
 
+Atualização posterior: caminhadas e ataque rápido foram substituídos
+pela [revisão v4](gremista-passos-v4.md). Os demais arquivos desta revisão
+permanecem vigentes. Não reaplicar essas três folhas v3 sobre a correção.
+
 Pedido de 02/11/2026: priorizar excelência, corrigir crescimento/distorção
 entre quadros e ações, criar espera animada e verificar ações ausentes.
 Referência de identidade: `referencia/gremio/base-manga-longa-cabelos-pretos-v8.png`.

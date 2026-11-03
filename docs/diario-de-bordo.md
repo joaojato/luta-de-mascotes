@@ -3210,3 +3210,23 @@ projéteis no ar em alturas diferentes, 230 → 214 → 198.
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** dano dos dois tiros (32 no total) a ajustar se pesar.
+
+## 2026-11-02: Gremista com passos de esgrima e cortes curtos (passos v4)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "O codex terminou de fazer novas animações, coloque elas no
+mosqueteiro do grêmio."
+**Feito:** o Codex refez andar, recuar e soco rápido em `passos-v4/` (direita
+à frente nos passos, dois cortes curtos de punho) e trocou os caminhos no
+JSON; essa troca entrou de carona no commit dos dois tiros, sem os PNGs.
+Agora entram os PNGs, o doc e o script. Caixas do soco rápido medidas de
+novo na lâmina (corte reto no 2, para cima no 5).
+**Verificado:** `npm run check` (304 testes); folha de contato; navegador:
+andar e recuar tocam a sheet nova com o pé no gramado; o corte acerta o
+Urubu a 90 e a 140 px (230 → 222).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** andar, recuar e soco rápido da v3
+trocados pela v4 (pedido dele ao Codex).
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** só um dos dois cortes do soco rápido conta por golpe (como antes).
