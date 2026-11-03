@@ -3167,3 +3167,25 @@ de trás para a frente começava no quadro 0 e terminava na hora.
 **Atrito:** nenhum.
 **Em aberto:** o resto do corpo do Gremista (pedido ao Codex); nome no jogo
 ("Mosqueteiro Gaúcho", sem nome de clube); publicar no Vercel.
+
+## 2026-11-02: Gremista com o corpo inteiro (coesão v3)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Coloquei as novas animações do Grêmio."
+**Feito:** o Codex entregou `coesao-v3/` (19 ações, 122 quadros, cabelo e
+barba pretos) e já ligou no JSON sem mexer em dano nem no Flecha Negra.
+Conferido e corrigido: as caixas de acerto eram as da arte antiga e ficavam
+até 47 px à frente da lâmina (Regra do Corpo); agora são medidas na lâmina
+de cada quadro de contato, por `attackSpans`, nos cinco golpes de espada.
+Retrato e âncora passam para a base v8 (a identidade da arte nova); mesmo
+recorte do rosto.
+**Verificado:** `npm run check` (303 testes). Folha de contato das caixas
+sobre a arte. Navegador, Gremista x Urubu no treino: guarda, andar, agachar,
+defesa, pulo, soco, tiro e especial tocam a animação certa, sem erro no
+console; pé no gramado na mesma altura do Urubu.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** só o primeiro tiro das pistolas vira projétil (o segundo,
+no quadro 4, é só desenho); aprovação dele da arte; nome no jogo; Vercel.

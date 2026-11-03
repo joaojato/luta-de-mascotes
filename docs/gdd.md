@@ -538,7 +538,10 @@ Defender não adianta em nenhuma. Mira o ponto onde o adversário estava quando
 o especial saiu (como o Biriba e o Guerreiro). Depois vira, sai da arena e
 volta pelo fundo até o posto. 30 de dano por flecha, empurrão 120.
 
-**Provisório (como o Urubu no Marco 2):** sem sheet ainda, guarda, andar,
-pular, defender, apanhar, atordoado, queda e o próprio sinal do especial usam
-a guarda parada (`guard-reference.png`); agachar e defesa baixa usam o
-primeiro quadro do corte baixo. Pedido do resto em `docs/pedidos-codex.md`.
+**Corpo inteiro (02/11/2026, revisão de coesão v3 do Codex):** 19 ações em
+`coesao-v3/` (`docs/gremista-coesao-v3.md`), cabelo e barba pretos, com
+avanço e recuo rápidos, salto, defesas, reação, atordoado, queda, o sinal do
+especial e soco no ar e voadora próprios (corte no ar e estocada no ar). As
+pistolas duram 1430 ms, com o tempo de cada quadro no JSON. Caixas de acerto
+medidas na lâmina de cada quadro de contato (`attackSpans`). `ataques-v1/`
+fica no disco só como registro; não reaplicar.

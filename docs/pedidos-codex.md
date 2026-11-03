@@ -223,7 +223,7 @@ metálico e sem dourado ornamental. Molde e proporção de
 | `mode-cards/dificuldade-dificil.png` | DIFÍCIL | o mesmo mascote furioso, quadra lotada |
 | `ui/trofeu.png` | sem texto | taça de várzea, transparente, 512×512; pode ser prateada ou pintada, nunca dourada brilhante |
 
-## Mosqueteiro Gaúcho (Grêmio): o resto do corpo (02/11/2026)
+## Mosqueteiro Gaúcho (Grêmio): o resto do corpo (02/11/2026, entregue na coesão v3)
 
 O lutador já está no jogo com os quatro golpes de `ataques-v1/`; o resto usa a
 guarda parada. Mesma base aprovada (manga longa), mesmo formato dos golpes
