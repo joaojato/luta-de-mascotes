@@ -3784,3 +3784,22 @@ de movimento). A espera de 1 s e os 450 ms parado na direita ficaram.
 **Aprovado explicitamente:** nada.
 **Atrito:** nenhum.
 **Em aberto:** nada.
+
+## 2026-11-03: publicar no git as mudanças do dia
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Publica no git as mudanças feitas."
+**Feito:** dois commits com o que estava solto: postura v7 do Gremista
+(JSON, folhas e script) e a torcida nova (circulação v4, humores v5,
+cadeiras em camadas, camisa na mão, putômetro no HUD, com os módulos e
+testes de `torcida*` e `putometro*`). Outra sessão editava o HUD minutos
+antes; o estado commitado passou no check. `fighter-playground.json`
+segue de fora, alteração antiga de outra sessão. Vercel não foi tocada.
+**Verificado:** typecheck, 403 testes e build ok.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nada.
+**Em aberto:** modo em pé estilo Game Boy e aviso de web app no celular
+(pedido de 02/11, esperando a resposta sobre o que o jogador vê ao abrir
+o link); `fighter-playground.json`.
