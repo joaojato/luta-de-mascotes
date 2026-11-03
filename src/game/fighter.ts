@@ -356,6 +356,8 @@ export class Fighter {
   private readonly doubleTap = new DoubleTapDetector();
   private dashTap = 0;
   private dash: { dir: 1 | -1; elapsed: number; seconds: number; distance: number } | null = null;
+  private dashCount = 0;
+  private lastDashDir: 1 | -1 = 1;
   /** Where the opponent stands (from `faceToward`): a forward dash stops against it. */
   private opponentX: number | null = null;
   private knockbackVel = 0;
@@ -518,6 +520,15 @@ export class Fighter {
    */
   recoil(velocity: number): void {
     if (!this.defeated) this.knockbackVel = velocity;
+  }
+
+  /**
+   * How many dashes have started and the last one's world direction (1 is
+   * right). A dash against the opponent can start and stop on the same
+   * frame, so hosts count starts instead of watching the dash itself.
+   */
+  get dashesIniciados(): { n: number; dir: 1 | -1 } {
+    return { n: this.dashCount, dir: this.lastDashDir };
   }
 
   /** Whether the fighter is crouching on the ground (with or without guard). */
@@ -1387,6 +1398,8 @@ export class Fighter {
 
   /** Starts a dash in world direction `dir`: forward when it points at the opponent. */
   private startDash(dir: 1 | -1): void {
+    this.dashCount += 1;
+    this.lastDashDir = dir;
     this.som('dash', 'dash');
     const forward = dir === this.facing;
     this.dash = { dir, elapsed: 0, ...dashConfig(this.character.moves?.dash, forward) };

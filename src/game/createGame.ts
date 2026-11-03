@@ -4,6 +4,7 @@ import { decidirEscala, instalarNitidez } from './nitidez';
 import { GAME_PROFILES } from './profiles';
 import type { GameProfile } from './types';
 import { BootScene } from '../scenes/BootScene';
+import { PrimeiraVezScene } from '../scenes/PrimeiraVezScene';
 import { MainMenuScene } from '../scenes/MainMenuScene';
 import { ModeSelectScene } from '../scenes/ModeSelectScene';
 import { DificuldadeScene } from '../scenes/DificuldadeScene';
@@ -56,6 +57,7 @@ export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Ga
     },
     scene: [
       BootScene,
+      PrimeiraVezScene,
       MainMenuScene,
       ModeSelectScene,
       DificuldadeScene,

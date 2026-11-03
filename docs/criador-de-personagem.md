@@ -30,6 +30,9 @@ aparecer neste arquivo.
 3. Em uma frase: qual a atitude dele? (Mascote aqui tem atitude de torcida,
    nada de fofura corporativa.)
 4. Rival natural no elenco atual (Urubu, Almirante, Saci, Cartola, Bira, Galo)?
+   Vai no JSON como `rival` (o id do clássico), junto com `estado` (a sigla
+   da UF do clube): a CPU do tutorial escolhe o rival, senão alguém do mesmo
+   estado, senão da mesma região. Cobrado em `lutadores.test.ts`.
 5. Fala de entrada e fala de vitória.
 6. Museu (bloco `museu` do JSON): um apelido de uma linha, "quem é" (visual,
    jeito de lutar, especial) e "de onde veio" (a história do mascote na

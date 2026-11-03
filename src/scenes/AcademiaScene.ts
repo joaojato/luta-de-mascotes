@@ -109,7 +109,8 @@ export class AcademiaScene extends BaseScene {
         salvarAjustes(ajustes);
         this.applyCombat(characterId, LUTADOR_COMBAT_OVERRIDES[characterId] ?? {});
       },
-      abrirTreino: () => this.abrirTreino()
+      abrirTreino: () => this.abrirTreino(),
+      abrirTutorial: () => this.abrirTutorial()
     });
     this.painel.mostrarLutador(character.id);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.painel.destroy());
@@ -118,7 +119,7 @@ export class AcademiaScene extends BaseScene {
     this.playAction();
 
     this.createFooterHint(
-      'A/D lutador • W/S ação • Espaço toca/pausa • , . quadro • R quadro 1 • 1-5 boxes • T treino • Tab painel • Esc menu'
+      'A/D lutador • W/S ação • Espaço toca/pausa • , . quadro • R quadro 1 • 1-5 boxes • T treino • U tutorial • Tab painel • Esc menu'
     );
   }
 
@@ -175,11 +176,18 @@ export class AcademiaScene extends BaseScene {
     });
 
     keyboard.on('keydown-T', () => this.abrirTreino());
+    keyboard.on('keydown-U', () => this.abrirTutorial());
     // No celular o A (Enter) também abre: a Academia não tem outro uso para ele.
     keyboard.on('keydown-ENTER', () => this.abrirTreino());
 
     keyboard.on('keydown-ESC', () => this.goToMenu());
     keyboard.on('keydown-BACKSPACE', () => this.goToMenu());
+  }
+
+  /** O tutorial de novo (João, 03/11/2026): começa pela escolha do mascote, e a CPU vem com o rival. */
+  private abrirTutorial(): void {
+    if (this.painel.capturando) return;
+    this.scene.start(SCENE_KEYS.CharacterSelect, { mode: '1vcpu', stageId: 'estadio', tutorial: true });
   }
 
   /**

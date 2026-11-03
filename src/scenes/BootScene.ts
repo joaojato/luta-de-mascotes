@@ -23,6 +23,7 @@ import { tocarSom } from '../game/sons';
 import { SOM_ASSETS } from '../game/sonsLista';
 import { COR_FUNDO, FONTE_TEXTO, FONTES_DO_JOGO, TEXTO_APAGADO } from '../game/estilo';
 import { SCENE_KEYS } from '../game/types';
+import { jaViuTutorial } from '../game/tutorial/primeiraVez';
 import { BaseScene } from './BaseScene';
 
 /** Roxo da logo da Resenha Games: a barra acende nele. */
@@ -211,6 +212,6 @@ export class BootScene extends BaseScene {
     const vez = Math.max(0, this.logoNaTela);
     const naTela = this.logo.visible;
     if (naTela && !this.desfazendo) this.desfazer(vez);
-    this.time.delayedCall(naTela ? duracaoDoMosaico(LOGOS_DA_ABERTURA[vez]) + 120 : 120, () => this.scene.start(SCENE_KEYS.MainMenu));
+    this.time.delayedCall(naTela ? duracaoDoMosaico(LOGOS_DA_ABERTURA[vez]) + 120 : 120, () => this.scene.start(jaViuTutorial() ? SCENE_KEYS.MainMenu : SCENE_KEYS.PrimeiraVez));
   }
 }

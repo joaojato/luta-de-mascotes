@@ -3803,3 +3803,43 @@ segue de fora, alteração antiga de outra sessão. Vercel não foi tocada.
 **Em aberto:** modo em pé estilo Game Boy e aviso de web app no celular
 (pedido de 02/11, esperando a resposta sobre o que o jogador vê ao abrir
 o link); `fighter-playground.json`.
+
+## 2026-11-03: modo tutorial, entrega 1
+
+**Marco:** 2, segue em andamento (tutorial é exceção da Regra da v1 aberta
+pelo João hoje).
+**Pedido:** modo tutorial com o roteiro dele: primeira visita detectada no
+navegador, pergunta antes de qualquer menu, mascote do jogador contra o
+rival na CPU, CPU fazendo exatamente o que o texto manda, tempo congelado a
+cada fala, checklist que libera a próxima etapa, teclas sempre as
+remapeadas (celular incluso).
+**Feito:** desenho em `docs/superpowers/specs/2026-11-03-tutorial-design.md`
+com o roteiro original guardado. Entrega 1 de 3: marca
+`luta-de-mascotes:tutorial-visto` no `localStorage`; tela "Primeira vez?"
+depois da abertura; Seleção do tutorial (só o jogador escolhe, a CPU trava
+no rival); `estado` e `rival` em cada JSON de lutador (clássico, depois
+mesmo estado, depois mesma região, depois sorteio); motor do tutorial puro
+em `src/game/tutorial/` (roteiro, etapas, CPU roteirizada, teclas); falas
+que congelam a luta, checklist com visto, foco de luz no Putômetro;
+etapas andar, pular e abaixar, passo largo, bater, "Que Show!", quebrar a
+guarda e golpe no ar; o "QUEBRE ELE!" reinicia como luta 1 VS CPU no
+Fácil. Tutorial também na Academia (tecla U e botão no painel).
+**Verificado:** `npm run check` (52 arquivos, 438 testes, build). No
+navegador com Playwright, 1280x720: Primeira vez, Urubu contra Almirante
+(clássico), todas as etapas com as teclas de verdade, luta final com
+relógio e CPU no Fácil, sem erro no console. Em 1920x1080 só o layout (o
+navegador do robô roda a 6 FPS ali e perde toque curto).
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** a regra do rival ("Isso pode começar a fazer o
+Tutorial").
+**Atrito:** o passo largo colado no rival começa e acaba no mesmo quadro e o
+tutorial não via; virou contador de dashes iniciados no lutador. O
+Putômetro já começa no verde, então o "Que Show!" não mudava nada; o
+tutorial começa no amarelo. Outra sessão mexia em `MatchScene.ts`,
+`matchHud.ts`, `telaToque.ts` ao mesmo tempo: o commit leva só as trocas
+do tutorial nesses arquivos.
+**Em aberto:** entrega 2 (aparo como quick time event, guarda alta e baixa,
+voadora e passo largo para trás, especial e foco duplo); decidir se a
+torcida acelera a barra do especial (a fala 13c ensina isso e hoje não é
+verdade); guia rápido do 1x1; teste dele no celular.

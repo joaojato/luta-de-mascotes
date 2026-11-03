@@ -64,5 +64,9 @@ export class PutometroVisual {
     this.desenho.y=this.legenda.displayHeight+2;
     this.legenda.setColor(['#ff748d','#ff7070','#ffdf64','#a1ff75'][ativa]);
   }
+  /** A caixa do medidor no container do HUD, já com a escala dele (o foco de luz do tutorial). */
+  get caixa():{x:number;y:number;largura:number;altura:number} {
+    return {x:this.raiz.x,y:this.raiz.y,largura:this.largura*this.raiz.scaleX,altura:(this.altura+this.legenda.displayHeight)*this.raiz.scaleY};
+  }
   destruir():void {this.entrada.stop();}
 }

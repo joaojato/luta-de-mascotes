@@ -2,6 +2,7 @@
   "id": "coxa-maromba",
   "sons": {"acerto-leve": "acerto-leve-andador", "acerto-pesado": "acerto-pesado-maromba", "acerto-baixo": "acerto-pesado-maromba"},
   "label": "Vovô Coxa Maromba",
+  "estado": "PR",
   "nomes": {"soco-rapido": "Estocada", "soco-forte": "Estocada", "chute-basico": "Chute", "chute-baixo": "Chute", "soco-no-ar": "Andador", "voadora": "Voadora", "especial": "Especial"},
   "assetRoot": "/assets/lutadores/coxa",
   "selecionavel": false,

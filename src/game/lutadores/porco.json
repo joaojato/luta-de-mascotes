@@ -1,6 +1,8 @@
 {
   "id": "porco",
   "label": "Porco",
+  "estado": "SP",
+  "rival": "mosqueteiro",
   "museu": {
     "apelido": "O xingamento que virou coroa",
     "descricao": "Javali verde de terno rasgado, presas de marfim e calção branco. Pressiona de perto: mordida, coice de costas e, no especial, um jato de vômito verde à queima-roupa.",

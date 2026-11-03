@@ -131,10 +131,11 @@ pessoa entender o que falta, CPU que faz outra coisa que não a pedida.
    VS CPU, os mesmos dois mascotes, CPU no **Fácil** (João), com rounds,
    relógio e tela de fim.
 5. **Voltar depois (João).** O tutorial fica na Academia, ao lado do Treino
-   livre. Decisão do agente: também no menu principal não, para não somar
+   livre (tecla U, ou o botão na aba Treino do painel). Decisão do agente: também no menu principal não, para não somar
    botão no menu; se o João quiser, vira item do menu depois.
-6. Pausa (Esc ou o botão de menu do celular) funciona como na luta, com
-   "Pular tutorial" no lugar de "Trocar personagens" (decisão do agente).
+6. Pausa (Esc ou o botão de menu do celular) funciona como na luta; "Sair"
+   volta ao menu principal e "Recomeçar" refaz o tutorial do início. Um
+   "Pular tutorial" na pausa fica para a entrega 2 (decisão do agente).
 
 ## 4. Motor do tutorial
 
@@ -182,6 +183,18 @@ O tutorial pode **mandar** no Putômetro do jogador (encher até o "Que
 Show!", derrubar até o vermelho) e acender um **foco de luz**: a tela
 escurece e só o Putômetro (e, na etapa final, também a barra do especial)
 fica clara, com a fala por cima.
+
+### Putômetro no começo
+
+O jogo começa o Putômetro em 0,7, que já é verde ("Que Show!"). No tutorial
+ele começa no amarelo, para a subida da etapa 4b aparecer (decisão do
+agente, 03/11/2026).
+
+### Passo largo
+
+O tutorial conta o passo largo pelos dashes **iniciados**: colado no rival
+o dash para a frente começa e para no mesmo quadro, e apertar os dois
+toques já vale (decisão do agente, 03/11/2026).
 
 ### Vida
 
@@ -293,7 +306,7 @@ teclas apertadas. O controle pelo corpo fica de fora.
 
 ## 9. Ordem de construção (Regra do Fim de Semana)
 
-1. **Entrega 1:** primeira visita, tela "Primeira vez?", Seleção do
+1. **Entrega 1 (feita em 03/11/2026):** primeira visita, tela "Primeira vez?", Seleção do
    tutorial com rival, motor de falas e checklist com teclas certas,
    etapas 1 a 6 com o foco de luz do "Que Show!", e o "QUEBRE ELE!"
    levando à luta no Fácil. Roda de ponta a ponta pulando a defesa.

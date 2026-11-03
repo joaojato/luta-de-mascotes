@@ -1,6 +1,8 @@
 {
   "id": "almirante",
   "label": "Almirante",
+  "estado": "RJ",
+  "rival": "urubu",
   "museu": {
     "apelido": "O navegador que não perde a viagem",
     "descricao": "Comandante de casaco naval preto, ombreiras de prata e forro vermelho. Pesado e paciente: segura a distância com a garrucha e, no especial, chama a caravela, que entra pela borda da tela empurrada por uma onda.",

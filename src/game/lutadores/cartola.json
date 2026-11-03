@@ -1,6 +1,8 @@
 {
   "id": "cartola",
   "label": "Cartola",
+  "estado": "RJ",
+  "rival": "urubu",
   "museu": {
     "apelido": "Elegância é revidar sem amassar o fraque",
     "descricao": "Cavalheiro magro de cartola alta e fraque bordô, que luta no contra-golpe com a bengala: bengalada, varredura que só a guarda baixa segura e o Pó de Arroz, uma nuvem que deixa o rival tonto.",

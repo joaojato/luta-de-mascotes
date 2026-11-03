@@ -1,6 +1,8 @@
 {
   "id": "cachorro",
   "label": "Bira",
+  "estado": "RJ",
+  "rival": "cartola",
   "museu": {
     "apelido": "Vira-lata com camisa de clube grande",
     "descricao": "Cão de focinho comprido, camisa listrada preta e branca e braços enormes. Luta de perto: patada com garras, carrinho rasteiro e, no especial, um galope imparável que termina num bote. O Biriba assiste do fundo e anda junto com ele.",

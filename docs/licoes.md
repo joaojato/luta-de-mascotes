@@ -630,3 +630,16 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   (apanha, mas não para). São três jeitos diferentes de apanhar no especial
   (normal, `imparavel`, `invulneravel`), cada um no JSON; perguntar qual no
   questionário do mascote novo (2026-11-03).
+- **Dash contra o oponente não dura um quadro.** Colado no rival, o passo
+  largo para a frente começa e para no mesmo `update`; quem olha o estado
+  do dash depois do quadro nunca vê. Para saber se a pessoa deu o dash,
+  contar os dashes iniciados (`dashesIniciados`), não o dash em andamento
+  (2026-11-03).
+- **Robô em 1920x1080 roda a 6 FPS e perde toque curto.** O Chromium do
+  Playwright sem placa de vídeo cai para 6 FPS em 1080; dois toques não
+  cabem na janela de 0,3 s do dash e soco de 100 ms some entre quadros. Em
+  1080 conferir layout; jogabilidade se confere em 1280x720 (2026-11-03).
+- **Com outra sessão editando o mesmo arquivo, commitar só o próprio
+  trecho.** Montar a versão do commit a partir do HEAD com as próprias
+  trocas e pôr no índice (`hash-object` + `update-index`), sem mexer no
+  arquivo de trabalho da outra sessão (2026-11-03).

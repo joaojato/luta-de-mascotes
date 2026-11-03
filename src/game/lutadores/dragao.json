@@ -2,6 +2,7 @@
   "id": "dragao",
   "sons": {"chute": "fogo-cuspe", "especial": "fogo-sopro", "acerto-pesado": "acerto-pesado-dragao", "acerto-baixo": "acerto-pesado-dragao", "dor": "dor-dragao", "dor-forte": "dor-forte-dragao"},
   "label": "Dragão",
+  "estado": "GO",
   "museu": {
     "apelido": "Fogo que vem de Campinas",
     "descricao": "Dragão vermelho e preto de asas abertas, bruto de perto. Soca o estômago, gira a cauda e cospe fogo curto; no especial, sobe, paira e varre o chão com um jato de fogo. Escapa quem passa por baixo dele.",

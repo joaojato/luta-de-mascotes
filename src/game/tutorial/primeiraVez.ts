@@ -1,0 +1,24 @@
+/**
+ * Primeira visita (docs/superpowers/specs/2026-11-03-tutorial-design.md): sem
+ * esta marca no navegador, a abertura pergunta do tutorial antes do menu. Aba
+ * anônima ou cache limpo perguntam de novo.
+ */
+
+const CHAVE = 'luta-de-mascotes:tutorial-visto';
+
+export function jaViuTutorial(storage?: Storage): boolean {
+  try {
+    return (storage ?? window.localStorage).getItem(CHAVE) !== null;
+  } catch {
+    // Sem armazenamento: não insiste a cada abertura.
+    return true;
+  }
+}
+
+export function marcarTutorialVisto(storage?: Storage): void {
+  try {
+    (storage ?? window.localStorage).setItem(CHAVE, '1');
+  } catch {
+    // Aba anônima: vale até recarregar.
+  }
+}

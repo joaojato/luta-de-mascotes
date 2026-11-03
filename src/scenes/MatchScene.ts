@@ -34,6 +34,11 @@ import { resultadoPorKO, resultadoPorTempo } from '../game/round';
 import { SCENE_KEYS, type MatchConfig } from '../game/types';
 import { spawnHitSpark, type VfxColor } from '../game/vfx';
 import { BaseScene } from './BaseScene';
+import { CpuDoTutorial } from '../game/tutorial/cpuDoTutorial';
+import { trocarMarcadores, type ContextoDasTeclas } from '../game/tutorial/teclas';
+import { Tutorial } from '../game/tutorial/tutorial';
+import { TutorialNaTela } from '../game/tutorial/tutorialNaTela';
+import { carregarPreferencias } from '../toque/preferencias';
 
 const EDGE_MARGIN = 170;
 const DEPTH_FRONT = 8;
@@ -93,6 +98,8 @@ export class MatchScene extends BaseScene {
   /** Treino livre: painel lateral, quando cada um apanhou por último, quem está levantando. */
   private painelTreino: PainelTreino | null = null;
   private ultimoGolpe = new Map<Fighter, { ms: number; vida: number }>();
+  /** Tutorial (docs/superpowers/specs/2026-11-03-tutorial-design.md): as etapas, a CPU dele e o que desenha. */
+  private tutorial: TutorialDaLuta | null = null;
   private levantando = new Set<Fighter>();
 
   private phase: MatchPhase = 'intro';
@@ -166,7 +173,8 @@ export class MatchScene extends BaseScene {
     this.pausa = null;
     this.ultimoGolpe = new Map();
     this.levantando = new Set();
-    this.painelTreino = this.config.treino ? this.montarPainelTreino() : null;
+    this.painelTreino = this.config.treino && !this.config.tutorial ? this.montarPainelTreino() : null;
+    this.tutorial = this.config.tutorial ? this.montarTutorial() : null;
 
     this.startRound();
     this.agendarTorcida(null);
@@ -197,6 +205,8 @@ export class MatchScene extends BaseScene {
       publicarLuta(null);
       this.painelTreino?.destroy();
       this.painelTreino = null;
+      this.tutorial?.tela.destroy();
+      this.tutorial = null;
     });
   }
 
@@ -213,6 +223,10 @@ export class MatchScene extends BaseScene {
     }
     const seconds = delta / 1000;
     const fighting = this.phase === 'fighting';
+    // Fala do tutorial na tela: a luta congela inteira até a pessoa continuar.
+    if (fighting && this.tutorial && this.atualizarFala()) {
+      return;
+    }
 
     // O celular é lido todo quadro, mesmo fora da luta, para golpe da
     // introdução não sair atrasado quando o round começa.
@@ -220,7 +234,9 @@ export class MatchScene extends BaseScene {
     const p2Celular = celular.input(2);
     const p1Input = fighting ? juntarInputs(this.readKeys(this.p1Keys), p1Celular) : { ...NEUTRAL_FIGHTER_INPUT };
     const p2Input = fighting
-      ? this.cpu
+      ? this.tutorial
+        ? this.tutorial.cpu.atualizar(this.tutorial.estado.etapa.cpu, this.leituraDaCpu(time))
+        : this.cpu
         ? this.cpu.atualizar(this.leituraDaCpu(time))
         : this.config.treino
           ? { ...NEUTRAL_FIGHTER_INPUT }
@@ -244,6 +260,7 @@ export class MatchScene extends BaseScene {
     this.p1.update(seconds, p1Input);
     this.p2.update(seconds, p2Input);
     this.publicarBotoesDaTela(p1Input);
+    if (fighting) this.contarParaOTutorial(p1Input, seconds);
 
     this.updateCamera(false);
     this.biribas.forEach((biriba) => biriba.update(seconds));
@@ -346,6 +363,7 @@ export class MatchScene extends BaseScene {
       this.mostrarDano(hurt, vidaAntes - defender.healthPoints, blocked ? profile.damage : null);
       defender.flashHit(blocked);
       attacker.markAttackConnected(attack.signature, blocked);
+      this.tutorial?.estado.golpe({ atacante: attacker === this.p1 ? 'p1' : 'p2', golpe: attack.move, defendido: blocked, guardaQuebrada: breakStunMs !== null });
       attacker.registerOffense(blocked, isSpecial);
       defender.registerDefense(blocked);
       const ladoAtacante=attacker===this.p1?0:1,ladoDefensor=defender===this.p1?0:1;
@@ -734,7 +752,7 @@ export class MatchScene extends BaseScene {
   /** No torneio vale a dificuldade com que ele começou; fora dele, a dos ajustes. */
   private dificuldadeDaCpu(): Dificuldade {
     const torneio = this.config.torneio ? carregarTorneio(IDS_SELECIONAVEIS) : null;
-    return torneio?.dificuldade ?? this.app.settingsStore.getState().cpuDificuldade;
+    return this.config.cpuDificuldade ?? torneio?.dificuldade ?? this.app.settingsStore.getState().cpuDificuldade;
   }
 
   /** Lança o placar da luta no torneio salvo e volta ao chaveamento ou à tabela. */
@@ -833,6 +851,112 @@ export class MatchScene extends BaseScene {
 
   private atalhosDoTreino = false;
 
+  /** Monta o tutorial: qualquer botão (ou toque) fecha a fala depois de 0,4 s na tela. */
+  private montarTutorial(): TutorialDaLuta {
+    const tutorial: TutorialDaLuta = {
+      estado: new Tutorial(),
+      cpu: new CpuDoTutorial(),
+      tela: new TutorialNaTela(this, BANNER_DEPTH + 20, controlesDeToqueAtivos()),
+      falaDesde: Number.POSITIVE_INFINITY,
+      lista: '',
+      dashes: this.p1.dashesIniciados.n,
+      acabou: false
+    };
+    const continuar = (evento?: KeyboardEvent): void => {
+      // Esc é a pausa, não a fala.
+      if (evento?.key === 'Escape' || this.pausa || this.phase !== 'fighting') return;
+      if (!tutorial.estado.congelado || this.time.now - tutorial.falaDesde < 400) return;
+      tutorial.estado.continuar();
+      tutorial.falaDesde = Number.POSITIVE_INFINITY;
+      // A tecla que fechou a fala não vira golpe no quadro seguinte.
+      this.input.keyboard?.resetKeys();
+    };
+    this.input.keyboard?.on('keydown', continuar);
+    this.input.on('pointerdown', () => continuar());
+    return tutorial;
+  }
+
+  /** As teclas que a pessoa usa agora, no teclado ou no celular, e para onde ela olha. */
+  private contextoDasTeclas(): ContextoDasTeclas {
+    const olhando = this.p1.facingDirection;
+    return controlesDeToqueAtivos() ? { toque: true, preferencias: carregarPreferencias(), olhando } : { toque: false, botoes: this.controles.p1, olhando };
+  }
+
+  /**
+   * Põe na tela a fala da vez (com o foco de luz e a torcida da etapa nova) e
+   * congela a luta enquanto ela estiver lá. Verdadeiro com a luta congelada.
+   */
+  private atualizarFala(): boolean {
+    const tutorial = this.tutorial!;
+    const nova = tutorial.estado.tomarEtapaNova();
+    if (nova?.putometro) {
+      // Do começo (0,7): três aparos levam ao topo, uma surra ao amarelo, três ao vermelho.
+      this.events.emit('torcida-reiniciar');
+      const vezes = nova.putometro === 'meio' ? 1 : 3;
+      for (let i = 0; i < vezes; i++) this.events.emit('torcida-acao', 0, nova.putometro === 'cheio' ? 'parry' : 'dano', 0.2);
+    }
+    if (tutorial.estado.acabou) {
+      this.comecarLutaDoTutorial();
+      return true;
+    }
+    const fala = tutorial.estado.falaAtual;
+    if (fala === null) {
+      tutorial.tela.mostrarFala(null, []);
+      this.anims.resumeAll();
+      return false;
+    }
+    if (tutorial.falaDesde === Number.POSITIVE_INFINITY) {
+      tutorial.falaDesde = this.time.now;
+      const focos = (tutorial.estado.etapa.foco ?? []).map((foco) => this.hud.areaNaTela(foco, 0));
+      tutorial.tela.mostrarFala(trocarMarcadores(fala, this.contextoDasTeclas()), focos);
+      tutorial.tela.mostrarChecklist([]);
+      tutorial.lista = '';
+    }
+    this.anims.pauseAll();
+    return true;
+  }
+
+  /** O que o jogador fez neste quadro conta para o checklist, que se redesenha quando muda. */
+  private contarParaOTutorial(p1Input: FighterInput, seconds: number): void {
+    const tutorial = this.tutorial;
+    if (!tutorial) return;
+    const dash = this.p1.dashesIniciados;
+    const novoDash = dash.n !== tutorial.dashes;
+    tutorial.dashes = dash.n;
+    tutorial.estado.quadro(
+      {
+        esquerda: p1Input.left,
+        direita: p1Input.right,
+        noAr: this.p1.isAirborne,
+        agachado: this.p1.isDucking,
+        dash: !novoDash ? null : dash.dir === this.p1.facingDirection ? 'frente' : 'tras'
+      },
+      seconds
+    );
+    if (tutorial.estado.congelado) return;
+    const contexto = this.contextoDasTeclas();
+    const itens = tutorial.estado.checklist.map((item) => ({ texto: trocarMarcadores(item.texto, contexto), feito: item.feito }));
+    const lista = JSON.stringify(itens);
+    if (lista !== tutorial.lista) {
+      tutorial.lista = lista;
+      tutorial.tela.mostrarChecklist(itens);
+    }
+  }
+
+  /** "Chega de conversa! QUEBRE ELE!": a luta de verdade, os mesmos dois, CPU no Fácil. */
+  private comecarLutaDoTutorial(): void {
+    if (!this.tutorial || this.tutorial.acabou) return;
+    this.tutorial.acabou = true;
+    this.anims.resumeAll();
+    this.scene.restart({
+      mode: '1vcpu',
+      stageId: this.config.stageId,
+      p1CharacterId: this.config.p1CharacterId,
+      p2CharacterId: this.config.p2CharacterId,
+      cpuDificuldade: 'facil'
+    } satisfies MatchConfig);
+  }
+
   /** O que a CPU (P2) enxerga da luta neste quadro. */
   private leituraDaCpu(time: number) {
     const eu = this.p2;
@@ -922,7 +1046,7 @@ export class MatchScene extends BaseScene {
         sair: () => {
           this.fecharPausa();
           // No treino, sair é voltar à Academia.
-          if (this.config.treino) this.scene.start(SCENE_KEYS.Academia);
+          if (this.config.treino && !this.config.tutorial) this.scene.start(SCENE_KEYS.Academia);
           else this.goToMenu();
         }
       }
@@ -953,7 +1077,7 @@ export class MatchScene extends BaseScene {
     this.hud.animateFill();
     this.hud.updateWins(this.p1Wins, this.p2Wins);
 
-    this.showBanner(this.config.treino ? 'TREINO' : `ROUND ${this.roundNumber}`, '#f8fafc');
+    this.showBanner(this.config.tutorial ? 'TUTORIAL' : this.config.treino ? 'TREINO' : `ROUND ${this.roundNumber}`, '#f8fafc');
     this.som('round');
     musica(this.game).tocar('luta');
 
@@ -1120,6 +1244,20 @@ export class MatchScene extends BaseScene {
   private hideBanner(): void {
     this.tweens.add({ targets: this.banner, alpha: 0, duration: 300 });
   }
+}
+
+/** O tutorial dentro da luta: as etapas, a CPU dele, o que desenha e quando a fala abriu. */
+interface TutorialDaLuta {
+  estado: Tutorial;
+  cpu: CpuDoTutorial;
+  tela: TutorialNaTela;
+  /** `time.now` em que a fala da vez apareceu; infinito até aparecer. */
+  falaDesde: number;
+  /** O checklist desenhado, para só redesenhar quando muda. */
+  lista: string;
+  /** Dashes do P1 já contados: um novo é um passo largo que começou agora. */
+  dashes: number;
+  acabou: boolean;
 }
 
 /**

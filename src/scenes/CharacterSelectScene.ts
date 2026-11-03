@@ -8,6 +8,7 @@ import { sortearIndice } from '../game/sorteio';
 import { criarTorneio } from '../game/torneio';
 import { salvarTorneio } from '../game/torneioSalvo';
 import { LUTADORES } from '../game/lutadores';
+import { escolherRival } from '../game/tutorial/rival';
 import { bustoCrop } from '../game/ui';
 import { SCENE_KEYS, type FormatoTorneio, type MatchMode } from '../game/types';
 import { BaseScene } from './BaseScene';
@@ -19,6 +20,8 @@ interface CharacterSelectData {
   torneio?: { formato: FormatoTorneio; tamanho: 8 | 16 };
   /** Vindo da pausa da luta: os cursores começam nos mascotes que estavam lutando. */
   atuais?: { p1: string; p2: string };
+  /** Tutorial: só o jogador escolhe; a CPU vem com o rival dele (tutorial/rival.ts). */
+  tutorial?: true;
 }
 
 const P1_COLOR = COR_P1;
@@ -64,6 +67,7 @@ export class CharacterSelectScene extends BaseScene {
   private stageId = '';
   private torneio: CharacterSelectData['torneio'] | null = null;
   private atuais: CharacterSelectData['atuais'] | null = null;
+  private tutorial = false;
   private tiles: Tile[] = [];
   private columns = 1;
   private p1!: PlayerCursor;
@@ -81,6 +85,7 @@ export class CharacterSelectScene extends BaseScene {
     this.stageId = data?.stageId ?? '';
     this.torneio = data?.torneio ?? null;
     this.atuais = data?.atuais ?? null;
+    this.tutorial = data?.tutorial ?? false;
   }
 
   create(): void {
@@ -369,7 +374,8 @@ export class CharacterSelectScene extends BaseScene {
       return;
     }
     const cpu = this.p1.locked && !this.torneio;
-    this.etapa.setText(this.torneio ? 'Os adversários saem no sorteio' : cpu ? 'Agora escolha o adversário (CPU)' : 'Escolha o seu lutador').setColor(colorToCss(cpu ? P2_COLOR : P1_COLOR));
+    const rival = this.tutorial && this.p2.locked ? `Seu rival: ${SELECTABLE_ROSTER[this.p2.index].label}` : null;
+    this.etapa.setText(rival ?? (this.torneio ? 'Os adversários saem no sorteio' : this.tutorial ? 'Tutorial: escolha o seu lutador' : cpu ? 'Agora escolha o adversário (CPU)' : 'Escolha o seu lutador')).setColor(colorToCss(cpu ? P2_COLOR : P1_COLOR));
   }
 
   private hoverTile(index: number): void {
@@ -412,13 +418,20 @@ export class CharacterSelectScene extends BaseScene {
     this.showPreview(cursor, 'light-punch');
     playAudioCue(this, 'ui-travar', this.app.settingsStore.getState());
 
-    if (this.mode === '1vcpu' && cursor === this.p1 && !this.torneio) {
+    if (this.mode === '1vcpu' && cursor === this.p1 && this.tutorial) {
+      this.travarRival();
+    } else if (this.mode === '1vcpu' && cursor === this.p1 && !this.torneio) {
       this.abrirEscolhaDaCpu();
     }
 
     this.flashTile(cursor.index, () => {
       if (this.torneio) {
         this.time.delayedCall(250, () => this.comecarTorneio());
+        return;
+      }
+      if (this.tutorial) {
+        // Dá tempo de ver quem é o rival antes da luta.
+        this.time.delayedCall(1100, () => this.startMatch());
         return;
       }
       if (this.mode === '1vcpu') {
@@ -463,6 +476,21 @@ export class CharacterSelectScene extends BaseScene {
     this.mostrarEtapa();
   }
 
+  /** Tutorial: a CPU trava sozinha no rival do mascote do jogador. */
+  private travarRival(): void {
+    const elenco = SELECTABLE_ROSTER.map(({ id }) => {
+      const json = LUTADORES.find((lutador) => lutador.id === id);
+      return { id, estado: json?.estado, rival: json?.rival };
+    });
+    const rival = escolherRival(SELECTABLE_ROSTER[this.p1.index].id, elenco);
+    this.p2.index = this.casaDe(rival) ?? this.p1.index;
+    this.p2.locked = true;
+    this.setCursorVisible(this.p2, true);
+    this.refreshCursor(this.p2);
+    this.showPreview(this.p2, 'light-punch');
+    this.mostrarEtapa();
+  }
+
   private startMatch(): void {
     if (this.transitioning) {
       return;
@@ -474,7 +502,8 @@ export class CharacterSelectScene extends BaseScene {
       mode: this.mode,
       stageId: this.stageId,
       p1CharacterId: SELECTABLE_ROSTER[this.p1.index].id,
-      p2CharacterId: SELECTABLE_ROSTER[this.p2.index].id
+      p2CharacterId: SELECTABLE_ROSTER[this.p2.index].id,
+      ...(this.tutorial ? { treino: true, tutorial: true } : {})
     });
   }
 
@@ -496,6 +525,10 @@ export class CharacterSelectScene extends BaseScene {
     }
     if (this.torneio) {
       this.scene.start(SCENE_KEYS.Dificuldade, { destino: 'torneio', ...this.torneio });
+      return;
+    }
+    if (this.tutorial) {
+      this.scene.start(SCENE_KEYS.MainMenu);
       return;
     }
     // Escolhendo o adversário: Esc destrava o próprio lutador em vez de sair.

@@ -11,6 +11,7 @@
   },
   "selecionavel": true,
   "label": "Galo",
+  "estado": "MG",
   "museu": {
     "apelido": "Briga de galo se resolve no bico",
     "descricao": "Galo de briga preto e branco, agressivo e de curta distância. Chuta girando e deixa rastro de garras; no especial, voa baixo até o rival e dá uma bicada na altura da cabeça. Quem se abaixa escapa.",

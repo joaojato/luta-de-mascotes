@@ -38,6 +38,10 @@ export interface LutadorJson {
   /** Pasta pública das sheets, ex. `/assets/lutadores/urubu`. */
   assetRoot: string;
   anchorUsage?: string;
+  /** Sigla da UF do clube: a CPU do tutorial procura rival do mesmo estado e da mesma região. */
+  estado?: string;
+  /** Id do clássico: quem a CPU escolhe primeiro no tutorial (docs/superpowers/specs/2026-11-03-tutorial-design.md). */
+  rival?: string;
   /** Cores e estampa da metade dele na arquibancada (docs/torcida-dividida.md). */
   torcida?: { estampa: string; cores: string[] };
   /** Falso tira o lutador da tela de seleção (fica só na Academia). Padrão: verdadeiro. */

@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { createDefaultFighterPlaygroundState, getFighterCombat } from '../fighterConfig';
 import { GOLPES } from '../golpes';
 import { ADVANCE_KINDS } from '../moveMechanics';
+import { UFS } from '../tutorial/rival';
 import { expandirSkins, LUTADORES, LUTADOR_CHARACTERS, type LutadorJson } from './index';
 import urubuJson from './urubu.json';
 
@@ -30,6 +31,17 @@ describe('registro de lutadores (Regra do JSON)', () => {
   it('tem pelo menos um lutador e ids únicos', () => {
     expect(LUTADORES.length).toBeGreaterThan(0);
     expect(new Set(LUTADORES.map((lutador) => lutador.id)).size).toBe(LUTADORES.length);
+  });
+
+  // Rival da CPU no tutorial: todo mascote diz o estado, e o clássico existe.
+  it('todo lutador tem estado válido e o rival declarado existe', () => {
+    LUTADORES.forEach((lutador) => {
+      expect(UFS, `${lutador.id} estado`).toContain(lutador.estado);
+      if (lutador.rival !== undefined) {
+        expect(LUTADORES.map(({ id }) => id), `${lutador.id} rival`).toContain(lutador.rival);
+        expect(lutador.rival).not.toBe(lutador.id);
+      }
+    });
   });
 
   LUTADORES.forEach((lutador) => {

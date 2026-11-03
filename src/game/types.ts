@@ -2,6 +2,7 @@ import type { Dificuldade } from './cpu';
 
 export const SCENE_KEYS = {
   Boot: 'BootScene',
+  PrimeiraVez: 'PrimeiraVezScene',
   MainMenu: 'MainMenuScene',
   ModeSelect: 'ModeSelectScene',
   Dificuldade: 'DificuldadeScene',
@@ -55,6 +56,10 @@ export interface MatchConfig {
   treino?: true;
   /** No treino: a CPU joga com o P2 (senão ele fica parado). */
   treinoCpu?: boolean;
+  /** Tutorial (vem com `treino`): falas, checklist e a CPU roteirizada, sem o painel do treino. */
+  tutorial?: true;
+  /** Dificuldade desta luta, no lugar da dos ajustes (a luta que fecha o tutorial é no Fácil). */
+  cpuDificuldade?: Dificuldade;
 }
 
 export type GameProfile = 'landscape' | 'portrait';

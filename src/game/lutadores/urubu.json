@@ -1,6 +1,8 @@
 {
   "id": "urubu",
   "label": "Urubu",
+  "estado": "RJ",
+  "rival": "almirante",
   "museu": {
     "apelido": "O dono do céu da arquibancada",
     "descricao": "Bicho grande de asa, camisa listrada em vermelho e preto. Luta por cima: bicada que puxa o rival para perto, golpe de asas e, no especial, sobe numa térmica e cai do alto como um meteoro. Só escapa quem pula recuando.",

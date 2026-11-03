@@ -2,6 +2,7 @@
   "id": "coxa",
   "sons": {"carga": "arroto", "projetil-acerto": "lata", "acerto-leve": "acerto-leve-andador", "acerto-pesado": "acerto-pesado-cabecada"},
   "label": "Vovô Coxa",
+  "estado": "PR",
   "museu": {
     "apelido": "O mais velho da turma, e o mais forte depois da cerveja",
     "descricao": "Velhinho de boné, bigode branco e andador, que luta com o que tem à mão: batidinha de andador, cabeçada e lata de cerveja em parábola. No especial ele bebe e vira o Vovô Maromba por cinco segundos: bate mais forte e apanha menos.",

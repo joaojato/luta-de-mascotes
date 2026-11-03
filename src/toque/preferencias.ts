@@ -24,6 +24,16 @@ export const FUNCOES_DO_BOTAO: { id: FuncaoDoBotao; nome: string }[] = [
 
 export type FuncoesDosBotoes = Record<PosicaoDoBotao, FuncaoDoBotao>;
 
+/**
+ * Como cada botão do losango de golpes se chama em cada cara. A chave é o
+ * lugar do botão no losango (o de cima é o Y / Triângulo), nunca o
+ * direcional: movimento no celular é sempre o direcional.
+ */
+export const NOMES_DOS_BOTOES: Record<Cara, Record<PosicaoDoBotao, string>> = {
+  xbox: { cima: 'Y', direita: 'B', baixo: 'A', esquerda: 'X' },
+  playstation: { cima: 'Triângulo', direita: 'Bola', baixo: 'Xis', esquerda: 'Quadrado' }
+};
+
 /** O losango de fábrica, igual nas duas caras (docs/mobile.md). */
 export const FUNCOES_PADRAO: FuncoesDosBotoes = { cima: 'special', direita: 'block', baixo: 'light', esquerda: 'heavy' };
 

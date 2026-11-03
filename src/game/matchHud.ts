@@ -214,6 +214,23 @@ export class MatchHud {
     this.atualizarTorcida();
   }
 
+  /**
+   * Onde o Putômetro ou a barra do especial de um lado está na tela: o foco
+   * de luz do tutorial acende ali.
+   * @param oQue - O medidor da torcida ou a barra do especial.
+   * @param lado - 0 é o P1.
+   */
+  areaNaTela(oQue:'putometro'|'barra',lado:0|1):Phaser.Geom.Rectangle {
+    const k=this.root.scaleX;
+    if(oQue==='putometro'){
+      const c=this.medidoresTorcida[lado].caixa;
+      return new Phaser.Geom.Rectangle(this.root.x+c.x*k,this.root.y+c.y*k,c.largura*k,c.altura*k);
+    }
+    const g=lado===0?this.p1MeterGeom:this.p2MeterGeom;
+    const x=g.originX===0?g.anchorX:g.anchorX-g.width;
+    return new Phaser.Geom.Rectangle(this.root.x+x*k,this.root.y+g.topY*k,g.width*k,g.height*k);
+  }
+
   /** Arco abaixo do retrato, preservando o espaco reservado ao HUD principal. */
   private buildTorcida(x:number,y:number,largura:number,fim:number):void {
     this.medidoresTorcida.push(new PutometroVisual(this.scene,this.root,x,y,largura-4,Math.max(fim-y,largura*.9+26),this.medidoresTorcida.length===0));

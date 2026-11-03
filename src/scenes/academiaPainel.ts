@@ -64,6 +64,8 @@ export interface PainelAcademiaOpcoes {
   restaurarCombate: (characterId: string) => void;
   /** Abre o treino livre (a Luta sem relógio nem fim). */
   abrirTreino: () => void;
+  /** Abre o tutorial (escolha do mascote, depois a luta com falas e checklist). */
+  abrirTutorial: () => void;
 }
 
 export class PainelAcademia {
@@ -189,6 +191,9 @@ export class PainelAcademia {
     } else if (acao === 'treino') {
       this.opcoes.abrirTreino();
       return;
+    } else if (acao === 'tutorial') {
+      this.opcoes.abrirTutorial();
+      return;
     } else if (acao === 'restaurar') {
       this.opcoes.restaurarCombate(this.lutadorAtual());
       this.aviso = 'Números do JSON de volta.';
@@ -276,6 +281,8 @@ export class PainelAcademia {
     return `
       <button data-acao="treino" style="${estiloBotao(true)};width:100%">Abrir treino livre (T)</button>
       <p style="color:#94a3b8;margin:6px 0 10px">1 x 1 sem relógio e sem fim. A vida volta a encher 2 s depois do último golpe. Troque o P1 e o P2 e ligue a CPU no painel do treino.</p>
+      <button data-acao="tutorial" style="${estiloBotao(true)};width:100%">Abrir tutorial (U)</button>
+      <p style="color:#94a3b8;margin:6px 0 10px">Escolha o mascote; a CPU vem com o rival e faz o que cada etapa pede.</p>
       <h4 style="margin:0 0 4px">Mostrar na luta</h4>
       ${caixa('pontosNaVida', 'Pontos na barra de vida (150/150)', 'escreve a vida que sobra dentro da barra')}
       ${caixa('danoDosGolpes', 'Dano de cada golpe', 'número subindo de quem apanhou; defendido, entre parênteses')}
