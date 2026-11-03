@@ -3301,3 +3301,28 @@ Vercel não foi atualizada (pedido era só o git).
 **Atrito:** nada.
 **Em aberto:** decidir o `fighter-playground.json`; publicar na Vercel
 quando ele pedir.
+
+## 2026-11-02: cortes horizontais do Gremista (v5) e Mosqueteiro Paulista
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "Aplique os novos modelos de animação. Mude o nome do mosqueteiro
+para mosqueteiro paulista."
+**Feito:** `horizontais-v5/` do Codex (corte rápido e corte baixo varrendo em
+escorço para a câmera). A troca dos caminhos no JSON tinha entrado no commit
+do Flecha Negra sem os PNGs (o mesmo erro do passos v4); os PNGs, as caixas e
+o nome entraram nos commits b5c8c4a e 7080c6d, que a outra sessão publicou.
+Caixas medidas onde a lâmina termina atravessada: rápido nos quadros 3 e 6,
+baixo no 3 (no escorço a lâmina não passa do corpo). O Mosqueteiro do
+Corinthians passa a se chamar "Mosqueteiro Paulista" no jogo (`label`); o id
+continua `mosqueteiro`.
+**Verificado:** `npm run check` (32 arquivos, 308 testes). Navegador: HUD com
+"Mosqueteiro Gaúcho" x "Mosqueteiro Paulista", cabe. Corte rápido acerta de 80
+a 140 px; corte baixo de 60 a 150. Flecha Negra (pendente da entrada anterior):
+nos três tiros para em x 436, 182 px atrás do Gremista (618), e a flecha voa
+450 a 520 ms até o alvo.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nome "Mosqueteiro" trocado por
+"Mosqueteiro Paulista".
+**Aprovado explicitamente:** nada.
+**Atrito:** o meu commit levou de novo um JSON do Codex sem os PNGs.
+**Em aberto:** o corte rápido tem só 50 ms de contato por corte (o desenho).

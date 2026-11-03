@@ -558,3 +558,5 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - Golpe com mais de uma arma desenhada dispara tudo o que o desenho mostra: o João cobra cada tiro visto na sheet (2026-11-02).
 - Arte do Codex pode trocar o JSON enquanto eu trabalho: antes de commitar o JSON, conferir se todo `file` dele existe no git, senão o push sai quebrado (2026-11-02).
 - Ataque de NPC que mira o adversário precisa vir de longe para ser desviável: o Flecha atirando a 300 px, pelas costas do alvo, ficou difícil demais; atira de trás do dono (2026-11-02).
+- Reincidência: o Codex trocou caminhos do JSON do Gremista de novo durante a sessão, e o commit saiu sem os PNGs. Antes de todo commit que toca JSON de lutador, rodar `git ls-files` contra cada `file` dele (2026-11-02).
+- Nome no jogo do Mosqueteiro do Corinthians: "Mosqueteiro Paulista", par do "Mosqueteiro Gaúcho" (pedido dele, 2026-11-02).
