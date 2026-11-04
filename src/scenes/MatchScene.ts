@@ -37,7 +37,7 @@ import { BaseScene } from './BaseScene';
 import { CpuDoTutorial } from '../game/tutorial/cpuDoTutorial';
 import { textoDasDuasMaos, trocarMarcadores, type ContextoDasTeclas } from '../game/tutorial/teclas';
 import { ROTEIRO } from '../game/tutorial/roteiro';
-import { Instrucoes } from '../game/tutorial/instrucoes';
+import { FALA_FINAL_DAS_INSTRUCOES, Instrucoes } from '../game/tutorial/instrucoes';
 import { Tutorial } from '../game/tutorial/tutorial';
 import { ANEL_MS, AVISOS_DO_APARO } from '../game/tutorial/aparo';
 import { RITMO_DA_BARRA } from '../game/putometro';
@@ -113,7 +113,7 @@ export class MatchScene extends BaseScene {
   /** Tutorial (docs/superpowers/specs/2026-11-03-tutorial-design.md): as etapas, a CPU dele e o que desenha. */
   private tutorial: TutorialDaLuta | null = null;
   /** Instruções do 1x1 (a caixinha da Seleção): os comandos dos dois lados, depois a luta. */
-  private instrucoes: { estado: Instrucoes; tela: TutorialNaTela; lista: string; acabou: boolean } | null = null;
+  private instrucoes: { estado: Instrucoes; tela: TutorialNaTela; lista: string; acabou: boolean; falaDesde: number | null } | null = null;
   private levantando = new Set<Fighter>();
 
   private phase: MatchPhase = 'intro';
@@ -194,8 +194,18 @@ export class MatchScene extends BaseScene {
     this.painelTreino = this.config.treino && !this.config.tutorial && !this.config.instrucoes ? this.montarPainelTreino() : null;
     this.tutorial = this.config.tutorial ? this.montarTutorial() : null;
     this.instrucoes = this.config.instrucoes
-      ? { estado: new Instrucoes(), tela: new TutorialNaTela(this, BANNER_DEPTH + 20, controlesDeToqueAtivos()), lista: '', acabou: false }
+      ? { estado: new Instrucoes(), tela: new TutorialNaTela(this, BANNER_DEPTH + 20, controlesDeToqueAtivos()), lista: '', acabou: false, falaDesde: null }
       : null;
+    if (this.instrucoes) {
+      // O balão final das instruções fecha com qualquer botão ou toque, e a luta começa.
+      const continuar = (evento?: KeyboardEvent): void => {
+        const desde = this.instrucoes?.falaDesde ?? null;
+        if (evento?.key === 'Escape' || this.pausa || desde === null || this.time.now - desde < 400) return;
+        this.comecarLutaDasInstrucoes();
+      };
+      this.input.keyboard?.on('keydown', continuar);
+      this.input.on('pointerdown', () => continuar());
+    }
 
     this.startRound();
     this.agendarTorcida(null);
@@ -250,6 +260,11 @@ export class MatchScene extends BaseScene {
     const fighting = this.phase === 'fighting';
     // Fala do tutorial na tela: a luta congela inteira até a pessoa continuar.
     if (fighting && this.tutorial && this.atualizarFala()) {
+      return;
+    }
+    // O balão final das instruções também congela a luta.
+    if (fighting && this.instrucoes && this.instrucoes.falaDesde !== null) {
+      this.anims.pauseAll();
       return;
     }
 
@@ -395,7 +410,7 @@ export class MatchScene extends BaseScene {
       this.mostrarDano(hurt, vidaAntes - defender.healthPoints, blocked ? profile.damage : null);
       defender.flashHit(blocked);
       attacker.markAttackConnected(attack.signature, blocked);
-      this.contarGolpeNoTutorial(attacker, attack.move, blocked, breakStunMs !== null, perfect, isSpecial);
+      this.contarGolpeNoTutorial(attacker, attack.projectile && !isSpecial ? 'chute-basico' : attack.move, blocked, breakStunMs !== null, perfect, isSpecial);
       attacker.registerOffense(blocked, isSpecial);
       defender.registerDefense(blocked);
       const ladoAtacante=attacker===this.p1?0:1,ladoDefensor=defender===this.p1?0:1;
@@ -918,7 +933,11 @@ export class MatchScene extends BaseScene {
   /** As teclas que a pessoa usa agora, no teclado ou no celular, e para onde ela olha. */
   private contextoDasTeclas(): ContextoDasTeclas {
     const olhando = this.p1.facingDirection;
-    return controlesDeToqueAtivos() ? { toque: true, preferencias: carregarPreferencias(), olhando } : { toque: false, botoes: this.controles.p1, olhando };
+    // Os nomes dos golpes do mascote do jogador (`nomes` do JSON), para "Acertar um golpe de Jab".
+    const nomes = LUTADORES.find((lutador) => lutador.id === this.p1.characterId)?.nomes;
+    return controlesDeToqueAtivos()
+      ? { toque: true, preferencias: carregarPreferencias(), olhando, nomes }
+      : { toque: false, botoes: this.controles.p1, olhando, nomes };
   }
 
   /**
@@ -1060,13 +1079,18 @@ export class MatchScene extends BaseScene {
       seconds
     );
     if (instrucoes.estado.acabou) {
-      this.comecarLutaDasInstrucoes();
+      // O balão final (João, 04/11/2026); confirmar começa a luta.
+      if (instrucoes.falaDesde === null) {
+        instrucoes.falaDesde = this.time.now;
+        instrucoes.tela.esconderDuasListas();
+        instrucoes.tela.mostrarFala(trocarMarcadores(FALA_FINAL_DAS_INSTRUCOES, this.contextoDasTeclas()), []);
+      }
       return;
     }
     // Cada lado com as próprias teclas: o P1 pode estar no celular, o P2 é sempre teclado.
     const contextos: [ContextoDasTeclas, ContextoDasTeclas] = [
       this.contextoDasTeclas(),
-      { toque: false, botoes: this.controles.p2, olhando: this.p2.facingDirection }
+      { toque: false, botoes: this.controles.p2, olhando: this.p2.facingDirection, nomes: LUTADORES.find((lutador) => lutador.id === this.p2.characterId)?.nomes }
     ];
     const lados = ([0, 1] as const).map((lado) =>
       instrucoes.estado.checklist(lado).map((item) => ({ texto: trocarMarcadores(item.texto, contextos[lado]), feito: item.feito }))
@@ -1082,6 +1106,7 @@ export class MatchScene extends BaseScene {
   private comecarLutaDasInstrucoes(): void {
     if (!this.instrucoes || this.instrucoes.acabou) return;
     this.instrucoes.acabou = true;
+    this.anims.resumeAll();
     this.scene.restart({
       mode: '1v1',
       stageId: this.config.stageId,

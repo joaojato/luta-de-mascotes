@@ -28,7 +28,7 @@ export interface EtapaDasInstrucoes {
   itens: { comando: Comando1x1; texto: string }[];
 }
 
-/** Os `{marcadores}` viram as teclas de cada lado (teclas.ts). */
+/** Os `{marcadores}` viram as teclas e os nomes dos golpes de cada lado (teclas.ts). */
 export const INSTRUCOES: EtapaDasInstrucoes[] = [
   {
     id: 'andar',
@@ -50,24 +50,24 @@ export const INSTRUCOES: EtapaDasInstrucoes[] = [
     id: 'bater',
     titulo: 'Soco e chute',
     itens: [
-      { comando: 'soco', texto: 'Soco {soco}' },
-      { comando: 'chute', texto: 'Chute {chute}' }
+      { comando: 'soco', texto: '{golpe:soco-rapido} {soco}' },
+      { comando: 'chute', texto: '{golpe:chute-basico} {chute}' }
     ]
   },
   {
     id: 'abaixado',
     titulo: 'Golpes abaixado (segurando o baixo)',
     itens: [
-      { comando: 'soco-forte', texto: 'Soco forte {abaixar} + {soco}' },
-      { comando: 'chute-baixo', texto: 'Chute baixo {abaixar} + {chute}' }
+      { comando: 'soco-forte', texto: '{golpe:soco-forte} {abaixar} + {soco}' },
+      { comando: 'chute-baixo', texto: '{golpe:chute-baixo} {abaixar} + {chute}' }
     ]
   },
   {
     id: 'no-ar',
     titulo: 'Golpes no ar',
     itens: [
-      { comando: 'soco-no-ar', texto: 'Soco no ar {pular}, {soco}' },
-      { comando: 'voadora', texto: 'Voadora {pular}, {chute}' }
+      { comando: 'soco-no-ar', texto: '{golpe:soco-no-ar} {pular}, {soco}' },
+      { comando: 'voadora', texto: '{golpe:voadora} {pular}, {chute}' }
     ]
   },
   {
@@ -75,7 +75,7 @@ export const INSTRUCOES: EtapaDasInstrucoes[] = [
     titulo: 'Defesa e especial',
     itens: [
       { comando: 'defesa', texto: 'Defender {defesa}' },
-      { comando: 'especial', texto: 'Especial {especial} (com a barra cheia)' }
+      { comando: 'especial', texto: '{golpe:especial} {especial} (com a barra cheia)' }
     ]
   }
 ];
@@ -101,6 +101,9 @@ export function comandosApertados({ input, noAr }: LadoNoQuadro): Comando1x1[] {
     ...(input.special ? (['especial'] as const) : [])
   ];
 }
+
+/** O balão do fim, antes da luta (João, 04/11/2026). */
+export const FALA_FINAL_DAS_INSTRUCOES = 'Abra o menu para revisar os golpes ({menu}).';
 
 export class Instrucoes {
   private indice = 0;

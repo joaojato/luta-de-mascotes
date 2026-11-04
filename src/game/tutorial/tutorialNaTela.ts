@@ -152,6 +152,15 @@ export class TutorialNaTela {
     });
   }
 
+  /** Tira o título e as duas listas das instruções (o balão final vem no lugar). */
+  esconderDuasListas(): void {
+    this.titulo?.setVisible(false);
+    this.listasDosLados.forEach(({ texto, fundo }) => {
+      texto.setVisible(false);
+      fundo.setVisible(false);
+    });
+  }
+
   /** Um aviso curto no alto (o resultado do aparo), que some sozinho. */
   mostrarAviso(texto: string, cor: string): void {
     this.scene.tweens.killTweensOf(this.aviso);

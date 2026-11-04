@@ -679,3 +679,12 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   0,4 s (medido: soco encosta em 80 ms, CPU termina em 457 ms, balão em
   850 ms). A troca de texto "se animou mesmo!" era dele, não de outra
   sessão: perguntar antes de supor quem mexeu (2026-11-04).
+- **Golpe se reconhece pelo botão, não pelo nome interno.** O tutorial
+  contava o chute pelo `move` do motor ("tiro"), e o chute do Galo é o ovo
+  (`move: 'cachimbo'`): quem escolhesse o Galo travava na etapa de bater.
+  Projétil que não é especial é o chute. E a lista de golpes da pausa seguia
+  o JSON sem o quebra-galho do motor: o Almirante, sem `low-kick`, parecia
+  não ter chute (2026-11-04).
+- **Chamar `scene.start` direto no `page.evaluate` do Playwright trava a
+  página às vezes.** Pedir a troca de cena com `setTimeout(..., 0)` dentro
+  do evaluate (2026-11-04).

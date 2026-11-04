@@ -13,6 +13,7 @@ import {
   TEXTO_CLARO,
   TEXTO_DESTAQUE
 } from './estilo';
+import { golpesNaPausa } from './golpes';
 import { LUTADORES } from './lutadores';
 import { telaDe } from './nitidez';
 import { opcoesDaPausa, type AcoesDaPausa, type OpcaoDaPausa } from './opcoesDaPausa';
@@ -42,17 +43,7 @@ const COMANDOS_GERAIS = [
 /** Nome de cada golpe do mascote, tirado do JSON dele (Regra do JSON). */
 export function golpesDoMascote(personagemId: string): string[] {
   const lutador = LUTADORES.find((l) => l.id === personagemId);
-  if (!lutador) return [];
-  const label = (acao: string | undefined) => lutador.actions.find((a) => a.action === acao)?.label;
-  const moves = lutador.moves as { kick?: { action?: string }; lowKick?: { action?: string }; special?: { action?: string } } | undefined;
-  const linhas: [string, string | undefined][] = [
-    ['Soco', label('light-punch')],
-    ['Baixo + Soco', label('heavy-punch')],
-    ['Chute', label(moves?.kick?.action ?? 'heavy-kick')],
-    ['Baixo + Chute', label(moves?.lowKick?.action ?? 'low-kick')],
-    ['Especial', label(moves?.special?.action ?? 'special')]
-  ];
-  return linhas.filter(([, nome]) => nome).map(([botao, nome]) => `${botao}: ${nome}`);
+  return lutador ? golpesNaPausa(lutador) : [];
 }
 
 /**

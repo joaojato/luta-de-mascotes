@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GOLPES, golpesDoLutador, nomesDosBotoes } from './golpes';
+import { GOLPES, golpesDoLutador, golpesNaPausa, nomesDosBotoes } from './golpes';
 import { LUTADORES } from './lutadores';
 import { getCharacterDefinition } from './hero';
 
@@ -45,5 +45,19 @@ describe('nome do golpe no botão do celular', () => {
         expect(nome!.length, `${lutador.id}: ${golpe.id}`).toBeLessThanOrEqual(11);
       }
     }
+  });
+});
+
+describe('golpes na pausa', () => {
+  it('o Almirante lista o baixo + chute como os outros: o chute forte, que é o que ele dá', () => {
+    const almirante = LUTADORES.find((l) => l.id === 'almirante')!;
+    expect(golpesNaPausa(almirante)).toContain('Chute: Tiro de garrucha');
+    expect(golpesNaPausa(almirante)).toContain('Baixo + Chute: Chute forte');
+  });
+
+  it('todo mascote da seleção tem as cinco linhas', () => {
+    LUTADORES.filter((l) => l.selecionavel !== false).forEach((lutador) => {
+      expect(golpesNaPausa(lutador).map((linha) => linha.split(':')[0]), lutador.id).toEqual(['Soco', 'Baixo + Soco', 'Chute', 'Baixo + Chute', 'Especial']);
+    });
   });
 });

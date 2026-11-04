@@ -16,8 +16,11 @@ export interface LeituraDoTutorial extends LeituraDaLuta {
   euOcupado: boolean;
 }
 
-/** Até onde ela anda para chegar no jogador, px de mundo entre os centros. */
-const PERTO = 200;
+/**
+ * Até onde ela anda para chegar no jogador, px de mundo entre os centros:
+ * perto o bastante para o soco rápido mais curto do elenco alcançar.
+ */
+const PERTO = 160;
 /** Na guarda e nos golpes, chega um pouco mais perto para o golpe alcançar. */
 const PERTO_DO_GOLPE = 180;
 /** Pulando no lugar (João: 1,5 s entre um pulo e outro). */

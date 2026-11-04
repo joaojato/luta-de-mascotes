@@ -148,12 +148,52 @@ const GOLPE_DO_BOTAO: Record<EstadoDoLutador, { light: GolpeId; heavy: GolpeId }
 };
 
 /**
+ * O nome curto de um golpe do mascote (o do botão do celular), ou o do catálogo.
+ * @param nomes - O campo `nomes` do JSON do lutador (pode faltar).
+ * @param id - O golpe.
+ */
+export function nomeDoGolpe(nomes: Partial<Record<GolpeId, string>> | undefined, id: GolpeId): string {
+  return nomes?.[id] ?? NOME_GENERICO[id];
+}
+
+/** O que a pausa lê do JSON do lutador para listar os golpes. */
+export interface LutadorDaPausa {
+  actions: { action: string; label?: string }[];
+  moves?: { heavy?: { action?: string }; kick?: { action?: string }; lowKick?: { action?: string }; special?: { action?: string } };
+}
+
+/**
+ * Os golpes do mascote na pausa, com o nome da sheet que o motor toca de
+ * verdade: a do JSON, a própria do catálogo ou o quebra-galho. O Almirante
+ * não tem `low-kick` e o baixo + chute dele é o chute forte; antes a linha
+ * sumia e ele parecia não ter chute (João, 04/11/2026).
+ * @param lutador - O JSON do mascote.
+ */
+export function golpesNaPausa(lutador: LutadorDaPausa): string[] {
+  const label = (acao: string | undefined) => lutador.actions.find((a) => a.action === acao)?.label;
+  const existe = (acao: string | undefined) => acao !== undefined && lutador.actions.some((a) => a.action === acao);
+  const doCatalogo = (id: GolpeId, doJson?: string): string | undefined => {
+    const golpe = GOLPES.find((g) => g.id === id)!;
+    return label([doJson, ...golpe.acoes, ...golpe.quebraGalho].find(existe));
+  };
+  const { moves } = lutador;
+  const linhas: [string, string | undefined][] = [
+    ['Soco', doCatalogo('soco-rapido')],
+    ['Baixo + Soco', doCatalogo('soco-forte', moves?.heavy?.action)],
+    ['Chute', doCatalogo('chute-basico', moves?.kick?.action)],
+    ['Baixo + Chute', doCatalogo('chute-baixo', moves?.lowKick?.action)],
+    ['Especial', label(moves?.special?.action ?? 'special')]
+  ];
+  return linhas.filter(([, nome]) => nome).map(([botao, nome]) => `${botao}: ${nome}`);
+}
+
+/**
  * O nome do golpe que cada botão solta agora, para escrever no botão do celular.
  * @param nomes - O campo `nomes` do JSON do lutador (pode faltar).
  * @param estado - De pé, abaixado ou no ar.
  */
 export function nomesDosBotoes(nomes: Partial<Record<GolpeId, string>> | undefined, estado: EstadoDoLutador): NomesDosBotoes {
-  const nome = (id: GolpeId): string => nomes?.[id] ?? NOME_GENERICO[id];
+  const nome = (id: GolpeId): string => nomeDoGolpe(nomes, id);
   const { light, heavy } = GOLPE_DO_BOTAO[estado];
   return {
     light: nome(light),

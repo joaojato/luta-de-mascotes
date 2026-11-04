@@ -3932,3 +3932,29 @@ testes e build da versão do commit.
 **Aprovado explicitamente:** nada.
 **Atrito:** eu tinha atribuído o "mesmo" a outra sessão; era dele.
 **Em aberto:** teste dele no teclado e no celular.
+
+## 2026-11-04: nomes dos golpes no tutorial, I O P, chute do Almirante, revisar no menu
+
+**Marco:** 2, segue em andamento.
+**Pedido:** checklist com "acertar um golpe de <nome do golpe do mascote>";
+fala das duas mãos na ordem I O P; o Almirante "sem chute" alinhado com os
+outros; balão "Abra o menu para revisar os golpes" no fim do tutorial e do
+mini tutorial.
+**Feito:** marcador `{golpe:...}` com os `nomes` do JSON de cada mascote
+(cada lado com os seus no 1x1); ordem I O P; a pausa lista os golpes pelo
+mesmo caminho do motor (o Almirante ganhou "Baixo + Chute: Chute forte");
+fala "Abra o menu para revisar os golpes ("Esc")" antes do QUEBRE ELE e
+balão final nas Instruções, que congela até o confirmar. De quebra: o
+chute de projétil conta pelo botão (o ovo do Galo travava o tutorial) e a
+CPU da etapa de bater chega a 160 px.
+**Verificado:** no navegador, na versão do commit: checklist do Galo com
+"Socos", o ovo contando como chute, falas finais na ordem, listas do 1x1
+com os nomes de cada lado, balão final e a luta 1x1 depois do confirmar,
+pausa do Almirante com as cinco linhas. Typecheck, 49 arquivos e 455
+testes, build.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** "Acertar um soco"; a ordem O I P.
+**Aprovado explicitamente:** nada.
+**Atrito:** o robô a 13 FPS pula a janela de 80 ms do soco rápido de
+alguns mascotes; a jogabilidade do soco fica para o teste dele.
+**Em aberto:** teste dele no teclado e no celular.

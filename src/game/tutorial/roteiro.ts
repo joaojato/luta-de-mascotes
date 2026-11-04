@@ -105,8 +105,8 @@ export const ROTEIRO: Etapa[] = [
     id: 'bater',
     falas: ['Experimente bater com {soco} ou {chute}.'],
     checklist: [
-      { objetivo: 'acertar-soco', texto: 'Acertar um soco {soco}' },
-      { objetivo: 'acertar-chute', texto: 'Acertar um chute {chute}' }
+      { objetivo: 'acertar-soco', texto: 'Acertar um golpe de {golpe:soco-rapido} {soco}' },
+      { objetivo: 'acertar-chute', texto: 'Acertar um golpe de {golpe:chute-basico} {chute}' }
     ],
     cpu: 'chegar'
   },
@@ -123,8 +123,8 @@ export const ROTEIRO: Etapa[] = [
     falas: ['Agora derrube essa guarda com golpes fortes! ({abaixar} + {soco} ou {abaixar} + {chute})'],
     // Cada golpe forte testado (João, 03/11/2026), não um ou outro.
     checklist: [
-      { objetivo: 'quebrar-guarda-soco', texto: 'Quebrar a guarda com o soco forte {abaixar} + {soco}' },
-      { objetivo: 'quebrar-guarda-chute', texto: 'Quebrar a guarda com o chute baixo {abaixar} + {chute}' }
+      { objetivo: 'quebrar-guarda-soco', texto: 'Quebrar a guarda com um golpe de {golpe:soco-forte} {abaixar} + {soco}' },
+      { objetivo: 'quebrar-guarda-chute', texto: 'Quebrar a guarda com um golpe de {golpe:chute-baixo} {abaixar} + {chute}' }
     ],
     cpu: 'guarda-alta'
   },
@@ -133,8 +133,8 @@ export const ROTEIRO: Etapa[] = [
     falas: ['Agora tente pulando ({pular}, e no ar {soco} ou {chute}).'],
     checklist: [
       // Pulando parado, o soco passa por cima de quem está em pé: pula na direção dele.
-      { objetivo: 'acertar-soco-no-ar', texto: 'Soco no ar, pulando na direção dele {pular} + {soco}' },
-      { objetivo: 'acertar-voadora', texto: 'Voadora {pular} + {chute}' }
+      { objetivo: 'acertar-soco-no-ar', texto: 'Acertar um golpe de {golpe:soco-no-ar}, pulando na direção dele {pular} + {soco}' },
+      { objetivo: 'acertar-voadora', texto: 'Acertar um golpe de {golpe:voadora} {pular} + {chute}' }
     ],
     cpu: 'pular'
   },
@@ -185,7 +185,7 @@ export const ROTEIRO: Etapa[] = [
   {
     id: 'especial',
     falas: ['Vamo Virar! Aperte {especial}.'],
-    checklist: [{ objetivo: 'acertar-especial', texto: 'Acertar o especial {especial}' }],
+    checklist: [{ objetivo: 'acertar-especial', texto: 'Acertar um golpe de {golpe:especial} {especial}' }],
     cpu: 'parada',
     putometro: 'meio',
     barraCheia: true
@@ -212,6 +212,12 @@ export const ROTEIRO: Etapa[] = [
     checklist: [],
     cpu: 'parada',
     soTeclado: true
+  },
+  {
+    id: 'revisar',
+    falas: ['Abra o menu para revisar os golpes ({menu}).'],
+    checklist: [],
+    cpu: 'parada'
   },
   {
     id: 'quebre-ele',
