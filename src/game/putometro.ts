@@ -41,3 +41,10 @@ export function faixaPutometro(e:Putometro,lado:0|1):0|1|2|3 {
   return preto>0 && v<=preto+1e-7?0:v<1/3?1:v<1-e.verde[lado]?2:3;
 }
 export const LEGENDAS_PUTOMETRO=['A Casa Caiu!','VAI T%M@ N* C#!','Vamo Virar!','Que Show!'];
+/**
+ * A torcida empurra o especial (roteiro do tutorial do João, 03/11/2026:
+ * "Agradar a torcida faz seu Especial carregar mais rápido com o tempo!"):
+ * quanto a barra enche sozinha por segundo, por faixa do Putômetro. Golpe
+ * dado ou tomado rende o mesmo em qualquer faixa.
+ */
+export const RITMO_DA_BARRA:readonly [number,number,number,number]=[.5,.75,1,1.5];

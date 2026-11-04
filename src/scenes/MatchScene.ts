@@ -37,6 +37,10 @@ import { BaseScene } from './BaseScene';
 import { CpuDoTutorial } from '../game/tutorial/cpuDoTutorial';
 import { trocarMarcadores, type ContextoDasTeclas } from '../game/tutorial/teclas';
 import { Tutorial } from '../game/tutorial/tutorial';
+import { ANEL_MS, AVISOS_DO_APARO } from '../game/tutorial/aparo';
+import { RITMO_DA_BARRA } from '../game/putometro';
+import { getCharacterAnimationByAction } from '../game/hero';
+import { PERFECT_GUARD_SECONDS } from '../game/moveMechanics';
 import { TutorialNaTela } from '../game/tutorial/tutorialNaTela';
 import { carregarPreferencias } from '../toque/preferencias';
 
@@ -142,6 +146,10 @@ export class MatchScene extends BaseScene {
 
     this.buildStage();
     this.spawnFighters();
+    // A torcida empurra o especial de cada um (GDD, "A torcida empurra o especial").
+    const ritmoDaBarra = (lado: 0 | 1, faixa: 0 | 1 | 2 | 3): void => (lado === 0 ? this.p1 : this.p2)?.setRitmoDaBarra(RITMO_DA_BARRA[faixa]);
+    this.events.on('torcida-medidor', ritmoDaBarra);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.events.off('torcida-medidor', ritmoDaBarra));
     this.registerKeys();
     this.createPaineisCelular();
 
@@ -207,6 +215,8 @@ export class MatchScene extends BaseScene {
       this.painelTreino = null;
       this.tutorial?.tela.destroy();
       this.tutorial = null;
+      // A câmera lenta do aparo mexe no relógio de animação do jogo todo.
+      this.anims.globalTimeScale = 1;
     });
   }
 
@@ -221,7 +231,7 @@ export class MatchScene extends BaseScene {
     if (this.pausa) {
       return;
     }
-    const seconds = delta / 1000;
+    const seconds = (delta / 1000) * this.escalaDoTempo();
     const fighting = this.phase === 'fighting';
     // Fala do tutorial na tela: a luta congela inteira até a pessoa continuar.
     if (fighting && this.tutorial && this.atualizarFala()) {
@@ -235,7 +245,11 @@ export class MatchScene extends BaseScene {
     const p1Input = fighting ? juntarInputs(this.readKeys(this.p1Keys), p1Celular) : { ...NEUTRAL_FIGHTER_INPUT };
     const p2Input = fighting
       ? this.tutorial
-        ? this.tutorial.cpu.atualizar(this.tutorial.estado.etapa.cpu, this.leituraDaCpu(time))
+        ? this.tutorial.cpu.atualizar(
+            this.tutorial.estado.cpu,
+            { ...this.leituraDaCpu(this.tutorial.relogio), guardaDoOponente: this.p1.guardStance, euOcupado: this.p2.isAttacking || this.p2.isStunned },
+            this.tutorial.antecedencia
+          )
         : this.cpu
         ? this.cpu.atualizar(this.leituraDaCpu(time))
         : this.config.treino
@@ -363,7 +377,7 @@ export class MatchScene extends BaseScene {
       this.mostrarDano(hurt, vidaAntes - defender.healthPoints, blocked ? profile.damage : null);
       defender.flashHit(blocked);
       attacker.markAttackConnected(attack.signature, blocked);
-      this.tutorial?.estado.golpe({ atacante: attacker === this.p1 ? 'p1' : 'p2', golpe: attack.move, defendido: blocked, guardaQuebrada: breakStunMs !== null });
+      this.contarGolpeNoTutorial(attacker, attack.move, blocked, breakStunMs !== null, perfect, isSpecial);
       attacker.registerOffense(blocked, isSpecial);
       defender.registerDefense(blocked);
       const ladoAtacante=attacker===this.p1?0:1,ladoDefensor=defender===this.p1?0:1;
@@ -674,8 +688,8 @@ export class MatchScene extends BaseScene {
       else this.alternarPausa();
     });
     keyboard.on('keydown-R', () => {
-      // No torneio não há revanche: o resultado vale.
-      if (this.phase === 'matchOver' && !this.config.torneio) {
+      // No torneio não há revanche: o resultado vale. Depois do tutorial, o fim é o menu.
+      if (this.phase === 'matchOver' && !this.config.torneio && !this.config.depoisDoTutorial) {
         this.rematch();
       }
     });
@@ -683,6 +697,7 @@ export class MatchScene extends BaseScene {
     keyboard.on('keydown-ENTER', () => {
       if (this.phase !== 'matchOver') return;
       if (this.config.torneio) this.continuarTorneio();
+      else if (this.config.depoisDoTutorial) this.goToMenu();
       else this.rematch();
     });
   }
@@ -858,6 +873,8 @@ export class MatchScene extends BaseScene {
       cpu: new CpuDoTutorial(),
       tela: new TutorialNaTela(this, BANNER_DEPTH + 20, controlesDeToqueAtivos()),
       falaDesde: Number.POSITIVE_INFINITY,
+      relogio: 0,
+      antecedencia: antecedenciaDoSoco(this.config.p2CharacterId),
       lista: '',
       dashes: this.p1.dashesIniciados.n,
       acabou: false
@@ -888,6 +905,10 @@ export class MatchScene extends BaseScene {
    */
   private atualizarFala(): boolean {
     const tutorial = this.tutorial!;
+    // Na etapa do especial a barra fica cheia, até durante a fala, e para de
+    // reencher quando o especial entra: a fala seguinte mostra ela enchendo.
+    const especialPendente = tutorial.estado.checklist.some((item) => !item.feito);
+    if (tutorial.estado.etapa.barraCheia && especialPendente && !this.p1.isMeterReady && !this.p1.isAttacking) this.p1.fillMeter();
     const nova = tutorial.estado.tomarEtapaNova();
     if (nova?.putometro) {
       // Do começo (0,7): três aparos levam ao topo, uma surra ao amarelo, três ao vermelho.
@@ -920,6 +941,7 @@ export class MatchScene extends BaseScene {
   private contarParaOTutorial(p1Input: FighterInput, seconds: number): void {
     const tutorial = this.tutorial;
     if (!tutorial) return;
+    tutorial.relogio += seconds * 1000;
     const dash = this.p1.dashesIniciados;
     const novoDash = dash.n !== tutorial.dashes;
     tutorial.dashes = dash.n;
@@ -929,13 +951,30 @@ export class MatchScene extends BaseScene {
         direita: p1Input.right,
         noAr: this.p1.isAirborne,
         agachado: this.p1.isDucking,
-        dash: !novoDash ? null : dash.dir === this.p1.facingDirection ? 'frente' : 'tras'
+        dash: !novoDash ? null : dash.dir === this.p1.facingDirection ? 'frente' : 'tras',
+        // Da hora do pulo ao pouso: o passo dado no começo do pulo também desvia.
+        cpuNoAr: this.p2.isAirborne || tutorial.cpu.emVoadora
       },
       seconds
     );
-    if (tutorial.estado.congelado) return;
+    // Encurralado na parede, o passo para trás não tem para onde ir: entre uma
+    // voadora e outra, os dois voltam ao lugar da largada.
+    if (tutorial.estado.cpu === 'voadoras' && this.p1.atWall && !this.p2.isAirborne && !tutorial.cpu.emVoadora && !this.p1.isStunned) {
+      this.reposicionarNoTutorial();
+    }
     const contexto = this.contextoDasTeclas();
-    const itens = tutorial.estado.checklist.map((item) => ({ texto: trocarMarcadores(item.texto, contexto), feito: item.feito }));
+    // O anel do aparo, em volta do tronco do jogador.
+    const anel = tutorial.estado.cpu === 'aparo' ? tutorial.cpu.aparo.anel(tutorial.relogio) : null;
+    const tronco = this.p1.getHurtRect();
+    tutorial.tela.desenharAnel(tronco?.centerX ?? this.p1.x, tronco?.centerY ?? 0, anel, trocarMarcadores('{defesa}', contexto).replace(/"/g, ''), (PERFECT_GUARD_SECONDS * 1000) / ANEL_MS);
+    if (tutorial.estado.congelado) return;
+    const { dica } = tutorial.estado.etapa;
+    const itens = tutorial.estado.esperandoGatilho
+      ? dica ? [{ texto: trocarMarcadores(dica, contexto), feito: false }] : []
+      : tutorial.estado.checklist.map((item) => ({
+          texto: trocarMarcadores(item.texto, contexto) + ((item.vezes ?? 1) > 1 ? `  ${Math.min(item.contagem, item.vezes!)}/${item.vezes}` : ''),
+          feito: item.feito
+        }));
     const lista = JSON.stringify(itens);
     if (lista !== tutorial.lista) {
       tutorial.lista = lista;
@@ -943,7 +982,47 @@ export class MatchScene extends BaseScene {
     }
   }
 
-  /** "Chega de conversa! QUEBRE ELE!": a luta de verdade, os mesmos dois, CPU no Fácil. */
+  /**
+   * Um golpe que encostou conta para o tutorial. No treino de aparo, o soco
+   * da CPU também é julgado: na hora, cedo ou tarde.
+   */
+  private contarGolpeNoTutorial(attacker: Fighter, move: string, blocked: boolean, guardaQuebrada: boolean, aparo: boolean, especial: boolean): void {
+    const tutorial = this.tutorial;
+    if (!tutorial) return;
+    const atacante = attacker === this.p1 ? 'p1' : 'p2';
+    if (atacante === 'p2' && move === 'soco-rapido' && tutorial.estado.cpu === 'aparo') {
+      const resultado = tutorial.cpu.aparo.contato(tutorial.relogio, blocked, aparo);
+      if (resultado) tutorial.tela.mostrarAviso(AVISOS_DO_APARO[resultado], resultado === 'certo' ? '#facc15' : '#fca5a5');
+    }
+    tutorial.estado.golpe({ atacante, golpe: move, defendido: blocked, guardaQuebrada, aparo, especial });
+  }
+
+  /** Os dois de volta ao lugar da largada, soltos, com a câmera encaixada (como no começo do round). */
+  private reposicionarNoTutorial(): void {
+    const fullMin = EDGE_MARGIN;
+    const fullMax = this.stageWorldWidth - EDGE_MARGIN;
+    for (const [lutador, x, lado] of [[this.p1, this.spawnX1, 1], [this.p2, this.spawnX2, -1]] as const) {
+      const vida = lutador.healthPoints;
+      lutador.setHorizontalBounds(fullMin, fullMax);
+      lutador.resetForRound(x, lado);
+      lutador.regenHealth(vida - lutador.healthPoints);
+      lutador.setFrozen(false);
+    }
+    this.updateCamera(true);
+  }
+
+  /** Câmera lenta enquanto o anel do aparo fecha; o resto do tempo, normal. */
+  private escalaDoTempo(): number {
+    const lento = this.tutorial?.estado.cpu === 'aparo' && this.tutorial.cpu.aparo.emAndamento && !this.pausa;
+    const escala = lento ? 0.5 : 1;
+    this.anims.globalTimeScale = escala;
+    return escala;
+  }
+
+  /**
+   * "Chega de conversa! QUEBRE ELE!": a luta de verdade, os mesmos dois, CPU
+   * no Fácil. Na tela de fim dela, confirmar leva ao menu (João, 03/11/2026).
+   */
   private comecarLutaDoTutorial(): void {
     if (!this.tutorial || this.tutorial.acabou) return;
     this.tutorial.acabou = true;
@@ -953,9 +1032,11 @@ export class MatchScene extends BaseScene {
       stageId: this.config.stageId,
       p1CharacterId: this.config.p1CharacterId,
       p2CharacterId: this.config.p2CharacterId,
-      cpuDificuldade: 'facil'
+      cpuDificuldade: 'facil',
+      depoisDoTutorial: true
     } satisfies MatchConfig);
   }
+
 
   /** O que a CPU (P2) enxerga da luta neste quadro. */
   private leituraDaCpu(time: number) {
@@ -1183,7 +1264,9 @@ export class MatchScene extends BaseScene {
 
     const rematch = this.config.torneio
       ? this.makeOverlayButton(centerX, centerY + 40, 'CONTINUAR  (Enter)', () => this.continuarTorneio())
-      : this.makeOverlayButton(centerX, centerY + 40, 'REVANCHE  (R / Enter)', () => this.rematch());
+      : this.config.depoisDoTutorial
+        ? this.makeOverlayButton(centerX, centerY + 40, 'CONTINUAR  (Enter)', () => this.goToMenu())
+        : this.makeOverlayButton(centerX, centerY + 40, 'REVANCHE  (R / Enter)', () => this.rematch());
     const menu = this.makeOverlayButton(centerX, centerY + 96, 'MENU  (Esc)', () => this.goToMenu());
 
     this.overlay = [dim, title, score, rematch, menu];
@@ -1246,6 +1329,18 @@ export class MatchScene extends BaseScene {
   }
 }
 
+/**
+ * Do botão ao primeiro quadro com caixa de acerto do soco rápido de um
+ * mascote, ms: a CPU do aparo solta o soco esse tanto antes do anel fechar.
+ * @param characterId - O mascote da CPU.
+ */
+function antecedenciaDoSoco(characterId: string): number {
+  const animacao = getCharacterAnimationByAction(characterId, 'light-punch');
+  const primeiro = Math.max(0, animacao.bounds.findIndex((quadro) => quadro.attack !== null));
+  const duracoes = animacao.frameDurations ?? animacao.bounds.map(() => 1000 / animacao.frameRate);
+  return duracoes.slice(0, primeiro).reduce((soma, ms) => soma + ms, 0);
+}
+
 /** O tutorial dentro da luta: as etapas, a CPU dele, o que desenha e quando a fala abriu. */
 interface TutorialDaLuta {
   estado: Tutorial;
@@ -1253,6 +1348,10 @@ interface TutorialDaLuta {
   tela: TutorialNaTela;
   /** `time.now` em que a fala da vez apareceu; infinito até aparecer. */
   falaDesde: number;
+  /** Relógio da luta solta, ms: a câmera lenta atrasa ele (a CPU e o anel andam nele). */
+  relogio: number;
+  /** Do botão ao contato do soco rápido da CPU, ms de luta. */
+  antecedencia: number;
   /** O checklist desenhado, para só redesenhar quando muda. */
   lista: string;
   /** Dashes do P1 já contados: um novo é um passo largo que começou agora. */

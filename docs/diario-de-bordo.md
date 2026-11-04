@@ -3843,3 +3843,43 @@ do tutorial nesses arquivos.
 voadora e passo largo para trás, especial e foco duplo); decidir se a
 torcida acelera a barra do especial (a fala 13c ensina isso e hoje não é
 verdade); guia rápido do 1x1; teste dele no celular.
+
+## 2026-11-03: modo tutorial, entrega 2 (o roteiro inteiro)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "pode fazer tudo do tutorial que eu escrevi". No meio, correção:
+"o tempo do check ta muito rapido", 1 s depois da ação antes da próxima
+caixa, e testar cada um dos golpes de ataque.
+**Feito:** etapas do roteiro de "P%#R@!" ao "Agradar a torcida": falas com
+gatilho (depois de apanhar ou de a guarda quebrar), aparo como quick time
+event (anel que fecha no impacto, CPU solta o soco pela antecedência do
+mascote, câmera lenta enquanto o anel fecha, aviso "NA HORA!/Cedo!/
+Tarde!"), defesas em pé e abaixado com contagem, voadora que quebra a
+guarda baixa e desvio com passo largo para trás, especial com a barra
+cheia, foco duplo no Putômetro e na barra. A CPU entende que encostou
+(andando sem a distância diminuir, livre de golpe, até 260 px). Regra nova em toda luta: a
+torcida empurra a barra do especial (1,5 no verde, 1 no amarelo, 0,75 no
+vermelho, 0,5 no preto), no GDD. Respiro de 1 s depois do checklist e
+cada golpe forte e aéreo testado em separado.
+**Verificado:** a versão do commit, exportada sem o trabalho em andamento
+de outra sessão: typecheck, 48 arquivos e 442 testes, build. No navegador,
+essa mesma versão: percurso completo Urubu contra Almirante até a luta no
+Fácil e o confirmar da tela de fim levando ao menu, sem erro no console. Sondas mediram a voadora (passo largo no pulo ou na decolagem
+desvia; com o chute saindo, acerta) e os socos do Almirante.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o checklist que passava no mesmo
+quadro; "soco forte ou chute baixo" e "soco no ar ou voadora" viraram os
+dois.
+**Aprovado explicitamente:** criar a regra da torcida no especial (ao pedir
+o roteiro inteiro).
+**Atrito:** a CPU pulava quase no lugar (no ar a direção vale quadro a
+quadro); cada voadora empurrava o jogador até a parede, de onde não há
+passo para trás; o Almirante, largo, nunca chegava a 180 px e socava o
+vento. Os três corrigidos e medidos. O robô a 14 FPS perde toque duplo:
+no percurso, o passo largo da voadora foi disparado pelo script depois de
+3 tentativas com tecla.
+Outra sessão tinha trocado o fim do tutorial por voltar ao menu sem
+luta; perguntado, o João decidiu: luta no Fácil depois do "QUEBRE ELE!" e,
+na tela de fim dela, confirmar leva ao menu.
+**Em aberto:** teste dele com teclado e no celular (o toque duplo de
+verdade); guia rápido do 1x1; "Pular tutorial" na pausa.

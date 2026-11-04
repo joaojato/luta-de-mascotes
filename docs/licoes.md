@@ -643,3 +643,21 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   trecho.** Montar a versão do commit a partir do HEAD com as próprias
   trocas e pôr no índice (`hash-object` + `update-index`), sem mexer no
   arquivo de trabalho da outra sessão (2026-11-03).
+- **Checklist que fecha no aperto atropela o jogador.** No tutorial, a
+  próxima fala vinha no mesmo quadro em que a ação contava, e a pessoa nem
+  via o que tinha feito. O João pediu 1 s de luta solta, com o checklist
+  todo marcado, antes da caixa seguinte; e que cada golpe ensinado seja
+  testado um por um (soco forte e chute baixo na guarda, soco no ar e
+  voadora), não "um ou outro" (2026-11-03).
+- **CPU roteirizada precisa do mesmo corpo que a de verdade.** Três falhas
+  do tutorial vieram de supor o motor: no ar a direção vale quadro a quadro
+  (segurar só na decolagem pula no lugar); golpe empurra quem defende até a
+  parede; mascote largo não chega à distância fixa de golpe. Antes de
+  confiar na CPU de uma etapa, medir no navegador com sonda (posição,
+  fase do pulo, contato) em vez de olhar só o teste puro (2026-11-03).
+- **O tutorial termina na luta, e a luta termina no menu.** Outra sessão
+  tinha trocado o "QUEBRE ELE!" por voltar ao menu. O João decidiu: depois
+  do "QUEBRE ELE!" vem a luta de verdade contra a CPU no Fácil, e na tela de
+  fim dessa luta o botão de confirmar leva ao menu, sem revanche. Duas
+  sessões mexendo no mesmo fluxo: perguntar antes de escolher uma das
+  versões (2026-11-03).

@@ -129,7 +129,8 @@ pessoa entender o que falta, CPU que faz outra coisa que não a pedida.
    é "muito dev" e vai ser remodelada depois, João).
 4. **"Chega de conversa! QUEBRE ELE!"** reinicia a cena como luta normal 1
    VS CPU, os mesmos dois mascotes, CPU no **Fácil** (João), com rounds,
-   relógio e tela de fim.
+   relógio e tela de fim. Na tela de fim dessa luta, confirmar (Enter, ou o
+   A / Xis do celular) leva ao menu, sem revanche (João, 03/11/2026).
 5. **Voltar depois (João).** O tutorial fica na Academia, ao lado do Treino
    livre (tecla U, ou o botão na aba Treino do painel). Decisão do agente: também no menu principal não, para não somar
    botão no menu; se o João quiser, vira item do menu depois.
@@ -196,6 +197,27 @@ O tutorial conta o passo largo pelos dashes **iniciados**: colado no rival
 o dash para a frente começa e para no mesmo quadro, e apertar os dois
 toques já vale (decisão do agente, 03/11/2026).
 
+### Respiro e cada golpe testado (João, 03/11/2026)
+
+Checklist completo não passa direto: a luta segue solta 1 s, com tudo
+marcado, antes da próxima fala ("assim que ele aperta já valida e
+próximo"). E cada golpe ensinado é testado um por um: quebrar a guarda pede
+o soco forte **e** o chute baixo; no ar, o soco no ar **e** a voadora.
+
+### Gatilho das falas
+
+Algumas falas só aparecem depois que algo acontece na luta, como o roteiro
+pede: "P%#R@!" depois do primeiro soco que entra; "Bloqueio de pé não
+aguenta" depois que o soco forte quebra a guarda em pé; "Desvie da
+voadora" depois que ela quebra a guarda baixa. Enquanto o gatilho não vem,
+a CPU já faz o golpe e o checklist mostra uma dica ("Segure {defesa}").
+
+### A CPU encosta
+
+A CPU anda até 180 px do jogador para golpear; mascote de corpo largo (o
+casaco do Almirante) não chega tão perto. Andando sem a distância diminuir
+por 150 ms, ela entende que encostou e golpeia dali.
+
 ### Vida
 
 Igual ao treino (decisão do agente, confirmado como palpite): a vida desce
@@ -224,7 +246,7 @@ bateu tonto 0,8 s; passo largo é o dash para trás (dois toques rápidos).
 | 9 | mais socos rápidos | (sem fala nova) | defendeu 3 socos (aparo ou guarda comum) |
 | 10 | um soco forte que quebra a guarda alta | Bloqueio de pé não aguenta golpes pesados. / Bloqueie abaixado ({abaixar} + {defesa}). | (as falas vêm depois que a guarda quebrou) |
 | 11 | soco forte e chute baixo alternados | (sem fala nova) | defendeu 3 golpes pesados agachado |
-| 12 | uma voadora que quebra a guarda baixa | Desvie da voadora com um passo largo ({tras} 2 vezes rápido). | desviou de uma voadora com o dash para trás |
+| 12 | uma voadora que quebra a guarda baixa | Desvie da voadora com um passo largo ({tras} 2 vezes rápido). | desviou de uma voadora com o dash para trás, dado do pulo dela até a decolagem (medido: com o chute já saindo, acerta); encurralado na parede, os dois voltam ao lugar da largada |
 | 13 | parada; a barra do jogador enche | Vamo Virar! Aperte {especial}. | acertou o especial |
 | 13b | Putômetro sobe, foco de luz nele | Agora sim! | (só a fala) |
 | 13c | foco no Putômetro e na barra do especial | Agradar a torcida faz seu Especial carregar mais rápido com o tempo! | (só a fala; ver seção 8) |
@@ -295,11 +317,10 @@ teclas apertadas. O controle pelo corpo fica de fora.
 
 ## 8. Em aberto para o João
 
-- **A torcida não acelera o especial hoje.** A barra enche com o tempo
-  (45 s) e com golpes; o Putômetro não muda isso. A fala 13c ensinaria uma
-  regra que não existe. Ou o motor ganha a regra (a barra enche mais rápido
-  com o ponteiro no verde, mais devagar no vermelho, em toda luta), ou a
-  fala muda. Recomendação: criar a regra, porque dá sentido ao Putômetro.
+- **A torcida acelera o especial: resolvido (João, 03/11/2026, "pode fazer
+  tudo do tutorial que eu escrevi").** A barra enche sozinha 1,5 vez no
+  verde, normal no amarelo, 0,75 no vermelho e 0,5 no preto, em toda luta
+  (GDD, "A torcida empurra o especial").
 - **Guia rápido do 1x1 (João, 03/11/2026).** Pedido à parte: uma tela só
   com os comandos dos dois jogadores. Fica para depois do tutorial; falta
   decidir quando aparece.
@@ -310,7 +331,7 @@ teclas apertadas. O controle pelo corpo fica de fora.
    tutorial com rival, motor de falas e checklist com teclas certas,
    etapas 1 a 6 com o foco de luz do "Que Show!", e o "QUEBRE ELE!"
    levando à luta no Fácil. Roda de ponta a ponta pulando a defesa.
-2. **Entrega 2:** etapas 7 a 13: aparo com anel e câmera lenta, guarda
+2. **Entrega 2 (feita em 03/11/2026):** etapas 7 a 13: aparo com anel e câmera lenta, guarda
    alta e baixa, voadora e passo largo, especial e o foco duplo.
 3. **Entrega 3:** botão Tutorial na Academia, a regra da torcida no
-   especial (se aprovada), guia rápido do 1x1.
+   especial (feitos na entrega 1 e 2), guia rápido do 1x1 (falta).

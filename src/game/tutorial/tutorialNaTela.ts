@@ -26,6 +26,9 @@ export class TutorialNaTela {
   private readonly lista: Phaser.GameObjects.Text;
   private readonly fundoDaLista: Phaser.GameObjects.Rectangle;
   private readonly topoDaLista: number;
+  private readonly anel: Phaser.GameObjects.Graphics;
+  private readonly teclaDoAnel: Phaser.GameObjects.Text;
+  private readonly aviso: Phaser.GameObjects.Text;
 
   /**
    * @param scene - A cena da luta.
@@ -73,8 +76,51 @@ export class TutorialNaTela {
         .setOrigin(0.5, 0),
       depth + 1
     );
+    // O anel do aparo vive no mundo, em volta do jogador.
+    this.anel = scene.add.graphics().setDepth(depth - 1);
+    this.teclaDoAnel = scene.add
+      .text(0, 0, '', { color: TEXTO_DESTAQUE, fontFamily: FONTE_TITULO, fontSize: '34px', stroke: CONTORNO_TITULO, strokeThickness: 6 })
+      .setOrigin(0.5)
+      .setDepth(depth - 1)
+      .setVisible(false);
+    this.aviso = fixo(
+      scene.add
+        .text(tela.centerX, tela.height * 0.3, '', { color: TEXTO_DESTAQUE, fontFamily: FONTE_TITULO, fontSize: '44px', stroke: CONTORNO_TITULO, strokeThickness: 8 })
+        .setOrigin(0.5)
+        .setAlpha(0),
+      depth + 1
+    );
     this.mostrarFala(null, []);
     this.mostrarChecklist([]);
+  }
+
+  /**
+   * O anel do aparo: fecha do largo até o alvo no instante do impacto. No
+   * fim (a janela do aparo) o alvo acende.
+   * @param x - Centro, no mundo.
+   * @param y - Centro, no mundo.
+   * @param progresso - De 0 a 1; null apaga.
+   * @param tecla - A tecla de defesa, no meio.
+   * @param janela - A fração final do anel em que apertar vale.
+   */
+  desenharAnel(x: number, y: number, progresso: number | null, tecla: string, janela: number): void {
+    const g = this.anel.clear();
+    this.teclaDoAnel.setVisible(progresso !== null);
+    if (progresso === null) return;
+    const alvo = 52;
+    const raio = alvo + (1 - progresso) * 150;
+    const naJanela = progresso >= 1 - janela;
+    g.lineStyle(6, naJanela ? 0xfacc15 : 0xf8f0e6, naJanela ? 1 : 0.55).strokeCircle(x, y, alvo);
+    g.lineStyle(5, 0xf8f0e6, 0.95).strokeCircle(x, y, raio);
+    this.teclaDoAnel.setPosition(x, y).setText(tecla).setColor(naJanela ? '#facc15' : TEXTO_DESTAQUE);
+  }
+
+  /** Um aviso curto no alto (o resultado do aparo), que some sozinho. */
+  mostrarAviso(texto: string, cor: string): void {
+    this.scene.tweens.killTweensOf(this.aviso);
+    this.aviso.setText(texto).setColor(cor).setAlpha(1).setScale(0.8);
+    this.scene.tweens.add({ targets: this.aviso, scale: 1, duration: 160, ease: 'Back.Out' });
+    this.scene.tweens.add({ targets: this.aviso, alpha: 0, delay: 900, duration: 400 });
   }
 
   /**
@@ -126,6 +172,6 @@ export class TutorialNaTela {
   }
 
   destroy(): void {
-    [this.escuro, this.caixa, this.fala, this.dica, this.lista, this.fundoDaLista].forEach((objeto) => objeto.destroy());
+    [this.escuro, this.caixa, this.fala, this.dica, this.lista, this.fundoDaLista, this.anel, this.teclaDoAnel, this.aviso].forEach((objeto) => objeto.destroy());
   }
 }

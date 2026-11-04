@@ -1,5 +1,5 @@
 import {describe,expect,it} from 'vitest';
-import {agirNoPutometro,derrotaNoPutometro,faixaPutometro,novoPutometro,vidaNoPutometro} from './putometro';
+import {agirNoPutometro,derrotaNoPutometro,faixaPutometro,novoPutometro,RITMO_DA_BARRA,vidaNoPutometro} from './putometro';
 describe('P*tometro por desempenho',()=>{
   it('especial acertado resgata ate a divisa verde/amarelo, inclusive com verde reduzido',()=>{
     const e=novoPutometro();e.valor[0]=.1;
@@ -32,6 +32,12 @@ describe('P*tometro por desempenho',()=>{
     const e=novoPutometro();vidaNoPutometro(e,.2,.9);vidaNoPutometro(e,.9,.2);
     expect(e.verde[1]).toBeCloseTo(1/6);
     vidaNoPutometro(e,.8,.1);vidaNoPutometro(e,.9,.2);expect(e.verde[1]).toBeCloseTo(1/6);
+  });
+  it('a torcida empurra a barra do especial: mais rapida no verde, mais lenta no vermelho e no preto',()=>{
+    expect(RITMO_DA_BARRA[3]).toBeGreaterThan(RITMO_DA_BARRA[2]);
+    expect(RITMO_DA_BARRA[2]).toBe(1);
+    expect(RITMO_DA_BARRA[1]).toBeLessThan(1);
+    expect(RITMO_DA_BARRA[0]).toBeLessThan(RITMO_DA_BARRA[1]);
   });
   it('congela no resultado final e coloca vencedor em festa',()=>{
     const e=novoPutometro();e.valor[0]=.1;derrotaNoPutometro(e,1,true,.8);

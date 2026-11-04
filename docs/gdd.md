@@ -285,6 +285,15 @@ Sementes já na tabela de candidatos. Fica na v1? Ver roteiro: abre o Marco 4,
 logo depois de a v1 rodar de ponta a ponta. Se o João quiser antecipar, é
 mais barato que um mascote novo.
 
+## A torcida empurra o especial (João, 03/11/2026)
+
+Do roteiro do tutorial: "Agradar a torcida faz seu Especial carregar mais
+rápido com o tempo!". A barra do especial enche sozinha mais rápido ou mais
+devagar conforme a faixa do Putômetro de quem luta: 1,5 vez no verde ("Que
+Show!"), normal no amarelo, 0,75 no vermelho e 0,5 no preto. Golpe dado ou
+tomado rende o mesmo em qualquer faixa. Vale em toda luta
+(`RITMO_DA_BARRA`, `src/game/putometro.ts`).
+
 ## Cenário da v1
 
 Um estádio do Rio genérico, hora do jogo à noite, três camadas: céu com

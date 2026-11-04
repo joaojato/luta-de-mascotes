@@ -357,6 +357,8 @@ export class Fighter {
   private dashTap = 0;
   private dash: { dir: 1 | -1; elapsed: number; seconds: number; distance: number } | null = null;
   private dashCount = 0;
+  /** Quanto a barra enche sozinha, vezes o normal: a torcida empurra (RITMO_DA_BARRA). */
+  private ritmoDaBarra = 1;
   private lastDashDir: 1 | -1 = 1;
   /** Where the opponent stands (from `faceToward`): a forward dash stops against it. */
   private opponentX: number | null = null;
@@ -589,6 +591,14 @@ export class Fighter {
    */
   registerDefense(blocked: boolean): void {
     this.gainMeter(blocked ? METER_GAIN_ON_BLOCK : METER_GAIN_ON_TAKE);
+  }
+
+  /**
+   * How fast the meter fills on its own, times normal. The match sets it from
+   * the crowd meter's band (putometro.ts, RITMO_DA_BARRA).
+   */
+  setRitmoDaBarra(ritmo: number): void {
+    this.ritmoDaBarra = ritmo;
   }
 
   /** Tops the special meter to full (used by the playground's debug fill toggle). */
@@ -1061,7 +1071,7 @@ export class Fighter {
     }
     const meterSeconds = this.combat().meterSeconds;
     if (meterSeconds > 0 && this.hasSpecial) {
-      this.gainMeter((METER_MAX * seconds) / meterSeconds);
+      this.gainMeter((METER_MAX * seconds * this.ritmoDaBarra) / meterSeconds);
     }
     this.updateCustomJump(seconds);
     this.updateSpecialMotion(seconds);
