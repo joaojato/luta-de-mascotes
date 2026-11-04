@@ -60,6 +60,12 @@ const ROUNDS_TO_WIN = 2;
 // (a tie is a draw and replays the round, as is a double K.O.).
 const ROUND_SECONDS = 99;
 const HUD_DEPTH = 100;
+/**
+ * Tutorial: a primeira fala de cada etapa espera a luta acalmar (a CPU
+ * terminar o golpe e pousar, o jogador sair do atordoamento e do golpe dele)
+ * e mais este tanto, para o balão não aparecer no quadro do impacto.
+ */
+const CALMA_ANTES_DA_FALA_MS = 400;
 const BANNER_DEPTH = 200;
 const OVERLAY_DEPTH = 300;
 
@@ -254,7 +260,9 @@ export class MatchScene extends BaseScene {
     const p1Input = fighting ? juntarInputs(this.readKeys(this.p1Keys), p1Celular) : { ...NEUTRAL_FIGHTER_INPUT };
     const p2Input = fighting
       ? this.tutorial
-        ? this.tutorial.cpu.atualizar(
+        ? this.tutorial.esperandoFala
+          ? { ...NEUTRAL_FIGHTER_INPUT }
+          : this.tutorial.cpu.atualizar(
             this.tutorial.estado.cpu,
             { ...this.leituraDaCpu(this.tutorial.relogio), guardaDoOponente: this.p1.guardStance, euOcupado: this.p2.isAttacking || this.p2.isStunned },
             this.tutorial.antecedencia
@@ -888,6 +896,8 @@ export class MatchScene extends BaseScene {
       relogio: 0,
       antecedencia: antecedenciaDoSoco(this.config.p2CharacterId),
       lista: '',
+      calmaMs: 0,
+      esperandoFala: false,
       dashes: this.p1.dashesIniciados.n,
       acabou: false
     };
@@ -938,7 +948,19 @@ export class MatchScene extends BaseScene {
       this.anims.resumeAll();
       return false;
     }
+    // A primeira fala da etapa espera a luta acalmar; enquanto isso a CPU fica parada.
+    if (tutorial.falaDesde === Number.POSITIVE_INFINITY && fala === tutorial.estado.etapa.falas[0]) {
+      const agitada = this.p2.isAttacking || this.p2.isAirborne || this.p1.isAttacking || this.p1.isAirborne || this.p1.isStunned;
+      tutorial.calmaMs = agitada ? 0 : tutorial.calmaMs + this.game.loop.delta;
+      tutorial.esperandoFala = tutorial.calmaMs < CALMA_ANTES_DA_FALA_MS;
+      if (tutorial.esperandoFala) {
+        this.anims.resumeAll();
+        return false;
+      }
+    }
+    tutorial.esperandoFala = false;
     if (tutorial.falaDesde === Number.POSITIVE_INFINITY) {
+      tutorial.calmaMs = 0;
       tutorial.falaDesde = this.time.now;
       const focos = (tutorial.estado.etapa.foco ?? []).map((foco) => this.hud.areaNaTela(foco, 0));
       tutorial.tela.mostrarFala(trocarMarcadores(fala, this.contextoDasTeclas()), focos);
@@ -1421,6 +1443,10 @@ interface TutorialDaLuta {
   antecedencia: number;
   /** O checklist desenhado, para só redesenhar quando muda. */
   lista: string;
+  /** Há quanto tempo a luta está calma, esperando para mostrar a fala. */
+  calmaMs: number;
+  /** A fala já é a da vez, mas espera a luta acalmar: a CPU fica parada. */
+  esperandoFala: boolean;
   /** Dashes do P1 já contados: um novo é um passo largo que começou agora. */
   dashes: number;
   acabou: boolean;

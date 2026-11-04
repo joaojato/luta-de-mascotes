@@ -112,7 +112,7 @@ export const ROTEIRO: Etapa[] = [
   },
   {
     id: 'que-show',
-    falas: ['Que Show! A torcida se animou!'],
+    falas: ['Que Show! A torcida se animou mesmo!'],
     checklist: [],
     cpu: 'parada',
     putometro: 'cheio',

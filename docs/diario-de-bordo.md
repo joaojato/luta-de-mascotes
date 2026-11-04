@@ -3915,3 +3915,20 @@ não era dele); o fim da luta do tutorial (agora R e Enter).
 contava; era só a ordem das teclas do robô.
 **Em aberto:** teste dele no teclado e no celular; o guia rápido do 1x1
 virou as Instruções.
+
+## 2026-11-04: balão do tutorial espera a CPU terminar de bater
+
+**Marco:** 2, segue em andamento.
+**Pedido:** commitar a troca "se animou mesmo!" (era dele) e esperar a CPU
+terminar de bater antes do balão aparecer.
+**Feito:** a primeira fala de cada etapa espera a luta acalmar (CPU sem
+golpe e no chão, jogador sem atordoamento nem golpe) e mais 0,4 s; nesse
+meio a CPU fica parada. "Que Show! A torcida se animou mesmo!" commitado.
+**Verificado:** sonda no navegador na versão do commit: soco encosta em 80
+ms, CPU termina em 457 ms, balão em 850 ms (antes, 80 ms). Typecheck,
+testes e build da versão do commit.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** o balão no quadro do impacto.
+**Aprovado explicitamente:** nada.
+**Atrito:** eu tinha atribuído o "mesmo" a outra sessão; era dele.
+**Em aberto:** teste dele no teclado e no celular.

@@ -672,3 +672,10 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   partida ao meio e o Vite parou na tela do João. Texto com `\n` entra pelo
   Edit, nunca por troca em script; e conferir o typecheck antes de deixar
   o arquivo no disco (2026-11-04).
+- **Balão no quadro do impacto parece engasgo.** A fala que vem de um golpe
+  aparecia no mesmo quadro em que o soco encostava; o João achou
+  "instantâneo demais". A primeira fala de cada etapa espera a CPU terminar
+  o golpe e pousar, o jogador sair do atordoamento e do golpe dele, e mais
+  0,4 s (medido: soco encosta em 80 ms, CPU termina em 457 ms, balão em
+  850 ms). A troca de texto "se animou mesmo!" era dele, não de outra
+  sessão: perguntar antes de supor quem mexeu (2026-11-04).
