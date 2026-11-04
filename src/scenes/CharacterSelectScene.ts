@@ -9,6 +9,7 @@ import { criarTorneio } from '../game/torneio';
 import { salvarTorneio } from '../game/torneioSalvo';
 import { LUTADORES } from '../game/lutadores';
 import { escolherRival } from '../game/tutorial/rival';
+import { instrucoesLigadas, salvarInstrucoes } from '../game/tutorial/primeiraVez';
 import { bustoCrop } from '../game/ui';
 import { SCENE_KEYS, type FormatoTorneio, type MatchMode } from '../game/types';
 import { BaseScene } from './BaseScene';
@@ -68,6 +69,9 @@ export class CharacterSelectScene extends BaseScene {
   private torneio: CharacterSelectData['torneio'] | null = null;
   private atuais: CharacterSelectData['atuais'] | null = null;
   private tutorial = false;
+  /** 1x1: a caixinha "Instruções" liga o mini tutorial antes da luta (João, 04/11/2026). */
+  private instrucoes = false;
+  private caixaInstrucoes: Phaser.GameObjects.Text | null = null;
   private tiles: Tile[] = [];
   private columns = 1;
   private p1!: PlayerCursor;
@@ -118,9 +122,10 @@ export class CharacterSelectScene extends BaseScene {
       .setDepth(12);
     this.mostrarEtapa();
 
+    this.montarCaixaInstrucoes();
     this.createFooterHint(
       this.mode === '1v1'
-        ? 'P1: WASD + Espaço   •   P2: Setas + Enter   •   Esc volta'
+        ? 'P1: WASD + Espaço   •   P2: Setas + Enter   •   Tab instruções   •   Esc volta'
         : 'WASD ou Setas para escolher   •   Enter confirma   •   Esc volta um passo'
     );
   }
@@ -491,6 +496,34 @@ export class CharacterSelectScene extends BaseScene {
     this.mostrarEtapa();
   }
 
+  /** A caixinha "Instruções", só no 1x1: clique ou Tab liga e desliga, e fica lembrada. */
+  private montarCaixaInstrucoes(): void {
+    this.caixaInstrucoes = null;
+    if (this.mode !== '1v1' || this.torneio) return;
+    this.instrucoes = instrucoesLigadas();
+    const { centerX, height } = this.tela;
+    const caixa = this.add
+      .text(centerX, height - 66, '', { color: TEXTO_DESTAQUE, fontFamily: FONTE_TEXTO, fontSize: '22px', fontStyle: 'bold', backgroundColor: 'rgba(11, 7, 22, 0.85)', padding: { x: 14, y: 6 } })
+      .setOrigin(0.5)
+      .setDepth(12)
+      .setInteractive({ useHandCursor: true });
+    this.caixaInstrucoes = caixa;
+    const alternar = (): void => {
+      if (this.transitioning) return;
+      this.instrucoes = !this.instrucoes;
+      salvarInstrucoes(this.instrucoes);
+      this.desenharCaixaInstrucoes();
+    };
+    caixa.on('pointerdown', alternar);
+    this.input.keyboard?.addCapture('TAB');
+    this.input.keyboard?.on('keydown-TAB', alternar);
+    this.desenharCaixaInstrucoes();
+  }
+
+  private desenharCaixaInstrucoes(): void {
+    this.caixaInstrucoes?.setText(`${this.instrucoes ? '☑' : '☐'}  Instruções`);
+  }
+
   private startMatch(): void {
     if (this.transitioning) {
       return;
@@ -503,7 +536,8 @@ export class CharacterSelectScene extends BaseScene {
       stageId: this.stageId,
       p1CharacterId: SELECTABLE_ROSTER[this.p1.index].id,
       p2CharacterId: SELECTABLE_ROSTER[this.p2.index].id,
-      ...(this.tutorial ? { treino: true, tutorial: true } : {})
+      ...(this.tutorial ? { treino: true, tutorial: true } : {}),
+      ...(this.mode === '1v1' && this.instrucoes ? { treino: true, instrucoes: true } : {})
     });
   }
 

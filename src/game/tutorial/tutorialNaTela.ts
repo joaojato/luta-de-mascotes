@@ -29,6 +29,10 @@ export class TutorialNaTela {
   private readonly anel: Phaser.GameObjects.Graphics;
   private readonly teclaDoAnel: Phaser.GameObjects.Text;
   private readonly aviso: Phaser.GameObjects.Text;
+  /** Instruções do 1x1: o título da etapa e uma lista de cada lado. */
+  private titulo: Phaser.GameObjects.Text | null = null;
+  private listasDosLados: { texto: Phaser.GameObjects.Text; fundo: Phaser.GameObjects.Rectangle }[] = [];
+  private readonly depth: number;
 
   /**
    * @param scene - A cena da luta.
@@ -37,6 +41,7 @@ export class TutorialNaTela {
    */
   constructor(private readonly scene: Phaser.Scene, depth: number, toque: boolean) {
     const tela = telaDe(scene);
+    this.depth = depth;
     const fixo = <T extends Phaser.GameObjects.GameObject & Phaser.GameObjects.Components.ScrollFactor & Phaser.GameObjects.Components.Depth>(o: T, d = depth) =>
       o.setScrollFactor(0).setDepth(d);
 
@@ -115,6 +120,38 @@ export class TutorialNaTela {
     this.teclaDoAnel.setPosition(x, y).setText(tecla).setColor(naJanela ? '#facc15' : TEXTO_DESTAQUE);
   }
 
+  /**
+   * Instruções do 1x1: o título da etapa no meio e o checklist de cada
+   * jogador do lado dele, com as teclas dele.
+   * @param titulo - O nome da etapa.
+   * @param lados - P1 e P2, cada um com os itens já com as teclas.
+   */
+  mostrarDuasListas(titulo: string, lados: [ItemNaTela[], ItemNaTela[]]): void {
+    const tela = telaDe(this.scene);
+    if (!this.titulo) {
+      this.titulo = this.scene.add
+        .text(tela.centerX, 150, '', { color: TEXTO_DESTAQUE, fontFamily: FONTE_TITULO, fontSize: '34px', stroke: CONTORNO_TITULO, strokeThickness: 6 })
+        .setOrigin(0.5, 0)
+        .setScrollFactor(0)
+        .setDepth(this.depth + 1);
+      this.listasDosLados = [0.27, 0.73].map((fracao) => ({
+        fundo: this.scene.add.rectangle(tela.width * fracao, 200, 10, 10, COR_FUNDO, 0.72).setOrigin(0.5, 0).setScrollFactor(0).setDepth(this.depth),
+        texto: this.scene.add
+          .text(tela.width * fracao, 210, '', { color: TEXTO_CLARO, fontFamily: FONTE_TEXTO, fontSize: '22px', fontStyle: 'bold', lineSpacing: 6 })
+          .setOrigin(0.5, 0)
+          .setScrollFactor(0)
+          .setDepth(this.depth + 1)
+      }));
+    }
+    this.titulo.setText(titulo);
+    this.listasDosLados.forEach(({ texto, fundo }, i) => {
+      const itens = lados[i];
+      texto.setText([`P${i + 1}`, ...itens.map((item) => `${item.feito ? '✔' : '☐'}  ${item.texto}`)].join('\n'));
+      texto.setColor(itens.every((item) => item.feito) ? VERDE : TEXTO_CLARO);
+      fundo.setSize(texto.width + 36, texto.height + 20).setDisplaySize(texto.width + 36, texto.height + 20);
+    });
+  }
+
   /** Um aviso curto no alto (o resultado do aparo), que some sozinho. */
   mostrarAviso(texto: string, cor: string): void {
     this.scene.tweens.killTweensOf(this.aviso);
@@ -173,5 +210,10 @@ export class TutorialNaTela {
 
   destroy(): void {
     [this.escuro, this.caixa, this.fala, this.dica, this.lista, this.fundoDaLista, this.anel, this.teclaDoAnel, this.aviso].forEach((objeto) => objeto.destroy());
+    this.titulo?.destroy();
+    this.listasDosLados.forEach(({ texto, fundo }) => {
+      texto.destroy();
+      fundo.destroy();
+    });
   }
 }

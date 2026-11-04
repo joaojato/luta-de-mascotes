@@ -3883,3 +3883,35 @@ luta; perguntado, o João decidiu: luta no Fácil depois do "QUEBRE ELE!" e,
 na tela de fim dela, confirmar leva ao menu.
 **Em aberto:** teste dele com teclado e no celular (o toque duplo de
 verdade); guia rápido do 1x1; "Pular tutorial" na pausa.
+
+## 2026-11-04: tutorial, entrega 3 (fim certo, duas mãos, pular, instruções do 1x1)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** a tela de "tutorial concluído" tem que ser o "QUEBRE ELE!" que
+abre a luta; no fim dessa luta, R recomeça e Enter vai ao menu. Fala das
+duas mãos (I O P = Q E C) antes do "QUEBRE ELE!". Pular tutorial na pausa.
+Caixinha "Instruções" na Seleção para um mini tutorial do 1x1, sem
+historinha, validado pelos dois lados só apertando os botões, com o
+remapeamento, e a luta começando no fim.
+**Feito:** a fala de "Tutorial concluído" tinha entrado no commit anterior
+junto com o `git add` da pasta (troca de outra sessão): voltou o "QUEBRE
+ELE!". Fala das duas mãos montada das teclas extras e do remapeamento (some
+no celular). "Pular tutorial" na pausa. Fim da luta do tutorial com
+REVANCHE (R) e MENU (Enter). Instruções do 1x1: caixinha na Seleção (Tab ou
+clique, lembrada), seis etapas com checklist dos dois lados e respiro de
+1 s, luta 1x1 no fim.
+**Verificado:** a versão do commit, exportada sem o trabalho da outra
+sessão, no navegador: instruções com P1 e P2 pelas seis etapas até a luta
+1x1; falas finais do tutorial na ordem, R recomeça e Enter vai ao menu;
+Pular tutorial no tutorial e nas instruções. Typecheck, 49 arquivos e 451
+testes, build. A fala das duas mãos com `
+` saiu partida por script e
+travou o Vite na tela do João por alguns minutos; corrigida pelo Edit.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** a tela de "Tutorial concluído" (que
+não era dele); o fim da luta do tutorial (agora R e Enter).
+**Aprovado explicitamente:** "Ficou muito bom" (o tutorial inteiro).
+**Atrito:** o robô apertava o baixo ainda no ar e a etapa de abaixar não
+contava; era só a ordem das teclas do robô.
+**Em aberto:** teste dele no teclado e no celular; o guia rápido do 1x1
+virou as Instruções.

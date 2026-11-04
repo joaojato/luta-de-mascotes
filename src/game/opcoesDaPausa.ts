@@ -3,6 +3,8 @@
 /** O que cada opção da pausa faz; a ordem aqui é a ordem na tela. */
 export interface AcoesDaPausa {
   continuar: () => void;
+  /** Tutorial e instruções do 1x1: pula direto para a luta de verdade. */
+  pularTutorial?: () => void;
   recomecar: () => void;
   /** Volta à Seleção com o mesmo modo e estádio. Sem ela (torneio, treino), a opção some. */
   trocarPersonagens?: () => void;
@@ -17,6 +19,7 @@ export interface OpcaoDaPausa {
 
 export const OPCOES_DA_PAUSA: OpcaoDaPausa[] = [
   { id: 'continuar', rotulo: 'Continuar' },
+  { id: 'pularTutorial', rotulo: 'Pular tutorial' },
   { id: 'recomecar', rotulo: 'Recomeçar' },
   { id: 'trocarPersonagens', rotulo: 'Trocar personagens' },
   { id: 'configuracoes', rotulo: 'Configurações' },

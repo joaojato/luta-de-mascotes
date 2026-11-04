@@ -661,3 +661,14 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
   fim dessa luta o botão de confirmar leva ao menu, sem revanche. Duas
   sessões mexendo no mesmo fluxo: perguntar antes de escolher uma das
   versões (2026-11-03).
+- **`git add` de pasta inteira leva a edição da outra sessão.** No commit
+  da entrega 2 do tutorial, `git add src/game/tutorial` levou junto a troca
+  que outra sessão fez na última fala ("Tutorial concluído! Confirme para
+  voltar ao menu."), e o João viu a tela errada. Com outra sessão ativa,
+  conferir o `git diff --cached` linha a linha antes do commit, também nos
+  arquivos que parecem só meus (2026-11-04).
+- **`\n` dentro de script Python em heredoc vira quebra de linha real no
+  TypeScript.** Duas vezes no tutorial a troca por script escreveu a string
+  partida ao meio e o Vite parou na tela do João. Texto com `\n` entra pelo
+  Edit, nunca por troca em script; e conferir o typecheck antes de deixar
+  o arquivo no disco (2026-11-04).

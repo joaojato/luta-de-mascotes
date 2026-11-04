@@ -335,3 +335,22 @@ teclas apertadas. O controle pelo corpo fica de fora.
    alta e baixa, voadora e passo largo, especial e o foco duplo.
 3. **Entrega 3:** botão Tutorial na Academia, a regra da torcida no
    especial (feitos na entrega 1 e 2), guia rápido do 1x1 (falta).
+
+## 10. Entrega 3 (João, 04/11/2026)
+
+- **Fim do tutorial:** "Chega de conversa! QUEBRE ELE!" abre a luta no
+  Fácil (uma troca de outra sessão tinha posto "Tutorial concluído" ali, e
+  foi desfeita). Na tela de fim dessa luta: R recomeça, Enter/confirmar vai
+  ao menu.
+- **Fala das duas mãos** antes do "QUEBRE ELE!": as teclas extras de quem
+  joga sozinho (`EXTRA_SOZINHO`: O soca como E, I chuta como Q, P defende
+  como C), lidas do remapeamento. No celular a fala sai do roteiro.
+- **Pular tutorial** na pausa do tutorial e das instruções: vai direto à
+  luta de verdade.
+- **Instruções do 1x1:** caixinha na Seleção do 1x1 (clique ou Tab,
+  lembrada no navegador). Sem historinha nem CPU: cada etapa mostra o
+  checklist do P1 e do P2, cada um com as próprias teclas, e passa quando
+  os dois apertaram tudo (sem precisar acertar), com o respiro de 1 s.
+  Etapas: andar, pular e abaixar, soco e chute, golpes abaixado, golpes no
+  ar, e defesa e especial (as duas últimas, decisão do agente, para o guia
+  ficar completo). No fim, a luta 1x1 começa de verdade.

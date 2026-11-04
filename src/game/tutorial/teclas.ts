@@ -1,4 +1,4 @@
-import { nomeDaTecla, type ComandoLuta, type MapaBotoes } from '../controles';
+import { extrasSozinho, nomeDaTecla, type ComandoLuta, type MapaBotoes } from '../controles';
 import { NOMES_DOS_BOTOES, POSICOES_DO_BOTAO, type FuncaoDoBotao, type PreferenciasDosBotoes } from '../../toque/preferencias';
 
 /**
@@ -33,12 +33,34 @@ function nomeDo(comando: ComandoLuta, contexto: ContextoDasTeclas): string {
   return posicao ? `"${NOMES_DOS_BOTOES[cara][posicao]}"` : `"${comando}"`;
 }
 
+/** O que cada tecla extra faz, na ordem da fala: soco, chute, defesa. */
+const DUAS_MAOS: { comando: 'light' | 'heavy' | 'block'; nome: string }[] = [
+  { comando: 'light', nome: 'soco' },
+  { comando: 'heavy', nome: 'chute' },
+  { comando: 'block', nome: 'bloqueio' }
+];
+
+/**
+ * As teclas da outra mão de quem joga sozinho, cada uma igual à do P1:
+ * `"O" = "E" (soco), "I" = "Q" (chute) e "P" = "C" (bloqueio)`. A que bate
+ * com uma tecla remapeada do P1 não existe e sai da frase.
+ * @param botoes - As teclas do P1.
+ */
+export function textoDasDuasMaos(botoes: MapaBotoes): string {
+  const extras = extrasSozinho(botoes);
+  const partes = DUAS_MAOS.filter(({ comando }) => extras[comando]).map(
+    ({ comando, nome }) => `"${nomeDaTecla(extras[comando]!)}" = "${nomeDaTecla(botoes[comando])}" (${nome})`
+  );
+  return partes.length > 1 ? `${partes.slice(0, -1).join(', ')} e ${partes[partes.length - 1]}` : (partes[0] ?? '');
+}
+
 /**
  * @param texto - Fala ou item do checklist com `{marcador}`.
  * @param contexto - Teclado ou celular, e para onde o jogador olha agora.
  */
 export function trocarMarcadores(texto: string, contexto: ContextoDasTeclas): string {
   return texto.replace(/\{(\w+)\}/g, (inteiro, nome: string) => {
+    if (nome === 'duasMaos') return contexto.toque ? '' : textoDasDuasMaos(contexto.botoes);
     const comando = comandoDo(nome as Marcador, contexto.olhando);
     return comando ? nomeDo(comando, contexto) : inteiro;
   });

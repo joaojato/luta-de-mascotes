@@ -70,6 +70,8 @@ export interface Etapa {
   barraCheia?: true;
   /** A última: as falas acabam e começa a luta de verdade. */
   fim?: true;
+  /** Só no teclado (fala das teclas da outra mão): no celular a etapa sai do roteiro. */
+  soTeclado?: true;
 }
 
 export const ROTEIRO: Etapa[] = [
@@ -204,8 +206,16 @@ export const ROTEIRO: Etapa[] = [
     foco: ['putometro', 'barra']
   },
   {
+    // As teclas extras de quem joga sozinho no teclado (controles.ts, EXTRA_SOZINHO).
+    id: 'duas-maos',
+    falas: ['Se quiser usar as duas mãos para jogar:\n{duasMaos}.'],
+    checklist: [],
+    cpu: 'parada',
+    soTeclado: true
+  },
+  {
     id: 'quebre-ele',
-    falas: ['Tutorial concluído! Confirme para voltar ao menu.'],
+    falas: ['Chega de conversa! QUEBRE ELE!'],
     checklist: [],
     cpu: 'parada',
     fim: true

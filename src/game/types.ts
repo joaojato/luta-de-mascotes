@@ -60,8 +60,10 @@ export interface MatchConfig {
   tutorial?: true;
   /** Dificuldade desta luta, no lugar da dos ajustes (a luta que fecha o tutorial é no Fácil). */
   cpuDificuldade?: Dificuldade;
-  /** A luta que fecha o tutorial: na tela de fim, confirmar leva ao menu, sem revanche. */
+  /** A luta que fecha o tutorial: na tela de fim, R recomeça e confirmar leva ao menu. */
   depoisDoTutorial?: true;
+  /** Instruções do 1x1 (vem com `treino`): os dois apertam cada comando e a luta começa. */
+  instrucoes?: true;
 }
 
 export type GameProfile = 'landscape' | 'portrait';

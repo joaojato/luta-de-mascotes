@@ -35,7 +35,9 @@ import { SCENE_KEYS, type MatchConfig } from '../game/types';
 import { spawnHitSpark, type VfxColor } from '../game/vfx';
 import { BaseScene } from './BaseScene';
 import { CpuDoTutorial } from '../game/tutorial/cpuDoTutorial';
-import { trocarMarcadores, type ContextoDasTeclas } from '../game/tutorial/teclas';
+import { textoDasDuasMaos, trocarMarcadores, type ContextoDasTeclas } from '../game/tutorial/teclas';
+import { ROTEIRO } from '../game/tutorial/roteiro';
+import { Instrucoes } from '../game/tutorial/instrucoes';
 import { Tutorial } from '../game/tutorial/tutorial';
 import { ANEL_MS, AVISOS_DO_APARO } from '../game/tutorial/aparo';
 import { RITMO_DA_BARRA } from '../game/putometro';
@@ -104,6 +106,8 @@ export class MatchScene extends BaseScene {
   private ultimoGolpe = new Map<Fighter, { ms: number; vida: number }>();
   /** Tutorial (docs/superpowers/specs/2026-11-03-tutorial-design.md): as etapas, a CPU dele e o que desenha. */
   private tutorial: TutorialDaLuta | null = null;
+  /** Instruções do 1x1 (a caixinha da Seleção): os comandos dos dois lados, depois a luta. */
+  private instrucoes: { estado: Instrucoes; tela: TutorialNaTela; lista: string; acabou: boolean } | null = null;
   private levantando = new Set<Fighter>();
 
   private phase: MatchPhase = 'intro';
@@ -181,8 +185,11 @@ export class MatchScene extends BaseScene {
     this.pausa = null;
     this.ultimoGolpe = new Map();
     this.levantando = new Set();
-    this.painelTreino = this.config.treino && !this.config.tutorial ? this.montarPainelTreino() : null;
+    this.painelTreino = this.config.treino && !this.config.tutorial && !this.config.instrucoes ? this.montarPainelTreino() : null;
     this.tutorial = this.config.tutorial ? this.montarTutorial() : null;
+    this.instrucoes = this.config.instrucoes
+      ? { estado: new Instrucoes(), tela: new TutorialNaTela(this, BANNER_DEPTH + 20, controlesDeToqueAtivos()), lista: '', acabou: false }
+      : null;
 
     this.startRound();
     this.agendarTorcida(null);
@@ -215,6 +222,8 @@ export class MatchScene extends BaseScene {
       this.painelTreino = null;
       this.tutorial?.tela.destroy();
       this.tutorial = null;
+      this.instrucoes?.tela.destroy();
+      this.instrucoes = null;
       // A câmera lenta do aparo mexe no relógio de animação do jogo todo.
       this.anims.globalTimeScale = 1;
     });
@@ -252,7 +261,7 @@ export class MatchScene extends BaseScene {
           )
         : this.cpu
         ? this.cpu.atualizar(this.leituraDaCpu(time))
-        : this.config.treino
+        : this.config.treino && !this.config.instrucoes
           ? { ...NEUTRAL_FIGHTER_INPUT }
           : juntarInputs(this.readKeys(this.p2Keys), p2Celular)
       : { ...NEUTRAL_FIGHTER_INPUT };
@@ -275,6 +284,7 @@ export class MatchScene extends BaseScene {
     this.p2.update(seconds, p2Input);
     this.publicarBotoesDaTela(p1Input);
     if (fighting) this.contarParaOTutorial(p1Input, seconds);
+    if (fighting) this.contarInstrucoes(p1Input, p2Input, seconds);
 
     this.updateCamera(false);
     this.biribas.forEach((biriba) => biriba.update(seconds));
@@ -688,8 +698,8 @@ export class MatchScene extends BaseScene {
       else this.alternarPausa();
     });
     keyboard.on('keydown-R', () => {
-      // No torneio não há revanche: o resultado vale. Depois do tutorial, o fim é o menu.
-      if (this.phase === 'matchOver' && !this.config.torneio && !this.config.depoisDoTutorial) {
+      // No torneio não há revanche: o resultado vale.
+      if (this.phase === 'matchOver' && !this.config.torneio) {
         this.rematch();
       }
     });
@@ -869,7 +879,9 @@ export class MatchScene extends BaseScene {
   /** Monta o tutorial: qualquer botão (ou toque) fecha a fala depois de 0,4 s na tela. */
   private montarTutorial(): TutorialDaLuta {
     const tutorial: TutorialDaLuta = {
-      estado: new Tutorial(),
+      estado: new Tutorial(
+        ROTEIRO.filter((etapa) => !etapa.soTeclado || (!controlesDeToqueAtivos() && textoDasDuasMaos(this.controles.p1) !== ''))
+      ),
       cpu: new CpuDoTutorial(),
       tela: new TutorialNaTela(this, BANNER_DEPTH + 20, controlesDeToqueAtivos()),
       falaDesde: Number.POSITIVE_INFINITY,
@@ -1011,6 +1023,51 @@ export class MatchScene extends BaseScene {
     this.updateCamera(true);
   }
 
+  /**
+   * Instruções do 1x1: o que cada lado apertou conta para o checklist dele;
+   * com as etapas feitas pelos dois, a luta começa de verdade.
+   */
+  private contarInstrucoes(p1Input: FighterInput, p2Input: FighterInput, seconds: number): void {
+    const instrucoes = this.instrucoes;
+    if (!instrucoes || instrucoes.acabou) return;
+    instrucoes.estado.quadro(
+      [
+        { input: p1Input, noAr: this.p1.isAirborne },
+        { input: p2Input, noAr: this.p2.isAirborne }
+      ],
+      seconds
+    );
+    if (instrucoes.estado.acabou) {
+      this.comecarLutaDasInstrucoes();
+      return;
+    }
+    // Cada lado com as próprias teclas: o P1 pode estar no celular, o P2 é sempre teclado.
+    const contextos: [ContextoDasTeclas, ContextoDasTeclas] = [
+      this.contextoDasTeclas(),
+      { toque: false, botoes: this.controles.p2, olhando: this.p2.facingDirection }
+    ];
+    const lados = ([0, 1] as const).map((lado) =>
+      instrucoes.estado.checklist(lado).map((item) => ({ texto: trocarMarcadores(item.texto, contextos[lado]), feito: item.feito }))
+    ) as [{ texto: string; feito: boolean }[], { texto: string; feito: boolean }[]];
+    const chave = JSON.stringify([instrucoes.estado.etapa.id, lados]);
+    if (chave !== instrucoes.lista) {
+      instrucoes.lista = chave;
+      instrucoes.tela.mostrarDuasListas(instrucoes.estado.etapa.titulo, lados);
+    }
+  }
+
+  /** Fim das instruções (ou Pular tutorial): a luta 1x1 de verdade, os mesmos dois. */
+  private comecarLutaDasInstrucoes(): void {
+    if (!this.instrucoes || this.instrucoes.acabou) return;
+    this.instrucoes.acabou = true;
+    this.scene.restart({
+      mode: '1v1',
+      stageId: this.config.stageId,
+      p1CharacterId: this.config.p1CharacterId,
+      p2CharacterId: this.config.p2CharacterId
+    } satisfies MatchConfig);
+  }
+
   /** Câmera lenta enquanto o anel do aparo fecha; o resto do tempo, normal. */
   private escalaDoTempo(): number {
     const lento = this.tutorial?.estado.cpu === 'aparo' && this.tutorial.cpu.aparo.emAndamento && !this.pausa;
@@ -1103,6 +1160,15 @@ export class MatchScene extends BaseScene {
       OVERLAY_DEPTH + 10,
       {
         continuar: () => this.fecharPausa(),
+        // Tutorial e instruções: direto para a luta de verdade (João, 04/11/2026).
+        pularTutorial:
+          this.config.tutorial || this.config.instrucoes
+            ? () => {
+                this.fecharPausa();
+                if (this.config.tutorial) this.comecarLutaDoTutorial();
+                else this.comecarLutaDasInstrucoes();
+              }
+            : undefined,
         recomecar: () => {
           this.fecharPausa();
           this.scene.restart(this.config);
@@ -1127,7 +1193,7 @@ export class MatchScene extends BaseScene {
         sair: () => {
           this.fecharPausa();
           // No treino, sair é voltar à Academia.
-          if (this.config.treino && !this.config.tutorial) this.scene.start(SCENE_KEYS.Academia);
+          if (this.config.treino && !this.config.tutorial && !this.config.instrucoes) this.scene.start(SCENE_KEYS.Academia);
           else this.goToMenu();
         }
       }
@@ -1158,7 +1224,7 @@ export class MatchScene extends BaseScene {
     this.hud.animateFill();
     this.hud.updateWins(this.p1Wins, this.p2Wins);
 
-    this.showBanner(this.config.tutorial ? 'TUTORIAL' : this.config.treino ? 'TREINO' : `ROUND ${this.roundNumber}`, '#f8fafc');
+    this.showBanner(this.config.tutorial ? 'TUTORIAL' : this.config.instrucoes ? 'INSTRUÇÕES' : this.config.treino ? 'TREINO' : `ROUND ${this.roundNumber}`, '#f8fafc');
     this.som('round');
     musica(this.game).tocar('luta');
 
@@ -1265,9 +1331,10 @@ export class MatchScene extends BaseScene {
     const rematch = this.config.torneio
       ? this.makeOverlayButton(centerX, centerY + 40, 'CONTINUAR  (Enter)', () => this.continuarTorneio())
       : this.config.depoisDoTutorial
-        ? this.makeOverlayButton(centerX, centerY + 40, 'CONTINUAR  (Enter)', () => this.goToMenu())
+        ? this.makeOverlayButton(centerX, centerY + 40, 'REVANCHE  (R)', () => this.rematch())
         : this.makeOverlayButton(centerX, centerY + 40, 'REVANCHE  (R / Enter)', () => this.rematch());
-    const menu = this.makeOverlayButton(centerX, centerY + 96, 'MENU  (Esc)', () => this.goToMenu());
+    // Depois do tutorial, confirmar (Enter, ou o botão de baixo do celular) é o menu.
+    const menu = this.makeOverlayButton(centerX, centerY + 96, this.config.depoisDoTutorial ? 'MENU  (Enter)' : 'MENU  (Esc)', () => this.goToMenu());
 
     this.overlay = [dim, title, score, rematch, menu];
   }

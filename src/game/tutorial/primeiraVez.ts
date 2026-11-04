@@ -22,3 +22,22 @@ export function marcarTutorialVisto(storage?: Storage): void {
     // Aba anônima: vale até recarregar.
   }
 }
+
+const CHAVE_INSTRUCOES = 'luta-de-mascotes:instrucoes-1x1';
+
+/** A caixinha "Instruções" da Seleção do 1x1, como a pessoa deixou da última vez. */
+export function instrucoesLigadas(storage?: Storage): boolean {
+  try {
+    return (storage ?? window.localStorage).getItem(CHAVE_INSTRUCOES) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function salvarInstrucoes(ligadas: boolean, storage?: Storage): void {
+  try {
+    (storage ?? window.localStorage).setItem(CHAVE_INSTRUCOES, ligadas ? '1' : '0');
+  } catch {
+    // Aba anônima: vale até recarregar.
+  }
+}
