@@ -12,6 +12,8 @@ export interface StageDefinition {
   url: string;
   width: number;
   height: number;
+  /** Reutiliza a torcida animada do estádio nas variantes de céu. */
+  stadiumCrowd?: boolean;
   /**
    * Céu opcional: imagem esticada para a tela inteira, desenhada atrás do
    * cenário e presa à câmera (não rola). O cenário por cima precisa de
@@ -53,6 +55,7 @@ export const STAGE_PREVIEW_MAX_PAN_SPEED = 600;
 export const STAGE_DEFINITIONS: StageDefinition[] = [
   {
     id: 'estadio',
+    stadiumCrowd: true,
     label: 'Estádio',
     key: 'estadio-stage',
     url: '/assets/cenarios/estadio/cenario.png',
@@ -62,6 +65,17 @@ export const STAGE_DEFINITIONS: StageDefinition[] = [
     // O pé dos lutadores fica no gramado, ~36 px abaixo da linha lateral
     // (y 617): na linha, pareciam estar fora do campo (João, 01/11/2026).
     groundFraction: 0.96
+  },
+  {
+    id: 'estadio-dia',
+    label: 'Estádio — Dia',
+    key: 'estadio-dia-stage',
+    url: '/assets/cenarios/estadio/cenario.png',
+    width: 2048,
+    height: 869,
+    sky: { key: 'estadio-dia-sky', url: '/assets/cenarios/estadio/ceu-dia.png', width: 1672, height: 941 },
+    groundFraction: 0.96,
+    stadiumCrowd: true
   }
 ];
 

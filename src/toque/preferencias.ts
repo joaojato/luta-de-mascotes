@@ -16,8 +16,8 @@ export const POSICOES_DO_BOTAO: readonly PosicaoDoBotao[] = ['cima', 'direita', 
 export type FuncaoDoBotao = 'light' | 'heavy' | 'block' | 'special';
 
 export const FUNCOES_DO_BOTAO: { id: FuncaoDoBotao; nome: string }[] = [
-  { id: 'light', nome: 'Soco' },
-  { id: 'heavy', nome: 'Chute' },
+  { id: 'light', nome: 'Rápido' },
+  { id: 'heavy', nome: 'Bruto' },
   { id: 'block', nome: 'Defender' },
   { id: 'special', nome: 'Especial' }
 ];

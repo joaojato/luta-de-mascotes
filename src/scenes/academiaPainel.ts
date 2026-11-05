@@ -13,7 +13,7 @@ import {
   type Lado
 } from '../game/controles';
 import { exibicao, mudarExibicao, type Exibicao } from '../game/exibicao';
-import { GOLPES, golpesDoLutador, type SituacaoGolpe } from '../game/golpes';
+import { ANIMACOES_DA_ACADEMIA, animacoesDaAcademia, type SituacaoGolpe } from '../game/golpes';
 import { FIGHTER_CHARACTER_DEFINITIONS, getCharacterDefinition } from '../game/hero';
 import { LUTADORES } from '../game/lutadores';
 import type { FighterCombat } from '../game/types';
@@ -29,10 +29,10 @@ type Aba = 'golpes' | 'botoes' | 'ajustes' | 'treino';
 /** Números que a aba Ajustes deixa mexer (o resto continua no JSON e no shell de debug). */
 const CAMPOS_AJUSTE: { id: keyof FighterCombat; nome: string; dica: string }[] = [
   { id: 'maxHealth', nome: 'Vida', dica: 'pontos de vida no começo do round' },
-  { id: 'highDamage', nome: 'Soco rápido', dica: 'dano; vale também para o soco no ar' },
-  { id: 'lowDamage', nome: 'Soco forte', dica: 'dano; vale também para o tiro' },
-  { id: 'kickDamage', nome: 'Chute básico', dica: 'dano; vale também para a voadora' },
-  { id: 'lowKickDamage', nome: 'Chute baixo', dica: 'dano' },
+  { id: 'highDamage', nome: 'Rápido', dica: 'dano; vale também para o Rápido Aéreo' },
+  { id: 'lowDamage', nome: 'Rápido Forte', dica: 'dano do comando agachado' },
+  { id: 'kickDamage', nome: 'Bruto', dica: 'dano; vale também para o Bruto de Cima' },
+  { id: 'lowKickDamage', nome: 'Bruto Baixo', dica: 'dano' },
   { id: 'specialDamage', nome: 'Especial', dica: 'dano por acerto (o especial acerta várias vezes)' },
   { id: 'meterSeconds', nome: 'Especial enche em', dica: 'segundos de luta para a barra encher sozinha; 0 = só batendo e apanhando' }
 ];
@@ -229,7 +229,7 @@ export class PainelAcademia {
 
     this.raiz.innerHTML = `
       <div style="display:flex;gap:6px;margin-bottom:10px">
-        ${aba('golpes', 'Golpes')}${aba('botoes', 'Botões')}${aba('ajustes', 'Ajustes')}${aba('treino', 'Treino')}
+        ${aba('golpes', 'Animações')}${aba('botoes', 'Botões')}${aba('ajustes', 'Ajustes')}${aba('treino', 'Treino')}
         <span style="margin-left:auto;color:#64748b;align-self:center">Tab esconde</span>
       </div>
       ${this.aba === 'golpes' ? this.htmlGolpes() : this.aba === 'botoes' ? this.htmlBotoes() : this.aba === 'ajustes' ? this.htmlAjustes() : this.htmlTreino()}
@@ -238,11 +238,11 @@ export class PainelAcademia {
   }
 
   private htmlGolpes(): string {
-    const cabecalho = GOLPES.map((golpe) => `<th title="${golpe.regra}" style="padding:2px 4px">${golpe.nome}</th>`).join('');
+    const cabecalho = ANIMACOES_DA_ACADEMIA.map((animacao) => `<th title="${animacao.regra}" style="padding:2px 4px">${animacao.nome}</th>`).join('');
     const linhas = ELENCO.map((character) => {
-      const celulas = golpesDoLutador(character)
-        .map(({ golpe, situacao, acao }) => {
-          const dica = `${golpe.nome}: ${situacao}${acao ? ` (sheet ${acao})` : ''}`;
+      const celulas = animacoesDaAcademia(character)
+        .map(({ animacao, situacao, acao, descricao }) => {
+          const dica = `${animacao.nome}: ${situacao}${acao ? ` · ${descricao} (sheet ${acao})` : ''}`;
           const clicavel = acao ? `data-acao="golpe" data-lutador="${character.id}" data-sheet="${acao}"` : '';
           return `<td ${clicavel} title="${dica}" style="text-align:center;color:${COR[situacao]};cursor:${acao ? 'pointer' : 'default'}">${SIMBOLO[situacao]}</td>`;
         })
@@ -252,12 +252,12 @@ export class PainelAcademia {
     }).join('');
 
     const atual = getCharacterDefinition(this.characterId || ELENCO[0].id);
-    const detalhe = golpesDoLutador(atual)
+    const detalhe = animacoesDaAcademia(atual)
       .map(
-        ({ golpe, situacao, acao }) =>
-          `<li><span style="color:${COR[situacao]}">${SIMBOLO[situacao]}</span> <b>${golpe.nome}</b> · ${golpe.comando}` +
-          ` · ${situacao === 'faltando' ? 'falta desenhar' : situacao === 'quebra-galho' ? `usando ${acao}` : acao}` +
-          `<br><span style="color:#94a3b8">${golpe.regra}</span></li>`
+        ({ animacao, situacao, acao, descricao }) =>
+          `<li><span style="color:${COR[situacao]}">${SIMBOLO[situacao]}</span> <b>${animacao.nome}</b> · ${animacao.comando}` +
+          ` · ${situacao === 'faltando' ? 'falta desenhar' : `${descricao} (${acao})${situacao === 'quebra-galho' ? ' · substituta' : ''}`}` +
+          `<br><span style="color:#94a3b8">${animacao.regra}</span></li>`
       )
       .join('');
 
@@ -267,7 +267,7 @@ export class PainelAcademia {
           <tr><th></th>${cabecalho}</tr>${linhas}
         </table>
       </div>
-      <p style="color:#94a3b8;margin:6px 0">✓ tem · ~ quebra-galho · ✗ falta. Clique para ver o golpe.</p>
+      <p style="color:#94a3b8;margin:6px 0">✓ animação própria · ~ substituta · ✗ falta. Clique para visualizar. Golpes próprios, como tiros, contam no comando que os utiliza.</p>
       <h4 style="margin:10px 0 4px">${atual.label}</h4>
       <ul style="margin:0;padding-left:18px">${detalhe}</ul>
     `;

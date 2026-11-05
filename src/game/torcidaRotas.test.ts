@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import dados from '../../public/assets/cenarios/estadio/torcida/torcida.json';
+import {readFileSync} from 'node:fs';
+const dados=JSON.parse(readFileSync(new URL('../../public/assets/cenarios/estadio/torcida/torcida.json',import.meta.url),'utf-8'));
 import { avancarPercurso, iniciarPercurso, MAPA_TORCIDA, quantidadeParaSair, rotaDeSaida } from './torcidaRotas';
 
 describe('torcida sai pelas escadas antes do nivel zero', () => {

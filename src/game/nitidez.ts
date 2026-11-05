@@ -15,8 +15,11 @@
 import * as Phaser from 'phaser';
 
 import { calcularEscala } from './escalaDeDesenho';
+import {larguraDoJogo} from '../toque/layout';
+import {formatoTela,larguraFormato} from '../toque/formatoTela';
 
 let escalaAtual = 1;
+let dimensoesLogicas:{width:number;height:number}|null=null;
 
 /** A escala em uso (1 antes de o jogo nascer, e nos testes). */
 export function escalaDeDesenho(): number {
@@ -44,7 +47,12 @@ function escalaPara(larguraLogica: number, alturaLogica: number, area: HTMLEleme
  * @param area - O elemento pai do canvas.
  */
 export function decidirEscala(larguraLogica: number, alturaLogica: number, area: HTMLElement): { width: number; height: number } {
+  if(document.documentElement.classList.contains('com-toque')) {
+    larguraLogica=larguraFormato(formatoTela(),larguraDoJogo(area.clientWidth,area.clientHeight));
+    area.style.setProperty('--proporcao-jogo',`${larguraLogica} / ${alturaLogica}`);
+  }
   escalaAtual = escalaPara(larguraLogica, alturaLogica, area);
+  dimensoesLogicas={width:larguraLogica,height:alturaLogica};
   return { width: Math.round(larguraLogica * escalaAtual), height: Math.round(alturaLogica * escalaAtual) };
 }
 
@@ -62,8 +70,8 @@ export interface TelaLogica {
  * @param scene - Qualquer cena do jogo.
  */
 export function telaDe(scene: Phaser.Scene): TelaLogica {
-  const width = Math.round(scene.scale.width / escalaAtual);
-  const height = Math.round(scene.scale.height / escalaAtual);
+  const width = dimensoesLogicas?.width ?? Math.round(scene.scale.width / escalaAtual);
+  const height = dimensoesLogicas?.height ?? Math.round(scene.scale.height / escalaAtual);
   return { width, height, centerX: width / 2, centerY: height / 2 };
 }
 
@@ -76,60 +84,64 @@ export function telaDe(scene: Phaser.Scene): TelaLogica {
  * @param area - O elemento pai do canvas.
  */
 export function instalarNitidez(game: Phaser.Game, area: HTMLElement): void {
-  const ligar = (): void => {
-    for (const cena of game.scene.scenes) {
-      const zoom = (): void => {
-        cena.cameras.main.setOrigin(0, 0).setZoom(escalaAtual);
-      };
-      // A primeira cena já começou antes do READY, e pode estar ainda
-      // carregando (a abertura carrega as logos pelo pack): o zoom vale desde já.
-      const status = cena.sys.getStatus();
-      if (status >= Phaser.Scenes.START && status <= Phaser.Scenes.RUNNING) zoom();
-      cena.sys.events.on(Phaser.Scenes.Events.START, zoom);
-      cena.sys.events.on(Phaser.Scenes.Events.ADDED_TO_SCENE, (objeto: Phaser.GameObjects.GameObject) => {
-        if (objeto instanceof Phaser.GameObjects.Text && objeto.style.resolution < escalaAtual) {
-          objeto.setResolution(escalaAtual);
-        }
+  // Um unico dono para tamanho, escala e cameras. Nunca deduzir a geometria
+  // novamente de medidas arredondadas depois de cada rotacao.
+  let larguraLogica=dimensoesLogicas?.width ?? Math.round(game.scale.width/escalaAtual);
+  const alturaLogica=dimensoesLogicas?.height ?? Math.round(game.scale.height/escalaAtual);
+  let quadro=0;
+  const reajustar=(novaCena=false):void=>{
+    if(!game.isBooted || !game.canvas || area.clientWidth<=0 || area.clientHeight<=0)return;
+    if(novaCena && document.documentElement.classList.contains('com-toque')){
+      larguraLogica=larguraFormato(formatoTela(),window.matchMedia('(orientation: portrait)').matches?1280:larguraDoJogo(area.clientWidth,area.clientHeight));
+    }
+    area.style.setProperty('--proporcao-jogo',`${larguraLogica} / ${alturaLogica}`);
+    game.scale.getParentBounds();
+    escalaAtual=escalaPara(larguraLogica,alturaLogica,area);
+    dimensoesLogicas={width:larguraLogica,height:alturaLogica};
+    const width=Math.round(larguraLogica*escalaAtual),height=Math.round(alturaLogica*escalaAtual);
+    if(game.scale.width!==width || game.scale.height!==height)game.scale.setGameSize(width,height);
+    game.scale.refresh();
+    for(const cena of game.scene.scenes){
+      if(cena.sys.isActive() || cena.sys.isPaused())cena.cameras.main?.setSize(width,height).setOrigin(0,0).setZoom(escalaAtual);
+    }
+  };
+  const ligar=():void=>{
+    reajustar(true);
+    for(const cena of game.scene.scenes){
+      const zoom=():void=>{reajustar(true);cena.cameras.main.setOrigin(0,0).setZoom(escalaAtual);};
+      cena.sys.events.on(Phaser.Scenes.Events.START,zoom);
+      cena.sys.events.on(Phaser.Scenes.Events.ADDED_TO_SCENE,(objeto:Phaser.GameObjects.GameObject)=>{
+        if(objeto instanceof Phaser.GameObjects.Text && objeto.style.resolution<escalaAtual)objeto.setResolution(escalaAtual);
       });
     }
   };
-  if (game.isBooted && game.scene.scenes.length > 0) {
-    ligar();
-  } else {
-    game.events.once(Phaser.Core.Events.READY, ligar);
-  }
-
-  let espera: number | undefined;
-  const reajustar = (): void => {
-    if (!game.isBooted || !game.canvas) return;
-    // O Phaser guarda a medida da área e só a renova no próprio ritmo: medir agora.
-    game.scale.getParentBounds();
-    const larguraLogica = Math.round(game.scale.width / escalaAtual);
-    const alturaLogica = Math.round(game.scale.height / escalaAtual);
-    const nova = escalaPara(larguraLogica, alturaLogica, area);
-    if (Math.abs(nova - escalaAtual) < 0.01) {
-      // Mesma escala, área nova: só reencaixa o canvas nela.
-      game.scale.refresh();
-      return;
-    }
-    escalaAtual = nova;
-    const width = Math.round(larguraLogica * nova);
-    const height = Math.round(alturaLogica * nova);
-    game.scale.setGameSize(width, height);
-    // Só as cenas rodando (ou pausadas por baixo dos Ajustes) têm câmera agora.
-    for (const cena of game.scene.scenes) {
-      if (cena.sys.isActive() || cena.sys.isPaused()) cena.cameras.main?.setSize(width, height).setOrigin(0, 0).setZoom(nova);
-    }
+  if(game.isBooted && game.scene.scenes.length>0)ligar();
+  else game.events.once(Phaser.Core.Events.READY,ligar);
+  const aoMudar=():void=>{
+    cancelAnimationFrame(quadro);
+    quadro=requestAnimationFrame(()=>reajustar());
   };
-  const aoMudar = (): void => {
-    window.clearTimeout(espera);
-    espera = window.setTimeout(reajustar, 150);
-  };
-  // A área muda com a janela e também com a gaveta de debug empurrando o jogo.
-  const observador = new ResizeObserver(aoMudar);
+  const observador=new ResizeObserver(aoMudar);
   observador.observe(area);
-  game.events.once(Phaser.Core.Events.DESTROY, () => {
-    observador.disconnect();
-    window.clearTimeout(espera);
+  window.addEventListener('resize',aoMudar);
+  window.addEventListener('orientationchange',aoMudar);
+  window.addEventListener('pageshow',aoMudar);
+  window.visualViewport?.addEventListener('resize',aoMudar);
+  const mudarFormato=():void=>{
+    reajustar(true);
+    for(const cena of game.scene.scenes){
+      if(!cena.sys.isActive())continue;
+      if(cena.scene.key==='MatchScene')cena.events.emit('tela-logica-alterada');
+      else if(cena.scene.key!=='BootScene')cena.scene.restart(cena.sys.settings.data);
+    }
+  };
+  window.addEventListener('formato-tela',mudarFormato);
+  game.events.once(Phaser.Core.Events.DESTROY,()=>{
+    observador.disconnect();cancelAnimationFrame(quadro);
+    window.removeEventListener('resize',aoMudar);
+    window.removeEventListener('orientationchange',aoMudar);
+    window.removeEventListener('pageshow',aoMudar);
+    window.visualViewport?.removeEventListener('resize',aoMudar);
+    window.removeEventListener('formato-tela',mudarFormato);
   });
 }

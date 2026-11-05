@@ -27,6 +27,11 @@ export interface HeroAnimationDefinition {
   sheet: SpritesheetAsset;
   frameRate: number;
   repeat: number;
+  entranceReverseFacing?: boolean;
+  entranceLandingFrame?: number;
+  entranceGangplank?: boolean;
+  entranceFloat?: boolean;
+  entranceHop?: boolean;
   bounds: HeroBoundsFrame[];
   travel?: StrikeTravel;
   /** Steps back after each thrust (see FighterActionSpec.recuo). */

@@ -41,6 +41,109 @@
       }
     },
     {
+      "action": "entrance",
+      "label": "Entrada: voo de apresentação",
+      "file": "entrada-v1/entrance.png",
+      "frames": 12,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 191,
+        "y": 92,
+        "width": 130,
+        "height": 200
+      },
+      "timing": [
+        {
+          "frames": [
+            0,
+            0
+          ],
+          "ms": 0
+        },
+        {
+          "frames": [
+            1,
+            1
+          ],
+          "ms": 100
+        },
+        {
+          "frames": [
+            2,
+            2
+          ],
+          "ms": 150
+        },
+        {
+          "frames": [
+            3,
+            3
+          ],
+          "ms": 200
+        },
+        {
+          "frames": [
+            4,
+            4
+          ],
+          "ms": 250
+        },
+        {
+          "frames": [
+            5,
+            5
+          ],
+          "ms": 250
+        },
+        {
+          "frames": [
+            6,
+            6
+          ],
+          "ms": 200
+        },
+        {
+          "frames": [
+            7,
+            7
+          ],
+          "ms": 150
+        },
+        {
+          "frames": [
+            8,
+            8
+          ],
+          "ms": 300
+        },
+        {
+          "frames": [
+            9,
+            9
+          ],
+          "ms": 200
+        },
+        {
+          "frames": [
+            10,
+            10
+          ],
+          "ms": 150
+        },
+        {
+          "frames": [
+            11,
+            11
+          ],
+          "ms": 0
+        }
+      ],
+      "entranceFloat": true
+    },
+    {
       "action": "walk-forward",
       "label": "Flutuar para frente",
       "file": "walk-forward.png",

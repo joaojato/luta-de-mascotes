@@ -4,10 +4,12 @@ import { bandeirasDoClube, coresDoSinalizador, pintarChave, variantesDaCamisa, t
 import { criarCirculacaoTorcida, type TorcedorNaCena } from './torcidaMovimentoCena';
 import { MAPA_TORCIDA } from './torcidaRotas';
 import { camadaDaFileira, comporCamadasTorcida } from './torcidaCamadas';
-import cadeiras from '../../public/assets/cenarios/estadio/torcida/cadeiras-camadas-v5.json';
-import humores from '../../public/assets/cenarios/estadio/torcida/humores-v5.json';
+import cadeiras from './torcidaDados/cadeiras-camadas-v5.json';
+import humores from './torcidaDados/humores-v5.json';
 import { criarHumoresTorcida } from './torcidaHumorCena';
 import { prepararFrenteEstadio, QUADRO_ESTADIO_INTEIRO } from './torcidaFundo';
+import {liberarArteTorcida,quadrosCompartilhados} from './torcidaMemoria';
+import {CICLO_IRRITADA} from './torcidaHumor';
 
 /**
  * Monta a torcida dividida na Luta (docs/torcida-dividida.md): fundo sem
@@ -179,15 +181,18 @@ function sorteio(semente: number): () => number {
  * Copia uma folha para uma textura nova, com a cor chave trocada pela
  * estampa (ou sem troca), e numera os quadros célula a célula.
  */
-function texturaFatiada(
+export function criarTexturaFatiada(
   scene: Phaser.Scene,
   origem: string,
   destino: string,
   celula: Celula,
   clube: TorcidaClube | null
 ): string {
-  if (scene.textures.exists(destino)) return destino;
-  const imagem = scene.textures.get(origem).getSourceImage() as HTMLImageElement;
+  if (clube && scene.textures.exists(destino)) return destino;
+  const fonte=scene.textures.get(origem);
+  if(fonte.source[0].scaleMode!==Phaser.Textures.FilterMode.NEAREST)fonte.setFilter(Phaser.Textures.FilterMode.NEAREST);
+  if(!clube)return quadrosCompartilhados(fonte,celula.largura,celula.altura);
+  const imagem = scene.textures.get(origem).getSourceImage('__BASE') as HTMLImageElement;
   const textura = scene.textures.createCanvas(destino, imagem.width, imagem.height);
   if (!textura) return origem;
   const contexto = textura.context;
@@ -203,6 +208,7 @@ function texturaFatiada(
     textura.add(i, 0, (i % colunas) * celula.largura, Math.floor(i / colunas) * celula.altura, celula.largura, celula.altura);
   }
   textura.refresh();
+  textura.setFilter(Phaser.Textures.FilterMode.NEAREST);
   return destino;
 }
 
@@ -243,6 +249,13 @@ export function montarTorcida(
   p2: LadoDaTorcida,
   profundidade: number
 ): boolean {
+  const temporarias=new Set<string>();
+  const texturaFatiada=(cena:Phaser.Scene,origem:string,destino:string,celula:Celula,clube:TorcidaClube|null):string=>{
+    const existia=cena.textures.exists(destino);
+    const key=criarTexturaFatiada(cena,origem,destino,celula,clube);
+    if(!existia && key!==origem)temporarias.add(key);
+    return key;
+  };
   const dados = lerDadosTorcida(scene.cache.json.get(TORCIDA_CHAVES.dados));
   const temArte = Object.values(TORCIDA_CHAVES).every(
     (chave) => OPCIONAIS.includes(chave) || scene.textures.exists(chave)
@@ -435,8 +448,8 @@ export function montarTorcida(
     const chave=h==='quieta'?(p.semCamisa?TORCIDA_CHAVES.quietaBase:TORCIDA_CHAVES.quieta):(p.semCamisa?TORCIDA_CHAVES.bravaBase:TORCIDA_CHAVES.brava);
     const clube=p.semCamisa?null:variantesDaCamisa(lados[p.lado].lado.clube)[p.camisa];
     const textura=texturaFatiada(scene,chave,`${chave}-${lados[p.lado].lado.id}-${p.camisa}`,{largura:64,altura:80},clube);
-    const quadros=h==='irritada'?[p.tipo*4+3]:Array.from({length:4},(_,q)=>p.tipo*4+q);
-    return {textura,anim:animacao(scene,`${textura}-${h}-tipo${p.tipo}`,textura,quadros,h==='irritada'?1:folha.fps)};
+    const quadros=h==='irritada'?CICLO_IRRITADA.map(q=>p.tipo*4+q):Array.from({length:4},(_,q)=>p.tipo*4+q);
+    return {textura,anim:animacao(scene,`${textura}-${h}-tipo${p.tipo}`,textura,quadros,h==='irritada'?3:folha.fps)};
   },scene.textures.exists(TORCIDA_CHAVES.copo)?TORCIDA_CHAVES.copo:undefined,profundidade+.3):null;
   // A frente pintada volta por cima: pessoas circulam atras do alambrado, nunca no gramado.
   const texturaFundo = scene.textures.get(TORCIDA_CHAVES.fundo);
@@ -460,6 +473,7 @@ export function montarTorcida(
     relogio.remove();
     ordem.forEach((sprite) => sprite.destroy());
     camadasCadeiras.forEach((sprite)=>sprite.destroy());
+    liberarArteTorcida(scene,temporarias);
   });
 
   return true;

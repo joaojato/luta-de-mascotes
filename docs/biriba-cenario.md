@@ -1,5 +1,32 @@
 # Biriba, acompanhante do Bira
 
+## Correção de 04/11/2026 — NPC temporário, não acompanhante fixo
+
+Esta correção explícita do usuário substitui o acompanhamento descrito no
+histórico abaixo. Biriba não fica mais andando no fundo nem reaparece entre
+rounds. A antiga máquina `BiribaMotion` de seguir/latir foi removida.
+
+Na entrada da luta, ele vem andando pela lateral do próprio Bira, para para
+o carinho e retorna andando pela mesma lateral enquanto Bira levanta/vira.
+As folhas idle/walk existentes são reutilizadas, sem redesenhar o Biriba.
+`biribaEntrada.ts` descreve os tempos e o trajeto; `BiribaCena` só é visível
+durante esse encontro. P1 e P2 espelham o encontro inteiro, inclusive no
+espelho Bira × Bira. A linha de apoio é a arena para permitir contato real.
+
+No combate, entra apenas quando chamado pelo Bruto: usa os balões da folha
+aprovada `biriba-voando.png`, vindo de fora da lateral atrás do dono,
+subindo na entrada, oscilando durante o sobrevoo e ganhando altura na saída.
+`carrierFlight` ativa esse trajeto só para a chamada do Bira. Continua um
+Biriba por vez; alvo salvo, cocô, dano e regras de defesa permanecem os mesmos.
+Não é registrado como lutador selecionável e não tem hitbox corporal própria.
+
+Fonte corporal do Bira, prompt, referências/hashes, montagem, contato de mão
+e cabeça, APNG e prévia composta em `output/bira-entrada-v1/`. A prévia
+composta é montagem offline, não captura de uma partida. A arte do Bira
+usa o anchor e o idle ativos; Biriba permanece quadrúpede com NF/FF/NH/FH.
+
+## Histórico anterior (substituído quanto ao acompanhamento)
+
 Pedido do usuário: cachorro de cenário sobre quatro patas, acompanhando o Bira
 de um lado para o outro e parando às vezes para latir, sem som.
 

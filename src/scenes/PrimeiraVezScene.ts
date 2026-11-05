@@ -10,7 +10,7 @@ const ACCENT = 0xf43f5e;
 
 const OPCOES = [
   { titulo: 'Aprender a jogar', marcador: '▶', texto: 'Escolha seu mascote e treine cada golpe contra o rival, com a CPU fazendo o que o tutorial pede.' },
-  { titulo: 'Pular', marcador: '»', texto: 'Ir direto para o menu. O tutorial continua na Academia.' }
+  { titulo: 'Pular', marcador: '»', texto: 'Ir direto para o menu. Você pode abrir o Tutorial pelo menu principal depois.' }
 ];
 
 /**

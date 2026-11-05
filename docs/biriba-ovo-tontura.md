@@ -42,6 +42,11 @@ do Bira na beira do campo (`docs/biriba-cenario.md`). Enquanto o Biriba
 voador atravessa, o acompanhante some e volta quando o voo acaba (decisão do
 Claude: é o mesmo cachorro). Ligado depois que aquela sessão fechar.
 
+**Correção posterior, 04/11/2026:** esse acompanhamento permanente foi
+retirado por pedido do usuário. Agora ele participa do carinho na intro e
+vai embora; no combate só retorna quando chamado, entrando e saindo nos
+balões. Não ocultar/recriar um segundo cachorro no fundo após o sobrevoo.
+
 ## 2. Tontura: partícula do jogo, não da sheet
 
 Hoje as estrelas e espirais da tontura estão desenhadas dentro do

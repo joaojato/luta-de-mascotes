@@ -48,7 +48,7 @@ export const INSTRUCOES: EtapaDasInstrucoes[] = [
   },
   {
     id: 'bater',
-    titulo: 'Soco e chute',
+    titulo: 'Rápido e Bruto',
     itens: [
       { comando: 'soco', texto: '{golpe:soco-rapido} {soco}' },
       { comando: 'chute', texto: '{golpe:chute-basico} {chute}' }

@@ -41,6 +41,30 @@
       }
     },
     {
+      "action": "entrance",
+      "label": "Entrada: cerveja no chão e dor nas costas",
+      "file": "entrada-v1/entrance.png",
+      "frames": 12,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": { "x": 160, "y": 94, "width": 200, "height": 200 },
+      "timing": [
+        { "frames": [0, 0], "ms": 150 },
+        { "frames": [1, 1], "ms": 60 },
+        { "frames": [2, 2], "ms": 100 },
+        { "frames": [3, 3], "ms": 80 },
+        { "frames": [4, 5], "ms": 250 },
+        { "frames": [6, 6], "ms": 80 },
+        { "frames": [7, 7], "ms": 150 },
+        { "frames": [8, 8], "ms": 350 },
+        { "frames": [9, 9], "ms": 80 },
+        { "frames": [10, 10], "ms": 100 },
+        { "frames": [11, 11], "ms": 150 }
+      ]
+    },
+    {
       "action": "walk-forward",
       "label": "Avançar: planta o andador e dá os passos",
       "file": "maos-por-cima/revisao-v6/normal/walk-forward-composed.png",

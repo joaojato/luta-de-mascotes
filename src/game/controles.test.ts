@@ -31,10 +31,10 @@ describe('botões da luta', () => {
     expect(nomeDaTecla('NUMPAD_ONE')).toBe('Num one');
   });
   it('legenda da luta mostra as teclas salvas, em português', () => {
-    expect(legendaDosBotoes(CONTROLES_PADRAO.p1)).toBe('E soco · Q chute · C defende · Espaço especial');
-    expect(legendaDosBotoes(CONTROLES_PADRAO.p2)).toBe('P soco · I chute · ; defende · Shift especial');
+    expect(legendaDosBotoes(CONTROLES_PADRAO.p1)).toBe('E Rápido · Q Bruto · C defende · Espaço especial');
+    expect(legendaDosBotoes(CONTROLES_PADRAO.p2)).toBe('P Rápido · I Bruto · ; defende · Shift especial');
     const remapeado = atribuirTecla(CONTROLES_PADRAO, 'p1', 'light', 'H');
-    expect(legendaDosBotoes(remapeado.p1)).toContain('H soco');
+    expect(legendaDosBotoes(remapeado.p1)).toContain('H Rápido');
   });
   it('P2 é o espelho do P1 na mão direita: O K L Ç, I P ; e Shift', () => {
     expect(CONTROLES_PADRAO.p1).toEqual({ left: 'A', right: 'D', jump: 'W', crouch: 'S', block: 'C', light: 'E', heavy: 'Q', special: 'SPACE' });

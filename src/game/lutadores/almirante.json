@@ -45,6 +45,36 @@
       }
     },
     {
+      "action": "entrance",
+      "label": "Intro: Parado",
+      "file": "entrada-v4/parado.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": 0,
+      "entranceGangplank": true,
+      "defaultVisual": {"x": 170,"y": 90,"width": 190,"height": 202},
+      "timing": [
+        {"frames": [0,0],"ms": 100},
+        {"frames": [1,1],"ms": 150},
+        {"frames": [2,2],"ms": 300},
+        {"frames": [3,3],"ms": 50}
+      ]
+    },
+    {
+      "action": "entrance-walk",
+      "label": "Intro: Movimento",
+      "file": "entrada-v4/movimento.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": -1,
+      "defaultVisual": {"x": 170,"y": 90,"width": 190,"height": 202},
+      "timing": [{"frames": [0,5],"ms": 50}]
+    },
+    {
       "action": "walk-forward",
       "label": "Andar para frente",
       "file": "walk-forward.png",
@@ -465,6 +495,10 @@
       "hitHeight": 220,
       "persistOnHit": true,
       "spawnFrom": "behind"
+    },
+    "lowKick": {
+      "kind": "strike",
+      "action": "heavy-kick"
     },
     "kick": {
       "kind": "projectile",

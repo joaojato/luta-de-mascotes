@@ -92,14 +92,18 @@ export class MainMenuScene extends BaseScene {
 
   private montarOpcoes(): MenuOption[] {
     const playOption: MenuOption = { label: 'Pelada', action: () => this.scene.start(SCENE_KEYS.ModeSelect) };
+    const tutorialOption: MenuOption = {
+      label: 'Tutorial',
+      action: () => this.scene.start(SCENE_KEYS.CharacterSelect, { mode: '1vcpu', stageId: 'estadio', tutorial: true })
+    };
     const torneiosOption: MenuOption = { label: 'Torneios', action: () => this.scene.start(SCENE_KEYS.Torneio) };
     const museuOption: MenuOption = { label: 'Museu', action: () => this.scene.start(SCENE_KEYS.Museu) };
     const academiaOption: MenuOption = { label: 'Academia', action: () => this.scene.start(SCENE_KEYS.Academia) };
     const celularOption: MenuOption = { label: 'Celular', action: () => this.scene.start(SCENE_KEYS.Conectar) };
     const settingsOption: MenuOption = { label: 'Ajustes', action: () => this.scene.start(SCENE_KEYS.Settings) };
     return FERRAMENTAS_DE_DEV
-      ? [playOption, torneiosOption, museuOption, academiaOption, celularOption, settingsOption]
-      : [playOption, torneiosOption, museuOption, settingsOption];
+      ? [playOption, tutorialOption, torneiosOption, museuOption, academiaOption, celularOption, settingsOption]
+      : [playOption, tutorialOption, torneiosOption, museuOption, settingsOption];
   }
 
   private renderMenu(layout: LayoutDoMenu): void {

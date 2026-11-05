@@ -90,11 +90,13 @@ describe('registro de lutadores (Regra do JSON)', () => {
       // Quem sai do chão pode subir, mas ninguém afunda no piso.
       it('toda ação pisa na linha do idle (Regra da Régua)', () => {
         const idle = lutador.actions.find((spec) => spec.action === 'idle');
-        const chao = (idle?.defaultVisual.y ?? 0) + (idle?.defaultVisual.height ?? 0);
+        // A origem fica na base da célula. Margem extra acima (entradas/alas)
+        // não muda o piso: comparar distâncias à base, não Y bruto da folha.
+        const chao = (idle?.defaultVisual.y ?? 0) + (idle?.defaultVisual.height ?? 0) - (idle?.frameHeight ?? 256);
         const aereas = ['jump', 'jump-kick', 'jump-punch', 'special', 'knockdown'];
 
         lutador.actions.forEach((spec) => {
-          const linha = spec.defaultVisual.y + spec.defaultVisual.height;
+          const linha = spec.defaultVisual.y + spec.defaultVisual.height - (spec.frameHeight ?? 256);
           expect(linha, `${spec.action}: afundou ${linha - chao}px no chão`).toBeLessThanOrEqual(
             chao + 2
           );
@@ -263,7 +265,7 @@ describe('registro de lutadores (Regra do JSON)', () => {
     expect(almirante!.selecionavel).toBe(true);
     const completas = [
       ...ACOES_OBRIGATORIAS, 'block-low', 'heavy-punch', 'heavy-kick', 'jump-kick', 'shot',
-      'special-charge', 'special', 'stunned', 'dash-forward', 'dash-back', 'jump-punch'
+      'special-charge', 'special', 'stunned', 'dash-forward', 'dash-back', 'jump-punch', 'entrance', 'entrance-walk'
     ];
     expect(almirante!.actions.map((acao) => acao.action).sort()).toEqual(completas.sort());
     expect(new Set(almirante!.actions.map((acao) => acao.file)).size).toBe(completas.length);

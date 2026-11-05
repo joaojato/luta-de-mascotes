@@ -1,5 +1,13 @@
 import {ladoApanhando} from './torcidaReacao';
 export type HumorTorcida = 'quieta' | 'torcendo' | 'irritada' | 'brava';
+/** O copo permanece na mao: nunca usa o quadro 2, que e o arremesso. */
+export const CICLO_IRRITADA=[0,0,0,1,0,0] as const;
+export function humorPeloMedidor(nivel:number,agora:number,semente:number):HumorTorcida {
+  const fase=Math.floor((agora+semente%17000)/(850+semente%700))%10;
+  if(nivel===3)return fase<7?'torcendo':'quieta';
+  if(nivel===2)return fase<4?'torcendo':'quieta';
+  return 'irritada';
+}
 export interface HumorDaArquibancada {
   bravaAte: [number,number];
   festaAte: [number,number];

@@ -1,5 +1,7 @@
 # Torcida v5: humores, eventos individuais e camadas
 
+Atualização de movimento: no amarelo, ciclos individuais alternam incentivo (40%) e hesitação com animação de espera (60%). Irritação usa os quadros 0, 0, 0, 1, 0, 0 a 3 FPS e fase individual: o copo continua na mão, sem passar pelo lançamento (quadro 2) nem pelo quadro 3 sem copo. Não há salto. O cache de arte e os sorteios individuais de arremesso permanecem.
+
 Pedidos e correções do João em 03/11/2026. Esta revisão amplia a circulação v4 e prevalece sobre seus horários de fila única e sobre o comportamento inicial em que muitos NPCs arremessavam copos em loop.
 
 ## Comportamento e probabilidades
@@ -82,3 +84,6 @@ P*tômetro por ações: arco com agulha suavizada, iluminação exclusiva da fai
 Ampliação do P*tômetro: raio ocupa a largura disponível abaixo dos retratos, legenda de 13 px. Arcos em coordenadas cartesianas: P1 no quarto quadrante (270°–360°), P2 no terceiro (270°–180°), com vermelho embaixo e verde nas pontas externas superiores. Especial confirmado sem bloqueio leva no mínimo à divisa amarelo/verde atual; se já estiver acima, preserva o valor. Especial bloqueado mantém a penalidade de ataque barrado.
 
 Correção de 03/11: removidas as bordas e o halo extra da faixa A Casa Caiu no medidor. O alerta agora colore somente o canto superior do lado correspondente, com gradiente vermelho na faixa VTNC e vermelho escuro na faixa A Casa Caiu. Derrota final: 90% dos ainda sentados iniciam imediatamente o percurso; ceil(10% dos restantes sentados) espera exatamente 1500 ms. Saídas já agendadas do perdedor são antecipadas conforme essa regra; todos concluem as rotas e o lado vencedor fica protegido.
+
+Correção do quadro zero (imagem enviada em 03/11, 21h16): Texture.get(0) usa firstFrame no Phaser. A otimização de compartilhamento deixava __BASE como padrão em spritesheets, fazendo a pose zero resolver para a folha inteira. Fontes de animação compartilhadas agora usam firstFrame='0'; a imagem inteira permanece acessível explicitamente por __BASE. O fundo do estádio continua usando __BASE, pois não é uma folha de animação. Teste com a classe Texture real valida recorte 64x112 no quadro numérico 0, reutilização sem duplicar quadros e recuperação de recorte inconsistente. Filtro NEAREST nas folhas da torcida; pausas individuais no festejo evitam uma parede contínua de braços.
+Fim do tutorial: a confirmação da última fala volta ao menu diretamente, sem reiniciar uma partida contra CPU. A fala final informa esse destino e os botões de toque retomam o modo de menu.

@@ -7,7 +7,8 @@ import { getCharacterAnimationDefinition } from './hero';
 import { DASH_STOP_GAP, PERFECT_GUARD_STAGGER } from './moveMechanics';
 
 vi.mock('phaser', () => ({
-  Math: { Clamp: (v: number, min: number, max: number) => Math.max(min, Math.min(max, v)) },
+  Math: { Clamp: (v: number, min: number, max: number) => Math.max(min, Math.min(max, v)),
+    Vector2: class {constructor(public x=0,public y=0){} copy(p:{x:number;y:number}){this.x=p.x;this.y=p.y;return this;}} },
   Geom: { Rectangle: class { constructor(public x: number, public y: number, public width: number, public height: number) {} } }
 }));
 vi.mock('./vfx', () => ({ spawnChargeAura: vi.fn() }));
@@ -16,7 +17,7 @@ function setup(characterId: string, facing: 1 | -1 = 1) {
   const events = new Map<string, () => void>();
   const delays: Array<() => void> = [];
   const visual = { x: 0, setDepth() { return this; }, destroy: vi.fn() };
-  const effectVisual = { x:0, y:0, depth:0, setDepth(d: number) {this.depth=d; return this;}, setOrigin() {return this;},
+  const effectVisual = { x:0, y:0, depth:0, anims:{currentAnim:{key:'',frames:[]},pause:vi.fn()},setVisible(){return this;},setDepth(d: number) {this.depth=d; return this;}, setOrigin() {return this;},
     setScale() {return this;}, setFlipX() {return this;}, play() {return this;}, once() {return this;},
     setPosition(x: number, y: number) { this.x=x; this.y=y; return this; }, destroy:vi.fn() };
   const sprite = {
@@ -58,10 +59,198 @@ function setup(characterId: string, facing: 1 | -1 = 1) {
     complete('special-charge');
     delays.splice(0).forEach(fn => fn());
   }
-  return {fighter, sprite, special, complete, visual, effectVisual, delays};
+  return {fighter, sprite, special, complete, visual, effectVisual, delays, scene};
 }
 
 describe('fighter move integration', () => {
+  it.each(['saci','cartola','galo','porco','bahia','mosqueteiro-gremio','urubu','coxa','cachorro','dragao','mosqueteiro'])('%s volta à guarda ao terminar sua intro, ainda bloqueando comandos',id=>{
+    const {fighter,sprite,scene}=setup(id);
+    Object.assign(scene,{anims:{exists:()=>true,get:(key:string)=>{
+      const a=getCharacterAnimationDefinition(id,key);
+      return {duration:a.sheet.frames*1000/a.frameRate,frames:a.frameDurations!.map(duration=>({duration}))};
+    }},...(id==='urubu'?{cameras:{main:{worldView:{y:0},shake:vi.fn()}}}:{})});
+    fighter.setFrozen(true);
+    const duracao=fighter.iniciarEntrada();
+    fighter.update(duracao/1000-.001,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe(`${id}-entrance`);
+    fighter.update(.002,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe(`${id}-idle`);
+    expect(sprite.flipX).toBe(true);
+    expect(sprite.y).toBe(500);
+    const x=fighter.x;
+    fighter.update(.5,{...NEUTRAL_FIGHTER_INPUT,light:true,right:true,jump:true});
+    expect(fighter.x).toBe(x);
+    expect(sprite.anims.currentAnim.key).toBe(`${id}-idle`);
+    expect(fighter.getActiveAttack()).toBeNull();
+  });
+  it('conclusão real da animação também retorna à guarda antes da contagem acabar',()=>{
+    const {fighter,sprite,scene,complete}=setup('cachorro',-1);
+    Object.assign(scene,{anims:{exists:()=>true,get:(key:string)=>{
+      const a=getCharacterAnimationDefinition('cachorro',key);
+      return {duration:a.sheet.frames*1000/a.frameRate,frames:a.frameDurations!.map(duration=>({duration}))};
+    }}});
+    fighter.setFrozen(true);fighter.iniciarEntrada();
+    complete('entrance');
+    expect(sprite.anims.currentAnim.key).toBe('cachorro-idle');
+    expect(sprite.flipX).toBe(false);
+    fighter.update(.2,{...NEUTRAL_FIGHTER_INPUT,light:true});
+    expect(fighter.getActiveAttack()).toBeNull();
+  });
+  it('Galo só ganha altura ao bater asas e cai sentado sem perder vida',()=>{
+    const {fighter,sprite,scene}=setup('galo');
+    Object.assign(scene,{anims:{exists:()=>true,get:(key:string)=>{
+      const a=getCharacterAnimationDefinition('galo',key);
+      return {duration:a.sheet.frames*1000/a.frameRate,frames:a.frameDurations!.map(duration=>({duration}))};
+    }}});
+    fighter.setFrozen(true);
+    expect(fighter.iniciarEntrada()).toBe(2705);
+    fighter.update(.885,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    fighter.update(.315,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBeCloseTo(444);
+    expect(sprite.frame.name).toBe(8);
+    fighter.update(.595,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    expect(sprite.frame.name).toBe(14);
+    expect(sprite.x).toBe(200);
+    expect(fighter.health01).toBe(1);
+    expect(fighter.getActiveAttack()).toBeNull();
+    fighter.setFrozen(false);
+    expect(sprite.anims.currentAnim.key).toBe('galo-idle');
+  });
+  it('intro do Esquadrão sincroniza voo e pose sem dano e retorna à altura normal',()=>{
+    const {fighter,sprite,scene}=setup('bahia');
+    Object.assign(scene,{anims:{exists:()=>true,get:(key:string)=>{
+      const a=getCharacterAnimationDefinition('bahia',key);
+      return {duration:a.sheet.frames*1000/a.frameRate,frames:a.frameDurations!.map(duration=>({duration}))};
+    }}});
+    fighter.setFrozen(true);
+    expect(fighter.iniciarEntrada()).toBe(3650);
+    fighter.update(.5,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    fighter.update(.85,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBeCloseTo(388);
+    expect(sprite.frame.name).toBe(4);
+    expect(fighter.getActiveAttack()).toBeNull();
+    expect(sprite.x).toBe(200);
+    fighter.update(1.95,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    expect(sprite.frame.name).toBe(10);
+    fighter.setFrozen(false);
+    expect(sprite.anims.currentAnim.key).toBe('bahia-idle');
+  });
+  it.each([1,-1] as const)('Almirante desce pela prancha sem ser reposicionado pela câmera (%i)',lado=>{
+    const {fighter,sprite,scene}=setup('almirante',lado);
+    const objetos:Array<{visible:boolean;destroy:ReturnType<typeof vi.fn>}>=[];
+    Object.assign(scene.add,{image:()=>{
+      const im={visible:true,x:0,y:0,flipX:false,setDepth(){return this;},setOrigin(){return this;},
+        setFlipX(v:boolean){this.flipX=v;return this;},setDisplaySize(){return this;},setRotation(){return this;},
+        setPosition(x:number,y:number){this.x=x;this.y=y;return this;},setVisible(v:boolean){this.visible=v;return this;},destroy:vi.fn()};
+      objetos.push(im);return im;
+    }});
+    Object.assign(scene,{scale:{width:1600,height:900},cameras:{main:{scrollX:0,width:3200}},anims:{exists:()=>true,get:(key:string)=>{
+      const a=getCharacterAnimationDefinition('almirante',key);
+      return {duration:a.sheet.frames*1000/a.frameRate,frames:a.frameDurations!.map(duration=>({duration}))};
+    }}});
+    fighter.setFrozen(true);
+    expect(fighter.iniciarEntrada()).toBe(4650);
+    expect(sprite.anims.currentAnim.key).toBe('almirante-entrance-walk');
+    const inicioX=sprite.x;
+    expect(sprite.y).toBeCloseTo(290);
+    fighter.setHorizontalBounds(40,960);
+    expect(sprite.x).toBe(inicioX);
+    expect(fighter.x).toBe(200);
+    fighter.update(.5,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.x).toBeCloseTo((lado===1?0:1600)+lado*15*1.4);
+    const xAntes=sprite.x;
+    fighter.update(.15,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.x).not.toBe(xAntes);
+    expect(sprite.frame.name).toBe(1);
+    expect(sprite.anims.currentAnim.key).toBe('almirante-entrance-walk');
+    fighter.update(1.65,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    expect(sprite.x).toBeCloseTo(200-lado*120*1.4);
+    fighter.update(.9,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    expect(sprite.x).toBeCloseTo(200-lado*40*1.4);
+    expect(sprite.anims.currentAnim.key).toBe('almirante-entrance-walk');
+    fighter.update(.45,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.x).toBe(200);
+    expect(sprite.y).toBe(500);
+    expect(sprite.anims.currentAnim.key).toBe('almirante-entrance');
+    expect(sprite.frame.name).toBe(0);
+    expect(fighter.getActiveAttack()).toBeNull();
+    fighter.update(.8,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.x).toBe(200);
+    expect(sprite.y).toBe(500);
+    expect(sprite.frame.name).toBe(2);
+    expect(objetos.every(o=>!o.visible)).toBe(true);
+    fighter.update(.2,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe('almirante-idle');
+    expect(sprite.x).toBe(200);
+    fighter.setFrozen(false);
+    expect(objetos.every(o=>o.destroy.mock.calls.length===1)).toBe(true);
+    expect(sprite.anims.currentAnim.key).toBe('almirante-idle');
+    expect(sprite.flipX).toBe(lado===1);
+  });
+  it('Urubu desce do alto e dispara o impacto apenas uma vez, sem ataque',()=>{
+    const {fighter,sprite,scene}=setup('urubu');
+    const shake=vi.fn();
+    Object.assign(scene,{anims:{exists:()=>true,get:(key:string)=>{
+      const a=getCharacterAnimationDefinition('urubu',key);
+      return {duration:a.sheet.frames*1000/a.frameRate,frames:(a.frameDurations??a.bounds.map(()=>0)).map(duration=>({duration}))};
+    }},cameras:{main:{worldView:{y:0},shake}}});
+    fighter.setFrozen(true);
+    expect(fighter.iniciarEntrada()).toBe(4100);
+    expect(sprite.y).toBe(-80);
+    fighter.update(.5,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(-80);
+    fighter.update(.5,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(65);
+    expect(shake).not.toHaveBeenCalled();
+    fighter.update(.5,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.y).toBe(500);
+    expect(shake).toHaveBeenCalledTimes(1);
+    fighter.update(3,NEUTRAL_FIGHTER_INPUT);
+    expect(shake).toHaveBeenCalledTimes(1);
+    expect(fighter.getActiveAttack()).toBeNull();
+    fighter.setFrozen(false);
+    expect(sprite.y).toBe(500);
+    expect(sprite.anims.currentAnim.key).toBe('urubu-idle');
+  });
+  it('Biriba vem nos balões apenas quando chamado e não permite duas chamadas ao mesmo tempo',()=>{
+    const {fighter,sprite,complete}=setup('cachorro');
+    fighter.faceToward(800);
+    expect(fighter.carrierAloft).toBe(false);
+    fighter.update(.01,{...NEUTRAL_FIGHTER_INPUT,heavy:true});
+    expect(sprite.anims.currentAnim.key).toBe('cachorro-summon-biriba');
+    fighter.update(.3,NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.carrierAloft).toBe(true);
+    complete('summon-biriba');
+    fighter.update(.01,{...NEUTRAL_FIGHTER_INPUT,heavy:true});
+    expect(sprite.anims.currentAnim.key).toBe('cachorro-idle');
+    for(let i=0;i<45;i++)fighter.update(.1,NEUTRAL_FIGHTER_INPUT);
+    expect(fighter.carrierAloft).toBe(false);
+  });
+  it.each([1,-1] as const)('Bira recebe o Biriba na própria lateral e retoma a guarda para o adversário (%i)', facing=>{
+    const {fighter,sprite,scene}=setup('cachorro',facing);
+    Object.assign(scene,{anims:{exists:()=>true,get:(key:string)=>{
+      const a=getCharacterAnimationDefinition('cachorro',key);
+      return {duration:a.sheet.frames*1000/a.frameRate,frames:(a.frameDurations??a.bounds.map(()=>0)).map(duration=>({duration}))};
+    }}});
+    fighter.setFrozen(true);
+    expect(fighter.iniciarEntrada()).toBe(4700);
+    expect(sprite.flipX).toBe(facing===-1);
+    fighter.faceToward(facing===1?-100:1000);
+    fighter.update(.5,NEUTRAL_FIGHTER_INPUT);
+    expect(sprite.anims.currentAnim.key).toBe('cachorro-entrance');
+    expect(sprite.flipX).toBe(facing===-1);
+    expect(fighter.getActiveAttack()).toBeNull();
+    fighter.setFrozen(false);
+    // Já muda a textura junto do espelhamento, inclusive se o tutorial abrir fala.
+    expect(sprite.anims.currentAnim.key).toBe('cachorro-idle');
+    expect(sprite.flipX).toBe(facing===1);
+  });
   it('keeps Saci grounded during preparation, follows the flight arc and lands', () => {
     const {fighter, sprite} = setup('saci');
     fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, jump:true});

@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { humorDoTorcedor,humorPorResultado,humorPorVida,novoHumorTorcida,sementeDoTorcedor,type HumorTorcida } from './torcidaHumor';
+import { CICLO_IRRITADA,humorPeloMedidor,humorDoTorcedor,humorPorResultado,humorPorVida,novoHumorTorcida,sementeDoTorcedor,type HumorTorcida } from './torcidaHumor';
 import type { TorcedorNaCena } from './torcidaMovimentoCena';
 
 interface ObjetoArremessado {
@@ -14,13 +14,18 @@ export function criarHumoresTorcida(
   const objetos:ObjetoArremessado[]=[];
   const arremessando=new Map<TorcedorNaCena,{inicio:number;lancou:boolean}>();
   const niveis:[number|null,number|null]=[null,null];
+  const artes=new WeakMap<TorcedorNaCena,Map<HumorTorcida,{textura:string;anim:string}>>();
+  const artePronta=(p:TorcedorNaCena,h:HumorTorcida)=>{
+    let cache=artes.get(p);if(!cache){cache=new Map();artes.set(p,cache);}
+    let pronta=cache.get(h);if(!pronta){pronta=arte(p,h);cache.set(h,pronta);}return pronta;
+  };
   const medidor=(lado:0|1,nivel:number)=>{niveis[lado]=nivel;};
   const derrota=(lado:0|1,decisiva:boolean)=>humorPorResultado(estado,lado,decisiva,scene.time.now);
   const vida=(p1:number,p2:number)=>humorPorVida(estado,p1,p2);
   const arremesso=(p:TorcedorNaCena)=>{
     if(!estado.pressao[p.lado] || !p.sprite.active || !p.sprite.visible || arremessando.has(p))return;
     arremessando.set(p,{inicio:scene.time.now,lancou:false});
-    p.sprite.play({key:arte(p,'brava').anim,startFrame:0,repeat:0});
+    p.sprite.play({key:artePronta(p,'brava').anim,startFrame:0,repeat:0});
   };
   const limpar=()=>{objetos.forEach(o=>o.sprite.destroy());objetos.length=0;arremessando.clear();niveis.fill(null);estado=novoHumorTorcida();};
   scene.events.on('torcida-derrota',derrota);
@@ -47,9 +52,11 @@ export function criarHumoresTorcida(
       if(acao && !estado.pressao[p.lado]){arremessando.delete(p);acao=undefined;}
       if(acao && agora-acao.inicio>=4000/(6*ritmo)){arremessando.delete(p);acao=undefined;}
       const nivel=niveis[p.lado];
-      const humor=acao?'brava':nivel===null?humorDoTorcedor(estado,p.lado,agora,seed):nivel===3?'torcendo':nivel===2?'quieta':'irritada';
-      const anim=arte(p,humor);
-      if(p.sprite.anims.currentAnim?.key!==anim.anim) p.sprite.play({key:anim.anim,startFrame:humor==='brava'||humor==='irritada'?0:seed%4});
+      // Apoio alto nao significa todos levantando os bracos sem pausa:
+      // descansos individuais quebram a malha de poses sobrepostas na arquibancada.
+      const humor=acao?'brava':nivel===null?humorDoTorcedor(estado,p.lado,agora,seed):humorPeloMedidor(nivel,agora,seed);
+      const anim=artePronta(p,humor);
+      if(p.sprite.anims.currentAnim?.key!==anim.anim) p.sprite.play({key:anim.anim,startFrame:humor==='brava'?0:humor==='irritada'?seed%CICLO_IRRITADA.length:seed%4});
       p.sprite.setData('torcidaHumor',humor);
       if(!acao || acao.lancou || agora-acao.inicio<2000/(6*ritmo) || !objetoTextura)continue;
       const f=fileiras[p.fileira],s=f.escala;

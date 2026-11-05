@@ -66,20 +66,20 @@ describe('instruções do 1x1', () => {
 
   it('cada lado lê as próprias teclas, com o remapeamento', () => {
     const item = INSTRUCOES[2].itens[0].texto;
-    expect(trocarMarcadores(item, { toque: false, botoes: CONTROLES_PADRAO.p1, olhando: 1 })).toBe('Soco "E"');
-    expect(trocarMarcadores(item, { toque: false, botoes: CONTROLES_PADRAO.p2, olhando: -1 })).toBe('Soco "P"');
-    expect(trocarMarcadores(item, { toque: false, botoes: { ...CONTROLES_PADRAO.p2, light: 'J' }, olhando: -1 })).toBe('Soco "J"');
+    expect(trocarMarcadores(item, { toque: false, botoes: CONTROLES_PADRAO.p1, olhando: 1 })).toBe('Rápido "E"');
+    expect(trocarMarcadores(item, { toque: false, botoes: CONTROLES_PADRAO.p2, olhando: -1 })).toBe('Rápido "P"');
+    expect(trocarMarcadores(item, { toque: false, botoes: { ...CONTROLES_PADRAO.p2, light: 'J' }, olhando: -1 })).toBe('Rápido "J"');
   });
 });
 
 describe('nomes dos golpes e do menu nos textos', () => {
   const teclado = { toque: false as const, botoes: CONTROLES_PADRAO.p1, olhando: 1 as const };
 
-  it('o golpe com o nome do mascote; sem nome no JSON, o do catálogo', () => {
+  it('nomes particulares antigos não substituem os nomes dos comandos', () => {
     const nomes = { 'soco-rapido': 'Jab', 'chute-basico': 'Garrucha' };
-    expect(trocarMarcadores('Acertar um golpe de {golpe:soco-rapido} {soco}', { ...teclado, nomes })).toBe('Acertar um golpe de Jab "E"');
-    expect(trocarMarcadores('{golpe:chute-basico} {chute}', { ...teclado, nomes })).toBe('Garrucha "Q"');
-    expect(trocarMarcadores('{golpe:voadora}', teclado)).toBe('Voadora');
+    expect(trocarMarcadores('Acertar um golpe de {golpe:soco-rapido} {soco}', { ...teclado, nomes })).toBe('Acertar um golpe de Rápido "E"');
+    expect(trocarMarcadores('{golpe:chute-basico} {chute}', { ...teclado, nomes })).toBe('Bruto "Q"');
+    expect(trocarMarcadores('{golpe:voadora}', teclado)).toBe('Bruto de Cima');
   });
 
   it('o menu é o Esc no teclado e o botão de menu no celular', () => {
@@ -91,12 +91,12 @@ describe('nomes dos golpes e do menu nos textos', () => {
 
 describe('fala das duas mãos', () => {
   it('as teclas da outra mão, cada uma igual à do P1', () => {
-    expect(textoDasDuasMaos(CONTROLES_PADRAO.p1)).toBe('"I" = "Q" (chute), "O" = "E" (soco) e "P" = "C" (bloqueio)');
+    expect(textoDasDuasMaos(CONTROLES_PADRAO.p1)).toBe('"I" = "Q" (Bruto), "O" = "E" (Rápido) e "P" = "C" (bloqueio)');
   });
 
   it('segue o remapeamento, e a extra que bate com uma tecla do P1 sai', () => {
     const botoes = { ...CONTROLES_PADRAO.p1, light: 'J', block: 'P' };
-    expect(textoDasDuasMaos(botoes)).toBe('"I" = "Q" (chute) e "O" = "J" (soco)');
+    expect(textoDasDuasMaos(botoes)).toBe('"I" = "Q" (Bruto) e "O" = "J" (Rápido)');
   });
 
   it('no celular não há teclado: o marcador some', () => {

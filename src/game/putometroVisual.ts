@@ -9,6 +9,7 @@ export class PutometroVisual {
   private legenda:Phaser.GameObjects.Text;
   private mostrado=.7;
   private brilho=0;
+  private assinatura='';
   private entrada:Phaser.Tweens.Tween;
   constructor(scene:Phaser.Scene,pai:Phaser.GameObjects.Container,x:number,y:number,private largura:number,private altura:number,private espelhado=false){
     this.raiz=scene.add.container(x,y);pai.add(this.raiz);
@@ -23,6 +24,10 @@ export class PutometroVisual {
     if(Math.abs(alvo-this.mostrado)>.002)this.brilho=1;
     this.mostrado+=(alvo-this.mostrado)*(1-Math.exp(-Math.max(0,delta)/55));
     this.brilho=Math.max(0,this.brilho-delta/450);
+    if(Math.abs(alvo-this.mostrado)<.0001)this.mostrado=alvo;
+    const assinatura=`${this.mostrado.toFixed(4)}:${this.brilho.toFixed(2)}:${e.verde[lado]}`;
+    if(this.assinatura===assinatura)return;
+    this.assinatura=assinatura;
     const g=this.desenho.clear(),r=Math.min((this.largura-18)/1.08,(this.altura-32)/1.08);
     const cx=this.espelhado?8:this.largura-8,cy=8;
     // Angulos cartesianos: esquerda Q4 (270–360), direita Q3 (270–180).
@@ -62,7 +67,8 @@ export class PutometroVisual {
     const escalaTexto=Math.min(1,(this.largura-4)/Math.max(1,this.legenda.width));
     this.legenda.setScale(escalaTexto);
     this.desenho.y=this.legenda.displayHeight+2;
-    this.legenda.setColor(['#ff748d','#ff7070','#ffdf64','#a1ff75'][ativa]);
+    const cor=['#ff748d','#ff7070','#ffdf64','#a1ff75'][ativa];
+    if(this.legenda.style.color!==cor)this.legenda.setColor(cor);
   }
   /** A caixa do medidor no container do HUD, já com a escala dele (o foco de luz do tutorial). */
   get caixa():{x:number;y:number;largura:number;altura:number} {

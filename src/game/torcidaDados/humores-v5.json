@@ -1,0 +1,39 @@
+{
+  "quieta": {
+    "arquivo": "torcida-quieta-v5.png",
+    "arquivoVestido": "torcida-quieta-v5-camisa.png",
+    "celulaLargura": 64,
+    "celulaAltura": 80,
+    "colunas": 4,
+    "linhas": 10,
+    "tipos": 10,
+    "quadrosPorTipo": 4,
+    "fps": 3,
+    "ancora": {
+      "x": 32,
+      "y": 79
+    }
+  },
+  "brava": {
+    "arquivo": "torcida-brava-v5.png",
+    "arquivoVestido": "torcida-brava-v5-camisa.png",
+    "celulaLargura": 64,
+    "celulaAltura": 80,
+    "colunas": 4,
+    "linhas": 10,
+    "tipos": 10,
+    "quadrosPorTipo": 4,
+    "fps": 6,
+    "ancora": {
+      "x": 32,
+      "y": 79
+    }
+  },
+  "objeto": {
+    "arquivo": "torcida-copo-v5.png",
+    "largura": 24,
+    "altura": 24,
+    "quadroSoltura": 2,
+    "limiteSimultaneo": 12
+  }
+}

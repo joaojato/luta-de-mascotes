@@ -339,8 +339,8 @@ input {
 /* Ajustes ▸ FPS na tela. Em dev, ao lado da aba do debug. */
 .contador-fps {
   position: fixed;
-  top: 8px;
-  right: 8px;
+  top: calc(env(safe-area-inset-top, 0px) + 8px);
+  right: calc(env(safe-area-inset-right, 0px) + 8px);
   z-index: 62;
   padding: 3px 7px;
   background: rgba(7, 6, 19, 0.72);
@@ -1320,6 +1320,13 @@ html.com-toque *::after {
   text-align: center;
 }
 
+.toque__ajuda {
+  margin: 0 0 6px;
+  font: 14px/1.4 var(--font-readout);
+  color: var(--ink);
+  opacity: .8;
+}
+
 .toque__item:active,
 .toque__item--forte {
   background: rgba(57, 255, 122, 0.25);
@@ -1399,8 +1406,48 @@ html.com-toque *::after {
   padding: 24px;
 }
 
+/* A mesma superficie acompanha a viewport visual, inclusive barras do Safari. */
+html.com-toque .app-shell--game-only .game-host,
+html.com-toque .toque {
+  right: auto;
+  bottom: auto;
+  width: var(--largura-visivel, 100vw);
+  height: var(--altura-visivel, 100dvh);
+}
+
 @media (orientation: portrait) {
-  html.com-toque .toque__girar {
-    display: grid;
+  html.com-toque .app-shell--game-only .game-root {
+    height: calc((var(--altura-visivel, 100dvh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2);
+    aspect-ratio: auto;
+    flex: none;
+  }
+  html.com-toque .app-shell--game-only .game-host {
+    background: linear-gradient(155deg, #191827, #090810);
+  }
+  html.com-toque .toque__girar { display: none; }
+  html.com-toque .toque__botao,
+  html.com-toque .toque__direcional {
+    background-color: rgba(23, 22, 39, .94);
+    box-shadow: 0 5px 0 #030309, inset 0 1px 0 rgba(255,255,255,.15);
+  }
+}
+
+/* Formato escolhido pelo jogador, centrado dentro da area segura. */
+html.com-toque .app-shell--game-only .game-host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+html.com-toque .app-shell--game-only .game-root {
+  max-width: calc((var(--altura-visivel, 100dvh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * var(--formato-tela, 100));
+}
+@media (orientation: portrait) {
+  html.com-toque .app-shell--game-only .game-host {
+    justify-content: flex-start;
+    align-items: center;
+  }
+  html.com-toque .app-shell--game-only .game-root {
+    max-width: none;
+    align-items: var(--alinhamento-tela-vertical, flex-end);
   }
 }

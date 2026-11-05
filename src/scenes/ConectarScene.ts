@@ -11,8 +11,8 @@ const ENDERECOS_LOCAIS = new Set(['localhost', '127.0.0.1', '::1', '[::1]']);
 
 const GUIA = [
   'Celular em pé na altura da cintura, a uns 2,5 m, pegando o corpo inteiro.',
-  'Passo pro lado: anda  ·  guarda no rosto: defende  ·  soco: soco',
-  'Joelho alto: chute  ·  pulo: pulo  ·  mãos pro alto: especial (pose de torcida)'
+  'Passo pro lado: anda  ·  guarda no rosto: defende  ·  soco: Rápido',
+  'Joelho alto: Bruto  ·  pulo: pulo  ·  mãos pro alto: especial (pose de torcida)'
 ];
 
 /**

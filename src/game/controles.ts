@@ -6,6 +6,8 @@
  * `COMMA`, `LEFT`), que é o que `keyboard.addKey` aceita.
  */
 
+import { NOMES_DOS_ATAQUES } from './golpes';
+
 export type Lado = 'p1' | 'p2';
 
 export type ComandoLuta = 'left' | 'right' | 'jump' | 'crouch' | 'block' | 'light' | 'heavy' | 'special';
@@ -16,8 +18,8 @@ export const COMANDOS_LUTA: { id: ComandoLuta; nome: string }[] = [
   { id: 'jump', nome: 'Pular' },
   { id: 'crouch', nome: 'Agachar (baixo)' },
   { id: 'block', nome: 'Defender' },
-  { id: 'light', nome: 'Soco' },
-  { id: 'heavy', nome: 'Chute' },
+  { id: 'light', nome: NOMES_DOS_ATAQUES['soco-rapido'] },
+  { id: 'heavy', nome: NOMES_DOS_ATAQUES['chute-basico'] },
   { id: 'special', nome: 'Especial' }
 ];
 
@@ -42,8 +44,8 @@ export const CONTROLES_PADRAO: Controles = {
 
 /**
  * Sozinho no teclado (contra a CPU, torneio, treino), o P1 ganha I O P como
- * opção da outra mão, além do Q E C e na mesma ordem: I chuta como o Q, O
- * soca como o E, P defende como o C (João, 01/11/2026).
+ * opção da outra mão, além do Q E C e na mesma ordem: I usa Bruto como Q,
+ * O usa Rápido como E, P defende como C (João, 01/11/2026).
  */
 export const EXTRA_SOZINHO: Partial<MapaBotoes> = { heavy: 'I', light: 'O', block: 'P' };
 
@@ -146,6 +148,6 @@ export function nomeDaTecla(tecla: string): string {
 
 /** Legenda curta de um lado na luta, com as teclas que valem agora (remapeadas ou padrão). */
 export function legendaDosBotoes(botoes: MapaBotoes): string {
-  const acoes: [ComandoLuta, string][] = [['light', 'soco'], ['heavy', 'chute'], ['block', 'defende'], ['special', 'especial']];
+  const acoes: [ComandoLuta, string][] = [['light', 'Rápido'], ['heavy', 'Bruto'], ['block', 'defende'], ['special', 'especial']];
   return acoes.map(([id, verbo]) => `${nomeDaTecla(botoes[id])} ${verbo}`).join(' · ');
 }

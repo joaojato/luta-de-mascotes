@@ -9,6 +9,7 @@ import {
   juntarLayout,
   larguraDoJogo,
   layoutPadrao,
+  layoutSemSobreposicao,
   redimensionar,
   salvarLayout,
   type Tela
@@ -16,6 +17,50 @@ import {
 
 const IPHONE: Tela = { largura: 844, altura: 390, seguro: { topo: 0, direita: 47, baixo: 21, esquerda: 47 } };
 const SE: Tela = { largura: 667, altura: 375, seguro: { topo: 0, direita: 0, baixo: 0, esquerda: 0 } };
+
+describe('controles abaixo do jogo em pe',()=>{
+  for(const [w,h] of [[320,568],[390,844],[430,932],[768,1024]]){
+    it(`mantem os controles fora da imagem e sem sobreposicao em ${w}x${h}`,()=>{
+      const tela:Tela={largura:w,altura:h,seguro:{topo:47,direita:0,esquerda:0,baixo:34}};
+      const layout=layoutPadrao(tela),fimJogo=47+(h-47-34)/2;
+      const caixas=IDS_CONTROLE.filter(id=>id!=='menu').map(id=>caixaEmPixels(layout[id],tela));
+      for(const c of caixas){
+        expect(c.topo).toBeGreaterThan(fimJogo);
+        expect(c.esquerda).toBeGreaterThanOrEqual(0);
+        expect(c.esquerda+c.lado).toBeLessThanOrEqual(w);
+        expect(c.topo+c.lado).toBeLessThanOrEqual(h-34);
+      }
+      for(let i=0;i<caixas.length;i++)for(let j=i+1;j<caixas.length;j++){
+        const a=caixas[i],b=caixas[j];
+        expect(a.esquerda+a.lado+2<=b.esquerda || b.esquerda+b.lado+2<=a.esquerda || a.topo+a.lado+2<=b.topo || b.topo+b.lado+2<=a.topo).toBe(true);
+      }
+    });
+  }
+  it('guarda ajustes distintos para cada orientacao',()=>{
+    const storage=memoria(),deitado=layoutPadrao(IPHONE),emPe={...deitado,baixo:{x:.8,y:.7,tamanho:.1}};
+    salvarLayout(deitado,storage);salvarLayout(emPe,storage,true);
+    expect(carregarLayout(storage)).toEqual(deitado);expect(carregarLayout(storage,true)).toEqual(emPe);
+    apagarLayout(storage,true);expect(carregarLayout(storage)).toEqual(deitado);
+  });
+  it('todos os formatos preservam folga entre controles e o quadro do jogo',()=>{
+    for(const proporcao of [4/3,16/9,18/9])for(const [w,h] of [[320,568],[390,844],[844,390],[667,375],[740,330]]){
+      const tela:Tela={largura:w,altura:h,seguro:{topo:0,direita:0,esquerda:0,baixo:20}};
+      expect(layoutSemSobreposicao(layoutPadrao(tela,proporcao),tela,proporcao)).toBe(true);
+    }
+  });
+  it('rejeita ajustes que empilham botoes ou cobrem a imagem em pe',()=>{
+    const tela:Tela={largura:390,altura:844,seguro:{topo:47,direita:0,esquerda:0,baixo:34}};
+    const l=layoutPadrao(tela);
+    expect(layoutSemSobreposicao({...l,cima:l.baixo},tela)).toBe(false);
+    expect(layoutSemSobreposicao({...l,direcional:{...l.direcional,y:.1}},tela)).toBe(false);
+  });
+  it('deitado oferece botoes grandes sem sobreposicao em uma tela de celular',()=>{
+    const l=layoutPadrao(IPHONE);
+    expect(caixaEmPixels(l.baixo,IPHONE).lado).toBeGreaterThanOrEqual(76);
+    expect(caixaEmPixels(l.direcional,IPHONE).lado).toBeGreaterThanOrEqual(180);
+    expect(layoutSemSobreposicao(l,IPHONE)).toBe(true);
+  });
+});
 
 function memoria(): Storage {
   const dados = new Map<string, string>();

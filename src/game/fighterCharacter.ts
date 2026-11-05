@@ -35,6 +35,14 @@ export interface FighterActionSpec {
   frameHeight?: number;
   frameRate: number;
   repeat: number;
+  /** A entrada começa olhando para a própria lateral e vira até a guarda. */
+  entranceReverseFacing?: boolean;
+  /** Quadro do primeiro contato do pouso; a descida ocorre no motor. */
+  entranceLandingFrame?: number;
+  /** Desembarque pela prancha da proa na lateral de origem. */
+  entranceGangplank?: boolean;
+  entranceFloat?: boolean;
+  entranceHop?: boolean;
   defaultVisual: Rect;
   attack?: { frames: number[]; bounds: Rect };
   /**
@@ -215,6 +223,11 @@ function makeAnimation(
     sheet: animationSheet,
     frameRate: spec.frameRate,
     repeat: spec.repeat,
+    ...(spec.entranceReverseFacing ? { entranceReverseFacing: true } : {}),
+    ...(spec.entranceLandingFrame !== undefined ? { entranceLandingFrame: spec.entranceLandingFrame } : {}),
+    ...(spec.entranceGangplank ? { entranceGangplank: true } : {}),
+    ...(spec.entranceFloat ? { entranceFloat: true } : {}),
+    ...(spec.entranceHop ? { entranceHop: true } : {}),
     bounds,
     ...(spec.travel ? { travel: spec.travel } : {}),
     ...(spec.recuo ? { recuo: spec.recuo } : {}),

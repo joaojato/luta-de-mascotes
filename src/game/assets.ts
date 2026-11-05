@@ -9,6 +9,7 @@ import {
 import { GENERATED_TEXTURE_ASSETS, type GeneratedTextureAsset } from './generatedAssets';
 import { CHARACTER_ANIMATIONS, CHARACTER_ASSETS } from './hero';
 import { STAGE_IMAGE_ASSETS } from './stageConfig';
+import { ASSETS_ENTRADA_CARAVELA } from './entradaCaravelaCena';
 import {
   FIGHTING_UI_ATLAS_IMAGE_URL,
   FIGHTING_UI_ATLAS_SIZE,
@@ -111,6 +112,7 @@ export const FX_ASSETS: SpritesheetAsset[] = [
 ];
 
 export const STARTER_ASSETS: StarterAsset[] = [
+  ...ASSETS_ENTRADA_CARAVELA,
   ...CHARACTER_ASSETS,
   ...FX_ASSETS,
   ...STAGE_IMAGE_ASSETS,

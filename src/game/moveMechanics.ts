@@ -119,6 +119,8 @@ export interface ProjectileMoveConfig {
   gravity?: number;
   /** `behind`: the projectile enters from off-screen behind the fighter and sails past them. */
   spawnFrom?: 'behind' | string;
+  /** NPC carregador entra subindo nos balões e ganha altura ao sair. */
+  carrierFlight?: boolean;
   /** Projectile: `false` keeps the effect unmirrored when facing right (readable text). */
   mirror?: boolean;
   /**

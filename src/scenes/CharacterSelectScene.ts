@@ -13,6 +13,9 @@ import { instrucoesLigadas, salvarInstrucoes } from '../game/tutorial/primeiraVe
 import { bustoCrop } from '../game/ui';
 import { SCENE_KEYS, type FormatoTorneio, type MatchMode } from '../game/types';
 import { BaseScene } from './BaseScene';
+import {MapaSelecao} from '../game/mapa/MapaSelecao';
+import {corDoEstado,compararOrigem,estadoDoMapa,layoutSelecao} from '../game/mapa/selecaoBrasil';
+import {TorcidaSelecao} from '../game/mapa/TorcidaSelecao';
 
 interface CharacterSelectData {
   mode: MatchMode;
@@ -28,12 +31,11 @@ interface CharacterSelectData {
 const P1_COLOR = COR_P1;
 const P2_COLOR = COR_P2;
 const GOLD = COR_DESTAQUE;
-const TILE_SIZE = 116;
-const TILE_GAP = 10;
-const MAX_COLUMNS = 6;
-const PREVIEW_BODY_HEIGHT = 250;
+const PREVIEW_BODY_HEIGHT = 220;
 
-const SELECTABLE_ROSTER = ELENCO_SELECIONAVEL;
+const SELECTABLE_ROSTER = [...ELENCO_SELECIONAVEL].sort((a,b)=>compararOrigem(
+  LUTADORES.find(l=>l.id===a.id)?.estado,LUTADORES.find(l=>l.id===b.id)?.estado,a.label,b.label,a.id,b.id
+));
 /** A última casa da grade é o "?": trava num lutador sorteado (João, 31/10/2026). */
 const CASA_ALEATORIA = SELECTABLE_ROSTER.length;
 
@@ -53,13 +55,14 @@ interface PlayerCursor {
   tag: Phaser.GameObjects.Text;
   preview: Phaser.GameObjects.Sprite;
   name: Phaser.GameObjects.Text;
+  origem: Phaser.GameObjects.Text;
   side: -1 | 1;
 }
 
 /**
- * Seleção no modelo Mortal Kombat: o elenco inteiro numa grade de quadrados
- * pequenos no centro, e cada jogador vê o lutador escolhido animado na sua
- * lateral. Em 1v1 cada jogador tem o próprio cursor (P1 = WASD, P2 = setas) e
+ * Seleção arcade com globo focado no Brasil: estados e regiões no centro,
+ * elenco numa grade inferior e lutadores animados nas laterais.
+ * Em 1v1 cada jogador tem o próprio cursor (P1 = WASD, P2 = setas) e
  * os dois não podem parar no mesmo lutador. Em 1vCPU o jogador trava o dele e,
  * com o mesmo direcional, escolhe o adversário da CPU (João, 30/10/2026).
  */
@@ -74,6 +77,9 @@ export class CharacterSelectScene extends BaseScene {
   private caixaInstrucoes: Phaser.GameObjects.Text | null = null;
   private tiles: Tile[] = [];
   private columns = 1;
+  private tileSize=72;
+  private mapa!:MapaSelecao;
+  private torcidaFundo!:TorcidaSelecao;
   private p1!: PlayerCursor;
   private p2!: PlayerCursor;
   private transitioning = false;
@@ -97,8 +103,10 @@ export class CharacterSelectScene extends BaseScene {
     this.transitioning = false;
 
     this.markActiveScene(SCENE_KEYS.CharacterSelect);
-    this.createBackdrop(this.stageId);
-    this.createHeading(this.torneio ? 'Escolha seu time' : 'Escolha seu lutador', '');
+    this.torcidaFundo=new TorcidaSelecao(this,this.stageId,this.tela.width,this.tela.height);
+    this.createHeading(this.torneio ? 'Escolha seu time' : 'Selecione seu lutador', '');
+    const layout=layoutSelecao(this.tela.width,this.tela.height,SELECTABLE_ROSTER.length+1);
+    this.mapa=new MapaSelecao(this,layout.mapaX,layout.mapaY);
     this.buildGrid();
     this.p1 = this.createCursor('P1', P1_COLOR, this.casaDe(this.atuais?.p1) ?? 0, -1);
     this.p2 = this.createCursor(
@@ -117,7 +125,7 @@ export class CharacterSelectScene extends BaseScene {
     this.registerInput();
 
     this.etapa = this.add
-      .text(this.tela.centerX, 118, '', { color: colorToCss(P1_COLOR), fontFamily: FONTE_TITULO, fontSize: '26px', stroke: '#000000', strokeThickness: 5 })
+      .text(this.tela.centerX, 112, '', { color: colorToCss(P1_COLOR), fontFamily: FONTE_TITULO, fontSize: '22px', stroke: '#000000', strokeThickness: 5 })
       .setOrigin(0.5)
       .setDepth(12);
     this.mostrarEtapa();
@@ -134,46 +142,44 @@ export class CharacterSelectScene extends BaseScene {
   private buildGrid(): void {
     const { width, height } = this.tela;
     const roster: (CharacterDefinition | null)[] = [...SELECTABLE_ROSTER, null];
-    const sideRoom = Math.max(180, width * 0.24);
-    const fit = Math.floor((width - sideRoom * 2 + TILE_GAP) / (TILE_SIZE + TILE_GAP));
-    this.columns = Phaser.Math.Clamp(Math.min(fit, roster.length), 1, MAX_COLUMNS);
-
-    const rows = Math.ceil(roster.length / this.columns);
-    const gridHeight = rows * TILE_SIZE + (rows - 1) * TILE_GAP;
-    const top = height * 0.5 - gridHeight / 2 + TILE_SIZE / 2;
+    const layout=layoutSelecao(width,height,roster.length);
+    this.columns=layout.colunas;this.tileSize=layout.tamanho;
 
     roster.forEach((character, index) => {
       const row = Math.floor(index / this.columns);
       const col = index % this.columns;
       // A última linha incompleta fica centralizada, como na grade do MK.
       const inRow = Math.min(this.columns, roster.length - row * this.columns);
-      const rowWidth = inRow * TILE_SIZE + (inRow - 1) * TILE_GAP;
-      const x = width / 2 - rowWidth / 2 + TILE_SIZE / 2 + col * (TILE_SIZE + TILE_GAP);
-      const y = top + row * (TILE_SIZE + TILE_GAP);
+      const rowWidth = inRow * this.tileSize + (inRow - 1) * layout.gap;
+      const x = width / 2 - rowWidth / 2 + this.tileSize / 2 + col * (this.tileSize + layout.gap);
+      const y = layout.primeiroY + row * (this.tileSize + layout.gap);
 
       this.tiles.push(this.createTile(character, index, x, y));
     });
   }
 
   private createTile(character: CharacterDefinition | null, index: number, x: number, y: number): Tile {
+    const uf=LUTADORES.find(l=>l.id===character?.id)?.estado;
+    const cor=corDoEstado(uf);
     const frame = this.add
-      .rectangle(x, y, TILE_SIZE, TILE_SIZE, 0x1e1b2e, 1)
-      .setStrokeStyle(3, 0x4c4566, 1)
+      .rectangle(x, y, this.tileSize, this.tileSize, 0x101b2b, 1)
+      .setStrokeStyle(3, cor, 1)
       .setDepth(5);
 
     let portrait: Phaser.GameObjects.Image | Phaser.GameObjects.Text | null = null;
     if (!character) {
       portrait = this.add
-        .text(x, y, '?', { color: TEXTO_DESTAQUE, fontFamily: FONTE_TITULO, fontSize: '84px', stroke: '#000000', strokeThickness: 8 })
+        .text(x, y, '?', { color: TEXTO_DESTAQUE, fontFamily: FONTE_TITULO, fontSize: '54px', stroke: '#000000', strokeThickness: 8 })
         .setShadow(0, 4, '#f00000', 0, true, true)
         .setOrigin(0.5)
         .setDepth(6);
     } else if (this.textures.exists(character.portrait.key)) {
       portrait = this.add.image(x, y, character.portrait.key).setDepth(6);
-      bustoCrop(portrait, TILE_SIZE - 6, x, y, LUTADORES.find((l) => l.id === character.id)?.rosto);
+      bustoCrop(portrait, this.tileSize - 6, x, y, LUTADORES.find((l) => l.id === character.id)?.rosto);
     }
 
-    const flash = this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0xffffff, 0).setDepth(8);
+    const flash = this.add.rectangle(x, y, this.tileSize, this.tileSize, 0xffffff, 0).setDepth(8);
+    if(uf)this.add.text(x+this.tileSize/2-3,y+this.tileSize/2-3,uf,{fontFamily:FONTE_TEXTO,fontSize:'11px',fontStyle:'bold',color:colorToCss(cor),stroke:'#000000',strokeThickness:4}).setOrigin(1,1).setDepth(7);
 
     frame.setInteractive({ useHandCursor: true });
     frame.on('pointerover', () => this.hoverTile(index));
@@ -185,7 +191,7 @@ export class CharacterSelectScene extends BaseScene {
   private createCursor(label: string, color: number, index: number, side: -1 | 1): PlayerCursor {
     const { width, height } = this.tela;
     const previewX = side === -1 ? width * 0.13 : width * 0.87;
-    const floorY = height * 0.5 + PREVIEW_BODY_HEIGHT / 2 + 30;
+    const floorY = layoutSelecao(width,height,SELECTABLE_ROSTER.length+1).previewY;
 
     this.add.ellipse(previewX, floorY, 170, 26, 0x000000, 0.5).setDepth(2);
 
@@ -194,10 +200,10 @@ export class CharacterSelectScene extends BaseScene {
     preview.setFlipX(side === -1);
 
     const name = this.add
-      .text(previewX, floorY + 34, '', {
+      .text(previewX, floorY + 14, '', {
         color: colorToCss(color),
         fontFamily: FONTE_TITULO,
-        fontSize: '30px',
+        fontSize: '27px',
         stroke: '#000000',
         strokeThickness: 6
       })
@@ -205,7 +211,7 @@ export class CharacterSelectScene extends BaseScene {
       .setDepth(4);
 
     const outline = this.add
-      .rectangle(0, 0, TILE_SIZE + 4, TILE_SIZE + 4, color, 0)
+      .rectangle(0, 0, this.tileSize + 4, this.tileSize + 4, color, 0)
       .setStrokeStyle(5, color, 1)
       .setDepth(10);
 
@@ -221,7 +227,8 @@ export class CharacterSelectScene extends BaseScene {
       .setOrigin(side === -1 ? 0 : 1, 0)
       .setDepth(11);
 
-    return { index, locked: false, color, outline, tag, preview, name, side };
+    const origem=this.add.text(previewX,floorY+46,'',{fontFamily:FONTE_TEXTO,fontSize:'14px',color:'#dbcfad',align:'center',stroke:'#050a18',strokeThickness:3}).setOrigin(.5,0).setDepth(4);
+    return { index, locked: false, color, outline, tag, preview, name, origem, side };
   }
 
   private setCursorVisible(cursor: PlayerCursor, visible: boolean): void {
@@ -229,6 +236,8 @@ export class CharacterSelectScene extends BaseScene {
     cursor.tag.setVisible(visible);
     cursor.preview.setVisible(visible);
     cursor.name.setText(visible ? cursor.name.text : '?');
+    cursor.origem.setVisible(visible);
+    this.atualizarMapa();
   }
 
   private refreshCursor(cursor: PlayerCursor): void {
@@ -237,7 +246,7 @@ export class CharacterSelectScene extends BaseScene {
       return;
     }
 
-    const half = TILE_SIZE / 2;
+    const half = this.tileSize / 2;
     cursor.outline.setPosition(tile.x, tile.y);
     cursor.outline.setStrokeStyle(cursor.locked ? 7 : 5, cursor.locked ? GOLD : cursor.color, 1);
     cursor.tag.setPosition(cursor.side === -1 ? tile.x - half - 2 : tile.x + half + 2, tile.y - half - 22);
@@ -250,6 +259,17 @@ export class CharacterSelectScene extends BaseScene {
     if (cursor.outline.visible) {
       this.showPreview(cursor);
     }
+    this.atualizarMapa();
+  }
+
+  private atualizarMapa():void {
+    if(!this.p1 || !this.p2)return;
+    this.mapa.marcar([this.p1,this.p2].map((cursor,i)=>({
+      uf:LUTADORES.find(l=>l.id===SELECTABLE_ROSTER[cursor.index]?.id)?.estado,
+      cor:cursor.color,nome:i===0?'P1':this.mode==='1vcpu'?'CPU':'P2',visivel:cursor.outline.visible
+    })));
+    this.torcidaFundo.atualizar(SELECTABLE_ROSTER[this.p1.index]?.id,
+      this.p2.outline.visible?SELECTABLE_ROSTER[this.p2.index]?.id:undefined);
   }
 
   /** Mostra o lutador do cursor parado em guarda, na escala da lateral. */
@@ -259,15 +279,20 @@ export class CharacterSelectScene extends BaseScene {
     cursor.preview.setVisible(Boolean(character));
     if (!character) {
       cursor.name.setText('?');
+      cursor.origem.setText('SORTEIO · BRASIL');
       return;
     }
+    const estado=estadoDoMapa(LUTADORES.find(l=>l.id===character.id)?.estado);
+    cursor.origem.setText(estado?`${estado.nome.toUpperCase()} · ${estado.uf}`:'BRASIL');
     const key = findCharacterAnimationKeyByAction(character.id, action);
     const idleKey = findCharacterAnimationKeyByAction(character.id, 'idle');
-    const visual = character.animations.find((animation) => animation.key === idleKey)?.bounds[0]?.visual;
+    const base=character.animations.find((animation) => animation.key === idleKey);
+    const visual = base?.bounds[0]?.visual;
 
-    cursor.preview.setOrigin(0.5, character.anchor.y);
+    cursor.preview.setOrigin(0.5,visual && base?(visual.y+visual.height)/base.sheet.frameHeight:character.anchor.y);
     cursor.preview.setScale(visual && visual.height > 0 ? PREVIEW_BODY_HEIGHT / visual.height : 1);
     cursor.name.setText(character.label.toUpperCase());
+    cursor.name.setScale(Math.min(1,(this.tela.width*.25-24)/Math.max(1,cursor.name.width)));
 
     if (!key) {
       return;

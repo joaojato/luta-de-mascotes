@@ -9,6 +9,7 @@ import type { MatchMode } from './types';
 import { HEALTH_WARN, HEALTH_DANGER } from './vidaFaixas';
 import { agirNoPutometro, derrotaNoPutometro, faixaPutometro, novoPutometro, vidaNoPutometro, type AcaoDaTorcida } from './putometro';
 import { PutometroVisual } from './putometroVisual';
+import {BrilhoTorcida} from './brilhoTorcida';
 
 const KEY = FIGHTING_UI_ATLAS_TEXTURE_KEY;
 
@@ -128,18 +129,28 @@ export class MatchHud {
   private p2Frac = 1;
   private putometro=novoPutometro();
   private medidoresTorcida:PutometroVisual[]=[];
-  private brilhoCantos!:Phaser.GameObjects.Graphics;
+  private brilhoCantos!:BrilhoTorcida;
+  private ultimasFaixas=[-1,-1];
+  private readonly reajustarLayout=():void=>{
+    const vidas=[this.p1Frac,this.p2Frac];
+    this.p1Blink?.stop();this.p2Blink?.stop();this.p1MeterGlow?.stop();this.p2MeterGlow?.stop();
+    this.p1Blink=null;this.p2Blink=null;this.p1MeterGlow=null;this.p2MeterGlow=null;
+    this.p1MeterReady=false;this.p2MeterReady=false;
+    this.medidoresTorcida.forEach(m=>m.destruir());this.medidoresTorcida=[];
+    this.p1Pips=[];this.p2Pips=[];this.root.removeAll(true);
+    this.build();this.applyHealth(vidas[0],vidas[1]);
+  };
   private readonly vidaTorcida=(p1:number,p2:number):void=>{
-    vidaNoPutometro(this.putometro,p1,p2);this.atualizarTorcida();
+    vidaNoPutometro(this.putometro,p1,p2);this.publicarHumorTorcida();
   };
   private readonly acaoTorcida=(lado:0|1,acao:AcaoDaTorcida,dano:number):void=>{
-    agirNoPutometro(this.putometro,lado,acao,dano);this.atualizarTorcida();
+    agirNoPutometro(this.putometro,lado,acao,dano);this.publicarHumorTorcida();
   };
   private readonly derrotaTorcida=(lado:0|1,decisiva:boolean,vidaVencedor=1):void=>{
-    derrotaNoPutometro(this.putometro,lado,decisiva,vidaVencedor);this.atualizarTorcida();
+    derrotaNoPutometro(this.putometro,lado,decisiva,vidaVencedor);this.publicarHumorTorcida();
   };
   private readonly reinicioTorcida=():void=>{
-    this.putometro=novoPutometro();this.atualizarTorcida();
+    this.putometro=novoPutometro();this.ultimasFaixas=[-1,-1];this.publicarHumorTorcida();
   };
   /** Sombra do dano de cada lado (src/game/sombraDaVida.ts). */
   private p1Sombra!: Phaser.GameObjects.Rectangle;
@@ -162,11 +173,12 @@ export class MatchHud {
     this.scene = scene;
     this.config = config;
     this.root = scene.add.container(0, 0).setDepth(config.depth).setScrollFactor(0);
-    this.brilhoCantos=scene.add.graphics().setDepth(config.depth-1).setScrollFactor(0);
+    this.brilhoCantos=new BrilhoTorcida(scene,config.depth-1);
 
     this.build();
     scene.events.on('torcida-vida',this.vidaTorcida);
     scene.events.on('torcida-acao',this.acaoTorcida);
+    scene.events.on('tela-logica-alterada',this.reajustarLayout);
     scene.events.on('torcida-derrota',this.derrotaTorcida);
     scene.events.on('torcida-reiniciar',this.reinicioTorcida);
     scene.events.on(Phaser.Scenes.Events.UPDATE, this.atualizarSombras, this);
@@ -236,27 +248,19 @@ export class MatchHud {
     this.medidoresTorcida.push(new PutometroVisual(this.scene,this.root,x,y,largura-4,Math.max(fim-y,largura*.9+26),this.medidoresTorcida.length===0));
   }
 
+  private publicarHumorTorcida():void {
+    for(const lado of [0,1] as const){
+      const faixa=faixaPutometro(this.putometro,lado);
+      if(this.ultimasFaixas[lado]===faixa)continue;
+      this.ultimasFaixas[lado]=faixa;this.scene.events.emit('torcida-medidor',lado,faixa);
+    }
+  }
   private atualizarTorcida(delta=16):void {
-    const g=this.brilhoCantos.clear(),tela=telaDe(this.scene);
-    const w=tela.width*.4,h=tela.height*.82;
-    const pulso=.8+.2*Math.sin(this.scene.time.now*Math.PI/700);
+    const tela=telaDe(this.scene),pulso=.8+.2*Math.sin(this.scene.time.now*Math.PI/700);
+    this.publicarHumorTorcida();
     this.medidoresTorcida.forEach((medidor,lado)=>{
       medidor.atualizar(this.putometro,lado as 0|1,delta);
-      const faixa=faixaPutometro(this.putometro,lado as 0|1);
-      this.scene.events.emit('torcida-medidor',lado,faixa);
-      if(faixa>1)return;
-      const cor=0xef1528;
-      for(let x=0;x<32;x++)for(let y=0;y<24;y++){
-        const distancia=Math.sqrt((x/32)**2+(y/24)**2);
-        const intensidade=Math.max(0,1-distancia);
-        const alpha=Math.pow(intensidade,1.25)*(faixa===0?.95:.4)*pulso;
-        const px=lado===0?x*w/32:tela.width-(x+1)*w/32,py=y*h/24;
-        g.fillStyle(cor,alpha).fillRect(px,py,w/32+1,h/24+1);
-        if(faixa===0){
-          const vinheta=Math.pow(intensidade,3)*.5;
-          g.fillStyle(0x120006,vinheta).fillRect(px,py,w/32+1,h/24+1);
-        }
-      }
+      this.brilhoCantos.atualizar(lado,faixaPutometro(this.putometro,lado as 0|1),tela.width,tela.height,pulso);
     });
   }
 
@@ -651,10 +655,13 @@ export class MatchHud {
   setTime(seconds: number | null): void {
     // Sem relógio (treino livre): dois traços.
     if (seconds === null) {
-      this.timerText.setText('--').setColor('#f8fafc');
+      this.timerText.setText('--');
+      if(this.timerText.style.color!=='#f8fafc')this.timerText.setColor('#f8fafc');
       return;
     }
-    this.timerText.setText(String(Math.max(0, seconds))).setColor(seconds <= 10 ? '#f87171' : '#f8fafc');
+    this.timerText.setText(String(Math.max(0, seconds)));
+    const cor=seconds<=10?'#f87171':'#f8fafc';
+    if(this.timerText.style.color!==cor)this.timerText.setColor(cor);
   }
 
   /**
@@ -695,6 +702,7 @@ export class MatchHud {
   destroy(): void {
     this.scene.events.off('torcida-vida',this.vidaTorcida);
     this.scene.events.off('torcida-acao',this.acaoTorcida);
+    this.scene.events.off('tela-logica-alterada',this.reajustarLayout);
     this.medidoresTorcida.forEach(m=>m.destruir());
     this.brilhoCantos.destroy();
     this.scene.events.off('torcida-derrota',this.derrotaTorcida);

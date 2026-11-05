@@ -1,4 +1,4 @@
-import mapa from '../../public/assets/cenarios/estadio/torcida/circulacao-v4.json';
+import mapa from './torcidaDados/circulacao-v4.json';
 
 export { mapa as MAPA_TORCIDA };
 export type EtapaTorcida = 'fileira' | 'escada' | 'saida';

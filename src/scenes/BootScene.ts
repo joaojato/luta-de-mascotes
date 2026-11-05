@@ -55,6 +55,9 @@ export class BootScene extends BaseScene {
   private desfazendo = false;
 
   private textos: Phaser.GameObjects.Text[] = [];
+  private blocos: Phaser.GameObjects.Rectangle[] = [];
+  private linhas!: Phaser.GameObjects.Graphics;
+  private tamanhoDaAbertura = '';
 
   constructor() {
     // As logos vêm antes do resto (o `pack` carrega antes do preload): a
@@ -82,6 +85,7 @@ export class BootScene extends BaseScene {
     this.pulou = false;
     this.saindo = false;
     this.logoNaTela = -1;
+    this.tamanhoDaAbertura = '';
     // As fontes vêm junto com a arte: até 3 s, e o texto do canvas, que não se
     // redesenha sozinho quando a fonte chega, é redesenhado com elas.
     const limite = new Promise((resolver) => window.setTimeout(resolver, 3000));
@@ -107,6 +111,7 @@ export class BootScene extends BaseScene {
 
   update(time: number): void {
     if (this.saindo) return;
+    this.alinharAbertura();
     const decorrido = time - this.inicio;
     if (podeSairDaAbertura(decorrido, this.carregou, this.pulou)) {
       this.sair();
@@ -139,7 +144,8 @@ export class BootScene extends BaseScene {
       }
     }
     // A logo no meio exato da tela; a barra embaixo dela.
-    this.logo = this.add.sprite(posicoes.logoX, posicoes.logoY, LOGOS_DA_ABERTURA[0].chave, 0).setScale(ESCALA_RETRO).setVisible(false);
+    this.logo = this.add.sprite(posicoes.logoX, posicoes.logoY, LOGOS_DA_ABERTURA[0].chave, 0)
+      .setOrigin(0.5).setScrollFactor(0).setScale(ESCALA_RETRO).setVisible(false);
 
     const larguraDaBarra = BLOCOS_DA_BARRA * (LADO_DO_BLOCO + VAO_DO_BLOCO) - VAO_DO_BLOCO;
     const yBarra = posicoes.barraY;
@@ -148,6 +154,7 @@ export class BootScene extends BaseScene {
         .rectangle(centerX - larguraDaBarra / 2 + i * (LADO_DO_BLOCO + VAO_DO_BLOCO), yBarra, LADO_DO_BLOCO, LADO_DO_BLOCO / 2, COR_DO_BLOCO_APAGADO)
         .setOrigin(0, 0.5)
     );
+    this.blocos = blocos;
     const porcento = this.add
       .text(centerX, yBarra + 24, 'CARREGANDO 0%', { fontFamily: FONTE_TEXTO, fontSize: '16px', fontStyle: '700', color: TEXTO_APAGADO })
       .setOrigin(0.5);
@@ -161,6 +168,7 @@ export class BootScene extends BaseScene {
 
     // Linhas de TV de tubo por cima de tudo.
     const linhas = this.add.graphics().setDepth(10);
+    this.linhas = linhas;
     linhas.fillStyle(0x000000, 0.28);
     for (let y = 0; y < height; y += 3) linhas.fillRect(0, y, width, 1);
 
@@ -169,6 +177,24 @@ export class BootScene extends BaseScene {
     };
     this.input.keyboard?.on('keydown', pular);
     this.input.on(Phaser.Input.Events.POINTER_DOWN, pular);
+  }
+
+  /** A abertura permanece no centro quando o viewport muda durante a carga. */
+  private alinharAbertura(forcar = false): void {
+    if (!this.logo) return;
+    const tela = this.tela;
+    const tamanho = `${tela.width}x${tela.height}`;
+    if (!forcar && tamanho === this.tamanhoDaAbertura) return;
+    this.tamanhoDaAbertura = tamanho;
+    const pos = posicoesDaAbertura(tela);
+    this.logo.setOrigin(0.5).setPosition(pos.logoX, pos.logoY);
+    const largura = BLOCOS_DA_BARRA * (LADO_DO_BLOCO + VAO_DO_BLOCO) - VAO_DO_BLOCO;
+    this.blocos.forEach((bloco, i) => bloco.setPosition(
+      pos.logoX - largura / 2 + i * (LADO_DO_BLOCO + VAO_DO_BLOCO), pos.barraY
+    ));
+    this.textos[0]?.setPosition(pos.logoX, pos.barraY + 24);
+    this.linhas.clear().fillStyle(0x000000, 0.28);
+    for (let y = 0; y < tela.height; y += 3) this.linhas.fillRect(0, y, tela.width, 1);
   }
 
   /** A logo da vez entra pelo mosaico; antes da troca, a anterior sai por ele. */
@@ -192,6 +218,7 @@ export class BootScene extends BaseScene {
     });
     this.desfazendo = false;
     this.logo.setVisible(true).setTexture(chave, 0).play(`${chave}-mosaico`);
+    this.alinharAbertura(true);
     const saida = logo.tempoMs - duracaoDoMosaico(logo) - SAIDA_ANTES_DO_FIM_MS;
     this.time.delayedCall(saida, () => {
       if (this.logoNaTela === vez && !this.saindo) this.desfazer(vez);

@@ -34,6 +34,13 @@ aparecer neste arquivo.
    da UF do clube): a CPU do tutorial escolhe o rival, senão alguém do mesmo
    estado, senão da mesma região. Cobrado em `lutadores.test.ts`.
 5. Fala de entrada e fala de vitória.
+   A entrada corporal opcional é a ação `entrance`, com `repeat: 0` e sem
+   ataque. Precisa terminar na guarda aprovada. O motor sustenta o primeiro
+   quadro por500ms e encaixa o movimento antes do3 da contagem. Quando a
+   entrada começa voltada à própria lateral e gira para o adversário (Bira),
+   declarar `entranceReverseFacing: true`. Células mais altas acrescentam
+   margem acima sem mudar a distância dos pés à base. Para encontro com NPC,
+   sincronizar ator separado e pontos de contato, não desenhar ambos na folha.
 6. Museu (bloco `museu` do JSON): um apelido de uma linha, "quem é" (visual,
    jeito de lutar, especial) e "de onde veio" (a história do mascote na
    torcida). Sem nome oficial de clube: fale da torcida e da cidade (Regra do
@@ -261,6 +268,19 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 30/10/2026: som de dor por mascote (`dor`, `dor-forte`, `dor-ko`).
 - 03/11/2026: som do acerto por mascote (`acerto-leve`, `acerto-pesado`, `acerto-baixo`, `acerto-especial`).
 - 30/10/2026: especial `esquadrao` (aliados que atacam no lugar do mascote; arte de cada aliado em efeitos `<nome>-idle`, `-takeoff`, `-flight`, `-strike`, `-return`).
+- 05/11/2026: `entranceHop` sincroniza o saltinho frustrado e a queda sentada
+  do Galo na intro; apresentação apenas, sem dano.
+- 05/11/2026: `entranceFloat` sincroniza a elevação e o quadro da intro
+  de voo do Esquadrão, sem ataque ou aterrissagem.
+- 04/11/2026: `entrance-walk` é o ciclo de movimento da intro do Almirante;
+  `entrance` é a finalização parada. O mesmo relógio dirige trajetória e
+  quadros, sem deixar a finalização avançar enquanto ele caminha.
+- 04/11/2026: `entranceGangplank` na ação `entrance` apresenta a proa parcialmente
+  fora da câmera e desloca o Almirante pela prancha até a posição de luta.
+  São objetos de apresentação, removidos antes de liberar o combate.
+- 04/11/2026: `entranceLandingFrame` na ação `entrance` indica o primeiro quadro
+  em contato com o piso. A apresentação desce do alto da câmera até esse
+  instante, com som, poeira e tremor únicos, sem acionar ataques do especial.
 - 30/10/2026: Regra do Fundo para NPC que acompanha o mascote; `mergulho` sorteado no `esquadrao`.
 - 30/10/2026: `recuo` (estocada que recua depois de cada contato); seguidores do `esquadrao` teleguiados.
 - 30/10/2026: `stunMs` no `drop` (o que cai na cabeça atordoa).

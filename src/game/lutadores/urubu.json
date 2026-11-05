@@ -47,6 +47,32 @@
       }
     },
     {
+      "action": "entrance",
+      "file": "entrada-v1/entrance.png",
+      "label": "Entrada: pouso imponente",
+      "frames": 16,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": 0,
+      "entranceLandingFrame": 5,
+      "defaultVisual": { "x": 129, "y": 91, "width": 300, "height": 201 },
+      "timing": [
+        { "frames": [0, 1], "ms": 150 },
+        { "frames": [2, 2], "ms": 100 },
+        { "frames": [3, 5], "ms": 50 },
+        { "frames": [6, 6], "ms": 150 },
+        { "frames": [7, 7], "ms": 250 },
+        { "frames": [8, 9], "ms": 100 },
+        { "frames": [10, 10], "ms": 200 },
+        { "frames": [11, 11], "ms": 350 },
+        { "frames": [12, 12], "ms": 150 },
+        { "frames": [13, 13], "ms": 100 },
+        { "frames": [14, 14], "ms": 50 },
+        { "frames": [15, 15], "ms": 0 }
+      ]
+    },
+    {
       "action": "walk-forward",
       "file": "walk-forward.png",
       "frames": 8,

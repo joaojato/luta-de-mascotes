@@ -3,8 +3,9 @@
  * Mosqueteiro, o Guerreiro do Cartola), o NPC de Guarda, vive num plano só
  * dele, atrás dos dois lutadores e na frente da torcida, nunca no mesmo chão
  * nem na mesma camada. Só sai do fundo quando ataca. Se anda junto com o dono
- * é do NPC: o Biriba acompanha o Bira, os Gaviões e o Guerreiro ficam
- * parados assistindo.
+ * é do NPC: os Gaviões e o Guerreiro ficam parados assistindo. Exceção
+ * posterior: Biriba só entra temporariamente na arena, para a intro ou nos
+ * balões quando chamado; não acompanha mais o Bira no fundo.
  *
  * Todos pisam na mesma linha, {@link chaoDoFundo}, com o pé desenhado (não a
  * base da célula) em cima dela: fora do campo, entre a placa e a linha lateral.

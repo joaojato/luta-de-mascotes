@@ -15,8 +15,8 @@ const ROTULOS: Record<Comando, string> = {
   crouch: 'AGACHA',
   jump: 'PULO',
   block: 'GUARDA',
-  light: 'SOCO',
-  heavy: 'CHUTE',
+  light: 'RÁPIDO',
+  heavy: 'BRUTO',
   special: 'TORCIDA'
 };
 

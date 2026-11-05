@@ -1,8 +1,7 @@
 import * as Phaser from 'phaser';
-import { BiribaMotion, type BiribaAction } from './biribaMotion';
+import { amostraEntradaBiriba, ENTRADA_BIRA, type BiribaAction } from './biribaEntrada';
 import type { Fighter } from './fighter';
 import { telaDe } from './nitidez';
-import { chaoDoFundo, PLANO_DE_FUNDO } from './planoDeFundo';
 
 const PASTA = '/assets/cenarios/biriba';
 const ACOES: Record<BiribaAction, { frames: number; fps: number }> = {
@@ -21,20 +20,18 @@ export function carregarBiriba(scene: Phaser.Scene): void {
   }
 }
 
-/** Visual-only spectator: no physics body, hitboxes, audio, or combat callbacks. */
+/** NPC temporário da entrada. No combate, o mesmo Biriba só vem no chamado dos balões. */
 export class BiribaCena {
-  private readonly motion = new BiribaMotion();
   private readonly sprite: Phaser.GameObjects.Sprite;
   private readonly shadow: Phaser.GameObjects.Ellipse;
   private renderedAction?: BiribaAction;
+  private relogio: number | null = null;
+  private lateral = 0;
+  private contato = 0;
 
   constructor(
     private readonly scene: Phaser.Scene,
     private readonly bira: Fighter,
-    groundY: number,
-    private readonly offsetX: number,
-    /** Toca o latido (som da Luta, que tem os ajustes de volume). */
-    private readonly latir: () => void = () => {}
   ) {
     for (const action of Object.keys(ACOES) as BiribaAction[]) {
       const key = `biriba-${action}`;
@@ -48,33 +45,42 @@ export class BiribaCena {
         });
       }
     }
-    // Fighters have transparent space below their drawn feet; place the dog
-    // behind the visible contact line, rather than behind the logical origin.
-    const y = chaoDoFundo(groundY);
-    this.shadow = scene.add.ellipse(bira.x, y - 2, 76, 12, 0x000000, 0.2).setDepth(PLANO_DE_FUNDO.profundidade - 1);
-    this.sprite = scene.add.sprite(bira.x, y, 'biriba-idle')
+    // Na intro, as patas e os pés compartilham o piso desenhado da arena.
+    const apoio = bira.ancoraDoAcompanhante;
+    this.shadow = scene.add.ellipse(bira.x, apoio.piso - 2, 48, 8, 0x000000, 0.2).setDepth(apoio.profundidade - 1);
+    this.sprite = scene.add.sprite(bira.x, apoio.piso, 'biriba-idle')
       .setOrigin(0.5, 232 / 256)
-      .setScale(0.5)
-      .setDepth(PLANO_DE_FUNDO.profundidade);
+      .setScale(apoio.escala * .3)
+      .setDepth(apoio.profundidade);
     this.reset();
   }
 
   reset(): void {
+    this.relogio = null;
+    this.renderedAction = undefined;
+    this.sprite.setVisible(false);
+    this.shadow.setVisible(false);
+  }
+
+  iniciarEntrada(): number {
     const cam = this.scene.cameras.main;
-    const m = PLANO_DE_FUNDO.margem;
-    const largura = telaDe(this.scene).width;
-    this.motion.reset(this.bira.x + this.offsetX, cam.scrollX + m, cam.scrollX + largura - m);
-    this.motion.facing = this.bira.facingDirection;
+    const apoio = this.bira.ancoraDoAcompanhante;
+    const lado = this.bira.facingDirection;
+    this.lateral = lado === 1 ? cam.scrollX - 100 : cam.scrollX + telaDe(this.scene).width + 100;
+    this.contato = apoio.x - lado * 62 * apoio.escala;
+    this.sprite.setY(apoio.piso).setScale(apoio.escala * .3).setDepth(apoio.profundidade);
+    this.shadow.setY(apoio.piso - 2).setDepth(apoio.profundidade - 1);
+    this.relogio = 0;
     this.renderedAction = undefined;
     this.render();
+    return ENTRADA_BIRA.saiu;
   }
 
   update(seconds: number): void {
-    const cam = this.scene.cameras.main;
-    const m = PLANO_DE_FUNDO.margem;
-    const largura = telaDe(this.scene).width;
-    this.motion.update(seconds, this.bira.x + this.offsetX, cam.scrollX + m, cam.scrollX + largura - m);
+    if (this.relogio === null) return;
+    this.relogio += Math.max(0, seconds) * 1000;
     this.render();
+    if (this.relogio >= ENTRADA_BIRA.saiu) this.relogio = null;
   }
 
   destroy(): void {
@@ -83,15 +89,13 @@ export class BiribaCena {
   }
 
   private render(): void {
-    // He is the one flying on the balloons (the kick): off the sideline meanwhile.
-    const voando = this.bira.carrierAloft;
-    this.sprite.setVisible(!voando);
-    this.shadow.setVisible(!voando);
-    this.sprite.setX(Math.round(this.motion.x)).setFlipX(this.motion.facing === 1);
-    if (this.renderedAction !== this.motion.action) {
-      if (this.motion.action === 'bark' && !voando) this.latir();
-      this.sprite.play(`biriba-${this.motion.action}`);
-      this.renderedAction = this.motion.action;
+    const pose = amostraEntradaBiriba(this.relogio ?? ENTRADA_BIRA.saiu, this.lateral, this.contato);
+    this.sprite.setVisible(pose.visivel);
+    this.shadow.setVisible(pose.visivel);
+    this.sprite.setX(Math.round(pose.x)).setFlipX(pose.lado === 1);
+    if (this.renderedAction !== pose.acao) {
+      this.sprite.play(`biriba-${pose.acao}`);
+      this.renderedAction = pose.acao;
     }
     this.shadow.setX(this.sprite.x);
   }

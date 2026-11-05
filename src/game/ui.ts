@@ -87,6 +87,7 @@ export interface SelectionCardConfig {
   title: string;
   subtitle?: string;
   texture?: string;
+  skyTexture?: string;
   /** Max width/height (px) for the card image; defaults to fitting the card. */
   imageMaxSize?: number;
   /** Vertical offset of the image centre from the card centre. */
@@ -117,6 +118,10 @@ export function createSelectionCard(scene: Phaser.Scene, config: SelectionCardCo
     const maxSize = config.imageMaxSize ?? Math.min(config.width - 24, config.height - 80);
     const sourceSize = Math.max(image.width, image.height) || maxSize;
     image.setScale(maxSize / sourceSize);
+    if (config.skyTexture) {
+      children.push(scene.add.image(0, config.imageOffsetY ?? -18, config.skyTexture)
+        .setDisplaySize(image.displayWidth, image.displayHeight));
+    }
     children.push(image);
   }
 

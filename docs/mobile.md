@@ -3,7 +3,7 @@
 Pedido do João: jogo deitado no celular, sem barra de rolagem horizontal ou
 vertical, opção de tela cheia para esconder a barra do navegador, e à
 escolha do jogador botões direcionais ou joystick à esquerda; à direita
-soco, chute, bloqueio e especial.
+Rápido, Bruto, bloqueio e especial.
 
 ## Como funciona
 
@@ -96,17 +96,19 @@ confirmam no iPhone de verdade.
 
 - **Xbox é o padrão, PlayStation é opção.** Menu hambúrguer: "Botões: Xbox /
   PlayStation". Mesmo comando nas duas caras, pelo lugar no losango: baixo
-  (A verde / ✕ azul) soco, direita (B vermelho / ○ vermelho) defesa,
-  esquerda (X azul / □ rosa) chute, cima (Y amarelo / △ verde) especial.
+  (A verde / ✕ azul) Rápido, direita (B vermelho / ○ vermelho) defesa,
+  esquerda (X azul / □ rosa) Bruto, cima (Y amarelo / △ verde) especial.
   Letras e símbolos em SVG. Os ids do arranjo salvo viraram lugar (`cima`,
   `direita`, `baixo`, `esquerda`): o ajuste da rodada 2 voltou ao de fábrica.
 - **Fora da luta, A / ✕ confirma e B / ○ volta** (Enter e Esc). Na luta voltam
-  a ser soco e defesa. No fim da partida o A é revanche (ou segue o torneio)
+  a ser Rápido e defesa. No fim da partida o A é revanche (ou segue o torneio)
   e o B volta ao menu. Quem decide é `src/toque/lutaNaTela.ts`: a Luta publica
   o estado todo quadro; sem luta, `null`.
 - **Nome do golpe escondido por padrão.** "Nomes dos golpes" no menu liga.
   Ligado, cada botão mostra o golpe que sai agora, de pé, abaixado ou no ar
-  (Saci: Jab, Direto, Soco aéreo), lido do campo `nomes` do JSON. Nos menus,
+  (Rápido, Rápido Forte, Rápido Aéreo; Bruto, Bruto Baixo, Bruto de Cima),
+  conforme `NOMES_DOS_ATAQUES`. O JSON não sobrepõe esses nomes; o nome
+  próprio continua nas descrições e no especial. Nos menus,
   OK e Voltar. O especial fica apagado sem barra ou no ar.
 - **Opacidade dos controles** (pedido do João no mesmo dia): item no menu
   que alterna 100%, 75%, 50% e 30%. Apertado, o controle acende inteiro; no
@@ -123,8 +125,8 @@ PlayStation com as cores certas.
 Pedido do João: remapear o que cada botão faz, mas só entre o que o celular
 tem. Menu ☰ ▸ Controles ▸ Funções dos botões (ou Ajustes ▸ Botões do
 celular, que abre a mesma tela e fecha direto no Voltar). Cada item mostra
-o botão e o golpe ("A: Soco (trocar)"); tocar passa para o próximo golpe
-(Soco, Chute, Defender, Especial) e quem tinha esse golpe fica com o antigo,
+o botão e o golpe ("A: Rápido (trocar)"); tocar passa para o próximo golpe
+(Rápido, Bruto, Defender, Especial) e quem tinha esse golpe fica com o antigo,
 para nunca haver golpe repetido nem golpe sem botão. Andar, pular e agachar
 ficam no direcional. Nos menus o lugar continua mandando: A / ✕ confirma e
 B / ○ volta, qualquer que seja o golpe deles na luta. O especial apagado
@@ -133,3 +135,21 @@ segue o botão que tem o especial. Salvo em `funcoes` dentro de
 
 Os botões apertam as teclas do P1, relidas a cada aperto: remapear o
 teclado em Ajustes ▸ Botões do teclado vale na hora aqui também.
+
+## Vertical, formatos e estabilidade (03/11/2026)
+Em pé, o quadro do jogo fica acima e os controles numa área dedicada abaixo; o aviso de girar não bloqueia mais o jogo. Deitado, os controles continuam sobrepostos ao jogo. Menu ☰ > Controles > Formato da tela alterna Automático, 4:3, 16:9 e 18:9, salvos no aparelho. A troca recalcula largura lógica, câmera e HUD durante a luta sem zerar o combate; menus se remontam para a largura escolhida. Os personagens mantêm a proporção. Os arranjos salvos em pé e deitado são independentes. O editor rejeita colisões entre as caixas de toque, e arranjos antigos sobrepostos voltam ao padrão seguro.
+Tamanho do canvas e zoom agora têm um único responsável em nitidez.ts. A geometria lógica é preservada sem deduzi-la repetidamente de pixels arredondados. ResizeObserver, resize da visualViewport, pageshow e rotação atualizam o encaixe. A viewport visível também limita o host e os controles; nenhuma tecla fica presa na rotação, perda de foco ou de captura. Tela cheia não trava mais a orientação.
+Validação: geometria dos controles em celulares de 320–430 px e tablet, três formatos, rejeição de sobreposição, armazenamento separado e ciclos de rotação com câmera sincronizada. A revisão num aparelho real ainda precisa ser feita; o acesso visual nativo estava indisponível nesta sessão.
+
+Ajuste posterior: em pé, a área útil fica dividida exatamente ao meio. O quadro do jogo ocupa a metade superior (imagem encaixada sem distorcer) e todas as caixas dos controles de luta ficam abaixo do meio; o editor também respeita esse limite. Deitado, botões de ação de fábrica aumentados em 25% e direcional até 190 px, com afastamento do losango recalculado para não sobrepor caixas de toque.
+
+## Investigação de reinícios espontâneos (03/11/2026)
+Não há location.reload, service worker ou reinício de Boot disparado por atualização de produção. Rotação e resize não remontam o Game. Não foi possível reproduzir o reinício relatado; a causa permanece sem confirmação. Encontrado risco concreto de memória na torcida: variantes pintadas persistiam entre partidas e folhas sem mudança de paleta eram copiadas novamente por clube/camisa. Agora fontes sem pintura compartilham quadros na textura original, preservando __BASE; variantes temporárias e animações correspondentes são liberadas ao sair da Luta. A legenda do P*tômetro só rasteriza a cor quando ela muda.
+Diagnóstico técnico local na sessionStorage, chave luta-de-mascotes:diagnostico-sessao, limitado aos 20 últimos eventos: criação/destruição do Game, entrada em cena, tipo de navegação, document.wasDiscarded quando disponível, pagehide, perda/restauração WebGL e ocorrência de erro JS. Sem transmissão e sem recarga automática. Um descarte do processo pelo navegador não é evitável por JavaScript; registrar tipo de navegação e pressão de recursos ajuda a distinguir as hipóteses. Referência: https://developer.chrome.com/docs/web-platform/page-lifecycle-api .
+
+Correção de alinhamento vertical: game-host é flex-direction: column, portanto justify-content: center ainda centralizava o quadro na página inteira. No retrato, justify-content agora é flex-start; a imagem dentro do quadro superior fica por padrão alinhada embaixo, com a borda inferior na divisão central. Pausa > Ajustes oferece posição vertical (junto à divisão, topo, centro da metade superior), formato, som, volumes de música/efeitos e FPS. Posição salva separadamente no aparelho; mudar posição atualiza as coordenadas de entrada sem reiniciar o jogo.
+
+## Desempenho e FPS (03/11/2026, noite)
+A preparação de arte por torcedor agora usa cache por humor; a configuração do filtro NEAREST só ocorre quando necessária e variantes já prontas retornam antes de chamar o renderer. Recortes compartilhados são reutilizados sem percorrer novamente todos os quadros. Teste: 600 atualizações de um ator, incluindo troca de humor, solicitam somente duas preparações de arte.
+O alerta de canto usa dois gradientes 128x128 criados uma vez e quatro imagens com opacidade variável, substituindo a geração de centenas de retângulos por atualização. Eventos de vida/ações atualizam o modelo sem desenhar o HUD novamente; faixa de humor é publicada somente ao mudar. O arco do medidor conserva o desenho quando parado e o relógio só rasteriza uma nova cor quando ela muda.
+O contador mede eventos postrender reais numa janela de 500 ms, em vez da média lenta actualFps. Indica PAUSADO quando o jogo está pausado, libera seu ouvinte ao desligar e fica fora do notch via safe-area-inset. Teste reproduz 60 FPS e queda imediata para 10 FPS. Melhora de FPS no aparelho real ainda não foi medida nesta sessão.

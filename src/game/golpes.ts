@@ -30,48 +30,48 @@ export interface Golpe {
 export const GOLPES: Golpe[] = [
   {
     id: 'soco-rapido',
-    nome: 'Soco rápido',
-    comando: 'Soco',
+    nome: 'Rápido',
+    comando: 'Rápido',
     acoes: ['light-punch'],
     quebraGalho: [],
-    regra: 'emenda outro soco só se encostou; agachado passa por baixo'
+    regra: 'emenda outro Rápido só se encostou; agachado passa por baixo'
   },
   {
     id: 'soco-forte',
-    nome: 'Soco forte',
-    comando: 'Baixo + Soco',
+    nome: 'Rápido Forte',
+    comando: 'Agachar + Rápido',
     acoes: ['heavy-punch'],
     quebraGalho: ['heavy-kick'],
-    regra: 'lento; quebra a defesa alta (atordoa 0,3 s); aguenta soco rápido'
+    regra: 'lento; quebra a defesa alta (atordoa 0,3 s); aguenta Rápido'
   },
   {
     id: 'chute-basico',
-    nome: 'Chute básico',
-    comando: 'Chute',
+    nome: 'Bruto',
+    comando: 'Bruto',
     acoes: ['heavy-kick'],
     quebraGalho: ['heavy-punch'],
     regra: 'dano médio; qualquer guarda segura'
   },
   {
     id: 'chute-baixo',
-    nome: 'Chute baixo',
-    comando: 'Baixo + Chute',
+    nome: 'Bruto Baixo',
+    comando: 'Agachar + Bruto',
     acoes: ['low-kick'],
     quebraGalho: ['heavy-kick', 'heavy-punch'],
-    regra: 'interrompe o soco forte; quebra a defesa alta (atordoa 0,3 s)'
+    regra: 'interrompe o Rápido Forte; quebra a defesa alta (atordoa 0,3 s)'
   },
   {
     id: 'soco-no-ar',
-    nome: 'Soco no ar',
-    comando: 'Soco, no ar',
+    nome: 'Rápido Aéreo',
+    comando: 'Rápido, no ar',
     acoes: ['jump-punch'],
     quebraGalho: ['light-punch'],
     regra: 'um golpe por pulo'
   },
   {
     id: 'voadora',
-    nome: 'Voadora',
-    comando: 'Chute, no ar',
+    nome: 'Bruto de Cima',
+    comando: 'Bruto, no ar',
     acoes: ['jump-kick'],
     quebraGalho: ['heavy-kick', 'heavy-punch'],
     regra: 'mergulho em diagonal; único que quebra a defesa baixa (atordoa 0,6 s)'
@@ -107,6 +107,7 @@ export function golpesDoLutador(character: CharacterDefinition): GolpeDoLutador[
     const doJson =
       golpe.id === 'soco-forte' ? character.moves?.heavy?.action
         : golpe.id === 'chute-basico' ? character.moves?.kick?.action
+          : golpe.id === 'chute-baixo' ? character.moves?.lowKick?.action
           : undefined;
     const propria = [doJson, ...golpe.acoes].find((acao): acao is string => acao !== undefined && existe(acao));
     if (propria) {
@@ -119,6 +120,27 @@ export function golpesDoLutador(character: CharacterDefinition): GolpeDoLutador[
   });
 }
 
+export type AnimacaoDaAcademia = Omit<Golpe, 'id'> & { id: GolpeId | 'entrance' };
+const INTRO_DA_ACADEMIA: AnimacaoDaAcademia = {
+  id: 'entrance', nome: 'Intro', comando: 'Início da luta',
+  acoes: ['entrance'], quebraGalho: [],
+  regra: 'Entrada própria do mascote, antes de liberar o combate.'
+};
+
+/** Inventário de arte: intro não é golpe e nunca usa idle como substituta. */
+export const ANIMACOES_DA_ACADEMIA: AnimacaoDaAcademia[] = [INTRO_DA_ACADEMIA, ...GOLPES];
+
+export function animacoesDaAcademia(character: CharacterDefinition): {
+  animacao: AnimacaoDaAcademia; situacao: SituacaoGolpe; acao: string | null; descricao: string
+}[] {
+  const descricao = (acao: string | null): string => character.animations.find(a => a.action === acao)?.label ?? '';
+  const entrada = character.animations.find(a => a.action === 'entrance');
+  return [
+    { animacao: INTRO_DA_ACADEMIA, situacao: entrada ? 'tem' : 'faltando', acao: entrada?.action ?? null, descricao: entrada?.label ?? '' },
+    ...golpesDoLutador(character).map(({golpe, situacao, acao}) => ({animacao: golpe, situacao, acao, descricao: descricao(acao)}))
+  ];
+}
+
 /** Como o lutador está agora: decide qual golpe cada botão solta. */
 export type EstadoDoLutador = 'pe' | 'abaixado' | 'ar';
 
@@ -129,14 +151,15 @@ export interface NomesDosBotoes {
   special: string;
 }
 
-/** Quando o JSON não tem `nomes`: o nome do catálogo, curto. */
-const NOME_GENERICO: Record<GolpeId, string> = {
-  'soco-rapido': 'Soco',
-  'soco-forte': 'Soco forte',
-  'chute-basico': 'Chute',
-  'chute-baixo': 'Rasteira',
-  'soco-no-ar': 'Soco aéreo',
-  voadora: 'Voadora',
+/** Nomes dos comandos. Os nomes próprios do JSON descrevem o movimento,
+ * mas não substituem estes nomes nos botões e nas instruções. */
+export const NOMES_DOS_ATAQUES: Record<GolpeId, string> = {
+  'soco-rapido': 'Rápido',
+  'soco-forte': 'Rápido Forte',
+  'chute-basico': 'Bruto',
+  'chute-baixo': 'Bruto Baixo',
+  'soco-no-ar': 'Rápido Aéreo',
+  voadora: 'Bruto de Cima',
   especial: 'Especial'
 };
 
@@ -148,12 +171,12 @@ const GOLPE_DO_BOTAO: Record<EstadoDoLutador, { light: GolpeId; heavy: GolpeId }
 };
 
 /**
- * O nome curto de um golpe do mascote (o do botão do celular), ou o do catálogo.
+ * Nome próprio do movimento, para descrever sua animação; não é o nome do botão.
  * @param nomes - O campo `nomes` do JSON do lutador (pode faltar).
  * @param id - O golpe.
  */
 export function nomeDoGolpe(nomes: Partial<Record<GolpeId, string>> | undefined, id: GolpeId): string {
-  return nomes?.[id] ?? NOME_GENERICO[id];
+  return nomes?.[id] ?? NOMES_DOS_ATAQUES[id];
 }
 
 /** O que a pausa lê do JSON do lutador para listar os golpes. */
@@ -178,22 +201,24 @@ export function golpesNaPausa(lutador: LutadorDaPausa): string[] {
   };
   const { moves } = lutador;
   const linhas: [string, string | undefined][] = [
-    ['Soco', doCatalogo('soco-rapido')],
-    ['Baixo + Soco', doCatalogo('soco-forte', moves?.heavy?.action)],
-    ['Chute', doCatalogo('chute-basico', moves?.kick?.action)],
-    ['Baixo + Chute', doCatalogo('chute-baixo', moves?.lowKick?.action)],
+    [NOMES_DOS_ATAQUES['soco-rapido'], doCatalogo('soco-rapido')],
+    [NOMES_DOS_ATAQUES['soco-forte'], doCatalogo('soco-forte', moves?.heavy?.action)],
+    [NOMES_DOS_ATAQUES['chute-basico'], doCatalogo('chute-basico', moves?.kick?.action)],
+    [NOMES_DOS_ATAQUES['chute-baixo'], doCatalogo('chute-baixo', moves?.lowKick?.action)],
+    [NOMES_DOS_ATAQUES['soco-no-ar'], doCatalogo('soco-no-ar')],
+    [NOMES_DOS_ATAQUES.voadora, doCatalogo('voadora')],
     ['Especial', label(moves?.special?.action ?? 'special')]
   ];
   return linhas.filter(([, nome]) => nome).map(([botao, nome]) => `${botao}: ${nome}`);
 }
 
 /**
- * O nome do golpe que cada botão solta agora, para escrever no botão do celular.
+ * Nome do comando em cada postura; nomes próprios só personalizam o especial.
  * @param nomes - O campo `nomes` do JSON do lutador (pode faltar).
  * @param estado - De pé, abaixado ou no ar.
  */
 export function nomesDosBotoes(nomes: Partial<Record<GolpeId, string>> | undefined, estado: EstadoDoLutador): NomesDosBotoes {
-  const nome = (id: GolpeId): string => nomeDoGolpe(nomes, id);
+  const nome = (id: GolpeId): string => id === 'especial' ? nomeDoGolpe(nomes, id) : NOMES_DOS_ATAQUES[id];
   const { light, heavy } = GOLPE_DO_BOTAO[estado];
   return {
     light: nome(light),

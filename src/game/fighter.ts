@@ -1,4 +1,10 @@
 import * as Phaser from 'phaser';
+import { PAUSA_ANTES_DA_ENTRADA_MS } from './aberturaDaLuta';
+import { alturaVooNpc } from './biribaEntrada';
+import { amostraPousoEntrada } from './entradaPouso';
+import { EntradaCaravelaCena } from './entradaCaravelaCena';
+import { ENTRADA_CARAVELA, quadroDaFase } from './entradaCaravela';
+import { alturaEntradaFlutuante, alturaEntradaSaltinho } from './entradaFlutuante';
 
 import type { AppContext } from './context';
 import { FIGHTER_BOUNDS_FIELDS, getAttackProfile, getFighterCombat, getFighterStats } from './fighterConfig';
@@ -148,7 +154,7 @@ interface TravelingProjectile {
   initial: { width: number; height: number; scale: number; damage: number; stunMs: number };
   visual: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Sprite;
   /** Carrier (the Biriba on balloons): hits no one, drops `drop` over `targetX`. */
-  carrier?: { drop: DropConfig; targetX: number; dropped: boolean };
+  carrier?: { drop: DropConfig; targetX: number; dropped: boolean; voo?: { inicio: number; fim: number; baseY: number; tempo: number } };
   /** No guard holds it (what the carrier drops). */
   unblockable?: boolean;
   /** Effect where it lands or hits (splash). */
@@ -331,6 +337,11 @@ export class Fighter {
   private locked = false;
   private frozen = true;
   private currentAnimKey = '';
+  private entradaEmCurso = false;
+  private tempoRestanteEntrada = 0;
+  private flutuacaoDaEntrada: number | null = null;
+  private caravelaDaEntrada: EntradaCaravelaCena | null = null;
+  private pousoDaEntrada: { relogio: number; impactoMs: number; origemY: number; pousou: boolean } | null = null;
   private currentReverse = false;
 
   private maxHealth: number;
@@ -418,6 +429,11 @@ export class Fighter {
   /** The direction the fighter is facing (+1 right, -1 left). */
   get facingDirection(): 1 | -1 {
     return this.facing;
+  }
+
+  /** Posição dos pés desenhados e escala para o encontro da entrada. */
+  get ancoraDoAcompanhante(): { x: number; piso: number; escala: number; profundidade: number } {
+    return { x: this.posX, piso: this.groundY - 27 * this.appliedScale, escala: this.appliedScale, profundidade: this.depthBase - 1 };
   }
 
   /** Pontos de vida agora e no máximo, para o `150/150` na barra e o número de dano. */
@@ -656,7 +672,7 @@ export class Fighter {
    */
   faceToward(targetX: number): void {
     this.opponentX = targetX;
-    if (this.locked) {
+    if (this.locked || this.entradaEmCurso) {
       return;
     }
 
@@ -679,7 +695,113 @@ export class Fighter {
    */
   setFrozen(frozen: boolean): void {
     if (frozen) this.clearProjectile();
+    if (!frozen) this.finalizarEntrada();
     this.frozen = frozen;
+  }
+
+  /** Volta à guarda animada sem liberar comandos ou o combate antes do Lutem!. */
+  private finalizarEntrada(): void {
+    if (!this.entradaEmCurso) return;
+    this.entradaEmCurso = false;
+    this.tempoRestanteEntrada = 0;
+    this.flutuacaoDaEntrada = null;
+    this.sprite.anims.resume();
+    this.caravelaDaEntrada?.destroy();
+    this.caravelaDaEntrada = null;
+    this.pousoDaEntrada = null;
+    this.sprite.setPosition(this.posX,this.groundY).setFlipX(this.facing === 1);
+    this.updateShadow();
+    this.currentAnimKey = '';
+    this.playState(this.actionKeys.idle, true);
+  }
+
+  /** Entrada opcional, sem ataques; pouso pode deslocar a apresentação. Retorna ms. */
+  iniciarEntrada(): number {
+    const key = findCharacterAnimationKeyByAction(this.character.id, 'entrance');
+    if (!key || !this.scene.anims.exists(key)) return 0;
+    this.entradaEmCurso = true;
+    const entrada = getCharacterAnimationDefinition(this.character.id, key);
+    this.sprite.setFlipX(entrada.entranceReverseFacing ? this.facing === -1 : this.facing === 1);
+    this.currentAnimKey = key;
+    this.currentReverse = false;
+    if (!entrada.entranceGangplank) this.sprite.play({ key, repeat: 0, delay: PAUSA_ANTES_DA_ENTRADA_MS, showBeforeDelay: true }, false);
+    const anim = this.scene.anims.get(key);
+    this.tempoRestanteEntrada = entrada.entranceGangplank ? ENTRADA_CARAVELA.fim :
+      PAUSA_ANTES_DA_ENTRADA_MS + anim.duration + anim.frames.reduce((soma, frame) => soma + frame.duration, 0);
+    if (!entrada.entranceGangplank && !entrada.entranceFloat && !entrada.entranceHop) {
+      this.sprite.once(`animationcomplete-${key}`,()=>{
+        if(this.entradaEmCurso && this.currentAnimKey===key) this.finalizarEntrada();
+      });
+    }
+    if (entrada.entranceFloat || entrada.entranceHop) {
+      this.flutuacaoDaEntrada = 0;
+      this.sprite.anims.pause();
+      this.sprite.setFrame(0);
+    }
+    if (entrada.entranceGangplank) {
+      this.caravelaDaEntrada?.destroy();
+      this.caravelaDaEntrada = new EntradaCaravelaCena(this.scene,this.posX,
+        this.groundY-27*this.appliedScale,this.appliedScale,this.facing,this.depthBase);
+      this.currentAnimKey = '';
+      this.atualizarCaravelaEntrada(0);
+      return this.tempoRestanteEntrada;
+    }
+    if (entrada.entranceLandingFrame !== undefined) {
+      const tempos = anim.frames.map(frame => 1000 / entrada.frameRate + frame.duration);
+      this.pousoDaEntrada = {
+        relogio: 0, impactoMs: PAUSA_ANTES_DA_ENTRADA_MS + tempos.slice(0, entrada.entranceLandingFrame).reduce((s, ms) => s + ms, 0),
+        origemY: this.cameraTop() - 80, pousou: false
+      };
+      this.sprite.y = this.pousoDaEntrada.origemY;
+      this.updateShadow();
+    }
+    return this.tempoRestanteEntrada;
+  }
+
+  private atualizarCaravelaEntrada(seconds: number): void {
+    if (!this.caravelaDaEntrada) return;
+    const pose = this.caravelaDaEntrada.update(seconds);
+    this.sprite.setPosition(pose.x,pose.y);
+    const key = findCharacterAnimationKeyByAction(this.character.id,pose.fase==='movimento'?'entrance-walk':'entrance')!;
+    const anim = getCharacterAnimationDefinition(this.character.id,key);
+    if (this.currentAnimKey !== key) {
+      this.currentAnimKey = key;
+      this.sprite.play({key,repeat:pose.fase==='movimento'?-1:0},false);
+      // O relógio da trajetória seleciona a pose; Phaser não pode correr adiantado.
+      this.sprite.anims.pause();
+    }
+    const duracoes = anim.bounds.map((_,i)=>1000/anim.frameRate+(anim.frameDurations?.[i]??0));
+    this.sprite.setFrame(quadroDaFase(pose.tempoDaFase,duracoes,pose.fase==='movimento'));
+    this.updateShadow();
+    this.shadow.x = pose.x;
+  }
+
+  private atualizarEntradaFlutuante(seconds: number): void {
+    if (this.flutuacaoDaEntrada === null) return;
+    this.flutuacaoDaEntrada += Math.max(0,seconds)*1000;
+    const anim = getCharacterAnimationDefinition(this.character.id,this.currentAnimKey);
+    const duracoes = anim.bounds.map((_,i)=>1000/anim.frameRate+(anim.frameDurations?.[i]??0));
+    this.sprite.setFrame(quadroDaFase(this.flutuacaoDaEntrada-PAUSA_ANTES_DA_ENTRADA_MS,duracoes,false));
+    const altura = anim.entranceHop ? alturaEntradaSaltinho(this.flutuacaoDaEntrada) : alturaEntradaFlutuante(this.flutuacaoDaEntrada);
+    this.sprite.y = this.groundY-altura*this.appliedScale;
+    this.updateShadow();
+  }
+
+  private atualizarPousoEntrada(seconds: number): void {
+    const estado = this.pousoDaEntrada;
+    if (!estado) return;
+    estado.relogio += Math.max(0, seconds) * 1000;
+    const pose = amostraPousoEntrada(estado.relogio, estado.impactoMs, estado.origemY, this.groundY);
+    this.sprite.y = pose.y;
+    this.updateShadow();
+    if (pose.pousou && !estado.pousou) {
+      estado.pousou = true;
+      this.som('especial-pouso', null);
+      this.scene.cameras?.main?.shake?.(180, .003);
+      this.burstParticles(this.posX, this.groundY - 27 * this.appliedScale, [
+        { colors: ['#b8b1a4', '#807b70', '#ddd4c3'], count: 18, gravity: 700 }
+      ]);
+    }
   }
 
   /**
@@ -693,8 +815,10 @@ export class Fighter {
     this.minX = minX;
     this.maxX = Math.max(minX, maxX);
     this.posX = Phaser.Math.Clamp(this.posX, this.minX, this.maxX);
-    this.sprite.x = this.posX;
-    this.shadow.x = this.posX;
+    if (!this.caravelaDaEntrada) {
+      this.sprite.x = this.posX;
+      this.shadow.x = this.posX;
+    }
   }
 
   /** Projectiles traverse the stage, independently of the camera's fighter walls. */
@@ -959,6 +1083,12 @@ export class Fighter {
    * @param facing - The spawn facing direction.
    */
   resetForRound(x: number, facing: 1 | -1): void {
+    this.tempoRestanteEntrada = 0;
+    this.flutuacaoDaEntrada = null;
+    this.caravelaDaEntrada?.destroy();
+    this.caravelaDaEntrada = null;
+    this.entradaEmCurso = false;
+    this.pousoDaEntrada = null;
     this.clearProjectile();
     this.esquadrao?.reset();
     this.reforco?.reset();
@@ -1024,7 +1154,15 @@ export class Fighter {
     }
 
     if (this.frozen) {
-      this.playState(this.actionKeys.idle, true);
+      if (this.entradaEmCurso) {
+        this.atualizarPousoEntrada(seconds);
+        this.atualizarEntradaFlutuante(seconds);
+        this.atualizarCaravelaEntrada(seconds);
+        this.tempoRestanteEntrada -= Math.max(0,seconds)*1000;
+        if (this.tempoRestanteEntrada <= 0) this.finalizarEntrada();
+      }
+      // Cada um já respira na guarda ao concluir sua própria apresentação.
+      if (!this.entradaEmCurso) this.playState(this.actionKeys.idle, true);
       this.drawBoundsOverlay();
       return;
     }
@@ -1096,6 +1234,8 @@ export class Fighter {
 
   /** Destroys the fighter's display objects. */
   destroy(): void {
+    this.caravelaDaEntrada?.destroy();
+    this.caravelaDaEntrada = null;
     this.clearProjectile();
     this.esquadrao?.destroy();
     this.reforco?.destroy();
@@ -1134,7 +1274,7 @@ export class Fighter {
       lightPunch: key('light-punch'),
       heavyPunch: find(this.character.moves?.heavy?.action, 'heavy-punch', 'heavy-kick') ?? key('light-punch'),
       kick: find(this.character.moves?.kick?.action, 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
-      lowKick: find('low-kick', 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
+      lowKick: find(this.character.moves?.lowKick?.action, 'low-kick', 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
       airLight: find('jump-punch') ?? key('light-punch'),
       airKick: find('jump-kick', 'heavy-kick', 'heavy-punch') ?? key('light-punch'),
       specialCharge: findCharacterAnimationKeyByAction(this.character.id, 'special-charge') ?? key('crouch'),
@@ -2311,7 +2451,8 @@ export class Fighter {
       growth: move.growth, travelled: 0,
       initial: { width, height, scale: visual.scaleX,
         damage: this.ataque(kind).damage, stunMs: move.stunMs ?? 0 },
-      carrier: move.drop ? { drop: move.drop, targetX: this.dropTargetX ?? this.posX, dropped: false } : undefined,
+      carrier: move.drop ? { drop: move.drop, targetX: this.dropTargetX ?? this.posX, dropped: false,
+        ...(move.carrierFlight ? { voo: { inicio: x, fim: this.behindEdgeX(width / 2) + this.facing * ((this.scene.cameras?.main?.worldView?.width ?? this.projectileMaxX-this.projectileMinX) + width), baseY: y, tempo: 0 } } : {}) } : undefined,
       hitEffect: move.hitEffect, hitParticles: move.hitParticles});
   }
 
@@ -2407,6 +2548,12 @@ export class Fighter {
     this.projectiles = this.projectiles.filter(shot => {
     shot.previousX = shot.x;
     shot.x += shot.facing*shot.speed*seconds;
+    if (shot.carrier?.voo) {
+      const voo = shot.carrier.voo;
+      voo.tempo += seconds;
+      shot.y = alturaVooNpc(shot.x, voo.inicio, voo.fim, voo.baseY, voo.tempo);
+      shot.visual.y = shot.y;
+    }
     if (shot.carrier && !shot.carrier.dropped && passedDropPoint(shot.previousX, shot.x, shot.carrier.targetX, shot.facing)) {
       shot.carrier.dropped = true;
       dropped.push(this.dropFrom(shot as TravelingProjectile & { carrier: NonNullable<TravelingProjectile['carrier']> }));

@@ -16,6 +16,18 @@ class Sprite {
   destroy(){this.active=false;}
 }
 describe('arremessos decorativos da torcida',()=>{
+  it('reutiliza a arte preparada sem refazer texturas para cada atualizacao',()=>{
+    const events=new EventEmitter(),time={now:1000};
+    const scene={events,time,make:{sprite:()=>new Sprite()}} as unknown as Phaser.Scene;
+    const p:TorcedorNaCena={x:459,fileira:0,lado:0,tipo:0,camisa:0,sprite:new Sprite() as unknown as Phaser.GameObjects.Sprite,extras:[]};
+    const arte=vi.fn((_p:TorcedorNaCena,h:string)=>({textura:h,anim:h}));
+    const controle=criarHumoresTorcida(scene,1,[{y:290,escala:.835}],[p],arte);
+    events.emit('torcida-vida',.2,.9);
+    for(let i=0;i<300;i++)controle.atualizar();
+    expect(arte).toHaveBeenCalledTimes(1);
+    events.emit('torcida-arremesso',p);controle.atualizar();expect(arte).toHaveBeenCalledTimes(2);
+    time.now+=1000;for(let i=0;i<300;i++)controle.atualizar();expect(arte).toHaveBeenCalledTimes(2);
+  });
   it('interrompe o gesto bravo quando o jogador recupera a vantagem',()=>{
     const events=new EventEmitter(),time={now:1000};
     const scene={events,time,make:{sprite:()=>new Sprite()}} as unknown as Phaser.Scene;

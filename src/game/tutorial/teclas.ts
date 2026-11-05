@@ -1,5 +1,5 @@
 import { extrasSozinho, nomeDaTecla, type ComandoLuta, type MapaBotoes } from '../controles';
-import { nomeDoGolpe, type GolpeId } from '../golpes';
+import { nomeDoGolpe, NOMES_DOS_ATAQUES, type GolpeId } from '../golpes';
 import { NOMES_DOS_BOTOES, POSICOES_DO_BOTAO, type FuncaoDoBotao, type PreferenciasDosBotoes } from '../../toque/preferencias';
 
 /**
@@ -8,7 +8,7 @@ import { NOMES_DOS_BOTOES, POSICOES_DO_BOTAO, type FuncaoDoBotao, type Preferenc
  * O roteiro escreve marcadores (`{soco}`) e isto troca na hora da fala.
  */
 
-/** Os nomes curtos dos golpes do mascote (`nomes` do JSON), para `{golpe:soco-rapido}`. */
+/** Os nomes próprios do JSON personalizam o especial; ataques usam nomes de comando. */
 type NomesDosGolpes = Partial<Record<GolpeId, string>>;
 
 export type ContextoDasTeclas =
@@ -39,14 +39,14 @@ function nomeDo(comando: ComandoLuta, contexto: ContextoDasTeclas): string {
 
 /** O que cada tecla extra faz, na ordem da fala: I, O, P (João, 04/11/2026). */
 const DUAS_MAOS: { comando: 'light' | 'heavy' | 'block'; nome: string }[] = [
-  { comando: 'heavy', nome: 'chute' },
-  { comando: 'light', nome: 'soco' },
+  { comando: 'heavy', nome: 'Bruto' },
+  { comando: 'light', nome: 'Rápido' },
   { comando: 'block', nome: 'bloqueio' }
 ];
 
 /**
  * As teclas da outra mão de quem joga sozinho, cada uma igual à do P1:
- * `"I" = "Q" (chute), "O" = "E" (soco) e "P" = "C" (bloqueio)`. A que bate
+ * `"I" = "Q" (Bruto), "O" = "E" (Rápido) e "P" = "C" (bloqueio)`. A que bate
  * com uma tecla remapeada do P1 não existe e sai da frase.
  * @param botoes - As teclas do P1.
  */
@@ -67,7 +67,10 @@ export function trocarMarcadores(texto: string, contexto: ContextoDasTeclas): st
     if (nome === 'duasMaos') return contexto.toque ? '' : textoDasDuasMaos(contexto.botoes);
     // O menu da luta: Esc no teclado, o botão de menu no celular.
     if (nome === 'menu') return contexto.toque ? 'o botão de menu' : `"${nomeDaTecla('ESC')}"`;
-    if (nome.startsWith('golpe:')) return nomeDoGolpe(contexto.nomes, nome.slice(6) as GolpeId);
+    if (nome.startsWith('golpe:')) {
+      const id = nome.slice(6) as GolpeId;
+      return id === 'especial' ? nomeDoGolpe(contexto.nomes, id) : (NOMES_DOS_ATAQUES[id] ?? inteiro);
+    }
     const comando = comandoDo(nome as Marcador, contexto.olhando);
     return comando ? nomeDo(comando, contexto) : inteiro;
   });

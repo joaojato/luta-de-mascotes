@@ -5,7 +5,7 @@
   "rival": "cartola",
   "museu": {
     "apelido": "Vira-lata com camisa de clube grande",
-    "descricao": "Cão de focinho comprido, camisa listrada preta e branca e braços enormes. Luta de perto: patada com garras, carrinho rasteiro e, no especial, um galope imparável que termina num bote. O Biriba assiste do fundo e anda junto com ele.",
+    "descricao": "Cão de focinho comprido, camisa listrada preta e branca e braços enormes. Luta de perto: patada com garras, carrinho rasteiro e, no especial, um galope imparável que termina num bote. O Biriba recebe um carinho na entrada e volta nos balões quando é chamado.",
     "historia": "Homenagem ao Biriba, o vira-lata que em 1948 entrou em campo num jogo do alvinegro carioca e virou amuleto do dirigente Carlito Rocha. O time foi campeão daquele ano, e o cachorro passou a frequentar vestiário, concentração e banco de reservas. Virou um dos mascotes mais queridos do futebol brasileiro."
   },
   "nomes": {"soco-rapido": "Socos", "soco-forte": "Patada", "chute-basico": "Biriba", "chute-baixo": "Carrinho", "soco-no-ar": "Soco aéreo", "voadora": "Voadora", "especial": "Mordida"},
@@ -46,6 +46,24 @@
         "width": 135,
         "height": 200
       }
+    },
+    {
+      "action": "entrance",
+      "label": "Entrada: ajoelha, acaricia o Biriba e vira para a luta",
+      "file": "entrada-v1/entrance.png",
+      "frames": 16,
+      "frameWidth": 512,
+      "frameHeight": 320,
+      "frameRate": 10,
+      "repeat": 0,
+      "entranceReverseFacing": true,
+      "defaultVisual": { "x": 167, "y": 92, "width": 171, "height": 201 },
+      "timing": [
+        { "frames": [0, 0], "ms": 200 }, { "frames": [1, 1], "ms": 500 },
+        { "frames": [2, 4], "ms": 150 }, { "frames": [5, 5], "ms": 200 },
+        { "frames": [6, 11], "ms": 150 }, { "frames": [12, 14], "ms": 100 },
+        { "frames": [15, 15], "ms": 50 }
+      ]
     },
     {
       "action": "walk-forward",
@@ -574,6 +592,7 @@
       "action": "summon-biriba",
       "releaseFrame": 2,
       "spawnFrom": "behind",
+        "carrierFlight": true,
       "speed": 480,
       "visualEffect": "biriba",
       "visualScale": 0.6,

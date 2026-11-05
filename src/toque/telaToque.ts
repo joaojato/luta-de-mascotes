@@ -7,6 +7,9 @@
  * e volta, como em console.
  */
 import * as Phaser from 'phaser';
+import {acompanharViewport} from './viewport';
+import {carregarFormatoTela,escolherFormato,formatoTela,FORMATOS_TELA,escolherPosicaoTela,posicaoTela,POSICOES_TELA} from './formatoTela';
+import {getAppContext} from '../game/context';
 
 import { carregarControles, type ComandoLuta } from '../game/controles';
 import { aoMudarLuta, lutaNaTela, type LutaNaTela } from './lutaNaTela';
@@ -29,6 +32,7 @@ import {
   IDS_CONTROLE,
   juntarLayout,
   layoutPadrao,
+  layoutSemSobreposicao,
   lerMexidos,
   redimensionar,
   salvarLayout,
@@ -86,8 +90,6 @@ async function alternarTelaCheia(): Promise<void> {
   }
   try {
     await (raiz.requestFullscreen?.({ navigationUI: 'hide' }) ?? raiz.webkitRequestFullscreen?.());
-    const orientacao = screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> };
-    await orientacao.lock?.('landscape').catch(() => undefined);
   } catch {
     // Recusado ou sem suporte: o aviso da tela cheia cobre esse caso.
   }
@@ -150,6 +152,8 @@ export function abrirFuncoesDosBotoes(): boolean {
  * @param jogo - Pausa o jogo com o menu aberto.
  */
 export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): void {
+  acompanharViewport();
+  carregarFormatoTela();
   const codes = new Set(Object.keys(KEY_CODES));
   // Lido a cada aperto: remapear o teclado nos Ajustes vale na hora aqui também.
   const teclaDe = (comando: ComandoLuta): string => carregarControles(codes).p1[comando];
@@ -191,6 +195,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
         <button class="toque__item" data-acao="voltar" type="button">Voltar / sair da luta</button>
         <button class="toque__item" data-acao="tela-cheia" type="button">Tela cheia</button>
         <button class="toque__item" data-acao="abrir-controles" type="button">Controles</button>
+        <button class="toque__item" data-acao="abrir-ajustes" type="button">Ajustes</button>
       </div>
       <div class="toque__caixa" data-tela="controles" role="dialog" aria-label="Controles" hidden>
         <p class="toque__titulo">Controles</p>
@@ -201,6 +206,17 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
         <button class="toque__item" data-acao="abrir-funcoes" type="button">Funções dos botões</button>
         <button class="toque__item" data-acao="editar" type="button">Ajustar botões</button>
         <button class="toque__item toque__item--forte" data-acao="fechar-controles" type="button">Voltar</button>
+      </div>
+      <div class="toque__caixa" data-tela="ajustes" role="dialog" aria-label="Ajustes" hidden>
+        <p class="toque__titulo">Ajustes</p>
+        <button class="toque__item" data-acao="formato-tela" type="button"></button>
+        <button class="toque__item" data-acao="posicao-tela" type="button"></button>
+        <p class="toque__ajuda">Em pé, a imagem fica sempre na metade superior. Os controles ficam abaixo da divisão.</p>
+        <button class="toque__item" data-acao="som" type="button"></button>
+        <button class="toque__item" data-acao="musica-volume" type="button"></button>
+        <button class="toque__item" data-acao="efeitos-volume" type="button"></button>
+        <button class="toque__item" data-acao="fps" type="button"></button>
+        <button class="toque__item toque__item--forte" data-acao="fechar-ajustes" type="button">Voltar</button>
       </div>
       <div class="toque__caixa" data-tela="funcoes" role="dialog" aria-label="Funções dos botões" hidden>
         <p class="toque__titulo">Funções dos botões</p>
@@ -271,6 +287,13 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   };
 
   const mostrarPreferencias = (): void => {
+    const settings=getAppContext().settingsStore.getState();
+    pegar('[data-acao="posicao-tela"]').textContent=`Tela em pé: ${posicaoTela()==='meio'?'junto à divisão':posicaoTela()==='topo'?'no topo':'centro da metade superior'} (trocar)`;
+    pegar('[data-acao="som"]').textContent=settings.muted?'Som: desligado (ligar)':'Som: ligado (desligar)';
+    pegar('[data-acao="musica-volume"]').textContent=`Música: ${Math.round(settings.musicVolume*100)}% (trocar)`;
+    pegar('[data-acao="efeitos-volume"]').textContent=`Efeitos: ${Math.round(settings.sfxVolume*100)}% (trocar)`;
+    pegar('[data-acao="fps"]').textContent=`Mostrar FPS: ${settings.mostrarFps?'sim':'não'} (trocar)`;
+    camada.querySelector<HTMLButtonElement>('[data-acao="formato-tela"]')!.textContent=`Formato da tela: ${formatoTela()==='auto'?'Automático':formatoTela()} (trocar)`;
     camada.dataset.cara = preferencias.cara;
     camada.classList.toggle('com-nomes', preferencias.nomes);
     for (const { id } of BOTOES) {
@@ -289,25 +312,42 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   // ---------------------------------------------------------------- posição
   const medir = (): Tela => {
     const estilo = getComputedStyle(seguro);
+    const quadro=host.querySelector<HTMLElement>('.game-root')?.getBoundingClientRect();
+    const deitado=camada.clientWidth>=camada.clientHeight;
     return {
       largura: camada.clientWidth,
       altura: camada.clientHeight,
       seguro: {
-        topo: parseFloat(estilo.paddingTop) || 0,
-        direita: parseFloat(estilo.paddingRight) || 0,
-        baixo: parseFloat(estilo.paddingBottom) || 0,
-        esquerda: parseFloat(estilo.paddingLeft) || 0
+        topo: Math.max(parseFloat(estilo.paddingTop)||0,deitado && quadro?quadro.top:0),
+        direita: Math.max(parseFloat(estilo.paddingRight)||0,deitado && quadro?camada.clientWidth-quadro.right:0),
+        baixo: Math.max(parseFloat(estilo.paddingBottom)||0,deitado && quadro?camada.clientHeight-quadro.bottom:0),
+        esquerda: Math.max(parseFloat(estilo.paddingLeft)||0,deitado && quadro?quadro.left:0)
       }
     };
   };
 
   // Só o que o jogador mexeu fica salvo; o resto segue o de fábrica de cada tela.
-  let mexidos = lerMexidos(carregarLayout());
-  const layoutAtual = (tela: Tela): Layout => juntarLayout(layoutPadrao(tela), mexidos);
+  const salvos={deitado:lerMexidos(carregarLayout()),emPe:lerMexidos(carregarLayout(undefined,true))};
+  let emPe=false;
+  let mexidos=salvos.deitado;
+  const proporcaoJogo=():number=>{
+    const area=host.querySelector<HTMLElement>('.game-root');
+    return area && area.clientHeight>0?area.clientWidth/area.clientHeight:16/9;
+  };
+  const layoutAtual = (tela: Tela): Layout => {
+    const proporcao=proporcaoJogo(),padrao=layoutPadrao(tela,proporcao);
+    const candidato=juntarLayout(padrao,mexidos);
+    return layoutSemSobreposicao(candidato,tela,proporcao)?candidato:padrao;
+  };
 
   const posicionar = (): void => {
     const tela = medir();
     if (tela.largura === 0 || tela.altura === 0) return;
+    const retrato=tela.altura>tela.largura;
+    if(retrato!==emPe){
+      salvos[emPe?'emPe':'deitado']=mexidos;
+      emPe=retrato;mexidos=salvos[emPe?'emPe':'deitado'];
+    }
     const layout = layoutAtual(tela);
     for (const id of IDS_CONTROLE) {
       const { esquerda, topo, lado } = caixaEmPixels(layout[id], tela);
@@ -327,6 +367,11 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   };
   window.addEventListener('resize', reposicionar);
   window.addEventListener('orientationchange', reposicionar);
+  window.visualViewport?.addEventListener('resize',reposicionar);
+  const observarControles=new ResizeObserver(posicionar);
+  observarControles.observe(camada);
+  const areaJogo=host.querySelector<HTMLElement>('.game-root');
+  if(areaJogo)observarControles.observe(areaJogo);
 
   // ---------------------------------------------------------------- direcional
   let dedo: number | null = null;
@@ -395,6 +440,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   };
   direcional.addEventListener('pointerup', fimDirecional);
   direcional.addEventListener('pointercancel', fimDirecional);
+  direcional.addEventListener('lostpointercapture',fimDirecional);
 
   // ---------------------------------------------------------------- botões
   const soltadores: (() => void)[] = [soltarDirecional];
@@ -426,11 +472,14 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     };
     botao.addEventListener('pointerup', fim);
     botao.addEventListener('pointercancel', fim);
+    botao.addEventListener('lostpointercapture',fim);
   }
 
   /** Nada fica apertado quando o jogo para (menu aberto, app em segundo plano). */
   const soltarTudo = (): void => soltadores.forEach((soltar) => soltar());
   document.addEventListener('visibilitychange', soltarTudo);
+  window.addEventListener('blur',soltarTudo);
+  window.addEventListener('orientationchange',soltarTudo);
 
   // O iPhone ignora o `user-scalable=no`: segurar o dedo abre a lupa de texto,
   // dois toques dão zoom e a pinça amplia a página. Cancelar o toque cru nos
@@ -451,7 +500,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
 
   // ---------------------------------------------------------------- menu
   // As opções de controle ficam num menu próprio, aberto por Controles (João, 03/11/2026).
-  const mostrarTela = (tela: 'principal' | 'controles' | 'funcoes'): void => {
+  const mostrarTela = (tela: 'principal' | 'controles' | 'funcoes' | 'ajustes'): void => {
     painel.querySelectorAll<HTMLElement>('[data-tela]').forEach((caixa) => {
       caixa.hidden = caixa.dataset.tela !== tela;
     });
@@ -483,6 +532,20 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   };
 
   const acoes: Record<string, (item: HTMLElement) => void> = {
+    'abrir-ajustes':()=>{mostrarPreferencias();mostrarTela('ajustes');},
+    'fechar-ajustes':()=>mostrarTela('principal'),
+    'posicao-tela':()=>{
+      escolherPosicaoTela(POSICOES_TELA[(POSICOES_TELA.indexOf(posicaoTela())+1)%POSICOES_TELA.length]);
+      mostrarPreferencias();
+    },
+    som:()=>{const store=getAppContext().settingsStore;store.patchState({muted:!store.getState().muted});mostrarPreferencias();},
+    fps:()=>{const store=getAppContext().settingsStore;store.patchState({mostrarFps:!store.getState().mostrarFps});mostrarPreferencias();},
+    'musica-volume':()=>{const store=getAppContext().settingsStore;store.patchState({musicVolume:store.getState().musicVolume>=1?0:Math.min(1,(Math.floor(store.getState().musicVolume*4)+1)/4)});mostrarPreferencias();},
+    'efeitos-volume':()=>{const store=getAppContext().settingsStore;store.patchState({sfxVolume:store.getState().sfxVolume>=1?0:Math.min(1,(Math.floor(store.getState().sfxVolume*4)+1)/4)});mostrarPreferencias();},
+    'formato-tela':()=>{
+      escolherFormato(FORMATOS_TELA[(FORMATOS_TELA.indexOf(formatoTela())+1)%FORMATOS_TELA.length]);
+      mostrarPreferencias();posicionar();
+    },
     continuar: fecharMenu,
     'abrir-controles': () => mostrarTela('controles'),
     'fechar-controles': () => mostrarTela('principal'),
@@ -548,7 +611,7 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
     maior: () => mudarTamanho(1.12),
     restaurar: () => {
       mexidos = {};
-      apagarLayout();
+      apagarLayout(undefined,emPe);
       posicionar();
     },
     pronto: () => {
@@ -569,8 +632,10 @@ export function montarControlesDeToque(host: HTMLElement, jogo: JogoPausavel): v
   };
 
   const guardar = (id: IdControle, posicao: Layout[IdControle]): void => {
+    const tela=medir(),candidato={...layoutAtual(tela),[id]:posicao};
+    if(!layoutSemSobreposicao(candidato,tela,proporcaoJogo()))return;
     mexidos = { ...mexidos, [id]: posicao };
-    salvarLayout(mexidos);
+    salvarLayout(mexidos,undefined,emPe);
     posicionar();
   };
 

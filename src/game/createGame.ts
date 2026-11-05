@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 
 import { decidirEscala, instalarNitidez } from './nitidez';
+import {instalarDiagnosticoSessao} from './diagnosticoSessao';
 import { GAME_PROFILES } from './profiles';
 import type { GameProfile } from './types';
 import { BootScene } from '../scenes/BootScene';
@@ -75,6 +76,7 @@ export function createGame(parent: HTMLElement, profile: GameProfile): Phaser.Ga
   });
 
   instalarNitidez(game, parent);
+  instalarDiagnosticoSessao(game);
   guardKeyboardWhileEditing(game);
 
   if (import.meta.env.DEV) {

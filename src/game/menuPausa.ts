@@ -31,9 +31,10 @@ export interface LadoDaPausa {
 
 /** Comandos que valem para todo mascote (docs/gdd.md, "Golpes"). */
 const COMANDOS_GERAIS = [
-  'Baixo + Soco: soco forte (quebra a defesa em pé)',
-  'Baixo + Chute: chute baixo',
-  'Soco ou Chute no ar: golpe aéreo (a voadora quebra a defesa agachada)',
+  'Agachar + Rápido: Rápido Forte (quebra a defesa em pé)',
+  'Agachar + Bruto: Bruto Baixo',
+  'Rápido no ar: Rápido Aéreo',
+  'Bruto no ar: Bruto de Cima (quebra a defesa agachada)',
   'Defender segurando; agachado defende embaixo',
   'Defender bem na hora do golpe: guarda perfeita (atacante fica tonto)',
   'Dois toques para a frente ou para trás: dash',

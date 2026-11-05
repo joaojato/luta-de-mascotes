@@ -74,6 +74,18 @@
   },
   "actions": [
     { "action": "idle", "label": "Guarda", "file": "idle.png", "frames": 4, "frameRate": 8, "repeat": -1, "frameWidth": 512, "defaultVisual": { "x": 165, "y": 29, "width": 171, "height": 201 } },
+    { "action": "entrance", "label": "Entrada: limpa, recarrega e guarda o mosquete", "file": "entrada-v3/entrance.png", "frames": 15, "frameRate": 10, "repeat": 0, "frameWidth": 512, "frameHeight": 384,
+      "defaultVisual": { "x": 100, "y": 60, "width": 260, "height": 298 },
+      "timing": [
+        { "frames": [0, 0], "ms": 0 }, { "frames": [1, 1], "ms": 100 },
+        { "frames": [2, 2], "ms": 120 }, { "frames": [3, 3], "ms": 160 },
+        { "frames": [4, 4], "ms": 300 }, { "frames": [5, 5], "ms": 220 },
+        { "frames": [6, 6], "ms": 140 }, { "frames": [7, 7], "ms": 200 },
+        { "frames": [8, 8], "ms": 300 }, { "frames": [9, 9], "ms": 140 },
+        { "frames": [10, 10], "ms": 200 }, { "frames": [11, 11], "ms": 160 },
+        { "frames": [12, 12], "ms": 140 }, { "frames": [13, 13], "ms": 320 },
+        { "frames": [14, 14], "ms": 0 }
+      ] },
     { "action": "walk-forward", "label": "Andar para frente", "file": "walk-forward.png", "frames": 8, "frameRate": 10, "repeat": -1, "frameWidth": 512, "defaultVisual": { "x": 138, "y": 25, "width": 204, "height": 205 } },
     { "action": "walk-backward", "label": "Andar para trás", "file": "walk-backward.png", "frames": 8, "frameRate": 10, "repeat": -1, "frameWidth": 512, "defaultVisual": { "x": 135, "y": 26, "width": 206, "height": 204 } },
     { "action": "crouch", "label": "Agachar", "file": "crouch.png", "frames": 6, "frameRate": 16, "repeat": 0, "frameWidth": 512, "defaultVisual": { "x": 81, "y": 29, "width": 274, "height": 201 } },

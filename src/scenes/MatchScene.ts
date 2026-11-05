@@ -45,6 +45,7 @@ import { getCharacterAnimationByAction } from '../game/hero';
 import { PERFECT_GUARD_SECONDS } from '../game/moveMechanics';
 import { TutorialNaTela } from '../game/tutorial/tutorialNaTela';
 import { carregarPreferencias } from '../toque/preferencias';
+import { etapasDaAbertura } from '../game/aberturaDaLuta';
 
 const EDGE_MARGIN = 170;
 const DEPTH_FRONT = 8;
@@ -83,8 +84,8 @@ const PONTA_DO_LADO: Record<Lado, number> = { p1: 1, p2: 2 };
 
 /**
  * The versus match: two fighters spawn facing each other and fight a best-of-3
- * (first to {@link ROUNDS_TO_WIN} rounds). Each round runs a "ROUND n / FIGHT!"
- * intro, then live combat — attack boxes vs hurtboxes drive damage, hitstun,
+ * (first to {@link ROUNDS_TO_WIN} rounds). Each round counts "1, 2, 3, Lutem!"
+ * before live combat — attack boxes vs hurtboxes drive damage, hitstun,
  * knockback, and a knockdown on KO. When the match is decided a game-over
  * overlay offers a rematch or a return to the main menu. P1 is always human;
  * P2 is human in 1v1 or a simple CPU in 1vCPU.
@@ -130,6 +131,7 @@ export class MatchScene extends BaseScene {
   private hud!: MatchHud;
   private banner!: Phaser.GameObjects.Text;
   private roundTimeMs = ROUND_SECONDS * 1000;
+  private entradasExibidas = false;
   private overlay: Phaser.GameObjects.GameObject[] = [];
 
   constructor() {
@@ -143,6 +145,7 @@ export class MatchScene extends BaseScene {
   }
 
   create(): void {
+    this.entradasExibidas = false;
     this.cpu = undefined;
     this.phase = 'intro';
     this.roundNumber = 1;
@@ -172,6 +175,13 @@ export class MatchScene extends BaseScene {
       espacoParaMenu: controlesDeToqueAtivos()
     });
     this.hud.slideIn();
+    const adaptarTela=()=>{
+      this.maxScroll=Math.max(0,this.stageWorldWidth-this.tela.width);
+      this.banner?.setPosition(this.tela.centerX,this.tela.centerY-40);
+      this.updateCamera(true);
+    };
+    this.events.on('tela-logica-alterada',adaptarTela);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN,()=>this.events.off('tela-logica-alterada',adaptarTela));
 
     this.banner = this.add
       .text(this.tela.centerX, this.tela.centerY - 40, '', {
@@ -579,7 +589,7 @@ export class MatchScene extends BaseScene {
     // P2. Sem a arte carregada, fica a pintura antiga.
     const clube = (id: string) => ({ id, clube: torcidaValida(LUTADORES.find((l) => l.id === id)?.torcida) });
     const temTorcida =
-      stage.id === 'estadio' &&
+      stage.stadiumCrowd &&
       montarTorcida(this, scale, clube(this.config.p1CharacterId), clube(this.config.p2CharacterId), 0);
     if (!temTorcida) {
       this.add.image(0, 0, stage.key).setOrigin(0, 0).setScale(scale).setDepth(0);
@@ -645,10 +655,10 @@ export class MatchScene extends BaseScene {
     this.p1.setOpponent(this.p2);
     this.p2.setOpponent(this.p1);
     if (this.p1.characterId === 'cachorro') {
-      this.biribas.push(new BiribaCena(this, this.p1, groundY, -130, () => this.som('latido')));
+      this.biribas.push(new BiribaCena(this, this.p1));
     }
     if (this.p2.characterId === 'cachorro') {
-      this.biribas.push(new BiribaCena(this, this.p2, groundY, 130, () => this.som('latido')));
+      this.biribas.push(new BiribaCena(this, this.p2));
     }
   }
 
@@ -1275,19 +1285,24 @@ export class MatchScene extends BaseScene {
     this.som('round');
     musica(this.game).tocar('luta');
 
-    this.time.delayedCall(900, () => {
-      if (this.phase !== 'intro') {
-        return;
-      }
-
-      this.showBanner('FIGHT!', TEXTO_DESTAQUE, 1.15);
-      this.som('luta-comeca');
-      this.phase = 'fighting';
-      this.p1.setFrozen(false);
-      this.p2.setFrozen(false);
-
-      this.time.delayedCall(650, () => this.hideBanner());
-    });
+    let entradaMs = 0;
+    if (!this.entradasExibidas) {
+      entradaMs = Math.max(this.p1.iniciarEntrada(), this.p2.iniciarEntrada());
+      for (const biriba of this.biribas) entradaMs = Math.max(entradaMs, biriba.iniciarEntrada());
+      this.entradasExibidas = true;
+    }
+    for (const etapa of etapasDaAbertura(entradaMs)) {
+      this.time.delayedCall(etapa.em, () => {
+        if (this.phase !== 'intro') return;
+        this.showBanner(etapa.texto, TEXTO_DESTAQUE, etapa.lutar ? 1.15 : 1);
+        if (!etapa.lutar) return;
+        this.som('luta-comeca');
+        this.phase = 'fighting';
+        this.p1.setFrozen(false);
+        this.p2.setFrozen(false);
+        this.time.delayedCall(650, () => this.hideBanner());
+      });
+    }
   }
 
   /**
@@ -1416,6 +1431,7 @@ export class MatchScene extends BaseScene {
 
   /** Restarts the match from round 1 with the same configuration. */
   private rematch(): void {
+    this.entradasExibidas = false;
     reiniciarTorcida(this);
     this.overlay.forEach((object) => object.destroy());
     this.overlay = [];

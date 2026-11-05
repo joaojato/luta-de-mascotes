@@ -91,23 +91,27 @@ golpes da Regra da v1 por pedido explícito do João. O catálogo vive em
 tem e o que falta. Golpe sem sheet própria aparece como "faltando"; quando há
 um quebra-galho, a Academia diz qual sheet está sendo usada no lugar.
 
-Dois botões de ataque, Soco e Chute; segurar Baixo muda o golpe (João,
-27/10/2026). O antigo botão Forte virou o Chute.
+Dois botões de ataque, **Rápido** e **Bruto** (correção do João,
+04/11/2026). Agachar ou pular muda a versão do comando. Esta nomenclatura
+prevalece sobre os nomes históricos Soco/Chute em instruções e controles.
+Os nomes não obrigam o movimento a ser um soco, chute ou ataque de certa
+altura. Descrições literais de movimentos e artes preservam seus nomes.
+IDs internos, arquivos e teclas/remapeamentos existentes permanecem iguais.
 
-| | Soco | Chute |
+| | Rápido | Bruto |
 |---|---|---|
-| Em pé | Soco rápido | Chute básico |
-| Baixo + | Soco forte | Chute baixo |
-| No ar | Soco no ar | Voadora |
+| Em pé | Rápido | Bruto |
+| Agachado | Rápido Forte | Bruto Baixo |
+| No ar | Rápido Aéreo | Bruto de Cima |
 
 | Golpe | Sheet (`action`) | Regra |
 |---|---|---|
-| Soco rápido | `light-punch` | dois socos por aperto, **um com cada mão** e giro de tronco no segundo (picos nos quadros 1 e 3, dois acertos), no modelo do Almirante; o Saci tem um jab rápido próprio, de um acerto; apertar de novo depois do segundo emenda outro par. Agachado passa por baixo. Bate na armadura do Soco forte sem interromper. |
-| Soco forte | `heavy-punch` (quebra-galho: `heavy-kick`) | cruzado com giro, lento e potente; **quebra a defesa alta**. Aguenta Soco rápido sem parar (armadura). O do Bira é a patada. |
-| Chute básico | `heavy-kick` | dano médio; qualquer guarda segura. O do Almirante é o tiro de garrucha (`moves.kick`). |
-| Chute baixo | `low-kick` (quebra-galho: `heavy-kick`) | rente ao chão; **interrompe o Soco forte**; **quebra a defesa alta**. O do Almirante é o chute normal, por escolha do João. |
-| Soco no ar | `jump-punch` (quebra-galho: `light-punch`) | um golpe por pulo. Pega quem está agachado. |
-| Voadora | `jump-kick` (quebra-galho: `heavy-kick`) | mergulho em diagonal para a frente; **único golpe que quebra a defesa baixa**. |
+| Rápido | `light-punch` | dois socos por aperto, **um com cada mão** e giro de tronco no segundo (picos nos quadros 1 e 3, dois acertos), no modelo do Almirante; o Saci tem um jab rápido próprio, de um acerto; apertar de novo depois do segundo emenda outro par. Agachado passa por baixo. Bate na armadura do Rápido Forte sem interromper. |
+| Rápido Forte | `heavy-punch` (quebra-galho: `heavy-kick`) | cruzado com giro, lento e potente; **quebra a defesa alta**. Aguenta Rápido sem parar (armadura). O do Bira é a patada. |
+| Bruto | `heavy-kick` | dano médio; qualquer guarda segura. O do Almirante é o tiro de garrucha (`moves.kick`). |
+| Bruto Baixo | `low-kick` (quebra-galho: `heavy-kick`) | **interrompe o Rápido Forte**; **quebra a defesa alta**. O do Almirante é o chute normal, por escolha do João. |
+| Rápido Aéreo | `jump-punch` (quebra-galho: `light-punch`) | um golpe por pulo. Pega quem está agachado. |
+| Bruto de Cima | `jump-kick` (quebra-galho: `heavy-kick`) | mergulho em diagonal para a frente; **único golpe que quebra a defesa baixa**. |
 | Especial | `special-charge` + `special` | próprio de cada mascote. |
 
 Projéteis:

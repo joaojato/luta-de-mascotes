@@ -65,6 +65,7 @@ export class LevelSelectScene extends BaseScene {
         height: cardHeight,
         title: stage.label,
         texture: this.textures.exists(stage.key) ? stage.key : undefined,
+        skyTexture: stage.sky && this.textures.exists(stage.sky.key) ? stage.sky.key : undefined,
         imageMaxSize: cardWidth - 28,
         imageOffsetY: -28,
         onHover: () => this.setSelection(index),

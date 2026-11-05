@@ -103,7 +103,7 @@ export const ROTEIRO: Etapa[] = [
   },
   {
     id: 'bater',
-    falas: ['Experimente bater com {soco} ou {chute}.'],
+    falas: ['Experimente o Rápido com {soco} ou o Bruto com {chute}.'],
     checklist: [
       { objetivo: 'acertar-soco', texto: 'Acertar um golpe de {golpe:soco-rapido} {soco}' },
       { objetivo: 'acertar-chute', texto: 'Acertar um golpe de {golpe:chute-basico} {chute}' }
@@ -120,7 +120,7 @@ export const ROTEIRO: Etapa[] = [
   },
   {
     id: 'quebrar-guarda',
-    falas: ['Agora derrube essa guarda com golpes fortes! ({abaixar} + {soco} ou {abaixar} + {chute})'],
+    falas: ['Agora derrube essa guarda com Rápido Forte ({abaixar} + {soco}) ou Bruto Baixo ({abaixar} + {chute})!'],
     // Cada golpe forte testado (João, 03/11/2026), não um ou outro.
     checklist: [
       { objetivo: 'quebrar-guarda-soco', texto: 'Quebrar a guarda com um golpe de {golpe:soco-forte} {abaixar} + {soco}' },
@@ -158,7 +158,7 @@ export const ROTEIRO: Etapa[] = [
   {
     id: 'tontos',
     falas: ['Bloquear na hora do impacto deixa eles tontos! Continue com o {defesa}.'],
-    checklist: [{ objetivo: 'defender', texto: 'Defender socos {defesa}', vezes: 3 }],
+    checklist: [{ objetivo: 'defender', texto: 'Defender golpes Rápidos {defesa}', vezes: 3 }],
     cpu: 'parada',
     cpuDepois: 'socos'
   },
@@ -177,8 +177,8 @@ export const ROTEIRO: Etapa[] = [
     id: 'voadora',
     gatilho: 'guarda-quebrada',
     dica: 'Continue abaixado defendendo {abaixar} + {defesa}',
-    falas: ['Desvie da voadora com um passo largo ({tras} 2 vezes rápido).'],
-    checklist: [{ objetivo: 'desviar-voadora', texto: 'Desviar da voadora {tras} {tras}' }],
+    falas: ['Desvie do Bruto de Cima com um passo largo ({tras} 2 vezes rápido).'],
+    checklist: [{ objetivo: 'desviar-voadora', texto: 'Desviar do Bruto de Cima {tras} {tras}' }],
     cpu: 'voadora-na-guarda-baixa',
     cpuDepois: 'voadoras'
   },

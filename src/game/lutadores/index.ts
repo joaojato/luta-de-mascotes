@@ -31,7 +31,7 @@ export interface LutadorJson {
   label: string;
   /** Ficha da cena Museu: quem é no jogo e de onde veio o mascote (docs/gdd.md, "Museu"). */
   museu?: FichaDoMuseu;
-  /** Nome curto de cada golpe (até 11 letras), para os botões do celular. */
+  /** Nome próprio de cada movimento; não substitui os nomes dos comandos de ataque. */
   nomes?: Partial<Record<GolpeId, string>>;
   /** Close do rosto no retrato: centro em fração (`x`, `y`) e lado em fração da largura. */
   rosto?: { x: number; y: number; lado: number };

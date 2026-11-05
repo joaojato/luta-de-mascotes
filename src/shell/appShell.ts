@@ -105,8 +105,7 @@ import {
 } from '../game/types';
 import { renderDebugPanels } from './debugPanels';
 import { montarContadorDeFps } from './contadorFps';
-import { acompanharProporcaoDaTela } from '../toque/tamanhoDoJogo';
-import { controlesDeToqueAtivos, montarControlesDeToque, querControlesDeToque } from '../toque/telaToque';
+import { montarControlesDeToque, querControlesDeToque } from '../toque/telaToque';
 
 type LevelEditorObjectDefinition = LevelEditorDebugState['level']['objects'][number];
 
@@ -303,9 +302,6 @@ export function createApp(root: HTMLElement): void {
       worldBounds: null
     });
     game = createGame(gameRoot, profile);
-    if (controlesDeToqueAtivos() && profile === 'landscape') {
-      acompanharProporcaoDaTela(game, gameRoot);
-    }
   };
 
   if (isDebugShell) {

@@ -1,6 +1,20 @@
 import {describe,expect,it} from 'vitest';
-import {humorDoTorcedor,humorPorResultado,humorPorVida,novoHumorTorcida} from './torcidaHumor';
+import {CICLO_IRRITADA,humorPeloMedidor,humorDoTorcedor,humorPorResultado,humorPorVida,novoHumorTorcida} from './torcidaHumor';
 describe('torcida quieta, comemorando e brava',()=>{
+  it('amarelo alterna apoio e hesitacao em ritmos individuais, sem irritacao',()=>{
+    const humores=new Set(Array.from({length:100},(_,seed)=>humorPeloMedidor(2,5000,seed*127)));
+    expect([...humores].sort()).toEqual(['quieta','torcendo']);
+    for(const seed of [1,137,801]){
+      const aoLongoDoTempo=new Set(Array.from({length:200},(_,i)=>humorPeloMedidor(2,i*100,seed)));
+      expect([...aoLongoDoTempo].sort()).toEqual(['quieta','torcendo']);
+    }
+  });
+  it('reclamacao usa movimentos com copo na mao e nunca o quadro de arremesso',()=>{
+    expect(new Set(CICLO_IRRITADA).size).toBeGreaterThan(1);
+    expect(CICLO_IRRITADA).not.toContain(2);
+    expect(CICLO_IRRITADA).not.toContain(3);
+    expect(humorPeloMedidor(1,0,1)).toBe('irritada');
+  });
   it('fica quieta a maior parte do tempo, com fases diferentes entre pessoas',()=>{
     const e=novoHumorTorcida();
     const tempos=Array.from({length:100},(_,i)=>humorDoTorcedor(e,0,i*100,0));
