@@ -605,3 +605,29 @@ pistola da cintura no quadro 4, 16 de dano cada (32 se os dois entrarem;
 fica acima do chute baixo, como pede a escala). Caixas de acerto
 medidas na lâmina de cada quadro de contato (`attackSpans`). `ataques-v1/`
 fica no disco só como registro; não reaplicar.
+
+## Raposa (Cruzeiro): ficha (06/11/2026)
+
+Arte em produção pelo Codex: pedido completo e estado em
+`docs/raposa-animacoes-v1.md`, detalhes visuais em
+`docs/raposa-continuidade-aprovada.md`. Entra no jogo só com o conjunto
+inteiro das duas formas (sem personagem incompleto).
+
+Golpes: rápido = dois socos alternados; rápido pesado = gancho ascendente
+saindo do agachado; bruto (Chute) = quebra uma garrafa no chão e deixa cacos
+como mina; bruto rasteiro = chute baixo com avanço (o passo é do motor).
+
+**Cacos (João, 06/11/2026).**
+- Mina simples: 12 de dano, dura 5 s.
+- Garrafa sobre uma mina simples: vira dupla, 18 de dano, relógio volta a 7 s.
+- Garrafa sobre uma mina dupla: nasce uma mina simples nova (12, 5 s) e a
+  dupla fica como estava.
+- Quem pisa toma o dano uma vez e a mina some.
+- Sem limite de minas no chão em lugares diferentes.
+
+**Especial: Pulo de Raposa (João, 06/11/2026).** Salto alto, sempre dentro
+da tela, que cai sobre o adversário. **Não pode ser defendido**; o escape é
+avançar e passar por baixo dela (a descida não persegue). Só o acerto
+atordoa por 1,5 s e libera a forma com taco por 8 s; errar não transforma.
+Na forma com taco o bruto vira tacada ascendente e o bruto rasteiro vira
+varredura com o taco. No fim dos 8 s guarda o taco nas costas.
