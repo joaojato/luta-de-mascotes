@@ -52,7 +52,8 @@ Eventos que o JSON pode trocar: `passo`, `pulo`, `aterrissar`, `dash`,
 `especial` (o especial sai; mergulho, bote, tornado), `especial-mergulho` e
 `especial-pouso` (o especial de mergulho desce e bate no chão), `projetil` e
 `projetil-especial` (algo é lançado), `projetil-acerto` (o lançado acerta ou
-cai no chão), `dor` (golpe fraco entra), `dor-forte` (golpe forte ou
+cai no chão), `mina` (o golpe deixa a mina no chão; sem som próprio, usa o
+`projetil-acerto`), `dor` (golpe fraco entra), `dor-forte` (golpe forte ou
 especial entra) e `dor-ko` (o golpe que derruba; sem som próprio, usa o
 `dor-forte` do mascote). O latido do Biriba de cenário é a chave `latido`.
 

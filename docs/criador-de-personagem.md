@@ -155,7 +155,7 @@ encolhe (`src/game/planoDeFundo.ts`).
    | `strike` | golpe parado, no lugar | (padrão de golpe comum) |
    | `esquadrao` | chama aliados que ficam de prontidão no fundo, atrás dele: o líder sai pelo alto e mergulha numa hora sorteada (`mergulho`: `segundos`, menos `adiantar` até mais `atrasar`); só se acertar, os outros atacam um por vez de lados alternados, sem guarda que segure, teleguiados (o oponente anda e pula entre um e outro, eles vão atrás) | Gaviões da Fiel do Mosqueteiro |
    | `sopro` | sobe até pairar (`altura`), solta um jato contínuo pela boca e varre do chão à frente até o alto, sem guarda que segure; escapa quem vai para baixo dele. Pede a boca e o ângulo de cada quadro da `special` (`boca`, `angulos`), o efeito do jato e a descida `special-return` | sopro de fogo do Dragão |
-   | `forma` | acerta como golpe parado e, no fim da sheet, ele vira outro lutador registrado (a forma dele, fora da seleção) por `segundos`, batendo (`danoCausado`) e apanhando (`danoRecebido`) diferente. O cronômetro ocupa a barra de especial no HUD com o `rotulo`. A volta é a sheet `special-return`; sem ela, a transformação de trás para a frente. Pede as sheets da forma inteiras, como um mascote | maromba do Vovô Coxa |
+   | `forma` | acerta como golpe parado e, no fim da sheet, ele vira outro lutador registrado (a forma dele, fora da seleção) por `segundos`, batendo (`danoCausado`) e apanhando (`danoRecebido`) diferente. O cronômetro ocupa a barra de especial no HUD com o `rotulo`. A volta é a sheet `special-return`; sem ela, a transformação de trás para a frente. Pede as sheets da forma inteiras, como um mascote. Com `soNoAcerto`, só vira se o especial acertou sem defesa (vale em qualquer `kind`, como o `hop`); `entrada` é uma ação da forma tocada logo depois da troca (sacar o taco) | maromba do Vovô Coxa, Pulo de Raposa |
 
    Se nenhum serve, é mecânica nova no motor: vira conversa à parte antes
    do mascote.
@@ -185,6 +185,12 @@ encolhe (`src/game/planoDeFundo.ts`).
     (`hitParticles`: cores, quantidade, se caem ou sobem, se ficam saindo
     por um tempo)? O que cai fica no chão como mina (`mine`: segundos e
     fração do dano)?
+12. O golpe deixa algo no chão direto, sem lançar (a garrafa quebrada da
+    Raposa)? É o `kind` `mina` (`mina` no JSON: `quadro` em que cai,
+    `avanco` à frente dos pés, `largura`, `segundos`, `dano`, `efeito`).
+    Quem pisa toma o dano uma vez e a mina some. Acumula (`acumula`: o dano
+    e os segundos da dupla, `efeitoDuplo`)? Vale no chute e no soco forte,
+    não só no especial.
 
 ## 6. Movimento e reações
 
@@ -286,6 +292,7 @@ quebra-galho (catálogo de golpes) até a sheet própria chegar.
 - 30/10/2026: `stunMs` no `drop` (o que cai na cabeça atordoa).
 - 30/10/2026: especial `sopro` (jato contínuo varrendo do chão ao alto, com `special-return`) e célula alta por ação (`frameHeight`).
 - 01/11/2026: especial `forma` (vira outro lutador por um tempo, com cronômetro no HUD).
+- 06/11/2026: golpe `mina` (cacos no chão que acumulam, src/game/minas.ts); `soNoAcerto` e `entrada` na `forma` (a Raposa).
 - 01/11/2026: `imparavel` no especial que avança (golpe só tira vida) e `moves.dash` por lutador.
 - 03/11/2026: `imparavel` vale para qualquer especial (o vômito do Porco) e `invulneravel` (nada acerta: Galo, Bira, a queda do Urubu).
 - 01/11/2026: Regra do Tiro (quem atira anda para a frente; arma pesada dá coice com `recuo`).

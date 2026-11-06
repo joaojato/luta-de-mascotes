@@ -3,20 +3,22 @@ import type * as Phaser from 'phaser';
 import type { AppContext } from './context';
 import { Fighter, NEUTRAL_FIGHTER_INPUT } from './fighter';
 import { createDefaultFighterPlaygroundState } from './fighterConfig';
-import { getCharacterAnimationDefinition } from './hero';
+import { getCharacterAnimationDefinition, getCharacterDefinition } from './hero';
 import { DASH_STOP_GAP, PERFECT_GUARD_STAGGER } from './moveMechanics';
 
 vi.mock('phaser', () => ({
   Math: { Clamp: (v: number, min: number, max: number) => Math.max(min, Math.min(max, v)),
     Vector2: class {constructor(public x=0,public y=0){} copy(p:{x:number;y:number}){this.x=p.x;this.y=p.y;return this;}} },
-  Geom: { Rectangle: class { constructor(public x: number, public y: number, public width: number, public height: number) {} } }
+  Geom: { Rectangle: class { constructor(public x: number, public y: number, public width: number, public height: number) {} },
+    Intersects: { RectangleToRectangle: (a: {x:number;y:number;width:number;height:number}, b: {x:number;y:number;width:number;height:number}) =>
+      a.x < b.x+b.width && b.x < a.x+a.width && a.y < b.y+b.height && b.y < a.y+a.height } }
 }));
 vi.mock('./vfx', () => ({ spawnChargeAura: vi.fn() }));
 
 function setup(characterId: string, facing: 1 | -1 = 1) {
   const events = new Map<string, () => void>();
   const delays: Array<() => void> = [];
-  const visual = { x: 0, setDepth() { return this; }, destroy: vi.fn() };
+  const visual = { x: 0, scaleX: 1, setDepth() { return this; }, setAlpha() { return this; }, setScale() { return this; }, destroy: vi.fn() };
   const effectVisual = { x:0, y:0, depth:0, anims:{currentAnim:{key:'',frames:[]},pause:vi.fn()},setVisible(){return this;},setDepth(d: number) {this.depth=d; return this;}, setOrigin() {return this;},
     setScale() {return this;}, setFlipX() {return this;}, play() {return this;}, once() {return this;},
     setPosition(x: number, y: number) { this.x=x; this.y=y; return this; }, destroy:vi.fn() };
@@ -34,7 +36,7 @@ function setup(characterId: string, facing: 1 | -1 = 1) {
     removeAllListeners(event?: string) { if (event) events.delete(event); else events.clear(); return this; },
     destroy() {}
   };
-  const shadow = { x: 0, setAlpha() { return this; }, setDepth() { return this; }, setScale() { return this; }, destroy() {} };
+  const shadow = { x: 0, setAlpha() { return this; }, setDepth() { return this; }, setScale() { return this; }, setSize() { return this; }, destroy() {} };
   let spriteCalls = 0;
   const scene = { add: { sprite: (x: number) => {
     if (spriteCalls++ === 0) return sprite;
@@ -785,4 +787,106 @@ describe('advance specials', () => {
     for (let i = 0; i < 20; i++) fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
     expect(sprite.anims.currentAnim.key).toBe('urubu-idle');
   });
+});
+
+// Golpe `mina` e forma `soNoAcerto` (a Raposa, docs/gdd.md, 06/11/2026). Sem as
+// sheets dela ainda, o teste empresta o Almirante e o Galo e troca só o JSON.
+describe('mina que acumula e forma só no acerto', () => {
+  const CACOS = { kind: 'mina', action: 'shot', mina: { quadro: 3, avanco: 70, largura: 60, segundos: 5, dano: 12, acumula: { segundos: 7, dano: 18 } } };
+  function comCacos<T>(teste: () => T): T {
+    const moves = getCharacterDefinition('almirante').moves!;
+    const original = moves.kick;
+    moves.kick = CACOS;
+    try { return teste(); } finally { moves.kick = original; }
+  }
+  /** Oponente parado: `em cima` põe a caixa dele sobre o chão do lado da Raposa. */
+  function alvo() {
+    const foe = { x: 900, isAirborne: false, hurt: { x: 2000, y: 0, width: 10, height: 10 },
+      getHurtRect() { return this.hurt; } };
+    return { foe: foe as unknown as Fighter, emCima: () => { foe.hurt = { x: 0, y: 0, width: 1000, height: 600 }; } };
+  }
+  function garrafa(ctx: ReturnType<typeof setup>) {
+    ctx.fighter.update(0, {...NEUTRAL_FIGHTER_INPUT, heavy: true});
+    ctx.fighter.update(.5, NEUTRAL_FIGHTER_INPUT);
+    ctx.complete('shot');
+    ctx.fighter.update(.01, NEUTRAL_FIGHTER_INPUT);
+  }
+
+  it('a mina parada no chão não toma o lugar dos golpes do dono nem assusta a CPU', () => comCacos(() => {
+    const ctx = setup('almirante');
+    const { foe } = alvo();
+    ctx.fighter.setOpponent(foe);
+    garrafa(ctx);
+    expect(ctx.fighter.getActiveAttack()).toBeNull();
+    expect(ctx.fighter.hasThreatInFlight).toBe(false);
+  }));
+
+  it('quem pisa toma 12, sem guarda que segure, e a mina some', () => comCacos(() => {
+    const ctx = setup('almirante');
+    const { foe, emCima } = alvo();
+    ctx.fighter.setOpponent(foe);
+    garrafa(ctx);
+    emCima();
+    const mina = ctx.fighter.getActiveAttack()!;
+    expect(mina.profile.damage).toBe(12);
+    expect(mina.unblockable).toBe(true);
+    ctx.fighter.markAttackConnected(mina.signature);
+    expect(ctx.fighter.getActiveAttack()).toBeNull();
+  }));
+
+  it('segunda garrafa dobra (18, 7 s); a terceira faz outra simples e a dupla fica', () => comCacos(() => {
+    const ctx = setup('almirante');
+    const { foe, emCima } = alvo();
+    ctx.fighter.setOpponent(foe);
+    garrafa(ctx);
+    garrafa(ctx);
+    garrafa(ctx);
+    // Passa dos 5 s da simples nova, dentro dos 7 s da dupla.
+    for (let i = 0; i < 11; i++) ctx.fighter.update(.5, NEUTRAL_FIGHTER_INPUT);
+    emCima();
+    const dupla = ctx.fighter.getActiveAttack()!;
+    expect(dupla.profile.damage).toBe(18);
+    ctx.fighter.markAttackConnected(dupla.signature);
+    expect(ctx.fighter.getActiveAttack()).toBeNull();
+  }));
+
+  it('as três garrafas deixam duas minas: a dupla e a simples nova', () => comCacos(() => {
+    const ctx = setup('almirante');
+    const { foe, emCima } = alvo();
+    ctx.fighter.setOpponent(foe);
+    garrafa(ctx);
+    garrafa(ctx);
+    garrafa(ctx);
+    emCima();
+    const primeira = ctx.fighter.getActiveAttack()!;
+    expect(primeira.profile.damage).toBe(18);
+    ctx.fighter.markAttackConnected(primeira.signature);
+    expect(ctx.fighter.getActiveAttack()!.profile.damage).toBe(12);
+  }));
+
+  function puloComForma<T>(teste: () => T): T {
+    const special = getCharacterDefinition('galo').moves!.special!;
+    const original = special.forma;
+    special.forma = { lutador: 'coxa-maromba', segundos: 8, soNoAcerto: true };
+    try { return teste(); } finally { special.forma = original; }
+  }
+  function pulo(acerta: boolean) {
+    const ctx = setup('galo');
+    ctx.fighter.setOpponent({ x: 600, isAirborne: false } as unknown as Fighter);
+    ctx.special();
+    for (let i = 0; i < 90; i++) {
+      ctx.fighter.update(1/60, NEUTRAL_FIGHTER_INPUT);
+      const golpe = ctx.fighter.getActiveAttack();
+      if (acerta && golpe) ctx.fighter.markAttackConnected(golpe.signature, false);
+    }
+    return ctx.fighter;
+  }
+
+  it('especial que erra não transforma', () => puloComForma(() => {
+    expect(pulo(false).formaHud).toBeNull();
+  }));
+
+  it('especial que acerta transforma no fim do salto', () => puloComForma(() => {
+    expect(pulo(true).formaHud?.segundos).toBe(8);
+  }));
 });

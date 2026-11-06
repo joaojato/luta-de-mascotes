@@ -17,6 +17,10 @@ export interface FormaConfig {
   danoRecebido?: number;
   /** Texto ao lado do cronômetro no HUD. */
   rotulo?: string;
+  /** Só vira se o especial acertou sem defesa; errar não transforma (o Pulo de Raposa). */
+  soNoAcerto?: boolean;
+  /** Ação da forma tocada logo depois da troca, travada (a Raposa sacando o taco). */
+  entrada?: string;
 }
 
 /** Quanto antes do fim o cronômetro começa a piscar. */

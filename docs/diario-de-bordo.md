@@ -3958,3 +3958,26 @@ testes, build.
 **Atrito:** o robô a 13 FPS pula a janela de 80 ms do soco rápido de
 alguns mascotes; a jogabilidade do soco fica para o teste dele.
 **Em aberto:** teste dele no teclado e no celular.
+
+## 2026-11-06: motor pronto para a Raposa (mina que acumula, forma só no acerto)
+
+**Marco:** 2, segue em andamento.
+**Pedido:** esperar o Codex terminar as animações da Raposa e colocar no
+jogo; enquanto isso, adiantar o motor.
+**Feito:** respostas do João sobre os cacos e o especial na ficha do GDD.
+Golpe `mina` (src/game/minas.ts): a mina cai à frente dos pés no quadro do
+JSON; sobre uma simples vira dupla (18, 7 s), sobre uma dupla nasce outra
+simples, sem limite, some ao ser pisada. A mina armada parada não toma mais
+o lugar dos golpes do dono nem conta como ameaça para a CPU (antes, com a
+mina do Biriba no chão, o soco do Bira não saía por até 5 s). Forma com
+`soNoAcerto` (vale no `hop`) e `entrada` (sheet tocada depois da troca).
+Questionário e docs/sons.md atualizados (evento `mina`).
+**Verificado:** 6 testes da regra pura e 6 de integração no Fighter
+(emprestando Almirante e Galo, sem arte da Raposa); `npm run check`: 71
+arquivos, 548 testes, build. Nada visto no navegador: sem sheet da Raposa.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** nenhum.
+**Em aberto:** sheets da Raposa (o Codex rejeitou 3 intros até agora);
+JSON das duas formas; teste visual da mina e do pulo na Academia.

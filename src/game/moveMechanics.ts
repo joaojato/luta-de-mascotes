@@ -3,6 +3,7 @@ import type { EsquadraoConfig } from './esquadrao';
 import type { ReforcoConfig } from './reforco';
 import type { SoproConfig } from './sopro';
 import type { FormaConfig } from './forma';
+import type { MinaConfig } from './minas';
 import type { AttackProfile } from './types';
 
 export interface FighterMoveConfig {
@@ -88,6 +89,8 @@ export interface ProjectileMoveConfig {
   sopro?: SoproConfig;
   /** `forma`: no fim do especial vira outro lutador (a forma dele) por um tempo (src/game/forma.ts). */
   forma?: FormaConfig;
+  /** `mina`: o golpe deixa uma mina no chão à frente dos pés, que pode acumular (src/game/minas.ts). */
+  mina?: MinaConfig;
   startFrame?: number;
   endFrame?: number;
   releaseFrame?: number;

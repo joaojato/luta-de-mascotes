@@ -25,6 +25,7 @@ import type { Escape } from './reforcoRota';
 import { chaoDoFundo } from './planoDeFundo';
 import { acertoDoSopro, amostraDoSopro, direcaoDoSopro, type SoproConfig } from './sopro';
 import { danoNaForma, RelogioDaForma, type FormaConfig } from './forma';
+import { depositarMina, type MinaConfig } from './minas';
 import {
   passedDropPoint,
   projectileGrowthProgress,
@@ -161,7 +162,7 @@ interface TravelingProjectile {
   hitEffect?: string;
   hitParticles?: ParticleBurst[];
   /** Turns into a ground mine on landing; `armed` once it has. */
-  mine?: { seconds: number; damageFactor: number; armed: boolean };
+  mine?: { seconds: number; damageFactor: number; armed: boolean; nivel?: 1 | 2; piscar?: Phaser.Tweens.Tween };
 }
 
 /** Dizzy stars over the head: one effect for every fighter, not drawn in each sheet. */
@@ -376,6 +377,8 @@ export class Fighter {
   private knockbackVel = 0;
   /** The strike in progress touched the opponent (hit or guard): only then a quick punch chains. */
   private strikeLanded = false;
+  /** O especial em curso acertou alguém sem defesa (a forma `soNoAcerto` depende disso). */
+  private especialAcertou = false;
   private defeated = false;
   private attackId = 0;
   private attackConnected = true;
@@ -523,7 +526,8 @@ export class Fighter {
 
   /** Something of his is flying at the other fighter: a shot, a drop, the allies of an esquadrão. */
   get hasThreatInFlight(): boolean {
-    return this.projectiles.some((shot) => !shot.connected) || !(this.esquadrao?.pronto ?? true);
+    // Mina armada fica parada no chão: não é algo vindo na direção dele.
+    return this.projectiles.some((shot) => !shot.connected && !shot.mine?.armed) || !(this.esquadrao?.pronto ?? true);
   }
 
   /** Pinned against a stage edge: the attacker is the one pushed back. */
@@ -862,11 +866,15 @@ export class Fighter {
         move: 'especial', finisher: true, facing: this.sopro.lado, projectile: true, unblockable: true
       };
     }
-    const flying = this.projectiles.filter(projectile => !projectile.connected && !projectile.carrier);
     const rectOf = (projectile: TravelingProjectile) => {
       const sweep = sweptInterval(projectile.previousX, projectile.x, projectile.width/2);
       return new Phaser.Geom.Rectangle(sweep.x, projectile.y-projectile.height/2, sweep.width, projectile.height);
     };
+    // Mina armada só conta quando o oponente está em cima dela: parada no chão,
+    // ela não pode tomar o lugar do soco do dono.
+    const pisando = this.projectiles.some(projectile => projectile.mine?.armed) ? this.opponent?.getHurtRect() ?? null : null;
+    const flying = this.projectiles.filter(projectile => !projectile.connected && !projectile.carrier
+      && (!projectile.mine?.armed || (pisando !== null && Phaser.Geom.Intersects.RectangleToRectangle(rectOf(projectile), pisando))));
     // Two pistols: a shot already jumped over must not hide the one behind it.
     const target = flying.length > 1 ? this.opponent?.getHurtRect() : null;
     const shot = (target && flying.find(projectile => Phaser.Geom.Intersects.RectangleToRectangle(rectOf(projectile), target))) || flying[0];
@@ -878,7 +886,9 @@ export class Fighter {
     if (this.currentAnimKey === this.actionKeys.special && this.character.moves?.special?.kind === 'projectile') {
       return null;
     }
-    if (this.strikeMove()?.kind === 'projectile') return null;
+    // Tiro e mina: quem acerta é o que sai do golpe, não o corpo.
+    const saida = this.strikeMove()?.kind;
+    if (saida === 'projectile' || saida === 'mina') return null;
     if (this.attackConnected || this.defeated) {
       return null;
     }
@@ -949,6 +959,7 @@ export class Fighter {
     }
     this.attackConnected = true;
     this.strikeLanded = true;
+    if (!blocked && this.currentAnimKey === this.actionKeys.special) this.especialAcertou = true;
     const hitEffect = this.character.moves?.special?.hitEffect;
     if (hitEffect && this.currentAnimKey === this.actionKeys.special && this.lastAttackRect) {
       const center = Phaser.Geom.Rectangle.GetCenter(this.lastAttackRect);
@@ -1859,6 +1870,7 @@ export class Fighter {
   }
 
   private finishAdvance(): void {
+    const move = this.advance?.move;
     this.endAdvanceEffects();
     this.advance = null;
     this.sprite.y = this.groundY;
@@ -1866,6 +1878,7 @@ export class Fighter {
     this.currentAnimKey = '';
     this.sprite.anims.resume();
     this.playState(this.actionKeys.idle, true);
+    this.talvezEntrarNaForma(move);
   }
 
   private endAdvanceEffects(): void {
@@ -2133,6 +2146,7 @@ export class Fighter {
     this.som('especial', null);
     this.specialClock = 0;
     this.shotsReleased = 0;
+    this.especialAcertou = false;
     this.dashFrom = this.posX;
     this.previousSpecialX = this.posX;
     this.dashTo = this.facing === 1 ? this.maxX : this.minX;
@@ -2159,9 +2173,10 @@ export class Fighter {
     this.sprite.once(`animationcomplete-${this.actionKeys.special}`, () => {
       this.locked = false;
       this.currentAnimKey = '';
-      if (move?.kind === 'forma' && move.forma) this.entrarNaForma(move.forma);
+      this.talvezEntrarNaForma(move);
 
-      if (this.grounded) {
+      // A entrada da forma (sacar o taco) já tomou o corpo.
+      if (this.grounded && !this.locked) {
         this.playState(this.actionKeys.idle, true);
       }
     });
@@ -2175,6 +2190,28 @@ export class Fighter {
   private entrarNaForma(config: FormaConfig): void {
     this.trocarDeLutador(config.lutador);
     this.forma = { config, relogio: new RelogioDaForma(config) };
+    const entrada = config.entrada ? findCharacterAnimationKeyByAction(this.character.id, config.entrada) : null;
+    if (!entrada) return;
+    // A sheet de entrada da forma (a Raposa sacando o taco) roda inteira, travada.
+    this.locked = true;
+    this.playState(entrada, false);
+    this.sprite.once(`animationcomplete-${entrada}`, () => {
+      if (this.currentAnimKey !== entrada) return;
+      this.locked = false;
+      this.currentAnimKey = '';
+      this.playState(this.actionKeys.idle, true);
+    });
+  }
+
+  /**
+   * No fim do especial, vira a forma do JSON. Com `soNoAcerto`, só se o
+   * especial acertou sem defesa (o Pulo de Raposa).
+   * @param move - O especial que acabou.
+   */
+  private talvezEntrarNaForma(move: ProjectileMoveConfig | undefined): void {
+    if (!move?.forma || this.defeated) return;
+    if (move.forma.soNoAcerto && !this.especialAcertou) return;
+    this.entrarNaForma(move.forma);
   }
 
   /**
@@ -2403,7 +2440,64 @@ export class Fighter {
         this.spawnProjectile(move, isSpecial ? 'special' : ATTACK_KIND_OF[this.strike ?? 'soco-forte'], releases[this.shotsReleased]);
         this.shotsReleased += 1;
       }
+    } else if (move.kind === 'mina' && move.mina) {
+      if (this.shotsReleased === 0 && this.specialClock >= (move.mina.quadro ?? 3)/animation.frameRate) {
+        this.soltarMina(move.mina);
+        this.shotsReleased = 1;
+      }
     }
+  }
+
+  /**
+   * Golpe `mina`: a mina cai à frente dos pés, já armada. Sobre uma simples
+   * dele, com `acumula`, ela vira dupla (src/game/minas.ts).
+   * @param cfg - A mina do JSON.
+   */
+  private soltarMina(cfg: MinaConfig): void {
+    const escala = this.appliedScale;
+    const x = Phaser.Math.Clamp(this.posX + this.facing * (cfg.avanco ?? 70) * escala, this.projectileMinX, this.projectileMaxX);
+    const noChao = this.projectiles.filter((shot): shot is TravelingProjectile & { mine: NonNullable<TravelingProjectile['mine']> } =>
+      Boolean(shot.mine?.armed) && !shot.connected);
+    const deposito = depositarMina(noChao.map(shot => ({ x: shot.x, nivel: shot.mine.nivel ?? 1 })), x, { ...cfg, largura: cfg.largura * escala });
+    this.som('mina', 'projetil-acerto');
+    if (deposito.tipo === 'dobrou') {
+      const mina = noChao[deposito.indice];
+      mina.mine.nivel = 2;
+      mina.profile = { ...mina.profile, damage: deposito.dano };
+      mina.life = deposito.segundos;
+      const dupla = cfg.efeitoDuplo ? findCharacterAnimationKeyByAction(this.character.id, `fx-${cfg.efeitoDuplo}`) : null;
+      if (dupla && 'play' in mina.visual) mina.visual.play({ key: dupla, repeat: 0 });
+      else mina.visual.setScale(mina.initial.scale * 1.3);
+      this.piscarMina(mina, deposito.segundos);
+      return;
+    }
+    const width = cfg.largura * escala;
+    const height = (cfg.altura ?? 24) * escala;
+    // No chão desenhado (onde ficam as sombras), como a mina do Biriba.
+    const y = this.groundY - SHADOW_FOOT_OFFSET * escala - height / 2;
+    const key = cfg.efeito ? findCharacterAnimationKeyByAction(this.character.id, `fx-${cfg.efeito}`) : null;
+    const visual = key
+      ? this.scene.add.sprite(x, y, key, 0).setOrigin(.5, .5).setScale(escala).setFlipX(this.facing === 1)
+        .setDepth(this.depthBase - 0.5).play({ key, repeat: 0 })
+      : this.scene.add.rectangle(x, y, width, height, 0x7fbf6a).setDepth(this.depthBase - 0.5);
+    const profile = { ...this.ataque('kick'), height: 'high' as const, damage: deposito.mina.dano, stunMs: undefined };
+    const mina: TravelingProjectile & { mine: NonNullable<TravelingProjectile['mine']> } = {
+      x, previousX: x, y, vy: 0, gravity: 0, floorY: y, facing: this.facing, life: deposito.mina.segundos,
+      signature: -(++this.shotSerial), visual, width, height, speed: 0, profile, connected: false, move: 'queda',
+      persistOnHit: false, rangeAfterHit: 0, travelled: 0,
+      initial: { width, height, scale: visual.scaleX, damage: profile.damage, stunMs: 0 },
+      unblockable: true, mine: { seconds: deposito.mina.segundos, damageFactor: 1, armed: true, nivel: 1 }
+    };
+    this.projectiles.push(mina);
+    this.piscarMina(mina, deposito.mina.segundos);
+  }
+
+  /** Pisca no último segundo da mina; um relógio novo (a dupla) recomeça o aviso. */
+  private piscarMina(mina: TravelingProjectile & { mine: NonNullable<TravelingProjectile['mine']> }, segundos: number): void {
+    mina.mine.piscar?.stop();
+    mina.visual.setAlpha(1);
+    mina.mine.piscar = this.scene.tweens?.add({ targets: mina.visual, alpha: 0.25, duration: 120, yoyo: true, repeat: 3,
+      delay: Math.max(0, segundos - 1) * 1000 });
   }
 
   private spawnProjectile(move: ProjectileMoveConfig, kind: AttackKind, release?: ShotRelease): void {
