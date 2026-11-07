@@ -631,3 +631,18 @@ avançar e passar por baixo dela (a descida não persegue). Só o acerto
 atordoa por 1,5 s e libera a forma com taco por 8 s; errar não transforma.
 Na forma com taco o bruto vira tacada ascendente e o bruto rasteiro vira
 varredura com o taco. No fim dos 8 s guarda o taco nas costas.
+
+**No jogo (07/11/2026).** Arte v2 do Codex (`docs/raposa-animacoes-v2.md`,
+células 512×384) montada por `python scripts/integrar_raposa.py`, que gera
+`raposa.json` e `raposa-taco.json` e mede cada caixa de acerto no desenho.
+- Garrafa: ação `garrafa` (golpe `mina`), cacos caem no quadro 5, 70 px à
+  frente dos pés; o efeito da quebra termina nos cacos simples.
+- Pulo de Raposa: `special` + `special-land` numa sheet só (11 quadros,
+  10 fps), sobe 250 px, acerta só no quadro 7 e só com os pés.
+- **Escape `cruzar`:** quem passou para trás de onde ela cai escapa, seja
+  qual for a largura do corpo dele. Com caixa geométrica não dava: o Galo
+  apanha numa caixa de 237 px e não passava a tempo.
+- Forma com taco: entra com `draw-bat` (saca o taco), volta com
+  `special-return` (`stow-bat`). Sem especial na forma, como o maromba.
+- Nome no botão: "Pulo Raposa" (o botão cabe 11 letras).
+- A garrafa usa o som geral: não há gravação de vidro.

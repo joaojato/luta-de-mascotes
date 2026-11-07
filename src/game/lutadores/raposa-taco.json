@@ -1,0 +1,465 @@
+{
+  "id": "raposa-taco",
+  "label": "Raposa com Taco",
+  "estado": "MG",
+  "selecionavel": false,
+  "nomes": {
+    "soco-rapido": "Duas tacadas",
+    "soco-forte": "Gancho",
+    "chute-basico": "Tacada",
+    "chute-baixo": "Varredura",
+    "soco-no-ar": "Tacada no ar",
+    "voadora": "Tacada diagonal",
+    "especial": "Especial"
+  },
+  "assetRoot": "/assets/lutadores/raposa",
+  "anchorFile": "bases/guarda-taco-azul-v19.png",
+  "portraitFile": "bases/guarda-taco-azul-v19.png",
+  "anchorUsage": "Raposa em guarda com o taco, voltada para a esquerda",
+  "sons": {
+    "acerto-leve": "acerto-leve-madeira",
+    "acerto-pesado": "acerto-pesado-madeira",
+    "acerto-baixo": "acerto-pesado-madeira"
+  },
+  "torcida": {
+    "estampa": "lisa",
+    "cores": [
+      "#1E4FBF",
+      "#F0F0F0"
+    ]
+  },
+  "stats": {},
+  "combat": {},
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Guarda com o taco",
+      "file": "taco-v2/idle.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Avançar com o taco",
+      "file": "taco-v2/walk-forward.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Recuar com o taco",
+      "file": "taco-v2/walk-backward.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      }
+    },
+    {
+      "action": "dash-forward",
+      "label": "Avanço rápido",
+      "file": "taco-v2/dash-forward.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      }
+    },
+    {
+      "action": "dash-back",
+      "label": "Recuo rápido",
+      "file": "taco-v2/dash-back.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Agachar",
+      "file": "taco-v2/crouch.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 20,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 179,
+        "y": 160,
+        "width": 155,
+        "height": 200
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Salto",
+      "file": "taco-v2/jump.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 199,
+        "y": 160,
+        "width": 140,
+        "height": 200
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Defesa alta",
+      "file": "taco-v2/block-high.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      },
+      "guard": {
+        "x": 193,
+        "y": 148,
+        "width": 60,
+        "height": 212
+      }
+    },
+    {
+      "action": "block-low",
+      "label": "Defesa baixa",
+      "file": "taco-v2/block-low.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 192,
+        "y": 160,
+        "width": 140,
+        "height": 200
+      },
+      "guard": {
+        "x": 188,
+        "y": 160,
+        "width": 60,
+        "height": 200
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Receber golpe",
+      "file": "taco-v2/hit-high.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      }
+    },
+    {
+      "action": "stunned",
+      "label": "Atordoada",
+      "file": "taco-v2/stunned.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      }
+    },
+    {
+      "action": "knockdown",
+      "label": "Queda",
+      "file": "taco-v2/knockdown.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 161,
+        "y": 155,
+        "width": 213,
+        "height": 205
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Duas tacadas curtas",
+      "file": "taco-v2/light-punch.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            1
+          ],
+          "bounds": {
+            "x": 134,
+            "y": 219,
+            "width": 80,
+            "height": 21
+          }
+        },
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 131,
+            "y": 228,
+            "width": 80,
+            "height": 19
+          }
+        }
+      ],
+      "attack": {
+        "frames": [
+          1
+        ],
+        "bounds": {
+          "x": 134,
+          "y": 219,
+          "width": 80,
+          "height": 21
+        }
+      }
+    },
+    {
+      "action": "heavy-punch",
+      "label": "Gancho ascendente",
+      "file": "taco-v2/heavy-punch.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      },
+      "attack": {
+        "frames": [
+          3
+        ],
+        "bounds": {
+          "x": 156,
+          "y": 113,
+          "width": 50,
+          "height": 77
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 20
+      }
+    },
+    {
+      "action": "heavy-kick",
+      "label": "Tacada ascendente",
+      "file": "taco-v2/heavy-kick.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      },
+      "attack": {
+        "frames": [
+          4,
+          5
+        ],
+        "bounds": {
+          "x": 158,
+          "y": 162,
+          "width": 156,
+          "height": 85
+        }
+      },
+      "travel": {
+        "frames": [
+          2,
+          4
+        ],
+        "distance": 20
+      }
+    },
+    {
+      "action": "low-kick",
+      "label": "Varredura com o taco",
+      "file": "taco-v2/low-kick.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      },
+      "attack": {
+        "frames": [
+          3
+        ],
+        "bounds": {
+          "x": 120,
+          "y": 261,
+          "width": 117,
+          "height": 47
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 30
+      }
+    },
+    {
+      "action": "jump-punch",
+      "label": "Tacada descendente no ar",
+      "file": "taco-v2/jump-punch.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 178,
+        "y": 125,
+        "width": 159,
+        "height": 185
+      },
+      "attack": {
+        "frames": [
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 178,
+          "y": 179,
+          "width": 35,
+          "height": 111
+        }
+      }
+    },
+    {
+      "action": "jump-kick",
+      "label": "Tacada diagonal no ar",
+      "file": "taco-v2/jump-kick.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 150,
+        "y": 125,
+        "width": 206,
+        "height": 195
+      },
+      "attack": {
+        "frames": [
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 150,
+          "y": 212,
+          "width": 63,
+          "height": 104
+        }
+      }
+    },
+    {
+      "action": "draw-bat",
+      "label": "Saca o taco das costas",
+      "file": "normal-v2/draw-bat.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 157,
+        "width": 125,
+        "height": 203
+      }
+    }
+  ]
+}

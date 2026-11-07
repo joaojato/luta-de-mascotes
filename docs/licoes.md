@@ -688,3 +688,13 @@ Coisas que ele aprovou de forma explícita, ou que repetiu como regra.
 - **Chamar `scene.start` direto no `page.evaluate` do Playwright trava a
   página às vezes.** Pedir a troca de cena com `setTimeout(..., 0)` dentro
   do evaluate (2026-11-04).
+- **Fuga "passar por baixo" não sai de caixa geométrica.** O Galo apanha
+  numa caixa de 237 px; mesmo estreitando a caixa do pulo aos pés e só no
+  último quadro, quem andava por baixo continuava apanhando. Escape de
+  especial que depende de cruzar o atacante vira regra (`dodge: cruzar`),
+  não ajuste de caixa: vale para mascote largo e estreito (2026-11-07).
+- **Caixa de acerto não se mede pela caixa do idle.** O pé e o tronco que
+  só balançam passam da frente da caixa e entram no soco. O que funcionou:
+  o maior pedaço do quadro fora da silhueta do idle com 6 px de folga, e
+  conferir desenhando as caixas por cima dos quadros antes de registrar
+  (2026-11-07).

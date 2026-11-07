@@ -32,8 +32,11 @@ export interface EffectSheetConfig {
   frameHeight?: number;
 }
 
-/** Ways out of a special (GDD): jump, duck, or jump while backing away. */
-export type SpecialDodge = 'pulo' | 'agachar' | 'pulo-recuando';
+/**
+ * Ways out of a special (GDD): jump, duck, jump while backing away, or
+ * `cruzar`: run under a leaping fighter and end up behind where it lands.
+ */
+export type SpecialDodge = 'pulo' | 'agachar' | 'pulo-recuando' | 'cruzar';
 
 /** Jump sheet layout; omitted fields follow the Urubu model (see {@link jumpFrames}). */
 export interface JumpFramesConfig {
@@ -240,8 +243,11 @@ export const ADVANCE_KINDS = ['run', 'hop', 'meteor'];
 /** Whether the defender escapes a special the way its JSON says (GDD, "Especiais"). */
 export function specialDodged(
   dodge: SpecialDodge | undefined,
-  defender: { airborne: boolean; ducking: boolean; movingAway: boolean }
+  defender: { airborne: boolean; ducking: boolean; movingAway: boolean; crossed?: boolean }
 ): boolean {
+  if (dodge === 'cruzar') {
+    return Boolean(defender.crossed);
+  }
   if (dodge === 'pulo') {
     return defender.airborne;
   }

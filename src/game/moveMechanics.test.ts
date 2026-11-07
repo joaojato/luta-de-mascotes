@@ -81,6 +81,14 @@ describe('special traversal and flight timing', () => {
     expect(specialDodged('pulo-recuando', { airborne: true, ducking: false, movingAway: true })).toBe(true);
     expect(specialDodged(undefined, { airborne: true, ducking: true, movingAway: true })).toBe(false);
   });
+  // Pulo de Raposa (João, 06/11/2026): escapa quem avança e passa por baixo,
+  // ficando atrás de onde ela cai; parado, pulando ou agachado, apanha.
+  it('cruzar: escapa só quem passou para trás de quem salta', () => {
+    const parado = { airborne: false, ducking: false, movingAway: false };
+    expect(specialDodged('cruzar', { ...parado, crossed: true })).toBe(true);
+    expect(specialDodged('cruzar', parado)).toBe(false);
+    expect(specialDodged('cruzar', { airborne: true, ducking: true, movingAway: true, crossed: false })).toBe(false);
+  });
   it('stops an advance short of the target and never steps back', () => {
     expect(advanceStop(100, 600, 120)).toBe(480);
     expect(advanceStop(600, 100, 120)).toBe(220);

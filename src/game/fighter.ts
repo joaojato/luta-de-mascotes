@@ -2476,9 +2476,12 @@ export class Fighter {
     // No chão desenhado (onde ficam as sombras), como a mina do Biriba.
     const y = this.groundY - SHADOW_FOOT_OFFSET * escala - height / 2;
     const key = cfg.efeito ? findCharacterAnimationKeyByAction(this.character.id, `fx-${cfg.efeito}`) : null;
-    const visual = key
-      ? this.scene.add.sprite(x, y, key, 0).setOrigin(.5, .5).setScale(escala).setFlipX(this.facing === 1)
-        .setDepth(this.depthBase - 0.5).play({ key, repeat: 0 })
+    const sprite = key ? this.scene.add.sprite(x, y, key, 0) : null;
+    // Com `chao`, o pé dos cacos desenhados pisa na linha do chão, não o centro da célula.
+    if (sprite && cfg.chao !== undefined) sprite.setOrigin(.5, cfg.chao / sprite.height).setY(y + height / 2);
+    else sprite?.setOrigin(.5, .5);
+    const visual = sprite
+      ? sprite.setScale(escala).setFlipX(this.facing === 1).setDepth(this.depthBase - 0.5).play({ key: key!, repeat: 0 })
       : this.scene.add.rectangle(x, y, width, height, 0x7fbf6a).setDepth(this.depthBase - 0.5);
     const profile = { ...this.ataque('kick'), height: 'high' as const, damage: deposito.mina.dano, stunMs: undefined };
     const mina: TravelingProjectile & { mine: NonNullable<TravelingProjectile['mine']> } = {

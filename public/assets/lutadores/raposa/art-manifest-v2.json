@@ -1,0 +1,4170 @@
+{
+  "registerFighter": false,
+  "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+  "actions": [
+    {
+      "action": "bottle-break",
+      "form": "effects",
+      "frames": 4,
+      "fps": 12,
+      "frameWidth": 256,
+      "frameHeight": 128,
+      "columns": 5,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 119,
+          "y": 98,
+          "width": 17,
+          "height": 6
+        },
+        {
+          "frame": 1,
+          "x": 97,
+          "y": 89,
+          "width": 62,
+          "height": 15
+        },
+        {
+          "frame": 2,
+          "x": 90,
+          "y": 87,
+          "width": 76,
+          "height": 17
+        },
+        {
+          "frame": 3,
+          "x": 92,
+          "y": 88,
+          "width": 72,
+          "height": 16
+        }
+      ],
+      "destination": "public\\assets\\lutadores\\raposa\\effects-v2\\bottle-break.png",
+      "sha256": "dea97c0728dc6e08b65d93303fd30139b3ec7a0fa8de158339be1091d717e0ae",
+      "source": "output\\raposa-animacoes-v2\\effects\\bottle-break\\source.png",
+      "sourceSha256": "a3c5d2e884de16fbb77675de32c1818875aa8d18c1e5b46a444c33e6e8a6c63e",
+      "status": "efeito separado; mecânica de mina pertence à integração",
+      "prompts": [
+        "output\\raposa-animacoes-v2\\effects\\bottle-break\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "shards-double",
+      "form": "effects",
+      "frames": 1,
+      "fps": 1,
+      "frameWidth": 256,
+      "frameHeight": 128,
+      "columns": 5,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 80,
+          "y": 88,
+          "width": 95,
+          "height": 16
+        }
+      ],
+      "destination": "public\\assets\\lutadores\\raposa\\effects-v2\\shards-double.png",
+      "sha256": "99e28c65cc76826c806a405b7c9a319b58c6f894c9540a3f715689e4b40e3494",
+      "source": "output\\raposa-animacoes-v2\\effects\\shards-double\\source.png",
+      "sourceSha256": "a6deb50f5a05307f99d852e0941fdf99d0246fde65034ee73402283fe6d6b29a",
+      "status": "efeito separado; mecânica de mina pertence à integração",
+      "prompts": [
+        "output\\raposa-animacoes-v2\\effects\\shards-double\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "shards-single",
+      "form": "effects",
+      "frames": 1,
+      "fps": 1,
+      "frameWidth": 256,
+      "frameHeight": 128,
+      "columns": 5,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 92,
+          "y": 88,
+          "width": 72,
+          "height": 16
+        }
+      ],
+      "destination": "public\\assets\\lutadores\\raposa\\effects-v2\\shards-single.png",
+      "sha256": "2015e7b0f1d1d1c8aa0bece832877cd6a794b982da142887fb413e9a3acb448c",
+      "source": "output\\raposa-animacoes-v2\\effects\\shards-single\\source.png",
+      "sourceSha256": "6f83647f5443a31abb3fa0e4f09c4d62f2305535f4a02eff7b30d4e3f7f5a036",
+      "status": "efeito separado; mecânica de mina pertence à integração",
+      "prompts": [
+        "output\\raposa-animacoes-v2\\effects\\shards-single\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "block-high",
+      "form": "normal",
+      "frames": 4,
+      "fps": 10,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.33783783783783783,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 199,
+          "y": 161,
+          "width": 127,
+          "height": 199
+        },
+        {
+          "frame": 2,
+          "x": 199,
+          "y": 161,
+          "width": 128,
+          "height": 199
+        },
+        {
+          "frame": 3,
+          "x": 199,
+          "y": 160,
+          "width": 127,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\block-high\\source.png",
+      "sourceSha256": "9b1aa8f68d6f885faf5e21f5872981cfaa4c5e0535c572873ffbd235516bcd93",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\block-high.png",
+      "sha256": "75fcb28b1b8657529bb824f146d6547a2d93f37b71ada79bf74421e572f0cc88",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\block-high\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "block-low",
+      "form": "normal",
+      "frames": 4,
+      "fps": 10,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.33557046979865773,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 201,
+          "y": 176,
+          "width": 126,
+          "height": 184
+        },
+        {
+          "frame": 2,
+          "x": 201,
+          "y": 203,
+          "width": 129,
+          "height": 157
+        },
+        {
+          "frame": 3,
+          "x": 201,
+          "y": 203,
+          "width": 129,
+          "height": 157
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\block-low\\source.png",
+      "sourceSha256": "5f49f888de81f40d6477fbbd93bb8ca932ab42a215b1043f26ebb1a6a4dd8566",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\block-low.png",
+      "sha256": "df0e9a8ea821f6890e7738d0bd2e62dc5b2d1883ca3839b33f06538da907149b",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\block-low\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "crouch",
+      "form": "normal",
+      "frames": 5,
+      "fps": 20,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.4098360655737705,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 198,
+          "y": 182,
+          "width": 135,
+          "height": 178
+        },
+        {
+          "frame": 2,
+          "x": 192,
+          "y": 207,
+          "width": 146,
+          "height": 153
+        },
+        {
+          "frame": 3,
+          "x": 187,
+          "y": 219,
+          "width": 159,
+          "height": 141
+        },
+        {
+          "frame": 4,
+          "x": 167,
+          "y": 247,
+          "width": 172,
+          "height": 113
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\crouch\\source.png",
+      "sourceSha256": "ac6ed479d0af252e99d13f35240c139bab9375979228b4228456e00ce38bbabe",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\crouch.png",
+      "sha256": "cdf34ae9b727e6146426d99b227c1e131f6204acff766832bd2180fc2bb2cf9b",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 5,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\crouch\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "dash-back",
+      "form": "normal",
+      "frames": 4,
+      "fps": 18,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.373134328358209,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 206,
+          "y": 167,
+          "width": 122,
+          "height": 193
+        },
+        {
+          "frame": 2,
+          "x": 169,
+          "y": 167,
+          "width": 138,
+          "height": 193
+        },
+        {
+          "frame": 3,
+          "x": 191,
+          "y": 166,
+          "width": 142,
+          "height": 194
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\dash-back\\source.png",
+      "sourceSha256": "445c512345008e6b1196de517f2a651f245ed9220d26f52f56d9ef409f526ffe",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\dash-back.png",
+      "sha256": "a40c4139e36b5af867edc8ed88e67d079d92b8cc692f4988e007c7cd2983c3b8",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\dash-back\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "dash-forward",
+      "form": "normal",
+      "frames": 5,
+      "fps": 18,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.43478260869565216,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 195,
+          "y": 185,
+          "width": 142,
+          "height": 175
+        },
+        {
+          "frame": 2,
+          "x": 140,
+          "y": 196,
+          "width": 189,
+          "height": 164
+        },
+        {
+          "frame": 3,
+          "x": 182,
+          "y": 188,
+          "width": 159,
+          "height": 172
+        },
+        {
+          "frame": 4,
+          "x": 194,
+          "y": 163,
+          "width": 134,
+          "height": 197
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\dash-forward\\source.png",
+      "sourceSha256": "3308c5ebcd0523ea9c898f69b174cfb684b8d9189c563a090208ca6fb1956aab",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\dash-forward.png",
+      "sha256": "61b05abbd170f59f56476d3eb7110d9c39aa7f262d999e15522cf396977d53de",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 5,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\dash-forward\\prompt-alpha.txt",
+        "output\\raposa-animacoes-v2\\normal\\dash-forward\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "draw-bat",
+      "form": "normal",
+      "frames": 4,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.32102728731942215,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 198,
+          "y": 160,
+          "width": 126,
+          "height": 200
+        },
+        {
+          "frame": 2,
+          "x": 198,
+          "y": 160,
+          "width": 126,
+          "height": 200
+        },
+        {
+          "frame": 3,
+          "x": 198,
+          "y": 160,
+          "width": 126,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\draw-bat\\source.png",
+      "sourceSha256": "79003d7a6f1945cb149fb98c6b30b099a47f358bc892e24010eabc598f60415b",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\draw-bat.png",
+      "sha256": "b95a4cd04867331179d22a95ae8eba8ed02eac9ba46b6e9499b3374eb4337a00",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\draw-bat\\prompt-revision.txt",
+        "output\\raposa-animacoes-v2\\normal\\draw-bat\\prompt-revision2.txt",
+        "output\\raposa-animacoes-v2\\normal\\draw-bat\\prompt-revision3.txt",
+        "output\\raposa-animacoes-v2\\normal\\draw-bat\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "entrance",
+      "form": "normal",
+      "frames": 13,
+      "fps": 10,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 186,
+          "y": 160,
+          "width": 176,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 189,
+          "y": 157,
+          "width": 171,
+          "height": 203
+        },
+        {
+          "frame": 2,
+          "x": 178,
+          "y": 158,
+          "width": 172,
+          "height": 202
+        },
+        {
+          "frame": 3,
+          "x": 178,
+          "y": 160,
+          "width": 174,
+          "height": 200
+        },
+        {
+          "frame": 4,
+          "x": 177,
+          "y": 160,
+          "width": 175,
+          "height": 200
+        },
+        {
+          "frame": 5,
+          "x": 178,
+          "y": 160,
+          "width": 173,
+          "height": 200
+        },
+        {
+          "frame": 6,
+          "x": 178,
+          "y": 161,
+          "width": 172,
+          "height": 199
+        },
+        {
+          "frame": 7,
+          "x": 178,
+          "y": 161,
+          "width": 173,
+          "height": 199
+        },
+        {
+          "frame": 8,
+          "x": 178,
+          "y": 161,
+          "width": 173,
+          "height": 199
+        },
+        {
+          "frame": 9,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 10,
+          "x": 199,
+          "y": 149,
+          "width": 126,
+          "height": 211
+        },
+        {
+          "frame": 11,
+          "x": 199,
+          "y": 160,
+          "width": 126,
+          "height": 200
+        },
+        {
+          "frame": 12,
+          "x": 199,
+          "y": 161,
+          "width": 126,
+          "height": 199
+        }
+      ],
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\entrance.png",
+      "sha256": "c1dbd29b7f5d2248aa8ce5421c7510bf36a0ff539ac9274cce5dc63cbecce142",
+      "sourceParts": [
+        {
+          "action": "entrance-prefix",
+          "form": "normal",
+          "frames": 9,
+          "fps": 10,
+          "frameWidth": 512,
+          "frameHeight": 384,
+          "columns": 5,
+          "scale": 0.546448087431694,
+          "boxes": [
+            {
+              "frame": 0,
+              "x": 186,
+              "y": 160,
+              "width": 176,
+              "height": 200
+            },
+            {
+              "frame": 1,
+              "x": 189,
+              "y": 157,
+              "width": 171,
+              "height": 203
+            },
+            {
+              "frame": 2,
+              "x": 178,
+              "y": 158,
+              "width": 172,
+              "height": 202
+            },
+            {
+              "frame": 3,
+              "x": 178,
+              "y": 160,
+              "width": 174,
+              "height": 200
+            },
+            {
+              "frame": 4,
+              "x": 177,
+              "y": 160,
+              "width": 175,
+              "height": 200
+            },
+            {
+              "frame": 5,
+              "x": 178,
+              "y": 160,
+              "width": 173,
+              "height": 200
+            },
+            {
+              "frame": 6,
+              "x": 178,
+              "y": 161,
+              "width": 172,
+              "height": 199
+            },
+            {
+              "frame": 7,
+              "x": 178,
+              "y": 161,
+              "width": 173,
+              "height": 199
+            },
+            {
+              "frame": 8,
+              "x": 178,
+              "y": 161,
+              "width": 173,
+              "height": 199
+            }
+          ],
+          "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+          "guardSheet": null,
+          "source": "output\\raposa-animacoes-v2\\normal\\entrance-prefix\\source.png",
+          "sourceSha256": "d4e57fbac727fa257d0392a9c53b19a7462e374defac53b866df0d85da5727c2",
+          "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\entrance-prefix.png",
+          "sha256": "7da8ddb057bf9d55e377966445519c15a1432777b64a89db1881b593997e9149",
+          "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+          "packing": {
+            "sourceFrames": 9,
+            "sourceColumns": 3,
+            "sourceRows": 3,
+            "scaleFrame": 0,
+            "firstFrame": 0,
+            "targetReferenceHeight": 200,
+            "air": false,
+            "airFrom": null,
+            "airFrames": [],
+            "rowSplit": null,
+            "components": true
+          },
+          "references": [
+            {
+              "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+              "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+            },
+            {
+              "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+              "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+            }
+          ]
+        },
+        {
+          "action": "stow-bat",
+          "form": "normal",
+          "frames": 4,
+          "fps": 12,
+          "frameWidth": 512,
+          "frameHeight": 384,
+          "columns": 5,
+          "scale": 0.373134328358209,
+          "boxes": [
+            {
+              "frame": 0,
+              "x": 200,
+              "y": 160,
+              "width": 122,
+              "height": 200
+            },
+            {
+              "frame": 1,
+              "x": 199,
+              "y": 149,
+              "width": 126,
+              "height": 211
+            },
+            {
+              "frame": 2,
+              "x": 199,
+              "y": 160,
+              "width": 126,
+              "height": 200
+            },
+            {
+              "frame": 3,
+              "x": 199,
+              "y": 161,
+              "width": 126,
+              "height": 199
+            }
+          ],
+          "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+          "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+          "source": "output\\raposa-animacoes-v2\\normal\\stow-bat\\source.png",
+          "sourceSha256": "0c00c2f507df2fffff22d4830ec9f807a92e247457bfa62a40315ec00e6c4b59",
+          "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\stow-bat.png",
+          "sha256": "4cc570806d0022f4328f05dea1492b9e1853f2e8a6f6c73093db20b5f0af6383",
+          "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+          "packing": {
+            "sourceFrames": 4,
+            "sourceColumns": 2,
+            "sourceRows": 2,
+            "scaleFrame": 0,
+            "firstFrame": 0,
+            "targetReferenceHeight": 200,
+            "air": false,
+            "airFrom": null,
+            "airFrames": [],
+            "rowSplit": null,
+            "components": true
+          },
+          "references": [
+            {
+              "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+              "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+            },
+            {
+              "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+              "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+            }
+          ]
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "status": "intro montada em duas fases geradas; revisão em jogo pendente",
+      "events": {
+        "cigarLightsAtFrame": 5,
+        "batStowStartsAtFrame": 9,
+        "endsInNormalGuard": true
+      },
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\entrance\\prompt-bottom-row.txt",
+        "output\\raposa-animacoes-v2\\normal\\entrance\\prompt-padding.txt",
+        "output\\raposa-animacoes-v2\\normal\\entrance\\prompt-revision.txt",
+        "output\\raposa-animacoes-v2\\normal\\entrance\\prompt-revision2.txt",
+        "output\\raposa-animacoes-v2\\normal\\entrance\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "heavy-kick",
+      "form": "normal",
+      "frames": 8,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5115089514066496,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 196,
+          "y": 161,
+          "width": 129,
+          "height": 199
+        },
+        {
+          "frame": 2,
+          "x": 196,
+          "y": 161,
+          "width": 130,
+          "height": 199
+        },
+        {
+          "frame": 3,
+          "x": 194,
+          "y": 162,
+          "width": 135,
+          "height": 198
+        },
+        {
+          "frame": 4,
+          "x": 183,
+          "y": 182,
+          "width": 164,
+          "height": 178
+        },
+        {
+          "frame": 5,
+          "x": 185,
+          "y": 196,
+          "width": 154,
+          "height": 164
+        },
+        {
+          "frame": 6,
+          "x": 184,
+          "y": 175,
+          "width": 157,
+          "height": 185
+        },
+        {
+          "frame": 7,
+          "x": 195,
+          "y": 162,
+          "width": 136,
+          "height": 198
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\heavy-kick\\source.png",
+      "sourceSha256": "fa85531e1c3330a93aab6f9da81d2306e06be43f6401a88ae6365d41650d67b6",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\heavy-kick.png",
+      "sha256": "99a4277fee3149139a1d6cf75ee85cbe04b665867a83d7ad8266c78a896413c5",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": false
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\heavy-kick\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "heavy-punch",
+      "form": "normal",
+      "frames": 6,
+      "fps": 14,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.44742729306487694,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 197,
+          "y": 198,
+          "width": 140,
+          "height": 162
+        },
+        {
+          "frame": 2,
+          "x": 191,
+          "y": 164,
+          "width": 133,
+          "height": 196
+        },
+        {
+          "frame": 3,
+          "x": 208,
+          "y": 141,
+          "width": 116,
+          "height": 207
+        },
+        {
+          "frame": 4,
+          "x": 198,
+          "y": 166,
+          "width": 132,
+          "height": 194
+        },
+        {
+          "frame": 5,
+          "x": 198,
+          "y": 158,
+          "width": 131,
+          "height": 202
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\heavy-punch\\source.png",
+      "sourceSha256": "1d3a3d5d9b6528036a85adf3f17dc3be3b5f74e1990d196379d215804446605e",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\heavy-punch.png",
+      "sha256": "f627ebeb29dc083bce230791e5618f82124b5facd73fd555e1866315449b3f1e",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [
+          3
+        ],
+        "rowSplit": 470,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\heavy-punch\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "hit-high",
+      "form": "normal",
+      "frames": 6,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.42105263157894735,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 197,
+          "y": 161,
+          "width": 132,
+          "height": 199
+        },
+        {
+          "frame": 2,
+          "x": 193,
+          "y": 160,
+          "width": 151,
+          "height": 200
+        },
+        {
+          "frame": 3,
+          "x": 198,
+          "y": 160,
+          "width": 133,
+          "height": 200
+        },
+        {
+          "frame": 4,
+          "x": 197,
+          "y": 160,
+          "width": 132,
+          "height": 200
+        },
+        {
+          "frame": 5,
+          "x": 196,
+          "y": 160,
+          "width": 132,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "public/assets/lutadores/raposa/normal-v2/idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\hit-high\\source.png",
+      "sourceSha256": "b8adba44825e7741c00f52401bb664836f8bb7a4656b0cb07916d6c4a01e60dc",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\hit-high.png",
+      "sha256": "dca11a80fb5d3ad18ff98863d1e70fc34dcb3ece418db49a1880d1716a6bbea3",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\hit-high\\prompt-final-alpha.txt",
+        "output\\raposa-animacoes-v2\\normal\\hit-high\\prompt-revision.txt",
+        "output\\raposa-animacoes-v2\\normal\\hit-high\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "idle",
+      "form": "normal",
+      "frames": 4,
+      "fps": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.35587188612099646,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 200,
+          "y": 159,
+          "width": 125,
+          "height": 201
+        },
+        {
+          "frame": 2,
+          "x": 200,
+          "y": 162,
+          "width": 127,
+          "height": 198
+        },
+        {
+          "frame": 3,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\normal\\idle\\source.png",
+      "sourceSha256": "6c3f5f7824533d6c7901368c8d28a971e9b579943549887ea4ba751729674e5e",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "sha256": "56e49de190c4f1a3c2e16b2a0130984052664813696df3e3ba4457803b991f46",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\idle\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "jump",
+      "form": "normal",
+      "frames": 8,
+      "fps": 10,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5128205128205128,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 202,
+          "y": 168,
+          "width": 124,
+          "height": 192
+        },
+        {
+          "frame": 2,
+          "x": 202,
+          "y": 184,
+          "width": 125,
+          "height": 176
+        },
+        {
+          "frame": 3,
+          "x": 207,
+          "y": 160,
+          "width": 121,
+          "height": 184
+        },
+        {
+          "frame": 4,
+          "x": 207,
+          "y": 160,
+          "width": 121,
+          "height": 155
+        },
+        {
+          "frame": 5,
+          "x": 207,
+          "y": 160,
+          "width": 121,
+          "height": 179
+        },
+        {
+          "frame": 6,
+          "x": 203,
+          "y": 160,
+          "width": 124,
+          "height": 189
+        },
+        {
+          "frame": 7,
+          "x": 201,
+          "y": 160,
+          "width": 127,
+          "height": 191
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\jump\\source.png",
+      "sourceSha256": "acad8685f7f43a60d54f6600dd29d85f476d189c74f81baeb7c495472f62f99f",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\jump.png",
+      "sha256": "6c5b2980a431bf6049fae02859c17cb0c1414f941359289369fcf6dd35a6d6c6",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": 3,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\jump\\prompt-alpha.txt",
+        "output\\raposa-animacoes-v2\\normal\\jump\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "jump-kick",
+      "form": "normal",
+      "frames": 6,
+      "fps": 14,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.45,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 166,
+          "y": 140,
+          "width": 147,
+          "height": 180
+        },
+        {
+          "frame": 1,
+          "x": 131,
+          "y": 140,
+          "width": 168,
+          "height": 204
+        },
+        {
+          "frame": 2,
+          "x": 115,
+          "y": 140,
+          "width": 171,
+          "height": 205
+        },
+        {
+          "frame": 3,
+          "x": 134,
+          "y": 141,
+          "width": 180,
+          "height": 202
+        },
+        {
+          "frame": 4,
+          "x": 160,
+          "y": 141,
+          "width": 139,
+          "height": 172
+        },
+        {
+          "frame": 5,
+          "x": 171,
+          "y": 141,
+          "width": 114,
+          "height": 168
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\normal\\jump-kick\\source.png",
+      "sourceSha256": "b1ee6319a37dcb0938584d2759e6ef33e73dcc000ee7fd2aefd266efcbc517e4",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\jump-kick.png",
+      "sha256": "771bf6c49222ccb2ca73433b737f38d985ae214ba9ec836aa1a04011e71fb844",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 180,
+        "air": true,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\jump-kick\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "jump-punch",
+      "form": "normal",
+      "frames": 5,
+      "fps": 14,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.42951541850220265,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 201,
+          "y": 140,
+          "width": 119,
+          "height": 195
+        },
+        {
+          "frame": 1,
+          "x": 183,
+          "y": 140,
+          "width": 124,
+          "height": 194
+        },
+        {
+          "frame": 2,
+          "x": 171,
+          "y": 140,
+          "width": 152,
+          "height": 196
+        },
+        {
+          "frame": 3,
+          "x": 192,
+          "y": 140,
+          "width": 130,
+          "height": 194
+        },
+        {
+          "frame": 4,
+          "x": 187,
+          "y": 140,
+          "width": 119,
+          "height": 196
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\normal\\jump-punch\\source.png",
+      "sourceSha256": "fdabbdf6fea54c382430516a0bcbce8298ddc745f23707ee413c239e17d678eb",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\jump-punch.png",
+      "sha256": "25aa82a20902e806f00e1f3b709a91974e7a993ba82e4b531444df32f7c0a284",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 5,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 195,
+        "air": true,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\jump-punch\\prompt-final-alpha.txt",
+        "output\\raposa-animacoes-v2\\normal\\jump-punch\\prompt-final-cigar.txt",
+        "output\\raposa-animacoes-v2\\normal\\jump-punch\\prompt-revision.txt",
+        "output\\raposa-animacoes-v2\\normal\\jump-punch\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "knockdown",
+      "form": "normal",
+      "frames": 8,
+      "fps": 10,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5102040816326531,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 211,
+          "y": 170,
+          "width": 136,
+          "height": 190
+        },
+        {
+          "frame": 2,
+          "x": 175,
+          "y": 188,
+          "width": 170,
+          "height": 172
+        },
+        {
+          "frame": 3,
+          "x": 170,
+          "y": 219,
+          "width": 190,
+          "height": 141
+        },
+        {
+          "frame": 4,
+          "x": 159,
+          "y": 235,
+          "width": 195,
+          "height": 125
+        },
+        {
+          "frame": 5,
+          "x": 161,
+          "y": 241,
+          "width": 192,
+          "height": 119
+        },
+        {
+          "frame": 6,
+          "x": 160,
+          "y": 250,
+          "width": 190,
+          "height": 110
+        },
+        {
+          "frame": 7,
+          "x": 157,
+          "y": 265,
+          "width": 198,
+          "height": 95
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\knockdown\\source.png",
+      "sourceSha256": "415dbf18cc79288baefd715cbdc0e31bc887a35321899da681dbf94ef5d57fe3",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\knockdown.png",
+      "sha256": "b0f1cc6cae1566987527c98fd2adc8ec9aaea43a6953a356c658164434c3deaa",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\knockdown\\prompt-revision.txt",
+        "output\\raposa-animacoes-v2\\normal\\knockdown\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "light-punch",
+      "form": "normal",
+      "frames": 6,
+      "fps": 18,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.43956043956043955,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 170,
+          "y": 160,
+          "width": 158,
+          "height": 200
+        },
+        {
+          "frame": 2,
+          "x": 192,
+          "y": 160,
+          "width": 136,
+          "height": 200
+        },
+        {
+          "frame": 3,
+          "x": 178,
+          "y": 160,
+          "width": 152,
+          "height": 200
+        },
+        {
+          "frame": 4,
+          "x": 196,
+          "y": 160,
+          "width": 132,
+          "height": 200
+        },
+        {
+          "frame": 5,
+          "x": 196,
+          "y": 160,
+          "width": 131,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\light-punch\\source.png",
+      "sourceSha256": "87edc4df0546c7c1b56d1782060948d5d8e3a3ea4137b06ef7e3008531bf39db",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\light-punch.png",
+      "sha256": "347d5cd18e90b8c84ad321748484e2b0bd38925ff1a72ecb32c86c79c77a5c05",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\light-punch\\prompt-accessories.txt",
+        "output\\raposa-animacoes-v2\\normal\\light-punch\\prompt-revision.txt",
+        "output\\raposa-animacoes-v2\\normal\\light-punch\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "low-kick",
+      "form": "normal",
+      "frames": 6,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.4424778761061947,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 200,
+          "y": 184,
+          "width": 140,
+          "height": 176
+        },
+        {
+          "frame": 2,
+          "x": 188,
+          "y": 189,
+          "width": 175,
+          "height": 171
+        },
+        {
+          "frame": 3,
+          "x": 104,
+          "y": 190,
+          "width": 199,
+          "height": 170
+        },
+        {
+          "frame": 4,
+          "x": 199,
+          "y": 187,
+          "width": 133,
+          "height": 173
+        },
+        {
+          "frame": 5,
+          "x": 198,
+          "y": 159,
+          "width": 130,
+          "height": 201
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\low-kick\\source.png",
+      "sourceSha256": "48a67a7ba410245e7dddae0dac531ddf1d0bda87a29269556647a432d18abd3f",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\low-kick.png",
+      "sha256": "7a46b37075a89a5103dbb27edc7b4be959a0ca39bcf4e09046b2241b60ea108d",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\low-kick\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "special",
+      "form": "normal",
+      "frames": 8,
+      "fps": 16,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5571030640668524,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 184,
+          "y": 160,
+          "width": 121,
+          "height": 216
+        },
+        {
+          "frame": 2,
+          "x": 182,
+          "y": 160,
+          "width": 126,
+          "height": 171
+        },
+        {
+          "frame": 3,
+          "x": 192,
+          "y": 160,
+          "width": 147,
+          "height": 149
+        },
+        {
+          "frame": 4,
+          "x": 177,
+          "y": 160,
+          "width": 139,
+          "height": 141
+        },
+        {
+          "frame": 5,
+          "x": 181,
+          "y": 160,
+          "width": 139,
+          "height": 186
+        },
+        {
+          "frame": 6,
+          "x": 203,
+          "y": 160,
+          "width": 147,
+          "height": 203
+        },
+        {
+          "frame": 7,
+          "x": 170,
+          "y": 160,
+          "width": 163,
+          "height": 217
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\special\\source.png",
+      "sourceSha256": "031a7eb7f3522499429087001f27a8daaef88c16ebbd96a1e733d8c40b2588d8",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\special.png",
+      "sha256": "c82114acf0b1b58070b01e8ce9a880a7352a6a00033abd735ba04deb498d0a9f",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": 1,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\special\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "special-charge",
+      "form": "normal",
+      "frames": 5,
+      "fps": 14,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.4073319755600815,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 197,
+          "y": 172,
+          "width": 132,
+          "height": 188
+        },
+        {
+          "frame": 2,
+          "x": 196,
+          "y": 196,
+          "width": 133,
+          "height": 164
+        },
+        {
+          "frame": 3,
+          "x": 185,
+          "y": 196,
+          "width": 141,
+          "height": 164
+        },
+        {
+          "frame": 4,
+          "x": 173,
+          "y": 213,
+          "width": 147,
+          "height": 147
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\special-charge\\source.png",
+      "sourceSha256": "da6f35edf0d50cec824bfd71f4d57e92240f815741720c35680d544e07d81790",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\special-charge.png",
+      "sha256": "5c2513245bb476d2310c51b2d163418771d3b6180a80a50484332d4452e2be39",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 5,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\special-charge\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "special-land",
+      "form": "normal",
+      "frames": 3,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.36429872495446264,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 194,
+          "y": 203,
+          "width": 147,
+          "height": 157
+        },
+        {
+          "frame": 1,
+          "x": 195,
+          "y": 174,
+          "width": 137,
+          "height": 186
+        },
+        {
+          "frame": 2,
+          "x": 200,
+          "y": 160,
+          "width": 127,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\normal\\special-land\\source.png",
+      "sourceSha256": "78f9e3939b8a775ae263231bb677064c969ffc8666e773b9f666a20d129b0906",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\special-land.png",
+      "sha256": "12948e7c2c6efd489bf57046a10a6801b5f6ba691745855a7f488fd38ba1313f",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 3,
+        "firstFrame": 1,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": 555,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\special-land\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "stow-bat",
+      "form": "normal",
+      "frames": 4,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.373134328358209,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 199,
+          "y": 149,
+          "width": 126,
+          "height": 211
+        },
+        {
+          "frame": 2,
+          "x": 199,
+          "y": 160,
+          "width": 126,
+          "height": 200
+        },
+        {
+          "frame": 3,
+          "x": 199,
+          "y": 161,
+          "width": 126,
+          "height": 199
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\stow-bat\\source.png",
+      "sourceSha256": "0c00c2f507df2fffff22d4830ec9f807a92e247457bfa62a40315ec00e6c4b59",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\stow-bat.png",
+      "sha256": "4cc570806d0022f4328f05dea1492b9e1853f2e8a6f6c73093db20b5f0af6383",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\stow-bat\\prompt-revision.txt",
+        "output\\raposa-animacoes-v2\\normal\\stow-bat\\prompt-revision2.txt",
+        "output\\raposa-animacoes-v2\\normal\\stow-bat\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "stunned",
+      "form": "normal",
+      "frames": 4,
+      "fps": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.3424657534246575,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 204,
+          "y": 160,
+          "width": 123,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 203,
+          "y": 162,
+          "width": 124,
+          "height": 198
+        },
+        {
+          "frame": 2,
+          "x": 203,
+          "y": 167,
+          "width": 124,
+          "height": 193
+        },
+        {
+          "frame": 3,
+          "x": 203,
+          "y": 161,
+          "width": 126,
+          "height": 199
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\normal\\stunned\\source.png",
+      "sourceSha256": "7a6af160368c594769e7678bc19222c17e40f76c3fc019236ab25620108f8855",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\stunned.png",
+      "sha256": "c213614fb6fe6aa624c5d35daa4d3fd618105a03525ba832a2d85059dd1e5b75",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\stunned\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "walk-backward",
+      "form": "normal",
+      "frames": 8,
+      "fps": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5221932114882507,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 205,
+          "y": 162,
+          "width": 128,
+          "height": 198
+        },
+        {
+          "frame": 2,
+          "x": 186,
+          "y": 162,
+          "width": 139,
+          "height": 198
+        },
+        {
+          "frame": 3,
+          "x": 183,
+          "y": 164,
+          "width": 147,
+          "height": 196
+        },
+        {
+          "frame": 4,
+          "x": 192,
+          "y": 161,
+          "width": 137,
+          "height": 199
+        },
+        {
+          "frame": 5,
+          "x": 197,
+          "y": 162,
+          "width": 120,
+          "height": 198
+        },
+        {
+          "frame": 6,
+          "x": 200,
+          "y": 165,
+          "width": 122,
+          "height": 195
+        },
+        {
+          "frame": 7,
+          "x": 197,
+          "y": 164,
+          "width": 134,
+          "height": 196
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\walk-backward\\source.png",
+      "sourceSha256": "000b5003c94f2e221c27a50f8fd715237ebe1ccb3b917d93c0453b0ab46a32f3",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\walk-backward.png",
+      "sha256": "1bf89b60dfc3638def477f73454b823e43f9d535ae4ed7cb89c53c57ae2601be",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\walk-backward\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "walk-forward",
+      "form": "normal",
+      "frames": 8,
+      "fps": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.6211180124223602,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 200,
+          "y": 160,
+          "width": 127,
+          "height": 200
+        },
+        {
+          "frame": 2,
+          "x": 191,
+          "y": 160,
+          "width": 145,
+          "height": 200
+        },
+        {
+          "frame": 3,
+          "x": 192,
+          "y": 160,
+          "width": 145,
+          "height": 200
+        },
+        {
+          "frame": 4,
+          "x": 196,
+          "y": 161,
+          "width": 143,
+          "height": 199
+        },
+        {
+          "frame": 5,
+          "x": 201,
+          "y": 161,
+          "width": 144,
+          "height": 199
+        },
+        {
+          "frame": 6,
+          "x": 203,
+          "y": 161,
+          "width": 137,
+          "height": 199
+        },
+        {
+          "frame": 7,
+          "x": 198,
+          "y": 160,
+          "width": 132,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\normal-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\normal\\walk-forward\\source.png",
+      "sourceSha256": "de9b428c937f9b23e74052a6bae2dc31ee3a4dc6ea6732a7bc46dad59eced197",
+      "destination": "public\\assets\\lutadores\\raposa\\normal-v2\\walk-forward.png",
+      "sha256": "6bff5e01038ba4c8304b24e0be171bb552692df08aaaafb3e9f4efd603c957f9",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\normal\\walk-forward\\prompt-revision.txt",
+        "output\\raposa-animacoes-v2\\normal\\walk-forward\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "block-high",
+      "form": "taco",
+      "frames": 4,
+      "fps": 10,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.3669724770642202,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 199,
+          "y": 161,
+          "width": 127,
+          "height": 199
+        },
+        {
+          "frame": 2,
+          "x": 198,
+          "y": 148,
+          "width": 128,
+          "height": 212
+        },
+        {
+          "frame": 3,
+          "x": 197,
+          "y": 148,
+          "width": 129,
+          "height": 212
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\block-high\\source.png",
+      "sourceSha256": "adc4b2d5985ff8533e6301f56c94ec493909ba12dbbbdffb2c048d8c3bd96a0e",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\block-high.png",
+      "sha256": "cb974199e8fad1148f4bb10a93c01b8e27b6d0f85aa7341cff046c5fe7cc023d",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\block-high\\prompt-revision.txt",
+        "output\\raposa-animacoes-v2\\taco\\block-high\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "block-low",
+      "form": "taco",
+      "frames": 4,
+      "fps": 10,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.3460207612456747,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 197,
+          "y": 173,
+          "width": 128,
+          "height": 187
+        },
+        {
+          "frame": 2,
+          "x": 192,
+          "y": 180,
+          "width": 140,
+          "height": 180
+        },
+        {
+          "frame": 3,
+          "x": 192,
+          "y": 180,
+          "width": 139,
+          "height": 180
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\block-low\\source.png",
+      "sourceSha256": "005a787f4908cafd0f8caa2476885dc4e71497dfad5fa1379f349a14dca86b57",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\block-low.png",
+      "sha256": "117a19dbb96a1a063a5c68b29fcf82de0917512653cdc2739b7fa3e3d2ed6fa3",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\block-low\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "crouch",
+      "form": "taco",
+      "frames": 5,
+      "fps": 20,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.4192872117400419,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 196,
+          "y": 171,
+          "width": 134,
+          "height": 189
+        },
+        {
+          "frame": 2,
+          "x": 191,
+          "y": 196,
+          "width": 143,
+          "height": 164
+        },
+        {
+          "frame": 3,
+          "x": 183,
+          "y": 214,
+          "width": 146,
+          "height": 146
+        },
+        {
+          "frame": 4,
+          "x": 179,
+          "y": 224,
+          "width": 151,
+          "height": 136
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\crouch\\source.png",
+      "sourceSha256": "9f0075f61aed2b5d288eee9f0dbf30d247a61dac04d07309bf6c13e9ac67e214",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\crouch.png",
+      "sha256": "caf595172f30b4cf28949378f85161b92dfe1112cadf6972f343d09d70560b5e",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 5,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\crouch\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "dash-back",
+      "form": "taco",
+      "frames": 4,
+      "fps": 18,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.38910505836575876,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 213,
+          "y": 161,
+          "width": 124,
+          "height": 199
+        },
+        {
+          "frame": 2,
+          "x": 174,
+          "y": 172,
+          "width": 164,
+          "height": 188
+        },
+        {
+          "frame": 3,
+          "x": 196,
+          "y": 159,
+          "width": 131,
+          "height": 201
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\dash-back\\source.png",
+      "sourceSha256": "1132638aae53b3bcf65c85705c2766761c51b7ea328b105fed91e1985d90894e",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\dash-back.png",
+      "sha256": "2a60dcef3f78fc778d65b27eaf9b4f3603855870e07ad6f50a4457542eb8b706",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\dash-back\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "dash-forward",
+      "form": "taco",
+      "frames": 5,
+      "fps": 18,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.449438202247191,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 197,
+          "y": 169,
+          "width": 133,
+          "height": 191
+        },
+        {
+          "frame": 2,
+          "x": 139,
+          "y": 176,
+          "width": 179,
+          "height": 184
+        },
+        {
+          "frame": 3,
+          "x": 160,
+          "y": 188,
+          "width": 176,
+          "height": 172
+        },
+        {
+          "frame": 4,
+          "x": 199,
+          "y": 162,
+          "width": 134,
+          "height": 198
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\dash-forward\\source.png",
+      "sourceSha256": "7f3d38f8d6003888bf158cb3a2156900693c06c565ef9f01218b0db4f5a07f67",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\dash-forward.png",
+      "sha256": "08b7acc9c26b8c0bd9defecc199b5601962bb909336a0356e798223b00843782",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 5,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\dash-forward\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "heavy-kick",
+      "form": "taco",
+      "frames": 8,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5249343832020997,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 198,
+          "y": 161,
+          "width": 127,
+          "height": 199
+        },
+        {
+          "frame": 2,
+          "x": 197,
+          "y": 162,
+          "width": 134,
+          "height": 198
+        },
+        {
+          "frame": 3,
+          "x": 198,
+          "y": 161,
+          "width": 136,
+          "height": 199
+        },
+        {
+          "frame": 4,
+          "x": 158,
+          "y": 162,
+          "width": 172,
+          "height": 198
+        },
+        {
+          "frame": 5,
+          "x": 173,
+          "y": 154,
+          "width": 155,
+          "height": 206
+        },
+        {
+          "frame": 6,
+          "x": 174,
+          "y": 163,
+          "width": 156,
+          "height": 197
+        },
+        {
+          "frame": 7,
+          "x": 198,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\heavy-kick\\source.png",
+      "sourceSha256": "d096b4804c25ce0c7a4112081d41e1efe8e46d4f11e5f3d0efee283d8a5be5c4",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\heavy-kick.png",
+      "sha256": "45343cef28d9c4f6829ee5540c8c0d0cf38c33c4e39b01503da7606d498aecc1",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\heavy-kick\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "heavy-punch",
+      "form": "taco",
+      "frames": 6,
+      "fps": 14,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.49627791563275436,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 166,
+          "y": 190,
+          "width": 191,
+          "height": 170
+        },
+        {
+          "frame": 2,
+          "x": 148,
+          "y": 173,
+          "width": 194,
+          "height": 187
+        },
+        {
+          "frame": 3,
+          "x": 156,
+          "y": 113,
+          "width": 174,
+          "height": 235
+        },
+        {
+          "frame": 4,
+          "x": 160,
+          "y": 156,
+          "width": 174,
+          "height": 204
+        },
+        {
+          "frame": 5,
+          "x": 195,
+          "y": 154,
+          "width": 135,
+          "height": 206
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\heavy-punch\\source.png",
+      "sourceSha256": "dd2bbdcdc5825b5d00868b030d721899734a0c2310a39d865865de86e914d667",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\heavy-punch.png",
+      "sha256": "dbe65508ef4a137db8dc802db72621fb67ac848cf08a535beb76424a0a063e3e",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [
+          3
+        ],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\heavy-punch\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "hit-high",
+      "form": "taco",
+      "frames": 6,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.44150110375275936,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 201,
+          "y": 164,
+          "width": 122,
+          "height": 196
+        },
+        {
+          "frame": 2,
+          "x": 199,
+          "y": 164,
+          "width": 125,
+          "height": 196
+        },
+        {
+          "frame": 3,
+          "x": 200,
+          "y": 167,
+          "width": 131,
+          "height": 193
+        },
+        {
+          "frame": 4,
+          "x": 197,
+          "y": 160,
+          "width": 134,
+          "height": 200
+        },
+        {
+          "frame": 5,
+          "x": 198,
+          "y": 159,
+          "width": 129,
+          "height": 201
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\hit-high\\source.png",
+      "sourceSha256": "697c73e48fd4248bbc94056708023caed5de5e3e4019a1b395405586269c2650",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\hit-high.png",
+      "sha256": "f59f222c6899ffc3e14b77ebdceb9d41cfe0bfaf6ca0dddac233eefe99b275c2",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\hit-high\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "idle",
+      "form": "taco",
+      "frames": 4,
+      "fps": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.3460207612456747,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 200,
+          "y": 157,
+          "width": 122,
+          "height": 203
+        },
+        {
+          "frame": 2,
+          "x": 200,
+          "y": 162,
+          "width": 124,
+          "height": 198
+        },
+        {
+          "frame": 3,
+          "x": 200,
+          "y": 160,
+          "width": 125,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\taco\\idle\\source.png",
+      "sourceSha256": "db6197a061cf52b2b05bf2ea6d185836a8a2a865d961ec3fd2773bd089146223",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "sha256": "f6ec41c1625f1883fd21171501049930e39f03d2176c4b5841501453f9f52cae",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\idle\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "jump",
+      "form": "taco",
+      "frames": 8,
+      "fps": 10,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5263157894736842,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 203,
+          "y": 174,
+          "width": 129,
+          "height": 186
+        },
+        {
+          "frame": 2,
+          "x": 204,
+          "y": 193,
+          "width": 130,
+          "height": 167
+        },
+        {
+          "frame": 3,
+          "x": 207,
+          "y": 160,
+          "width": 132,
+          "height": 182
+        },
+        {
+          "frame": 4,
+          "x": 208,
+          "y": 160,
+          "width": 127,
+          "height": 164
+        },
+        {
+          "frame": 5,
+          "x": 208,
+          "y": 160,
+          "width": 127,
+          "height": 184
+        },
+        {
+          "frame": 6,
+          "x": 208,
+          "y": 160,
+          "width": 128,
+          "height": 192
+        },
+        {
+          "frame": 7,
+          "x": 199,
+          "y": 160,
+          "width": 137,
+          "height": 192
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\jump\\source.png",
+      "sourceSha256": "f50b725453c7ea9915c0e907db1eb975b5179323abeaeab31ca2d3d1943d8fe7",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\jump.png",
+      "sha256": "842def533971561976d296e6d6eac628d2ddcdae9eb52c386ccac197a9a4a57d",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": 3,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\jump\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "jump-kick",
+      "form": "taco",
+      "frames": 6,
+      "fps": 14,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.42755344418052255,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 217,
+          "y": 140,
+          "width": 124,
+          "height": 180
+        },
+        {
+          "frame": 1,
+          "x": 187,
+          "y": 125,
+          "width": 146,
+          "height": 195
+        },
+        {
+          "frame": 2,
+          "x": 150,
+          "y": 141,
+          "width": 191,
+          "height": 178
+        },
+        {
+          "frame": 3,
+          "x": 173,
+          "y": 140,
+          "width": 183,
+          "height": 177
+        },
+        {
+          "frame": 4,
+          "x": 167,
+          "y": 135,
+          "width": 178,
+          "height": 182
+        },
+        {
+          "frame": 5,
+          "x": 211,
+          "y": 135,
+          "width": 126,
+          "height": 181
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\taco\\jump-kick\\source.png",
+      "sourceSha256": "971b516af02b63e2ab13abd3680a7088c604020810e26e81fc16beb6c62d4ec5",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\jump-kick.png",
+      "sha256": "00bfbc560bea1899ca943776f1c38c027e507755723416c81003eaa369d0d4ab",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 180,
+        "air": true,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\jump-kick\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "jump-punch",
+      "form": "taco",
+      "frames": 5,
+      "fps": 14,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.4166666666666667,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 220,
+          "y": 140,
+          "width": 108,
+          "height": 170
+        },
+        {
+          "frame": 1,
+          "x": 203,
+          "y": 125,
+          "width": 126,
+          "height": 184
+        },
+        {
+          "frame": 2,
+          "x": 178,
+          "y": 142,
+          "width": 157,
+          "height": 165
+        },
+        {
+          "frame": 3,
+          "x": 192,
+          "y": 141,
+          "width": 145,
+          "height": 168
+        },
+        {
+          "frame": 4,
+          "x": 220,
+          "y": 140,
+          "width": 108,
+          "height": 167
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\taco\\jump-punch\\source.png",
+      "sourceSha256": "18f9c37b7276729f08c457334d8c58d58cdc22f4185c3278b968b2f6840b28d6",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\jump-punch.png",
+      "sha256": "c3621a138a805871f84ef5e2424dfc7a1bdee145c689545327dca0f90cf93386",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 5,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 170,
+        "air": true,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\jump-punch\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "knockdown",
+      "form": "taco",
+      "frames": 8,
+      "fps": 10,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5319148936170213,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 196,
+          "y": 155,
+          "width": 134,
+          "height": 205
+        },
+        {
+          "frame": 2,
+          "x": 175,
+          "y": 170,
+          "width": 161,
+          "height": 190
+        },
+        {
+          "frame": 3,
+          "x": 180,
+          "y": 177,
+          "width": 187,
+          "height": 183
+        },
+        {
+          "frame": 4,
+          "x": 168,
+          "y": 194,
+          "width": 204,
+          "height": 166
+        },
+        {
+          "frame": 5,
+          "x": 168,
+          "y": 225,
+          "width": 206,
+          "height": 135
+        },
+        {
+          "frame": 6,
+          "x": 161,
+          "y": 257,
+          "width": 204,
+          "height": 103
+        },
+        {
+          "frame": 7,
+          "x": 161,
+          "y": 262,
+          "width": 206,
+          "height": 98
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\knockdown\\source.png",
+      "sourceSha256": "9612f0771809bd293c3d290e9ab65df7e97ca020698c9d0b3776efc53f8516c1",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\knockdown.png",
+      "sha256": "79ab53024d217a0575b1543aece0b4bb962e8b79970a9a510e6114e5f4b97342",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\knockdown\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "light-punch",
+      "form": "taco",
+      "frames": 6,
+      "fps": 18,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.44150110375275936,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 134,
+          "y": 161,
+          "width": 196,
+          "height": 199
+        },
+        {
+          "frame": 2,
+          "x": 195,
+          "y": 160,
+          "width": 132,
+          "height": 200
+        },
+        {
+          "frame": 3,
+          "x": 131,
+          "y": 162,
+          "width": 200,
+          "height": 198
+        },
+        {
+          "frame": 4,
+          "x": 193,
+          "y": 163,
+          "width": 140,
+          "height": 197
+        },
+        {
+          "frame": 5,
+          "x": 197,
+          "y": 162,
+          "width": 128,
+          "height": 198
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\light-punch\\source.png",
+      "sourceSha256": "88afa72bb8cfc4c50ef178474ab62f91444a7ae927cf471d64d88263c99537e5",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\light-punch.png",
+      "sha256": "d2867505af746dbee367c9b0de2a52febfeefecc774fffcf4c7f07f1ea364fba",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\light-punch\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "low-kick",
+      "form": "taco",
+      "frames": 6,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.44742729306487694,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 183,
+          "y": 182,
+          "width": 166,
+          "height": 178
+        },
+        {
+          "frame": 2,
+          "x": 162,
+          "y": 190,
+          "width": 206,
+          "height": 170
+        },
+        {
+          "frame": 3,
+          "x": 120,
+          "y": 188,
+          "width": 216,
+          "height": 172
+        },
+        {
+          "frame": 4,
+          "x": 145,
+          "y": 188,
+          "width": 193,
+          "height": 172
+        },
+        {
+          "frame": 5,
+          "x": 195,
+          "y": 161,
+          "width": 132,
+          "height": 199
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\low-kick\\source.png",
+      "sourceSha256": "ee16b5a5ee144c6c2928523ff45e1528eddd5bfadedaee92cfa75c9c3eda9cbf",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\low-kick.png",
+      "sha256": "f1c9139d75dfc30344408564866516a8d60a7c997749dd3bf772b75bd22a7bf7",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 6,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\low-kick\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "special",
+      "form": "taco",
+      "frames": 8,
+      "fps": 16,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5405405405405406,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 204,
+          "y": 160,
+          "width": 119,
+          "height": 197
+        },
+        {
+          "frame": 2,
+          "x": 201,
+          "y": 160,
+          "width": 124,
+          "height": 164
+        },
+        {
+          "frame": 3,
+          "x": 200,
+          "y": 160,
+          "width": 144,
+          "height": 137
+        },
+        {
+          "frame": 4,
+          "x": 188,
+          "y": 160,
+          "width": 149,
+          "height": 125
+        },
+        {
+          "frame": 5,
+          "x": 187,
+          "y": 160,
+          "width": 149,
+          "height": 173
+        },
+        {
+          "frame": 6,
+          "x": 184,
+          "y": 160,
+          "width": 151,
+          "height": 184
+        },
+        {
+          "frame": 7,
+          "x": 191,
+          "y": 160,
+          "width": 137,
+          "height": 192
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\special\\source.png",
+      "sourceSha256": "e21e8d081e130eef47ea5bd8e032e8ca0494ae07b761f9bd899e059b86460652",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\special.png",
+      "sha256": "4b70c7dd23ebeb26cb9b40093fb07b1e2f9913c7c5702f221aa81db97e2522b4",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": 1,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\special\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "special-charge",
+      "form": "taco",
+      "frames": 5,
+      "fps": 14,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.4192872117400419,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 197,
+          "y": 168,
+          "width": 132,
+          "height": 192
+        },
+        {
+          "frame": 2,
+          "x": 188,
+          "y": 182,
+          "width": 146,
+          "height": 178
+        },
+        {
+          "frame": 3,
+          "x": 181,
+          "y": 196,
+          "width": 156,
+          "height": 164
+        },
+        {
+          "frame": 4,
+          "x": 172,
+          "y": 215,
+          "width": 168,
+          "height": 145
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\special-charge\\source.png",
+      "sourceSha256": "4fb6aaa4f5b206e69e47aec1de69912812987a2e0119f5698234504a6485aaf5",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\special-charge.png",
+      "sha256": "12c15f351e9a68327ae3125de91bde10403a80ba0d48766c0d3adb949a19ab0e",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 5,
+        "sourceColumns": 3,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\special-charge\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "special-land",
+      "form": "taco",
+      "frames": 3,
+      "fps": 12,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.3831417624521073,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 196,
+          "y": 203,
+          "width": 146,
+          "height": 157
+        },
+        {
+          "frame": 1,
+          "x": 199,
+          "y": 173,
+          "width": 133,
+          "height": 187
+        },
+        {
+          "frame": 2,
+          "x": 199,
+          "y": 160,
+          "width": 133,
+          "height": 200
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\taco\\special-land\\source.png",
+      "sourceSha256": "9ca0e5c5e9405d2d9453a6fa573e67e3fd65380481336db93b2dd796759c0d39",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\special-land.png",
+      "sha256": "7e65ab7c8352bc4eb20ec62694fa1a547039be7c4076100780ad768a12e393e0",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 3,
+        "firstFrame": 1,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\special-land\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "stunned",
+      "form": "taco",
+      "frames": 4,
+      "fps": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.36900369003690037,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 199,
+          "y": 160,
+          "width": 128,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 199,
+          "y": 160,
+          "width": 127,
+          "height": 200
+        },
+        {
+          "frame": 2,
+          "x": 199,
+          "y": 165,
+          "width": 131,
+          "height": 195
+        },
+        {
+          "frame": 3,
+          "x": 199,
+          "y": 159,
+          "width": 132,
+          "height": 201
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": null,
+      "source": "output\\raposa-animacoes-v2\\taco\\stunned\\source.png",
+      "sourceSha256": "9987b38f7d4cae0faf9bd490a065e123d667270864b50677c236892c12aafb1b",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\stunned.png",
+      "sha256": "6f41c443c437e78e41abb968ffb6b810dfd1d9144fc586f70f328099f863053d",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 4,
+        "sourceColumns": 2,
+        "sourceRows": 2,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\stunned\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "walk-backward",
+      "form": "taco",
+      "frames": 8,
+      "fps": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5376344086021505,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 199,
+          "y": 162,
+          "width": 131,
+          "height": 198
+        },
+        {
+          "frame": 2,
+          "x": 188,
+          "y": 162,
+          "width": 137,
+          "height": 198
+        },
+        {
+          "frame": 3,
+          "x": 187,
+          "y": 160,
+          "width": 139,
+          "height": 200
+        },
+        {
+          "frame": 4,
+          "x": 196,
+          "y": 161,
+          "width": 130,
+          "height": 199
+        },
+        {
+          "frame": 5,
+          "x": 196,
+          "y": 161,
+          "width": 124,
+          "height": 199
+        },
+        {
+          "frame": 6,
+          "x": 202,
+          "y": 161,
+          "width": 119,
+          "height": 199
+        },
+        {
+          "frame": 7,
+          "x": 205,
+          "y": 162,
+          "width": 120,
+          "height": 198
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\walk-backward\\source.png",
+      "sourceSha256": "e19e21f1f8666462c3fd43847f7465c0f61581c9d24bfce8ca13f4533821da0f",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\walk-backward.png",
+      "sha256": "85b1d2facf9ec42216c89c64e6b507af8af6b8843b4e72959120dc604a060c72",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\walk-backward\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    },
+    {
+      "action": "walk-forward",
+      "form": "taco",
+      "frames": 8,
+      "fps": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "columns": 5,
+      "scale": 0.5181347150259067,
+      "boxes": [
+        {
+          "frame": 0,
+          "x": 200,
+          "y": 160,
+          "width": 122,
+          "height": 200
+        },
+        {
+          "frame": 1,
+          "x": 195,
+          "y": 160,
+          "width": 133,
+          "height": 200
+        },
+        {
+          "frame": 2,
+          "x": 187,
+          "y": 160,
+          "width": 150,
+          "height": 200
+        },
+        {
+          "frame": 3,
+          "x": 190,
+          "y": 160,
+          "width": 145,
+          "height": 200
+        },
+        {
+          "frame": 4,
+          "x": 192,
+          "y": 160,
+          "width": 143,
+          "height": 200
+        },
+        {
+          "frame": 5,
+          "x": 201,
+          "y": 161,
+          "width": 141,
+          "height": 199
+        },
+        {
+          "frame": 6,
+          "x": 205,
+          "y": 161,
+          "width": 137,
+          "height": 199
+        },
+        {
+          "frame": 7,
+          "x": 198,
+          "y": 159,
+          "width": 134,
+          "height": 201
+        }
+      ],
+      "reference": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+      "referenceSha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb",
+      "guardSheet": "C:\\Users\\Joao\\Desktop\\VsCode\\Pessoal\\luta-de-mascotes\\public\\assets\\lutadores\\raposa\\taco-v2\\idle.png",
+      "source": "output\\raposa-animacoes-v2\\taco\\walk-forward\\source.png",
+      "sourceSha256": "c96323906495561f2d27cc68121a06368ca8d4bdf3ea00f1bf8e5ae9f6501837",
+      "destination": "public\\assets\\lutadores\\raposa\\taco-v2\\walk-forward.png",
+      "sha256": "2237e69277e65c0979d19b3c38409b4e96f37860a3091110e302ea6fe9f71886",
+      "status": "inspeção de fonte e montagem; integração e revisão em jogo pendentes",
+      "packing": {
+        "sourceFrames": 8,
+        "sourceColumns": 3,
+        "sourceRows": 3,
+        "scaleFrame": 0,
+        "firstFrame": 0,
+        "targetReferenceHeight": 200,
+        "air": false,
+        "airFrom": null,
+        "airFrames": [],
+        "rowSplit": null,
+        "components": true
+      },
+      "references": [
+        {
+          "path": "referencia\\raposa\\base-boxe-azul-soco-ingles-v19.png",
+          "sha256": "920f6254c42a01f8c3ec3e8b2c41ec9420cc674dceece962f7f19670122f99fb"
+        },
+        {
+          "path": "referencia\\raposa\\guarda-taco-azul-v19.png",
+          "sha256": "f3c5dab5541ad3e3b7eacf3167fff64b7400da752be25ffa78ecf285a03c64d4"
+        }
+      ],
+      "prompts": [
+        "output\\raposa-animacoes-v2\\taco\\walk-forward\\prompt.txt"
+      ],
+      "visualApprovalByUser": false
+    }
+  ],
+  "artSetComplete": true,
+  "runtimeIntegrated": false,
+  "notes": [
+    "Intro normal compartilhada: começa sem taco nas costas e termina na guarda normal.",
+    "Forma temporária usa draw-bat após acerto e stow-bat no retorno.",
+    "Contagens/FPS propostos, não substituir células 256x256 antigas por estas folhas.",
+    "Sem alterações de combate, JSONs de lutadores ou aprovação visual atribuída ao usuário."
+  ]
+}

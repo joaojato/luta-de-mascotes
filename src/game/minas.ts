@@ -21,6 +21,8 @@ export interface MinaConfig {
   quadro?: number;
   /** A segunda mina no mesmo lugar: o dano e o relógio da dupla. */
   acumula?: { segundos: number; dano: number };
+  /** Linha do chão dentro da célula do efeito (px da célula): o pé dos cacos; sem ela, o centro. */
+  chao?: number;
   /** Efeitos (nomes de `effects`) da simples e da dupla; sem a dupla, a simples maior. */
   efeito?: string;
   efeitoDuplo?: string;

@@ -389,7 +389,11 @@ export class MatchScene extends BaseScene {
     if (escapou(attack.escapa, { noAr: defender.isAirborne, agachado: defender.isDucking })) {
       return null;
     }
-    const escape = { airborne: defender.isAirborne, ducking: defender.isDucking, movingAway: defender.isMovingAwayFrom(attacker.x) };
+    const escape = {
+      airborne: defender.isAirborne, ducking: defender.isDucking, movingAway: defender.isMovingAwayFrom(attacker.x),
+      // Passou para trás de quem salta (o lado fica travado durante o especial).
+      crossed: (defender.x - attacker.x) * attacker.facingDirection < 0
+    };
     if (specialDodged(attack.dodge, escape)) {
       return null;
     }

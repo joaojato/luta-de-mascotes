@@ -3981,3 +3981,31 @@ arquivos, 548 testes, build. Nada visto no navegador: sem sheet da Raposa.
 **Atrito:** nenhum.
 **Em aberto:** sheets da Raposa (o Codex rejeitou 3 intros até agora);
 JSON das duas formas; teste visual da mina e do pulo na Academia.
+
+## 2026-11-07: Raposa no jogo, normal e com taco
+
+**Marco:** 2, segue em andamento.
+**Pedido:** "coloca a raposa", com a arte v2 do Codex fechada na noite
+anterior (48 folhas, normal, taco e efeitos).
+**Feito:** `scripts/integrar_raposa.py` gera os dois JSONs a partir do
+manifesto, mede as caixas de acerto no desenho (o maior pedaço fora da
+guarda; faixa de altura na voadora e no gancho com taco), junta o pulo e o
+pouso numa sheet e sobe os quadros desenhados abaixo da linha do pé, e
+recorta o retrato da v19 (fundo magenta). Motor: cacos apoiados no chão
+(`chao` da célula do efeito) e esquiva `cruzar`. Raposa na seleção, rival
+do Galo, ficha do Museu, acerto de metal; forma com taco com acerto de
+madeira.
+**Verificado:** navegador (Playwright, 1x1 Raposa contra Galo): entrada,
+garrafa 3 vezes (12; dupla 18 com 7 s; nova simples de 12 e a dupla
+intacta), pulo de 250 px que atordoa e vira TACO por 8 s, sacar e guardar
+o taco; Galo andando por baixo aos 0,3, 0,6 e 0,9 s escapa, parado apanha.
+Academia abre as duas formas com as caixas. Sem erro no console.
+`npm run check`: 71 arquivos, 561 testes, build.
+**Créditos gastos:** nada.
+**Refeito ou apagado a pedido dele:** nada.
+**Aprovado explicitamente:** nada.
+**Atrito:** o Codex registrou que a terceira garrafa mantém 18 e reinicia o
+relógio; o motor segue a resposta do João (nasce outra simples).
+**Em aberto:** teste dele na mão; som de vidro da garrafa; ajuste fino de
+dano e alcance na Academia; os arquivos do Codex fora do jogo (normal-v1,
+coelho, scripts de arte) ficaram sem commit, são da sessão dele.

@@ -155,12 +155,13 @@ encolhe (`src/game/planoDeFundo.ts`).
    | `strike` | golpe parado, no lugar | (padrão de golpe comum) |
    | `esquadrao` | chama aliados que ficam de prontidão no fundo, atrás dele: o líder sai pelo alto e mergulha numa hora sorteada (`mergulho`: `segundos`, menos `adiantar` até mais `atrasar`); só se acertar, os outros atacam um por vez de lados alternados, sem guarda que segure, teleguiados (o oponente anda e pula entre um e outro, eles vão atrás) | Gaviões da Fiel do Mosqueteiro |
    | `sopro` | sobe até pairar (`altura`), solta um jato contínuo pela boca e varre do chão à frente até o alto, sem guarda que segure; escapa quem vai para baixo dele. Pede a boca e o ângulo de cada quadro da `special` (`boca`, `angulos`), o efeito do jato e a descida `special-return` | sopro de fogo do Dragão |
-   | `forma` | acerta como golpe parado e, no fim da sheet, ele vira outro lutador registrado (a forma dele, fora da seleção) por `segundos`, batendo (`danoCausado`) e apanhando (`danoRecebido`) diferente. O cronômetro ocupa a barra de especial no HUD com o `rotulo`. A volta é a sheet `special-return`; sem ela, a transformação de trás para a frente. Pede as sheets da forma inteiras, como um mascote. Com `soNoAcerto`, só vira se o especial acertou sem defesa (vale em qualquer `kind`, como o `hop`); `entrada` é uma ação da forma tocada logo depois da troca (sacar o taco) | maromba do Vovô Coxa, Pulo de Raposa |
+   | `forma` | acerta como golpe parado e, no fim da sheet, ele vira outro lutador registrado (a forma dele, fora da seleção) por `segundos`, batendo (`danoCausado`) e apanhando (`danoRecebido`) diferente. O cronômetro ocupa a barra de especial no HUD com o `rotulo`. A volta é a sheet `special-return`; sem ela, a transformação de trás para a frente. Pede as sheets da forma inteiras, como um mascote. Com `soNoAcerto`, só vira se o especial acertou sem defesa (vale em qualquer `kind`, como o `hop`); `entrada` é uma ação da forma tocada logo depois da troca (a `draw-bat` da Raposa, que saca o taco) | maromba do Vovô Coxa, Pulo de Raposa |
 
    Se nenhum serve, é mecânica nova no motor: vira conversa à parte antes
    do mascote.
 3. Como o oponente escapa? Pular (`pulo`), agachar (`agachar`), pular
-   recuando (`pulo-recuando`) ou defender normalmente?
+   recuando (`pulo-recuando`), passar por baixo e ficar atrás de onde ele
+   cai (`cruzar`, o Pulo de Raposa) ou defender normalmente?
 4. Dá para defender, ou é imbloqueável (`unblockable`)? E ele, apanha no
    especial? Três jeitos: normal (golpe interrompe); imparável (`imparavel`:
    quem bate só tira vida e ele segue, como o vômito do Porco); intocável
@@ -186,7 +187,7 @@ encolhe (`src/game/planoDeFundo.ts`).
     por um tempo)? O que cai fica no chão como mina (`mine`: segundos e
     fração do dano)?
 12. O golpe deixa algo no chão direto, sem lançar (a garrafa quebrada da
-    Raposa)? É o `kind` `mina` (`mina` no JSON: `quadro` em que cai,
+    Raposa, ação `garrafa`)? É o `kind` `mina` (`mina` no JSON: `quadro` em que cai,
     `avanco` à frente dos pés, `largura`, `segundos`, `dano`, `efeito`).
     Quem pisa toma o dano uma vez e a mina some. Acumula (`acumula`: o dano
     e os segundos da dupla, `efeitoDuplo`)? Vale no chute e no soco forte,

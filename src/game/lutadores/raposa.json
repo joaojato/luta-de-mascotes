@@ -1,0 +1,573 @@
+{
+  "id": "raposa",
+  "label": "Raposa",
+  "estado": "MG",
+  "rival": "galo",
+  "nomes": {
+    "soco-rapido": "Dois socos",
+    "soco-forte": "Gancho",
+    "chute-basico": "Garrafa",
+    "chute-baixo": "Rasteira",
+    "soco-no-ar": "Soco no ar",
+    "voadora": "Voadora",
+    "especial": "Pulo Raposa"
+  },
+  "rosto": {
+    "x": 0.37,
+    "y": 0.17,
+    "lado": 0.32
+  },
+  "assetRoot": "/assets/lutadores/raposa",
+  "anchorFile": "bases/retrato-v19.png",
+  "portraitFile": "bases/retrato-v19.png",
+  "anchorUsage": "Raposa de regata azul com cinco estrelas, em guarda de boxe, voltada para a esquerda",
+  "sons": {
+    "acerto-leve": "acerto-leve-metal",
+    "acerto-pesado": "acerto-pesado-metal"
+  },
+  "torcida": {
+    "estampa": "lisa",
+    "cores": [
+      "#1E4FBF",
+      "#F0F0F0"
+    ]
+  },
+  "museu": {
+    "apelido": "A Raposa da Toca: charuto aceso e taco nas costas.",
+    "descricao": "Boxeadora de rua com soco-inglês numa mão e aliança na outra. Quebra garrafa no chão e deixa os cacos esperando quem pisar; garrafa em cima de garrafa dobra o estrago. No Pulo de Raposa salta alto e cai em cima do adversário: se acertar, saca o taco e luta com ele por oito segundos.",
+    "historia": "A raposa virou mascote da torcida celeste mineira nos anos 1940, desenhada como bicho esperto que leva vantagem sem fazer barulho. Aqui ela ganhou a malandragem de boteco e o taco de quem já viu muita briga de rua."
+  },
+  "stats": {},
+  "combat": {},
+  "moves": {
+    "kick": {
+      "kind": "mina",
+      "action": "garrafa",
+      "mina": {
+        "quadro": 5,
+        "avanco": 70,
+        "largura": 70,
+        "altura": 18,
+        "segundos": 5,
+        "dano": 12,
+        "acumula": {
+          "segundos": 7,
+          "dano": 18
+        },
+        "chao": 104,
+        "efeito": "garrafa-quebra",
+        "efeitoDuplo": "cacos-dupla"
+      }
+    },
+    "special": {
+      "kind": "hop",
+      "reach": 0,
+      "travelFrames": [
+        1,
+        7
+      ],
+      "landFrame": 8,
+      "hopHeight": 250,
+      "unblockable": true,
+      "stunMs": 1500,
+      "dodge": "cruzar",
+      "forma": {
+        "lutador": "raposa-taco",
+        "segundos": 8,
+        "soNoAcerto": true,
+        "entrada": "draw-bat",
+        "rotulo": "TACO"
+      }
+    },
+    "effects": {
+      "garrafa-quebra": {
+        "file": "effects-v2/bottle-break.png",
+        "frames": 4,
+        "frameRate": 12,
+        "repeat": 0,
+        "frameWidth": 256,
+        "frameHeight": 128
+      },
+      "cacos-dupla": {
+        "file": "effects-v2/shards-double.png",
+        "frames": 1,
+        "frameRate": 1,
+        "repeat": 0,
+        "frameWidth": 256,
+        "frameHeight": 128
+      }
+    }
+  },
+  "actions": [
+    {
+      "action": "idle",
+      "label": "Guarda de boxe, taco nas costas",
+      "file": "normal-v2/idle.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "entrance",
+      "label": "Entrada: arrasta o taco e acende o charuto",
+      "file": "normal-v2/entrance.png",
+      "frames": 13,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "walk-forward",
+      "label": "Avançar",
+      "file": "normal-v2/walk-forward.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "walk-backward",
+      "label": "Recuar",
+      "file": "normal-v2/walk-backward.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 8,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "dash-forward",
+      "label": "Avanço rápido",
+      "file": "normal-v2/dash-forward.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "dash-back",
+      "label": "Recuo rápido",
+      "file": "normal-v2/dash-back.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "crouch",
+      "label": "Agachar",
+      "file": "normal-v2/crouch.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 20,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 167,
+        "y": 160,
+        "width": 179,
+        "height": 200
+      }
+    },
+    {
+      "action": "jump",
+      "label": "Salto",
+      "file": "normal-v2/jump.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 160,
+        "width": 128,
+        "height": 200
+      }
+    },
+    {
+      "action": "block-high",
+      "label": "Defesa alta",
+      "file": "normal-v2/block-high.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      },
+      "guard": {
+        "x": 195,
+        "y": 160,
+        "width": 60,
+        "height": 200
+      }
+    },
+    {
+      "action": "block-low",
+      "label": "Defesa baixa",
+      "file": "normal-v2/block-low.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 160,
+        "width": 130,
+        "height": 200
+      },
+      "guard": {
+        "x": 196,
+        "y": 160,
+        "width": 60,
+        "height": 200
+      }
+    },
+    {
+      "action": "hit-high",
+      "label": "Receber golpe",
+      "file": "normal-v2/hit-high.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "stunned",
+      "label": "Atordoada",
+      "file": "normal-v2/stunned.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 6,
+      "repeat": -1,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "knockdown",
+      "label": "Queda",
+      "file": "normal-v2/knockdown.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 157,
+        "y": 160,
+        "width": 203,
+        "height": 200
+      }
+    },
+    {
+      "action": "light-punch",
+      "label": "Dois socos alternados",
+      "file": "normal-v2/light-punch.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 18,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      },
+      "attackSpans": [
+        {
+          "frames": [
+            1
+          ],
+          "bounds": {
+            "x": 170,
+            "y": 213,
+            "width": 42,
+            "height": 21
+          }
+        },
+        {
+          "frames": [
+            3
+          ],
+          "bounds": {
+            "x": 178,
+            "y": 213,
+            "width": 33,
+            "height": 22
+          }
+        }
+      ],
+      "attack": {
+        "frames": [
+          1
+        ],
+        "bounds": {
+          "x": 170,
+          "y": 213,
+          "width": 42,
+          "height": 21
+        }
+      }
+    },
+    {
+      "action": "heavy-punch",
+      "label": "Gancho ascendente",
+      "file": "normal-v2/heavy-punch.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      },
+      "attack": {
+        "frames": [
+          3
+        ],
+        "bounds": {
+          "x": 210,
+          "y": 141,
+          "width": 34,
+          "height": 60
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 20
+      }
+    },
+    {
+      "action": "garrafa",
+      "label": "Garrafa quebrada no chão",
+      "file": "normal-v2/heavy-kick.png",
+      "frames": 8,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "low-kick",
+      "label": "Chute baixo transversal",
+      "file": "normal-v2/low-kick.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      },
+      "attack": {
+        "frames": [
+          3
+        ],
+        "bounds": {
+          "x": 104,
+          "y": 241,
+          "width": 137,
+          "height": 90
+        }
+      },
+      "travel": {
+        "frames": [
+          1,
+          3
+        ],
+        "distance": 30
+      }
+    },
+    {
+      "action": "jump-punch",
+      "label": "Soco no ar",
+      "file": "normal-v2/jump-punch.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 171,
+        "y": 140,
+        "width": 152,
+        "height": 196
+      },
+      "attack": {
+        "frames": [
+          2
+        ],
+        "bounds": {
+          "x": 171,
+          "y": 200,
+          "width": 42,
+          "height": 76
+        }
+      }
+    },
+    {
+      "action": "jump-kick",
+      "label": "Voadora",
+      "file": "normal-v2/jump-kick.png",
+      "frames": 6,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 115,
+        "y": 140,
+        "width": 199,
+        "height": 205
+      },
+      "attack": {
+        "frames": [
+          1,
+          2,
+          3
+        ],
+        "bounds": {
+          "x": 115,
+          "y": 242,
+          "width": 98,
+          "height": 103
+        }
+      }
+    },
+    {
+      "action": "special-charge",
+      "label": "Preparação do Pulo de Raposa",
+      "file": "normal-v2/special-charge.png",
+      "frames": 5,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 14,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    },
+    {
+      "action": "special",
+      "label": "Pulo de Raposa",
+      "file": "normal-v2/special-pulo.png",
+      "frames": 11,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 10,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 170,
+        "y": 143,
+        "width": 180,
+        "height": 217
+      },
+      "attack": {
+        "frames": [
+          7
+        ],
+        "bounds": {
+          "x": 224,
+          "y": 240,
+          "width": 80,
+          "height": 120
+        }
+      }
+    },
+    {
+      "action": "special-return",
+      "label": "Guarda o taco nas costas",
+      "file": "normal-v2/stow-bat.png",
+      "frames": 4,
+      "frameWidth": 512,
+      "frameHeight": 384,
+      "frameRate": 12,
+      "repeat": 0,
+      "defaultVisual": {
+        "x": 200,
+        "y": 159,
+        "width": 128,
+        "height": 201
+      }
+    }
+  ]
+}
